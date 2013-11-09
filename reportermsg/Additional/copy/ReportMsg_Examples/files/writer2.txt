@@ -1,0 +1,136 @@
+
+
+Logging messages from reporter, starting at 25.2.2009 11:59:11:
+
+
+
+
+==== ERROR in First location: ==
+Test Error
+ Details: Test exception message.
+====  2009-02-25, 11:59:11.72  ==
+
+
+
+
+==== Warning in Second location: ==
+Test Warning
+ Details: Test exception message.
+====  2009-02-25, 11:59:11.72  ==
+
+
+
+
+Logging messages from reporter, starting at 25.2.2009 11:59:50:
+
+
+
+
+==== ERROR in First location: ==
+Test Error
+ Details: Test exception message.
+====  2009-02-25, 11:59:50.12  ==
+
+
+
+
+==== Warning in Second location: ==
+Test Warning
+ Details: Test exception message.
+====  2009-02-25, 11:59:50.12  ==
+
+
+
+
+Logging messages from reporter, starting at 25.2.2009 12:02:22:
+
+
+
+
+==== ERROR in First location: ==
+Test Error
+ Details: Test exception message.
+====  2009-02-25, 12:02:22.16  ==
+
+
+
+
+==== Warning in Second location: ==
+Test Warning
+ Details: Test exception message.
+====  2009-02-25, 12:02:22.16  ==
+
+
+
+
+Logging messages from reporter, starting at 25.2.2009 13:10:04:
+
+
+
+
+==== ERROR in First location: ==
+Test Error
+ Details: Test exception message.
+====  2009-02-25, 13:10:04.98  ==
+
+
+
+
+==== Warning in Second location: ==
+Test Warning
+ Details: Test exception message.
+====  2009-02-25, 13:10:04.98  ==
+
+
+
+
+Logging messages from reporter, starting at 25.2.2009 15:13:37:
+
+
+
+
+==== ERROR in First location: ==
+Test Error
+ Details: Test exception message.
+====  2009-02-25, 15:13:37.16  ==
+
+
+
+
+Logging messages from reporter, starting at 25.2.2009 15:14:36:
+
+
+
+
+==== ERROR in First location: ==
+Test Error
+ Details: Test exception message.
+====  2009-02-25, 15:14:36.74  ==
+
+
+
+
+Logging messages from reporter, starting at 16.3.2009 9:00:15:
+
+
+
+
+==== ERROR in First location: ==
+Test Error
+ Details: Test exception message.
+====  2009-03-16, 09:00:15.44  ==
+
+
+
+
+Logging messages from reporter, starting at 16.3.2009 9:08:22:
+
+
+
+
+==== ERROR in First location: ==
+Test Error
+ Details: Test exception message.
+====  2009-03-16, 09:08:22.99  ==
+
+

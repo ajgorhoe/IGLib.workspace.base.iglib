@@ -1,0 +1,8 @@
+
+
+Logging messages from reporter, starting at 25.2.2009 15:12:52:
+
+
+>>>ERROR in First location: Test Error ...  Details: Test exception message.  | Source: Unknown
+*******Warning in Second location: Test Warning ...  Details: Test exception message.  | Source: Unknown
+*****Info: Test information message.  | Source: Unknown

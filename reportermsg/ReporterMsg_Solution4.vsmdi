@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestLists xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+  <TestList name="Lists of Tests" id="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
+    <RunConfiguration id="c180f2dd-91f9-4f06-a1c8-ca8d0a787261" name="Local Test Run" storage="localtestrun.testrunconfig" type="Microsoft.VisualStudio.TestTools.Common.TestRunConfiguration, Microsoft.VisualStudio.QualityTools.Common,   PublicKeyToken=b03f5f7f11d50a3a" />
+  </TestList>
+  <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d">
+    <TestLinks>
+      <TestLink id="cf978093-4c22-f678-eaf7-5d21669b58a7" name="ReportWarningTest" storage="unittests_reportermsg\bin\debug\unittests_reportermsg.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="e93d4ea3-94fa-296d-ad38-37c08b0b4213" name="DefaultReportStringMessageBoxTest" storage="unittests_reportermsg\bin\debug\unittests_reportermsg.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="6924a146-61b2-9e29-5379-bb6d52ea0ef1" name="DefaultReportStringConsoleTimeStampTest" storage="unittests_reportermsg\bin\debug\unittests_reportermsg.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="a588b383-8a25-4545-4676-889c0fa6a9f6" name="ReportTest" storage="unittests_reportermsg\bin\debug\unittests_reportermsg.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="08aacad9-70bc-e62e-1211-e9a9a979f10b" name="ReportErrorTest" storage="unittests_reportermsg\bin\debug\unittests_reportermsg.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="621c0821-2391-f85b-3633-46e6ac70c988" name="DefaultReportStringConsoleTest" storage="unittests_reportermsg\bin\debug\unittests_reportermsg.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="f13195d7-4a0f-cc3c-c207-91eb897e6f53" name="DefaultReserveReportMessageTest1" storage="unittests_reportermsg\bin\debug\unittests_reportermsg.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="ce103385-1c75-9e35-2f03-8686da7b38ff" name="DefaultReserveReportMessageTest" storage="unittests_reportermsg\bin\debug\unittests_reportermsg.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="8eee5ff6-9e3c-7a03-f39a-4449f02ad2cc" name="DefaultReportStringConsoleBasTest" storage="unittests_reportermsg\bin\debug\unittests_reportermsg.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    </TestLinks>
+  </TestList>
+</TestLists>

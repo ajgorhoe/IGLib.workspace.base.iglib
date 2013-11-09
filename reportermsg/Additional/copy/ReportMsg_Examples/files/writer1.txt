@@ -1,0 +1,28 @@
+
+
+Logging messages from reporter, starting at 16.3.2009 9:08:22:
+
+
+
+
+==== ERROR in First location: ==
+Test Error
+ Details: Test exception message.
+====  2009-03-16, 09:08:22.99  ==
+
+
+
+
+==== Warning in Second location: ==
+Test Warning
+ Details: Test exception message.
+====  2009-03-16, 09:08:22.99  ==
+
+
+
+
+==== Info: ================
+Test information message.
+====  2009-03-16, 09:08:22.99  ==
+
+

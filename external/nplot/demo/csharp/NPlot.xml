@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NPlotDemo</name>
+    </assembly>
+    <members>
+        <member name="T:NPlotDemo.FinancialDemo">
+            <summary>
+            Summary description for BasicDemo.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.FinancialDemo.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.FinancialDemo.closeButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Callback for close button.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.FinancialDemo.costPS_InteractionOccured(System.Object)">
+            <summary>
+            When the costPS chart has changed, this is called which updates the volumePS chart.
+            </summary>
+            <param name="sender"></param>
+        </member>
+        <member name="M:NPlotDemo.FinancialDemo.volumePS_InteractionOccured(System.Object)">
+            <summary>
+            When the volumePS chart has changed, this is called which updates hte costPS chart.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.FinancialDemo.volumePS_PreRefresh(System.Object)">
+            <summary>
+            This is called prior to volumePS refresh to enforce the WorldMin is 0. 
+            This may have been changed by the axisdrag interaction.
+            </summary>
+            <param name="sender"></param>
+        </member>
+        <member name="T:NPlotDemo.FinancialDemo.ReducedContextMenu">
+            <summary>
+            Right context menu with non-default functionality. Just take out some functionality. Could also have added some.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.FinancialDemo.ReducedContextMenu.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:NPlotDemo.MenuForm">
+            <summary>
+            Summary description for MenuForm.
+            </summary>
+        </member>
+        <member name="F:NPlotDemo.MenuForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.MenuForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.MenuForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.MenuForm.TestItem.#ctor(System.String,System.Windows.Forms.Form)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="name">The name of the test</param>
+            <param name="form">The form that contains the test</param>
+        </member>
+        <member name="P:NPlotDemo.MenuForm.TestItem.Name">
+            <summary>
+            Name of the test.
+            </summary>
+        </member>
+        <member name="P:NPlotDemo.MenuForm.TestItem.Form">
+            <summary>
+            The form that contains the test.
+            </summary>
+        </member>
+        <member name="T:NPlotDemo.PlotSurface2DDemo">
+            <summary>
+            The main demo window.
+            </summary>
+        </member>
+        <member name="F:NPlotDemo.PlotSurface2DDemo.currentPlot">
+            <summary>
+            used to keep track of the current demo plot being displayed.
+            </summary>
+        </member>
+        <member name="F:NPlotDemo.PlotSurface2DDemo.PlotRoutines">
+            <summary>
+             list of the plot demos, initialized in the form constructor.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.PlotSurface2DDemo.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.PlotSurface2DDemo.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.PlotSurface2DDemo.quitButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            callback for quit button click
+            </summary>
+            <param name="sender">unused</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="M:NPlotDemo.PlotSurface2DDemo.ResizeHandler(System.Object,System.EventArgs)">
+            <summary>
+            callback for resize event.
+            </summary>
+            <param name="sender">unused</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="M:NPlotDemo.PlotSurface2DDemo.nextPlotButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            callback for next button click
+            </summary>
+            <param name="sender">unused</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="M:NPlotDemo.PlotSurface2DDemo.nplotLinkLabel_LinkClicked(System.Object,System.Windows.Forms.LinkLabelLinkClickedEventArgs)">
+            <summary>
+            Callback for NPlot link label click
+            </summary>
+            <param name="sender">unused</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="M:NPlotDemo.PlotSurface2DDemo.printButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            callback for print button click
+            </summary>
+            <param name="sender">unused</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="M:NPlotDemo.PlotSurface2DDemo.prevPlotButton_Click(System.Object,System.EventArgs)">
+            <summary>
+            Callback for prev button click.
+            </summary>
+            <param name="sender">unused</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="M:NPlotDemo.PlotSurface2DDemo.qeExampleTimer_Tick(System.Object,System.EventArgs)">
+            <summary>
+            Callback for QE example timer tick.
+            </summary>
+            <param name="sender">unused</param>
+            <param name="e">unused</param>
+        </member>
+        <member name="T:NPlotDemo.PlotSurface2DDemo.PlotDemoDelegate">
+            <summary>
+            delegate for plot demo functions.
+            </summary>
+        </member>
+        <member name="T:NPlotDemo.AxisTestsForm">
+            <summary>
+            Summary description for Tests.
+            </summary>
+        </member>
+        <member name="F:NPlotDemo.AxisTestsForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.AxisTestsForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:NPlotDemo.AxisTestsForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+    </members>
+</doc>

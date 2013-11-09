@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="XMLTree">
+</Property><Property Name="Solution File" Value="C:\Users\ajgorhoe\cvis\igcs\XMLTree\XMLTree.sln">
+</Property><Property Name="User Options File" Value="C:\Users\ajgorhoe\cvis\igcs\XMLTree\XMLTree.suo">
+</Property><Property Name="Date" Value="16. julij 2008">
+</Property><Property Name="Time" Value="14:19">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="XMLTree.sln" Description="File successfully backed up as C:\Users\ajgorhoe\cvis\igcs\XMLTree\Backup\XMLTree.sln">
+</Event><Event ErrorLevel="0" Project="" Source="XMLTree.suo" Description="File successfully backed up as C:\Users\ajgorhoe\cvis\igcs\XMLTree\Backup\XMLTree.suo">
+</Event><Event ErrorLevel="0" Project="XMLTree" Source="XMLTree.csproj" Description="Project file successfully backed up as C:\Users\ajgorhoe\cvis\igcs\XMLTree\Backup\XMLTree.csproj">
+</Event><Event ErrorLevel="0" Project="XMLTree" Source="XMLTree.csproj.user" Description="Project user file successfully backed up as C:\Users\ajgorhoe\cvis\igcs\XMLTree\Backup\XMLTree.csproj.user">
+</Event><Event ErrorLevel="0" Project="XMLTree" Source="About.cs" Description="File successfully backed up as C:\Users\ajgorhoe\cvis\igcs\XMLTree\Backup\About.cs">
+</Event><Event ErrorLevel="0" Project="XMLTree" Source="AssemblyInfo.cs" Description="File successfully backed up as C:\Users\ajgorhoe\cvis\igcs\XMLTree\Backup\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="XMLTree" Source="Form1.cs" Description="File successfully backed up as C:\Users\ajgorhoe\cvis\igcs\XMLTree\Backup\Form1.cs">
+</Event><Event ErrorLevel="0" Project="XMLTree" Source="App.ico" Description="File successfully backed up as C:\Users\ajgorhoe\cvis\igcs\XMLTree\Backup\App.ico">
+</Event><Event ErrorLevel="0" Project="XMLTree" Source="About.resx" Description="File successfully backed up as C:\Users\ajgorhoe\cvis\igcs\XMLTree\Backup\About.resx">
+</Event><Event ErrorLevel="0" Project="XMLTree" Source="Form1.resx" Description="File successfully backed up as C:\Users\ajgorhoe\cvis\igcs\XMLTree\Backup\Form1.resx">
+</Event><Event ErrorLevel="0" Project="XMLTree" Source="XMLTree.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="XMLTree" Source="XMLTree.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="XMLTree.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="XMLTree.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="XMLTree" Source="XMLTree.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

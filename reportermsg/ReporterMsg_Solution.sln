@@ -1,0 +1,81 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReporterMsg", "ReporterMsg\ReporterMsg.csproj", "{AC130D8D-D656-4EA6-A940-3C261F589ACE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReporterMsg_Forms", "ReporterMsg_Forms\ReporterMsg_Forms.csproj", "{BD0BC991-E9E5-419E-9172-3B0C00210018}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportMsg_Examples", "Additional\ReportMsg_Examples\ReportMsg_Examples.csproj", "{77A1F665-FA61-4B53-A610-0C7B6C778204}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReporterMsg_Example_Config", "Additional\ReporterMsg_Example_Config\ReporterMsg_Example_Config.csproj", "{80C26312-7BDA-40FD-8CB1-3546C2CA4B0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReporterMsg_Example_Config_Speech", "Additional\ReporterMsg_Example_Config_Speech\ReporterMsg_Example_Config_Speech.csproj", "{199AEB2D-C630-497A-9FE7-657FDF94E7AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReporterMsg_Speech", "Additional\ReporterMsg_Speech\ReporterMsg_Speech.csproj", "{31935782-3FEC-46F6-BD89-BC325577290A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC130D8D-D656-4EA6-A940-3C261F589ACE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC130D8D-D656-4EA6-A940-3C261F589ACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC130D8D-D656-4EA6-A940-3C261F589ACE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC130D8D-D656-4EA6-A940-3C261F589ACE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD0BC991-E9E5-419E-9172-3B0C00210018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD0BC991-E9E5-419E-9172-3B0C00210018}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD0BC991-E9E5-419E-9172-3B0C00210018}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD0BC991-E9E5-419E-9172-3B0C00210018}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77A1F665-FA61-4B53-A610-0C7B6C778204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77A1F665-FA61-4B53-A610-0C7B6C778204}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77A1F665-FA61-4B53-A610-0C7B6C778204}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77A1F665-FA61-4B53-A610-0C7B6C778204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80C26312-7BDA-40FD-8CB1-3546C2CA4B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80C26312-7BDA-40FD-8CB1-3546C2CA4B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80C26312-7BDA-40FD-8CB1-3546C2CA4B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80C26312-7BDA-40FD-8CB1-3546C2CA4B0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{199AEB2D-C630-497A-9FE7-657FDF94E7AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{199AEB2D-C630-497A-9FE7-657FDF94E7AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{199AEB2D-C630-497A-9FE7-657FDF94E7AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{199AEB2D-C630-497A-9FE7-657FDF94E7AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31935782-3FEC-46F6-BD89-BC325577290A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31935782-3FEC-46F6-BD89-BC325577290A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31935782-3FEC-46F6-BD89-BC325577290A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31935782-3FEC-46F6-BD89-BC325577290A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 8
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://pehta:8080/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ReporterMsg\\ReporterMsg.csproj
+		SccProjectName1 = ReporterMsg
+		SccLocalPath1 = ReporterMsg
+		SccProjectUniqueName2 = UnitTests_ReporterMsg\\UnitTests_ReporterMsg.csproj
+		SccProjectName2 = UnitTests_ReporterMsg
+		SccLocalPath2 = UnitTests_ReporterMsg
+		SccProjectUniqueName3 = ReporterMsg_Forms\\ReporterMsg_Forms.csproj
+		SccProjectName3 = ReporterMsg_Forms
+		SccLocalPath3 = ReporterMsg_Forms
+		SccProjectUniqueName4 = 0Additional\\ReporterMsg_Speech\\ReporterMsg_Speech.csproj
+		SccProjectTopLevelParentUniqueName4 = ReporterMsg_Solution.sln
+		SccProjectName4 = 0Additional/ReporterMsg_Speech
+		SccLocalPath4 = 0Additional\\ReporterMsg_Speech
+		SccProjectUniqueName5 = 0Additional\\ReportMsg_Examples\\ReportMsg_Examples.csproj
+		SccProjectTopLevelParentUniqueName5 = ReporterMsg_Solution.sln
+		SccProjectName5 = 0Additional/ReportMsg_Examples
+		SccLocalPath5 = 0Additional\\ReportMsg_Examples
+		SccProjectUniqueName6 = 0Additional\\ReporterMsg_Example_Config\\ReporterMsg_Example_Config.csproj
+		SccProjectTopLevelParentUniqueName6 = ReporterMsg_Solution.sln
+		SccProjectName6 = 0Additional/ReporterMsg_Example_Config
+		SccLocalPath6 = 0Additional\\ReporterMsg_Example_Config
+		SccProjectUniqueName7 = 0Additional\\ReporterMsg_Example_Config_Speech\\ReporterMsg_Example_Config_Speech.csproj
+		SccProjectTopLevelParentUniqueName7 = ReporterMsg_Solution.sln
+		SccProjectName7 = 0Additional/ReporterMsg_Example_Config_Speech
+		SccLocalPath7 = 0Additional\\ReporterMsg_Example_Config_Speech
+	EndGlobalSection
+EndGlobal

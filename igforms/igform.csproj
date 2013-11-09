@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{50235FC8-A69D-47AE-A557-6518B35CC7C9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IG.Forms</RootNamespace>
+    <AssemblyName>IGLibForms</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppForms.cs" />
+    <Compile Include="BrowserSimpleControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BrowserSimpleControl.Designer.cs">
+      <DependentUpon>BrowserSimpleControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BrowserSimpleWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BrowserSimpleWindow.Designer.cs">
+      <DependentUpon>BrowserSimpleWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BrowserFormOld.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="console_form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="error_forms.cs" />
+    <Compile Include="error_config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="form_tools.cs" />
+    <Compile Include="IClosableFromContainedForm.cs" />
+    <Compile Include="igform_quick_tests.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="message_fade.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Numeric\Functions\ScalarFunctionScriptControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Numeric\Functions\ScalarFunctionScriptControl.Designer.cs">
+      <DependentUpon>ScalarFunctionScriptControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Numeric\Functions\ScalarFunctionScriptWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Numeric\Functions\ScalarFunctionScriptWindow.Designer.cs">
+      <DependentUpon>ScalarFunctionScriptWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashGeneratorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashGeneratorControl.Designer.cs">
+      <DependentUpon>HashGeneratorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashGeneratorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashGeneratorForm.Designer.cs">
+      <DependentUpon>HashGeneratorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\MessageBoxLauncher.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\MessageBoxLauncher.Designer.cs">
+      <DependentUpon>MessageBoxLauncher.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\AlignmentControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\AlignmentControl.Designer.cs">
+      <DependentUpon>AlignmentControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\AlignmentTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\AlignmentTestForm.Designer.cs">
+      <DependentUpon>AlignmentTestForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\Old\AlignmentControlOld.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\Old\AlignmentControlOld.Designer.cs">
+      <DependentUpon>AlignmentControlOld.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\Old\ShiftControlNumeric.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\Old\ShiftControlNumeric.Designer.cs">
+      <DependentUpon>ShiftControlNumeric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\ShiftControlText.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\ShiftControlText.Designer.cs">
+      <DependentUpon>ShiftControlText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\TestControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\TestControl.Designer.cs">
+      <DependentUpon>TestControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\TestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\TestForm.Designer.cs">
+      <DependentUpon>TestForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\WindowPositioner.cs" />
+    <Compile Include="Utilities\WindowPositioner\WindowPositionerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\WindowPositionerControl.Designer.cs">
+      <DependentUpon>WindowPositionerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\WindowPositionerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\WindowPositionerForm.Designer.cs">
+      <DependentUpon>WindowPositionerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="xmltreeview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="xmltreeview_testpath.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BrowserSimpleControl.resx">
+      <DependentUpon>BrowserSimpleControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BrowserSimpleWindow.resx">
+      <DependentUpon>BrowserSimpleWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BrowserFormOld.resx">
+      <DependentUpon>BrowserFormOld.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="console_form.resx">
+      <DependentUpon>console_form.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="message_fade.resx">
+      <DependentUpon>message_fade.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Numeric\Functions\ScalarFunctionScriptControl.resx">
+      <DependentUpon>ScalarFunctionScriptControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Numeric\Functions\ScalarFunctionScriptWindow.resx">
+      <DependentUpon>ScalarFunctionScriptWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="error_config.resx">
+      <DependentUpon>error_config.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashGeneratorControl.resx">
+      <DependentUpon>HashGeneratorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashGeneratorForm.resx">
+      <DependentUpon>HashGeneratorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\MessageBoxLauncher.resx">
+      <DependentUpon>MessageBoxLauncher.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\AlignmentControl.resx">
+      <DependentUpon>AlignmentControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\AlignmentTestForm.resx">
+      <DependentUpon>AlignmentTestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\Old\AlignmentControlOld.resx">
+      <DependentUpon>AlignmentControlOld.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\Old\ShiftControlNumeric.resx">
+      <DependentUpon>ShiftControlNumeric.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\ShiftControlText.resx">
+      <DependentUpon>ShiftControlText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\TestControl.resx">
+      <DependentUpon>TestControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\TestForm.resx">
+      <DependentUpon>TestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\WindowPositionerControl.resx">
+      <DependentUpon>WindowPositionerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\WindowPositionerForm.resx">
+      <DependentUpon>WindowPositionerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="xmltreeview.resx">
+      <DependentUpon>xmltreeview.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="xmltreeview_testpath.resx">
+      <DependentUpon>xmltreeview_testpath.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xml_root.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xml_element.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\igbase\iglib_base.csproj">
+      <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
+      <Name>iglib_base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\reportermsg\ReporterMsg\ReporterMsg.csproj">
+      <Project>{AC130D8D-D656-4EA6-A940-3C261F589ACE}</Project>
+      <Name>ReporterMsg</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="0readme_igforms.txt" />
+    <Content Include="0readme\License_IGLib.html" />
+    <Content Include="0readme\ReadMe_IGLib.html" />
+    <None Include="Resources\ig.ico" />
+    <None Include="Resources\iglib_small.jpg" />
+    <None Include="Resources\icon_iglib.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="0TestNumeric\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

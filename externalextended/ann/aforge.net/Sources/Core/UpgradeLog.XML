@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Core">
+</Property><Property Name="Solution File" Value="D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Core.sln">
+</Property><Property Name="Date" Value="08 October 2013">
+</Property><Property Name="Time" Value="23:13">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="Core.sln" Description="File successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\Core.sln">
+</Event><Event ErrorLevel="0" Project="Core" Source="Core.csproj" Description="Project file successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\Core.csproj">
+</Event><Event ErrorLevel="0" Project="Core" Source="DoublePoint.cs" Description="File successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\DoublePoint.cs">
+</Event><Event ErrorLevel="0" Project="Core" Source="DoubleRange.cs" Description="File successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\DoubleRange.cs">
+</Event><Event ErrorLevel="0" Project="Core" Source="Exceptions.cs" Description="File successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\Exceptions.cs">
+</Event><Event ErrorLevel="0" Project="Core" Source="IntPoint.cs" Description="File successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\IntPoint.cs">
+</Event><Event ErrorLevel="0" Project="Core" Source="IntRange.cs" Description="File successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\IntRange.cs">
+</Event><Event ErrorLevel="0" Project="Core" Source="Parallel.cs" Description="File successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\Parallel.cs">
+</Event><Event ErrorLevel="0" Project="Core" Source="PolishExpression.cs" Description="File successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\PolishExpression.cs">
+</Event><Event ErrorLevel="0" Project="Core" Source="SystemTools.cs" Description="File successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\SystemTools.cs">
+</Event><Event ErrorLevel="0" Project="Core" Source="Properties\AssemblyInfo.cs" Description="File successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="Core" Source="AForge.snk" Description="File successfully backed up as D:\users\workspace\base\iglib\externalextended\ann\aforge.net\Sources\Core\Backup\AForge.snk">
+</Event><Event ErrorLevel="0" Project="Core" Source="Core.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Core" Source="Core.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="" Source="Core.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Core.sln" Description="Converted">
+</Event></UpgradeLog>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="xProcs.Common">
+</Property><Property Name="Solution File" Value="C:\DevProjects\LABEX\project_numberconverter\NumberConverter\xProcs.Common.sln">
+</Property><Property Name="Date" Value="4. april 2009">
+</Property><Property Name="Time" Value="1:02:28">
+</Property></Properties><Event ErrorLevel="0" Project="xProcs.Common" Source="xProcs.Common.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="xProcs.Common" Source="xProcs.Common.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="xProcs.Common" Source="xProcs.Common.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

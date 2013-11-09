@@ -1,0 +1,24 @@
+
+
+Logging messages from reporter, starting at 25.2.2009 15:12:52:
+
+
+>>>ERROR in First location: Test Error ...  Details: Test exception message.  | Source: Unknown
+*******Warning in Second location: Test Warning ...  Details: Test exception message.  | Source: Unknown
+*****Info: Test information message.  | Source: Unknown
+*****Info: Information message with internal error thrown.  | Source: Unknown
+
+
+************************************************************************
+ERROR IN THE REPORTING PROCEDURE.
+Error Description: 
+  TEST INTERNAL EXCEPTION thrown by the reporter (after reporting has been performted).
+Original Report: 
+Location: Location 4
+Message: Information message with internal error thrown.
+Report type: Error
+Exception thrown within the reporting system: 
+  TEST INTERNAL EXCEPTION thrown by the reporter (after reporting has been performted).
+<< 2009-02-25, 15:12:54.3 >>
+************************************************************************
+

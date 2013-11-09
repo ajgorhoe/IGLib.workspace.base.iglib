@@ -1,0 +1,11 @@
+﻿
+This is a connection project between various IGLib extensions.
+It contains, for example, example scripts through which a number of examples
+from different projects can be run in surveyable way. Only core extensions 
+are connected by this projects, many modules that are in development stage
+(i.e. still in the sandbox or testing section) or are specific extensions
+located out of the base IGLib area, are excluded.
+
+
+
+

@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igform_test", "00test\igform_test.csproj", "{F8FAA9AD-5537-4B82-97EC-D26AE37366AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "igform", "igform.csproj", "{50235FC8-A69D-47AE-A557-6518B35CC7C9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8FAA9AD-5537-4B82-97EC-D26AE37366AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8FAA9AD-5537-4B82-97EC-D26AE37366AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8FAA9AD-5537-4B82-97EC-D26AE37366AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8FAA9AD-5537-4B82-97EC-D26AE37366AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50235FC8-A69D-47AE-A557-6518B35CC7C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50235FC8-A69D-47AE-A557-6518B35CC7C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50235FC8-A69D-47AE-A557-6518B35CC7C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50235FC8-A69D-47AE-A557-6518B35CC7C9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

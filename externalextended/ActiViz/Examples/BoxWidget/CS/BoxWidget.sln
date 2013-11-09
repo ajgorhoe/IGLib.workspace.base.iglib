@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoxWidget", "BoxWidget.csproj", "{A1CF636C-6332-4C42-904A-B0FB11C000C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1CF636C-6332-4C42-904A-B0FB11C000C5}.Debug|x64.ActiveCfg = Debug|x64
+		{A1CF636C-6332-4C42-904A-B0FB11C000C5}.Debug|x64.Build.0 = Debug|x64
+		{A1CF636C-6332-4C42-904A-B0FB11C000C5}.Release|x64.ActiveCfg = Release|x64
+		{A1CF636C-6332-4C42-904A-B0FB11C000C5}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

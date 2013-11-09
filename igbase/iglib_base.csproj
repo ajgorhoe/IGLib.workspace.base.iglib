@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IG.Lib</RootNamespace>
+    <AssemblyName>IGLib</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MathNet.Numerics, Version=2011.4.17.0, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\projects_dll\00DllSource_Shell\bin\Debug\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="0guests\Tako78\UtilCsv.cs" />
+    <Compile Include="0guests\Tako78\datastructures\StringTable.cs" />
+    <Compile Include="0unsorted\0NameSpaceIG.Lib.cs" />
+    <Compile Include="application\SettingsRreader.cs" />
+    <Compile Include="0guests\Tako78\datastructures\SampledDataCsv.cs" />
+    <Compile Include="data\presentation\HtmlWriter.cs" />
+    <Compile Include="data\serialization\dtos\ArrayDto.cs" />
+    <Compile Include="data\serialization\dtos\BoundingBoxDto.cs" />
+    <Compile Include="data\serialization\dtos\IndexListDto.cs" />
+    <Compile Include="data\serialization\dtos\MatrixDto.cs" />
+    <Compile Include="data\serialization\dtos\VectorDto.cs" />
+    <Compile Include="data\serialization\dtos\VectorFunctionResultsDto.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinter.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\ICharacterStrategy.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategies\CloseBracketStrategy.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategies\CloseSquareBracketStrategy.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategies\ColonCharacterStrategy.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategies\CommaCharacterStrategy.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategies\DefaultCharacterStrategy.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategies\DoubleQuoteStrategy.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategies\OpenBracketStrategy.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategies\OpenSquareBracketStrategy.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategies\SingleQuoteStrategy.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategies\SkipWhileNotInStringStrategy.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategyContext.cs" />
+    <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\PPScopeState.cs" />
+    <Compile Include="data\serialization\json\JsonSerialization\JsonExtensions.cs" />
+    <Compile Include="data\serialization\SerializationDtoBase.cs" />
+    <Compile Include="data\serialization\dtos\opt\AnalysisResultsDto.cs" />
+    <Compile Include="data\serialization\SerializerBase.cs" />
+    <Compile Include="data\serialization\SerializerJson.cs" />
+    <Compile Include="data\serialization\TestSerializers.cs" />
+    <Compile Include="data\StringParserBuffer.cs" />
+    <Compile Include="data\StringParserInt.cs" />
+    <Compile Include="0unsorted\Error.cs" />
+    <Compile Include="0unsorted\IndexList.cs" />
+    <Compile Include="graphics\Alignment.cs" />
+    <Compile Include="graphics\Color.cs" />
+    <Compile Include="graphics\ColorScale.cs" />
+    <Compile Include="interfaces\simulations\IResponseEvaluatorVector.cs" />
+    <Compile Include="interfaces\simulations\Kosec\SimKosecConst.cs" />
+    <Compile Include="interfaces\simulations\Kosec\SimKosecFileManager.cs" />
+    <Compile Include="interfaces\simulations\Kosec\SimKosecFileManagerBase.cs" />
+    <Compile Include="interpreters\CommandlineApplicationInterpreter.cs" />
+    <Compile Include="interpreters\ApplicationCommandLineBase.cs" />
+    <Compile Include="interpreters\interfaces\InterfaceInterpreterBase.cs" />
+    <Compile Include="interpreters\interfaces\InterfaceInv.cs" />
+    <Compile Include="interpreters\scriptloader\LoadableScriptExamnple.cs" />
+    <Compile Include="interpreters\scriptloader\RealFunctionScriptBase.cs" />
+    <Compile Include="interpreters\scriptloader\RealFunctionScriptExample.cs" />
+    <Compile Include="interpreters\scriptloader\LoadableScriptBase.cs" />
+    <Compile Include="interpreters\scriptloader\LoadableScriptInterpreter.cs" />
+    <Compile Include="interpreters\scriptloader\Loader.cs" />
+    <Compile Include="interpreters\scriptloader\RealFunctionScriptLoader.cs" />
+    <Compile Include="interpreters\scriptloader\ScalarFunctionScriptBase.cs" />
+    <Compile Include="interpreters\scriptloader\ScalarFunctionScriptExample.cs" />
+    <Compile Include="interpreters\scriptloader\ScalarFunctionScriptLoader.cs" />
+    <Compile Include="interpreters\scriptloader\scripts\ScriptAppBase.cs" />
+    <Compile Include="0guests\Tako78\scripts\ScriptAppBase1.cs" />
+    <Compile Include="numeric\approximation\VectorApproximatorBase.cs" />
+    <Compile Include="numeric\approximation\IVectorApproximator.cs" />
+    <Compile Include="numeric\approximation\neural\INeuralModel.cs" />
+    <Compile Include="numeric\approximation\neural\NeuralApproximatorAforgeFake.cs" />
+    <Compile Include="numeric\approximation\neural\NeuralApproximatorBase.cs" />
+    <Compile Include="numeric\approximation\neural\NeuralTrainingParameters.cs" />
+    <Compile Include="numeric\approximation\neural\SerializationDtoNeural.cs" />
+    <Compile Include="numeric\approximation\neural\SerializationDtoNeuralApproximator.cs" />
+    <Compile Include="numeric\approximation\sampleddata\PointCloudSampledDataElement.cs" />
+    <Compile Include="numeric\approximation\sampleddata\SampledData.cs" />
+    <Compile Include="numeric\approximation\sampleddata\SampledDataDefinition.cs" />
+    <Compile Include="numeric\approximation\sampleddata\SampledDataDto.cs" />
+    <Compile Include="numeric\FunctionVectorExamples.cs" />
+    <Compile Include="numeric\geometry\Function2d.cs" />
+    <Compile Include="numeric\geometry\Function3d.cs" />
+    <Compile Include="numeric\geometry\Function3d2d.cs" />
+    <Compile Include="numeric\geometry\meshing\00develop.cs" />
+    <Compile Include="numeric\geometry\meshing\FieldGeneric.cs" />
+    <Compile Include="numeric\geometry\meshing\FieldCollectionGeneric.cs" />
+    <Compile Include="numeric\geometry\meshing\StructuredField2dGeneric.cs" />
+    <Compile Include="numeric\geometry\meshing\StructuredField3dGeneric.cs" />
+    <Compile Include="numeric\geometry\meshing\StructuredMesh2d.cs" />
+    <Compile Include="numeric\geometry\meshing\StructuredMesh2d3d.cs" />
+    <Compile Include="numeric\geometry\meshing\StructuredMesh2dGeneric.cs" />
+    <Compile Include="numeric\geometry\meshing\StructuredMesh3d.cs" />
+    <Compile Include="numeric\geometry\meshing\StructuredMesh3dGeneric.cs" />
+    <Compile Include="numeric\geometry\meshing\UnstructuredMesh1d2d.cs" />
+    <Compile Include="numeric\geometry\meshing\UnstructuredMesh1d3d.cs" />
+    <Compile Include="numeric\geometry\meshing\UnstructuredMesh1dGeneric.cs" />
+    <Compile Include="numeric\geometry\meshing\UnstructuredMesh2d.cs" />
+    <Compile Include="numeric\geometry\meshing\UnstructuredMesh2dGeneric.cs" />
+    <Compile Include="numeric\geometry\meshing\UnstructuredMesh3d.cs" />
+    <Compile Include="numeric\geometry\meshing\UnstructuredMesh3dGeneric.cs" />
+    <Compile Include="numeric\geometry\meshing\UnstructuredMeshGeometry1dGeneric.cs" />
+    <Compile Include="numeric\geometry\meshing\UnstructuredMeshGeometry2dGeneric.cs" />
+    <Compile Include="numeric\geometry\meshing\UnstructuredMeshGeometry3dGeneric.cs" />
+    <Compile Include="numeric\geometry\pointclouds\DistanceComparer.cs" />
+    <Compile Include="numeric\geometry\pointclouds\PointCloud.cs" />
+    <Compile Include="numeric\geometry\pointclouds\PointCloudConcrete.cs" />
+    <Compile Include="numeric\geometry\pointclouds\PointContainer.cs" />
+    <Compile Include="numeric\geometry\pointclouds\PointLink.cs" />
+    <Compile Include="numeric\Matrix_old.cs" />
+    <Compile Include="numeric\FunctionRealParametric.cs" />
+    <Compile Include="numeric\FunctionScalarParametric.cs" />
+    <Compile Include="numeric\FunctionScalarTransformed.cs" />
+    <Compile Include="graphics\grobjects\GraphicalObjectsBase.cs" />
+    <Compile Include="graphics\grobjects\GraphicalObjectsInt.cs" />
+    <Compile Include="graphics\grobjects\GraphicalObjects.cs" />
+    <Compile Include="interpreters\Interpreter.cs" />
+    <Compile Include="interpreters\InterpreterCommandLine.cs" />
+    <Compile Include="interpreters\ExpressionEvaluatorCompiled.cs" />
+    <Compile Include="interpreters\ExpressionEvaluatorJs.cs" />
+    <Compile Include="numeric\BoundingBox.cs" />
+    <Compile Include="numeric\FunctionScalarRadialUntransformed.cs" />
+    <Compile Include="numeric\FunctionScalarExamples.cs" />
+    <Compile Include="numeric\FunctionScalarRadial.cs" />
+    <Compile Include="numeric\FunctionScalarResultsInt.cs" />
+    <Compile Include="numeric\geometry\Geometry3d.cs" />
+    <Compile Include="numeric\parallel\ParallelJobContainerBase.cs" />
+    <Compile Include="numeric\parallel\ParallelJobContainerGen.cs" />
+    <Compile Include="numeric\parallel\ParallelJobServerBase.cs" />
+    <Compile Include="numeric\parallel\ParallerJobDispatcherBase.cs" />
+    <Compile Include="numeric\parallel\threadutils\TracedThread.cs" />
+    <Compile Include="numeric\RandomGaussian.cs" />
+    <Compile Include="numeric\tests\TestSpeed.cs" />
+    <Compile Include="numeric\XComplex.cs" />
+    <Compile Include="numeric\Constants.cs" />
+    <Compile Include="numeric\FunctionNumeric.cs" />
+    <Compile Include="numeric\FunctionReal.cs" />
+    <Compile Include="numeric\FunctionRealBasic.cs" />
+    <Compile Include="numeric\FunctionRealInterpolation.cs" />
+    <Compile Include="numeric\FunctionRealPenalty.cs" />
+    <Compile Include="numeric\FunctionRealWeight.cs" />
+    <Compile Include="numeric\FunctionScalarUntransformedBase.cs" />
+    <Compile Include="numeric\FunctionScalarInt.cs" />
+    <Compile Include="numeric\FunctionScalarResults.cs" />
+    <Compile Include="numeric\FunctionScalarBase.cs" />
+    <Compile Include="numeric\FunctionVectorBase.cs" />
+    <Compile Include="numeric\FunctionVectorBaseGeneral.cs" />
+    <Compile Include="numeric\FunctionVectorInt.cs" />
+    <Compile Include="numeric\FunctionVectorResultsInt.cs" />
+    <Compile Include="numeric\FunctonVectorResults.cs" />
+    <Compile Include="numeric\geometry\GridGenerator1dBase.cs" />
+    <Compile Include="numeric\geometry\GridGenerator1d.cs" />
+    <Compile Include="numeric\geometry\GridGenerator1dFunc.cs" />
+    <Compile Include="numeric\geometry\Matrix2D.cs" />
+    <Compile Include="numeric\geometry\Matrix2DClass.cs" />
+    <Compile Include="numeric\geometry\Matrix3D.cs" />
+    <Compile Include="numeric\geometry\Matrix3DClass.cs" />
+    <Compile Include="numeric\geometry\Vector2Dclass.cs" />
+    <Compile Include="numeric\geometry\Vector3Dclass.cs" />
+    <Compile Include="numeric\Geometry3D.cs" />
+    <Compile Include="numeric\Matrix.cs" />
+    <Compile Include="numeric\MatrixBase.cs" />
+    <Compile Include="numeric\MatrixDecompositions.cs" />
+    <Compile Include="numeric\Random.cs" />
+    <Compile Include="numeric\Scalar.cs" />
+    <Compile Include="numeric\TransformationAffine.cs" />
+    <Compile Include="numeric\TransformationAffineSquare.cs" />
+    <Compile Include="numeric\TransformationAffineDiagonal.cs" />
+    <Compile Include="numeric\TransformationAffineInt.cs" />
+    <Compile Include="numeric\Vector.cs" />
+    <Compile Include="numeric\VectorBase.cs" />
+    <Compile Include="optimization\fileserver\OptFileAnalaysisServer.cs" />
+    <Compile Include="optimization\fileserver\OptFileAnalysisClient.cs" />
+    <Compile Include="optimization\fileserver\OptFileClient.cs" />
+    <Compile Include="optimization\fileserver\OptFileConst.cs" />
+    <Compile Include="optimization\fileserver\OptFileManager.cs" />
+    <Compile Include="optimization\fileserver\OptFileServer.cs" />
+    <Compile Include="optimization\OptimizationInputData.cs" />
+    <Compile Include="optimization\OptimizationResults.cs" />
+    <Compile Include="0unsorted\SortedUniqueItemList.cs" />
+    <Compile Include="optimization\scripting\LoadableScriptOpt.cs" />
+    <Compile Include="reporter\LoggerMsg.cs" />
+    <Compile Include="reporter\ReporterMsg.cs" />
+    <Compile Include="reporter\ReporterMsg_Derived.cs" />
+    <Compile Include="utilities\UtilCrypto.cs" />
+    <Compile Include="utilities\UtilStringCsv.cs" />
+    <Compile Include="utilities\UtilMath.cs" />
+    <Compile Include="utilities\UtilIdRegistration.cs" />
+    <Compile Include="utilities\UtilConsole.cs" />
+    <Compile Include="utilities\UtilSystem.cs" />
+    <Compile Include="utilities\Utils.cs" />
+    <Compile Include="utilities\UtilObjectStore.cs" />
+    <Compile Include="graphics\GrBasic.cs" />
+    <Compile Include="graphics\Mesh.cs" />
+    <Compile Include="graphics\GrObjects.cs" />
+    <Compile Include="graphics\GrPlotting.cs" />
+    <Compile Include="graphics\GrProperties.cs" />
+    <Compile Include="optimization\AnalysisComparer.cs" />
+    <Compile Include="optimization\Optimizer.cs" />
+    <Compile Include="0unsorted\ThreadPerformanceTest.cs" />
+    <Compile Include="optimization\Analysis.cs" />
+    <Compile Include="optimization\AnalysisResults.cs" />
+    <Compile Include="optimization\AnalysisResutlsInt.cs" />
+    <Compile Include="data\StringParser.cs" />
+    <Compile Include="utilities\UtilTime.cs" />
+    <Compile Include="0unsorted\ErrorOld.cs" />
+    <Compile Include="application\App.cs" />
+    <Compile Include="utilities\UtilString.cs" />
+    <Compile Include="data\StringParser0.cs" />
+    <Compile Include="0unsorted\Vartypes.cs" />
+    <Compile Include="0unsorted\WaitCondition.cs" />
+    <Compile Include="0unsorted\WaitConditionFile.cs">
+    </Compile>
+    <Compile Include="0unsorted\XmlGeneric.cs" />
+    <Compile Include="0unsorted\XmlUtilities.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="0guests\Tako78\0readme_guest_tako78.txt" />
+    <Content Include="0readme\License_IGLib.html" />
+    <Content Include="0readme\ReadMe_IGLib.html" />
+    <Content Include="data\serialization\json\0readmeJsonPrettyPrinter.txt" />
+    <Content Include="interpreters\ExpressionEvaluatorDefinitions.js" />
+    <Content Include="interpreters\interfaces\0ReadMeInterpreterInterfaces.txt" />
+    <Content Include="numeric\approximation\neural\0readme_TODO.txt" />
+    <Content Include="optimization\0readme_optimization.txt" />
+    <Content Include="interfaces\simulations\0ReadMeSimulationInterfaces.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="0guests\0common\" />
+    <Folder Include="0guests\Aga\" />
+    <Folder Include="0guests\Gkosak\" />
+    <Folder Include="0guests\Katarina\" />
+    <Folder Include="0guests\Kosec\" />
+    <Folder Include="0guests\Qliu\" />
+    <Folder Include="0guests\Robert\" />
+    <Folder Include="0guests\Umut\" />
+    <Folder Include="data\datastructures\" />
+    <Folder Include="numeric\approximation\neural\testneural\" />
+    <Folder Include="optimization\responseeval\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="interpreters\scriptloader\scripts\script_examples.cmd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
