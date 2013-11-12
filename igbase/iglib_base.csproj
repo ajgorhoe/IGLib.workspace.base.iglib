@@ -122,6 +122,9 @@
     <Compile Include="interpreters\scriptloader\ScalarFunctionScriptLoader.cs" />
     <Compile Include="interpreters\scriptloader\scripts\ScriptAppBase.cs" />
     <Compile Include="0guests\Tako78\scripts\ScriptAppBase1.cs" />
+    <Compile Include="numeric\approximation\neural\testneural\NeuralFileConst.cs" />
+    <Compile Include="numeric\approximation\neural\testneural\NeuralFileManager.cs" />
+    <Compile Include="numeric\approximation\neural\testneural\NeuralMapData.cs" />
     <Compile Include="numeric\approximation\VectorApproximatorBase.cs" />
     <Compile Include="numeric\approximation\IVectorApproximator.cs" />
     <Compile Include="numeric\approximation\neural\INeuralModel.cs" />
@@ -292,7 +295,6 @@
     <Folder Include="0guests\Robert\" />
     <Folder Include="0guests\Umut\" />
     <Folder Include="data\datastructures\" />
-    <Folder Include="numeric\approximation\neural\testneural\" />
     <Folder Include="optimization\responseeval\" />
   </ItemGroup>
   <ItemGroup>

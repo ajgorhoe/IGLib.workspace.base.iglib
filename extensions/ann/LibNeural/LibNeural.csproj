@@ -44,15 +44,12 @@
     <Compile Include="application\NeuralApplicationCommands.cs" />
     <Compile Include="application\NeuralApplicationInterpreter.cs" />
     <Compile Include="NeuralApproximators\NeuralApproximatorAforge.cs" />
-    <Compile Include="neural_data\NeuralMapData.cs" />
     <Compile Include="neural_data\SerializationDtoNeuralApproximator.cs" />
     <Compile Include="neural_server\NeuralAnalysisFileServer.cs" />
     <Compile Include="neural_tadej\Func2dFromApproximator.cs" />
     <Compile Include="neural_tadej\NeuralApplicationTadej.cs" />
     <Compile Include="neural_tadej\NeuralTadej.cs" />
     <Compile Include="neural_data\NeuralTrainingData.cs" />
-    <Compile Include="neural_server\NeuralFileConst.cs" />
-    <Compile Include="neural_server\NeuralFileManager.cs" />
     <Compile Include="neural_server\NeuralFileServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
