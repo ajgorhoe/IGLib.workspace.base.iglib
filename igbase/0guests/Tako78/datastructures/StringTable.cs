@@ -11,6 +11,28 @@ using IG.Num;
 namespace IG.Lib
 {
 
+
+    /// <summary>Memory representation of CSV data.</summary>
+    /// <remarks>Currently, this is just an exact copy of the <see cref="StringTable"/> class.
+    /// <para>Data access operations are thread safe.</para></remarks>
+    /// $A Igor xx;
+    public class CsvData : StringTable, ILockable
+    {
+        
+        /// <summary>Constructs a new string table, a data structure compatible with CSV file format.</summary>
+        /// <param name="readOnly">Whether the created object is read only or not.</param>
+        public CsvData(bool readOnly): this()
+        {
+            this.IsReadOnly = readOnly;
+        }
+
+       /// <summary>Constructs a new string table, a data structure compatible with CSV file format.</summary>
+        public CsvData()
+        {
+        }
+
+    }
+
     /// <summary>2D tables of data represented by strings. Maps to CSV files.</summary>
     /// <remarks>Data access operations are thread safe.</remarks>
     /// $A Igor xx;

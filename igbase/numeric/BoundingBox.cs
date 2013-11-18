@@ -265,6 +265,18 @@ namespace IG.Num
         /// <para>Elements for which either upper or lower bounds are not defined are set to 0.</para></summary>
         /// <param name="intervals">Reference to a vector object where interval lengths are stored.</param>
         void GetIntervalLengths(ref IVector intervals);
+        
+        /// <summary>Calculates relative coordinates, with respect to the current bounding box, that
+        /// correspond to the specified absolute (or physical or actual) coordinates.</summary>
+        /// <param name="absoluteCoordinates">Vector of absolute coordinates.</param>
+        /// <param name="relativeCoordinates">Vector where corresponding relative coordinates are stored.</param>
+        void GetRelativeCoordinates(IVector absoluteCoordinates, ref IVector relativeCoordinates);
+        
+        /// <summary>Calculates absolute (physical) coordinates, with respect to the current bounding box, that
+        /// correspond to the specified relative coordinates.</summary>
+        /// <param name="absoluteCoordinates">Vector of relative coordinates.</param>
+        /// <param name="relativeCoordinates">Vector where corresponding absolute coordinates are stored.</param>
+        void GetAbsoluteCoordinates(IVector relativeCoordinates, ref IVector absoluteCoordinates);
 
         /// <summary>Returns true if maximum value is defined for the specified component, false otherwise.</summary>
         /// <param name="componentIndex">Index of component that is queried.</param>
@@ -1102,6 +1114,77 @@ namespace IG.Num
                 else
                     intervals[i] = 0;  // lower bound on component not defined
             }
+        }
+
+
+        /// <summary>Calculates relative coordinates, with respect to the current bounding box, that
+        /// correspond to the specified absolute (or physical or actual) coordinates.</summary>
+        /// <param name="absoluteCoordinates">Vector of absolute coordinates.</param>
+        /// <param name="relativeCoordinates">Vector where corresponding relative coordinates are stored.</param>
+        public void GetRelativeCoordinates(IVector absoluteCoordinates, ref IVector relativeCoordinates)
+        {
+            int dimension = this.Dimension;
+            if (absoluteCoordinates == null)
+                throw new ArgumentException("Vector of absolute coordinates is not specified (null reference).");
+            else if (absoluteCoordinates.Length != dimension)
+                throw new ArgumentException("Vector of absolute coordinates has wrong dimension " + absoluteCoordinates.Length
+                    + ", should be " + dimension);
+            bool resize = false;
+            if (relativeCoordinates == null)
+                resize = true;
+            else if (relativeCoordinates.Length != dimension)
+                resize = true;
+            if (resize)
+                Vector.Resize(ref relativeCoordinates, dimension);
+            for (int i = 0; i < dimension; ++i)
+            {
+                if (!IsMinDefined(i))
+                    throw new InvalidOperationException("Lower bound is not defined for component " + i + ".");
+                if (!IsMaxDefined(i))
+                    throw new InvalidOperationException("Uper bound is not defined for component " + i + ".");
+                double absoluteCoord = absoluteCoordinates[i];
+                double min = GetMin(i);
+                double max = GetMax(i);
+                if (max == min)
+                    throw new InvalidOperationException("Lower bound equals upper bound for componene " + i + ".");
+                relativeCoordinates[i] = (absoluteCoord - min) / (max - min);
+            }
+        }
+
+
+        /// <summary>Calculates absolute (physical) coordinates, with respect to the current bounding box, that
+        /// correspond to the specified relative coordinates.</summary>
+        /// <param name="absoluteCoordinates">Vector of relative coordinates.</param>
+        /// <param name="relativeCoordinates">Vector where corresponding absolute coordinates are stored.</param>
+        public void GetAbsoluteCoordinates(IVector relativeCoordinates, ref IVector absoluteCoordinates)
+        {
+            int dimension = this.Dimension;
+            if (relativeCoordinates == null)
+                throw new ArgumentException("Vector of relative coordinates is not specified (null reference).");
+            else if (relativeCoordinates.Length != dimension)
+                throw new ArgumentException("Vector of relative coordinates has wrong dimension " + relativeCoordinates.Length
+                    + ", should be " + dimension);
+            bool resize = false;
+            if (absoluteCoordinates == null)
+                resize = true;
+            else if (absoluteCoordinates.Length != dimension)
+                resize = true;
+            if (resize)
+                Vector.Resize(ref absoluteCoordinates, dimension);
+            for (int i = 0; i < dimension; ++i)
+            {
+                if (!IsMinDefined(i))
+                    throw new InvalidOperationException("Lower bound is not defined for component " + i + ".");
+                if (!IsMaxDefined(i))
+                    throw new InvalidOperationException("Uper bound is not defined for component " + i + ".");
+                double relativeCoord = relativeCoordinates[i];
+                double min = GetMin(i);
+                double max = GetMax(i);
+                if (max == min)
+                    throw new InvalidOperationException("Lower bound equals upper bound for componene " + i + ".");
+                absoluteCoordinates[i] = min + (relativeCoord * (max - min));
+            }
+            throw new NotImplementedException();
         }
 
         /// <summary>Returns true if maximum value is defined for the specified component, false otherwise.</summary>

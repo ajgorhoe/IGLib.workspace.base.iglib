@@ -666,7 +666,7 @@ namespace IG.Lib
         }  // ExampleCsv()
 
 
-    }  // clsss CSV
+    }  // class CSV
 
 
 
