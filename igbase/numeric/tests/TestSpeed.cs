@@ -718,12 +718,17 @@ namespace IG.Num
             Console.WriteLine(@"10. Eigen values as the block diagonal matrix");
             Console.WriteLine(evd.D().ToString("#0.00\t", formatProvider));
             Console.WriteLine();
-
+			
+			
+			// WARNING - TODO:
+			// Lines below are commented because of errors in MonoDevelop. 
+			// Uncomment when this is solved!
+			
             // 11. Multiply A * V
-            var av = matrix * evd.EigenVectors();
-            Console.WriteLine(@"11. Multiply A * V");
-            Console.WriteLine(av.ToString("#0.00\t", formatProvider));
-            Console.WriteLine();
+            //var av = matrix * evd.EigenVectors();
+            //Console.WriteLine(@"11. Multiply A * V");
+            //Console.WriteLine(av.ToString("#0.00\t", formatProvider));
+            //Console.WriteLine();
 
             // 12. Multiply V * D
             var vd = evd.EigenVectors() * evd.D();
