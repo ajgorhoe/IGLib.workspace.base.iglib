@@ -40,6 +40,10 @@
     </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MathNet.Numerics, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.JScript">
       <HintPath>..\bin\Microsoft.JScript.dll</HintPath>
     </Reference>
@@ -300,12 +304,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="interpreters\scriptloader\scripts\script_examples.cmd" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\external\MathNetNumerics_2_6_1\src\Numerics\Numerics_2_6_1.csproj">
-      <Project>{8A0B0FD4-2315-499B-B3C9-544A4686414D}</Project>
-      <Name>Numerics_2_6_1</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
