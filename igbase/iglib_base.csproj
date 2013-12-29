@@ -301,9 +301,9 @@
     <None Include="interpreters\scriptloader\scripts\script_examples.cmd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\external\MathNetNumerics\src\Numerics\Numerics.csproj">
-      <Project>{B7CAE5F4-A23F-4438-B5BE-41226618B695}</Project>
-      <Name>Numerics</Name>
+    <ProjectReference Include="..\external\MathNetNumerics_2_6_1\src\Numerics\Numerics_2_6_1.csproj">
+      <Project>{8A0B0FD4-2315-499B-B3C9-544A4686414D}</Project>
+      <Name>Numerics_2_6_1</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
