@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,9 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IG.Gr3d</RootNamespace>
     <AssemblyName>IGLibPlot3D</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -90,9 +88,6 @@
     <Compile Include="vtkbased\Forms\testforms\VtkExample\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="vtkbased\Forms\testforms\VtkExample\Form1.designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="vtkbased\Forms\testforms\VtkExample\Program.cs" />
     <Compile Include="vtkbased\Forms\VtkFormPlain.cs">
       <SubType>Form</SubType>
@@ -136,16 +131,11 @@
     <Compile Include="vtkbased\plots\VtkSurfacePlot.cs" />
     <Compile Include="vtkbased\VtkSurfacePlotBase.cs" />
     <Compile Include="vtkbased\VtkTests.cs" />
+    <Compile Include="vtkbased\Forms\testforms\VtkExample\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\external\MathNetNumerics_2_6_1\src\Numerics\Numerics_2_6_1.csproj">
-      <Project>{8A0B0FD4-2315-499B-B3C9-544A4686414D}</Project>
-      <Name>Numerics_2_6_1</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\external\MathNet\Iridium\Sources\Library\Iridium.csproj">
-      <Project>{26FC15DE-EFDA-403A-8284-1E2A4AE8A9D8}</Project>
-      <Name>Iridium</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\igbase\iglib_base.csproj">
       <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
       <Name>iglib_base</Name>
