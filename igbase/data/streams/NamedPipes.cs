@@ -22,12 +22,10 @@ namespace IG.Lib
     public abstract class NamedPipeServerClientBase : ILockable
     {
 
-
         /// <summary>Provides an answer string to the specified request string.</summary>
         /// <param name="request">Request string.</param>
         /// <returns>Answer to the request.</returns>
         public delegate string ResponseDelegate(string request);
-
 
 
 
@@ -297,7 +295,6 @@ namespace IG.Lib
             get { lock (Lock) { return _isError; } }
             protected set { _isError = true; }
         }
-
 
 
         protected internal string _requestString = null;
@@ -726,19 +723,64 @@ namespace IG.Lib
         { }
 
 
+        #region Data.General
+
+
+        private static string _defaultServerSddress = ".";
+
+        /// <summary>Default server address.
+        /// Setting to null sets it to "." (i.e. the local machine).</summary>
+        public static string DefaultServerAddress
+        {
+            get { lock (LockGlobal) { return _defaultServerSddress; } }
+            set
+            {
+                lock (LockGlobal)
+                {
+                    if (string.IsNullOrEmpty(value))
+                        _defaultServerSddress = ".";
+                    else
+                        _defaultServerSddress = value;
+                }
+            }
+        }
+
+        private string _serverAddress = DefaultServerAddress;
+
+        public string ServerAddress
+        {
+            get { lock (_lock) { return _serverAddress; } }
+            set
+            {
+                lock (_lock)
+                {
+                    if (string.IsNullOrEmpty(value))
+                        value=DefaultServerAddress;
+                    if (value != _serverAddress)
+                    {
+                        _serverAddress = value;
+                        ClosePipe();
+                    }
+                }
+            }
+        }
+
+
+        #endregion Data.General
+
         #region Data.Streams
 
-        private NamedPipeServerStream _serverPipe = null;
+        private NamedPipeClientStream _serverPipe = null;
 
         /// <summary>Named pipe used for communication by the server.</summary>
-        public NamedPipeServerStream Pipe
+        public NamedPipeClientStream Pipe
         {
             get
             {
                 lock (_lock)
                 {
                     if (_serverPipe == null)
-                        _serverPipe = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
+                        _serverPipe = new NamedPipeClientStream(ServerAddress, PipeName, PipeDirection.InOut);
                     return _serverPipe;
                 }
             }
@@ -845,7 +887,19 @@ namespace IG.Lib
 
         #endregion Data.Streams
 
+
+        #region  Operation
+
+
+
+
+        #endregion Operation
+
+
+
     } // class NamedPipeClientBase
+
+
 
 
 }
