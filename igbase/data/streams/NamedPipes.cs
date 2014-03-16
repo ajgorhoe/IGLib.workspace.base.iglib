@@ -18,12 +18,8 @@ namespace IG.Lib
 
 
 
-    
-
-    /// <summary>Server that creates a named pipe, listens on its input stream, and sends responses
-    /// to the client.</summary>
-    /// $A Igor Mar14;
-    public class NamedPipeServerBase : ILockable
+    /// <summary>Base class for named pipe serverrs and clients, contains common stuff for both.</summary>
+    public abstract class NamedPipeServerClientBase : ILockable
     {
 
 
@@ -33,31 +29,34 @@ namespace IG.Lib
         public delegate string ResponseDelegate(string request);
 
 
+
+
         #region Data.General
 
         private static object _lockGlobal = null;
 
         /// <summary>Static lock object used by all instances of this class (and possibly by other classes).</summary>
-        public static object LockGlobal { 
-            get {  
-                 if (_lockGlobal == null)
-                 {
-                     lock(Util.LockGlobal)
-                     {
-                         if (_lockGlobal == null)
-                             _lockGlobal = new object();
-                     }
-                 }
+        public static object LockGlobal
+        {
+            get
+            {
+                if (_lockGlobal == null)
+                {
+                    lock (Util.LockGlobal)
+                    {
+                        if (_lockGlobal == null)
+                            _lockGlobal = new object();
+                    }
+                }
                 return _lockGlobal;
-            } 
+            }
         }
 
-        
+
         protected object _lock = new object();
 
         /// <summary>Objectt for locking the current object.</summary>
         public object Lock { get { return _lock; } }
-
 
         private static int _defatultOutputLevel = 1;
 
@@ -81,13 +80,18 @@ namespace IG.Lib
 
         /// <summary>Default pipe name.</summary>
         public static string DefaultPipeName
-        { get { lock(LockGlobal) { return _defaultPipeName; } }
-          set { lock(LockGlobal) { 
-              if (string.IsNullOrEmpty(value))
-                  throw new NullReferenceException("Default pipe name can not be empty or null string.");
-              else
-                  _defaultPipeName = value;
-          } }
+        {
+            get { lock (LockGlobal) { return _defaultPipeName; } }
+            set
+            {
+                lock (LockGlobal)
+                {
+                    if (string.IsNullOrEmpty(value))
+                        throw new NullReferenceException("Default pipe name can not be empty or null string.");
+                    else
+                        _defaultPipeName = value;
+                }
+            }
         }
 
         private string _pipeName = DefaultPipeName;
@@ -104,7 +108,7 @@ namespace IG.Lib
                     if (value != _pipeName)
                     {
                         _pipeName = value;
-                        Pipe = null;
+                        ClosePipe();
                     }
                 }
             }
@@ -112,9 +116,48 @@ namespace IG.Lib
 
 
         #endregion Data.General
-        
 
-        #region Data.Operaton
+
+        #region Data.Streams
+
+
+        /// <summary>Closes the pipe and streams that depend on it.</summary>
+        public abstract void ClosePipe();
+        
+        /// <summary>Input stream of the server's named pipe.</summary>
+        public abstract StreamReader InputStream { get; protected set; }
+        
+        /// <summary>Output stream of the server's named pipe.</summary>
+        public abstract StreamWriter OutputStream { get; protected set; }
+
+        #endregion Data.Streams
+
+
+    }  // class NamedPipeServerClientBase
+    
+
+
+
+    /// <summary>Server that creates a named pipe, listens on its input stream, and sends responses
+    /// to the client.</summary>
+    /// $A Igor Mar14;
+    public class NamedPipeServerBase : NamedPipeServerClientBase, ILockable
+    {
+
+        private NamedPipeServerBase()
+            : base()
+        {  }
+
+
+        /// <summary>Constructs a new pip server.</summary>
+        /// <param name="pipeName">Name of the pipe used for client-server communication.</param>
+        public NamedPipeServerBase(string pipeName) : base()
+        {
+            this.PipeName = pipeName;
+        }
+
+
+        #region Data.Streams
 
         private NamedPipeServerStream _serverPipe=null;
 
@@ -151,7 +194,7 @@ namespace IG.Lib
         private StreamReader _inputStream = null;
 
         /// <summary>Input stream of the server's named pipe.</summary>
-        public StreamReader InputStream
+        public override StreamReader InputStream
         {
             get
             {
@@ -184,7 +227,7 @@ namespace IG.Lib
         private StreamWriter _outputStream = null;
 
         /// <summary>Output stream of the server's named pipe.</summary>
-        public StreamWriter OutputStream
+        public override StreamWriter OutputStream
         {
             get
             {
@@ -214,7 +257,7 @@ namespace IG.Lib
         }
 
         /// <summary>Closes the Server's pipe and the associated streams.</summary>
-        public void Close()
+        public override void ClosePipe()
         {
             Pipe = null;
         }
@@ -231,6 +274,10 @@ namespace IG.Lib
             OutputStream = null;
         }
 
+
+        #endregion Data.Streams
+
+        #region Data.Operaton
 
         protected internal bool _isResponseSent = false;
 
@@ -670,6 +717,135 @@ namespace IG.Lib
 
 
 
+    /// <summary>Client to the pipe server (classes derived from <see cref="NamedPipeServerBase"/>).</summary>
+    /// $A Igor Mar14;
+    public class NamedPipeClientBase : NamedPipeServerClientBase, ILockable
+    {
+
+        public NamedPipeClientBase() : base()
+        { }
+
+
+        #region Data.Streams
+
+        private NamedPipeServerStream _serverPipe = null;
+
+        /// <summary>Named pipe used for communication by the server.</summary>
+        public NamedPipeServerStream Pipe
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    if (_serverPipe == null)
+                        _serverPipe = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
+                    return _serverPipe;
+                }
+            }
+            protected set
+            {
+                lock (_lock)
+                {
+                    if (value != _serverPipe)
+                    {
+                        if (_serverPipe != null)
+                        {
+                            _serverPipe.Close();
+                        }
+                        InputStream = null;
+                        OutputStream = null;
+                        _serverPipe = value;
+                    }
+                }
+            }
+        }
+
+        private StreamReader _inputStream = null;
+
+        /// <summary>Input stream of the server's named pipe.</summary>
+        public override StreamReader InputStream
+        {
+            get
+            {
+                lock (Lock)
+                {
+                    if (_inputStream == null)
+                    {
+                        _inputStream = new StreamReader(Pipe);
+                    }
+                    return _inputStream;
+                }
+            }
+            protected set
+            {
+                lock (Lock)
+                {
+                    if (value != _inputStream)
+                    {
+                        if (_inputStream != null)
+                        {
+                            _inputStream.Close();
+                        }
+                        _inputStream = value;
+                    }
+                }
+            }
+        }
+
+
+        private StreamWriter _outputStream = null;
+
+        /// <summary>Output stream of the server's named pipe.</summary>
+        public override StreamWriter OutputStream
+        {
+            get
+            {
+                lock (Lock)
+                {
+                    if (_outputStream == null)
+                    {
+                        _outputStream = new StreamWriter(Pipe);
+                    }
+                    return _outputStream;
+                }
+            }
+            protected set
+            {
+                lock (Lock)
+                {
+                    if (value != _outputStream)
+                    {
+                        if (_outputStream != null)
+                        {
+                            _outputStream.Close();
+                        }
+                        _outputStream = value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>Closes the Server's pipe and the associated streams.</summary>
+        public override void ClosePipe()
+        {
+            Pipe = null;
+        }
+
+        /// <summary>Closes the inpt stream.</summary>
+        public void CloseInput()
+        {
+            InputStream = null;
+        }
+
+        /// <summary>Closes the outut stream.</summary>
+        public void CloseOutput()
+        {
+            OutputStream = null;
+        }
+
+        #endregion Data.Streams
+
+    } // class NamedPipeClientBase
 
 
 }
