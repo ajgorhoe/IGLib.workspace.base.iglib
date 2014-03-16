@@ -114,7 +114,7 @@ namespace IG.Lib
         #endregion Data.General
         
 
-#region Data.Operaton
+        #region Data.Operaton
 
         private NamedPipeServerStream _serverPipe=null;
 
@@ -232,15 +232,51 @@ namespace IG.Lib
         }
 
 
+        protected internal bool _isResponseSent = false;
+
+        /// <summary>Auxiliary flag telling whether response to a request has already been sent to the client.
+        /// Used for synchronization of diffeeent parts of the response generation process,
+        /// which enables e.g special handling of Exceptions.</summary>
+        public bool IsResponseSent
+        {
+            get { lock (Lock) { return _isResponseSent; } }
+            protected set { _isResponseSent = value; }
+        }
+
+        protected internal bool _isError = false;
+
+        public bool IsError
+        {
+            get { lock (Lock) { return _isError; } }
+            protected set { _isError = true; }
+        }
+
+
+
+        protected internal string _requestString = null;
+
+        /// <summary>The last request string that was read from the pipe.</summary>
+        public string RequestString
+        {
+            get { lock (_lock) { return _requestString; } }
+            protected set { lock (Lock) { _requestString = value; } }
+        }
+
+        protected internal string _responseString = null;
+
+        /// <summary>The last answer string that was written to the pipe.</summary>
+        public string ResponseString
+        {
+            get { lock (_lock) { return _responseString; } }
+            protected set { lock (Lock) { _responseString = value; } }
+        }
 
 
         private bool _stopServe = false;
 
         /// <summary>Whether the pipe should be closed.</summary>
         public bool StopServe
-        { get { lock(_lock) { return _stopServe; } }  protected set { lock(_lock) { _stopServe = value; } }  }
-
-
+        { get { lock (_lock) { return _stopServe; } } protected set { lock (_lock) { _stopServe = value; } } }
 
 
         private static string _defaultStopRequest = "stop";
@@ -256,7 +292,7 @@ namespace IG.Lib
                     //if (string.IsNullOrEmpty(value))
                     //    throw new NullReferenceException("Default stop request can not be empty or null string.");
                     //else
-                        _defaultStopRequest = value;
+                    _defaultStopRequest = value;
                 }
             }
         }
@@ -264,6 +300,7 @@ namespace IG.Lib
 
         private string _stopRequest = DefaultStopRequest;
 
+        /// <summary>Request the causes the server stop listening and closing the pipe.</summary>
         public string StopRequest
         {
             get { lock (Lock) { return _stopRequest; } }
@@ -271,10 +308,9 @@ namespace IG.Lib
         }
 
 
-
         private static string _defaultGenericResponse = "IGLib_PipeServer_GenericResponse";
 
-        /// <summary>Default generic answer (sent in absence of a true answer to the request).</summary>
+        /// <summary>Default generic response (sent in absence of any other method to generate the request).</summary>
         public static string DefaultGenericResponse
         {
             get { lock (LockGlobal) { return _defaultGenericResponse; } }
@@ -282,34 +318,191 @@ namespace IG.Lib
             {
                 lock (LockGlobal)
                 {
-                    if (string.IsNullOrEmpty(value))
-                        throw new NullReferenceException("Default generic response can not be empty or null string.");
-                    else
-                        _defaultGenericResponse = value;
-                }
-            }
-        }
-
-        private string _genericAnswer = DefaultGenericResponse;
-
-        public string GenericResponse
-        {
-            get { lock (_lock) { return _genericAnswer; } }
-            set
-            {
-                lock (_lock)
-                {
-                    if (string.IsNullOrEmpty(value))
-                        throw new NullReferenceException("Pipe name can not be an empty or null string.");
-                    if (value != _genericAnswer)
+                    if (value != _defaultErrorResponse)
                     {
-                        _genericAnswer = value;
-                        Pipe = null;
+                        if (string.IsNullOrEmpty(value))
+                            throw new NullReferenceException("Default generic response of pipe server can not be empty or null string.");
+                        else
+                        {
+                            if (DefaultOutputLevel >= 1)
+                                Console.WriteLine(Environment.NewLine + "Warning: default generic response of pipe servers changed: "
+                                    + Environment.NewLine + "  from " + _defaultGenericResponse + " to " + value + ".");
+                            _defaultGenericResponse = value;
+                        }
                     }
                 }
             }
         }
 
+        private string _genericResponse = DefaultGenericResponse;
+
+        /// <summary>Generic response that is sent back to the client in abscence of any
+        /// method generating responses to specific requests.</summary>
+        public string GenericResponse
+        {
+            get { lock (_lock) { return _genericResponse; } }
+            protected set
+            {
+                lock (_lock)
+                {
+                    if (value != _genericResponse)
+                    {
+                        if (string.IsNullOrEmpty(value))
+                            throw new NullReferenceException("Pipe server's generic response can not be an empty or null string.");
+                        _genericResponse = value;
+                    }
+                }
+            }
+        }
+
+
+        private static string _defaultStoppedResponse = "IGLib_PipeServer_StoppedResponse";
+
+        /// <summary>Default stopped response (sent after the srver has sttopped on request).</summary>
+        public static string DefaultStoppedResponse
+        {
+            get { lock (LockGlobal) { return _defaultStoppedResponse; } }
+            set
+            {
+                lock (LockGlobal)
+                {
+                    if (value != _defaultErrorResponse)
+                    {
+                        if (string.IsNullOrEmpty(value))
+                            throw new NullReferenceException("Default generic response of pipe server can not be empty or null string.");
+                        else
+                        {
+                            if (DefaultOutputLevel >= 1)
+                                Console.WriteLine(Environment.NewLine + "Warning: default stopped response of pipe servers changed: "
+                                    + Environment.NewLine + "  from " + _defaultStoppedResponse + " to " + value + ".");
+                            _defaultStoppedResponse = value;
+                        }
+                    }
+                }
+            }
+        }
+
+        private string _stoppedResponse = DefaultStoppedResponse;
+
+        /// <summary>Stopped response that is sent back to the client after the server stops on its
+        /// request.</summary>
+        public string StoppedResponse
+        {
+            get { lock (_lock) { return _stoppedResponse; } }
+            protected set
+            {
+                lock (_lock)
+                {
+                    if (value != _stoppedResponse)
+                    {
+                        if (string.IsNullOrEmpty(value))
+                            throw new NullReferenceException("Pipe server's stopped response can not be an empty or null string.");
+                        _stoppedResponse = value;
+                    }
+                }
+            }
+        }
+
+
+        private static string _defaultErrorResponse = "IGLib_PipeServer_ErrorResponse";
+
+        /// <summary>Default error response (sent as response when exception is thrown in the process of 
+        /// response generation).</summary>
+        public static string DefaultErrorResponse
+        {
+            get { lock (LockGlobal) { return _defaultErrorResponse; } }
+            protected set
+            {
+                lock (LockGlobal)
+                {
+                    if (value != _defaultErrorResponse)
+                    {
+                        if (string.IsNullOrEmpty(value))
+                            throw new NullReferenceException("Pipe servers' default error response can not be empty or null string.");
+                        else
+                        {
+                            if (DefaultOutputLevel > 0)
+                                Console.WriteLine(Environment.NewLine + "Default error response of pipe servers has changed: "
+                                    + Environment.NewLine + "  from " + _defaultErrorResponse + " to " + value + ".");
+                            _defaultErrorResponse = value;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        private string _errorResponse = DefaultErrorResponse;
+
+        /// <summary>Response that is sent to the client in case of exception.</summary>
+        public string ErrorResponse
+        {
+            get { lock (_lock) { return _errorResponse; } }
+            protected set
+            {
+                lock (_lock)
+                {
+                    if (value != _errorResponse)
+                    {
+                        if (string.IsNullOrEmpty(value))
+                            throw new NullReferenceException("Pipe server's error response can not be an empty or null string.");
+                        _errorResponse = value;
+                    }
+                }
+            }
+        }
+
+        #endregion Data.Operaton
+
+
+
+        #region Data.SavedState
+
+
+        protected internal Exception _lastException = null;
+
+        /// <summary>Returns the last exception thrown when serving request.</summary>
+        public Exception LastException
+        {
+            get { lock (Lock) { return _lastException; } }
+            protected set { lock (Lock) { _lastException = value; } }
+        }
+
+
+        protected internal string _lastErrorMessage = null;
+
+        /// <summary>Returns the last error message.</summary>
+        public string LastErrorMessage
+        {
+            get { lock (Lock) { return _lastErrorMessage; } }
+            protected set { lock (Lock) { _lastErrorMessage = value; } }
+        }
+
+
+        protected internal string _lastRequestString = null;
+
+        /// <summary>Returns the last request string.</summary>
+        public string LastRequestString
+        {
+            get { lock (Lock) { return _lastRequestString; } }
+            protected set { lock (Lock) { _lastRequestString = value; } }
+        }
+
+
+        protected internal string _lastResponseString = null;
+
+        /// <summary>Returns the last response string.</summary>
+        public string LastResponseString
+        {
+            get { lock (Lock) { return _lastResponseString; } }
+            protected set { lock (Lock) { _lastResponseString = value; } }
+        }
+
+        #endregion Data.SavedState
+
+
+        #region Operation.ResponseDefinition
+        
 
         /// <summary>The deefault method that returns response to the specified request.
         /// <para>Just returns a string that tells which was the request string.</para></summary>
@@ -325,7 +518,7 @@ namespace IG.Lib
         /// <summary>Delegate that calculates response to given request.</summary>
         public ResponseDelegate ResponseMethod
         {
-            get { lock (Lock) { return _responseMethod } }
+            get { lock (Lock) { return _responseMethod; } }
             set { lock (Lock) { _responseMethod = value; } }
         }
 
@@ -345,37 +538,56 @@ namespace IG.Lib
             }
         }
 
-
-        public string _requestString = null;
-
-        /// <summary>The last request string that was read from the pipe.</summary>
-        public string RequestString
+        /// <summary>Returns error message corresponding to the specified exception.</summary>
+        /// <param name="ex"></param>
+        protected virtual string GetErrorMessage(Exception ex)
         {
-            get { lock (_lock) { return _requestString; } }
-            protected set { lock (Lock) { _requestString = value; } }
+            if (ex == null)
+                return "ERROR. Cause unknown.";
+            else
+                return "ERROR - " + ex.GetType() + ": " + ex.Message;
         }
 
-        public string _responseString = null;
+        #endregion Operation.ResponseDefinition
 
-        /// <summary>The last answer string that was written to the pipe.</summary>
-        public string ResponseString
-        {
-            get { lock (_lock) { return _responseString; } }
-            protected set { lock (Lock) { _responseString = value; } }
-        }
 
+        #region Operation
 
         /// <summary>Reads the next request from the pipe.</summary>
         public virtual void ReadRequest()
         {
             lock (Lock)
             {
-                RequestString = InputStream.ReadLine();
+                _requestString = InputStream.ReadLine();
+                _lastRequestString = _requestString;
+                _isResponseSent = false;
+                _responseString = null;
+                _isError = false;
+                _lastException = null;
+                _lastErrorMessage = null;
             }
         }
 
+        /// <summary>Sends the specified response string back to the server.</summary>
+        /// <param name="responseString"></param>
+        public virtual void SendResponse(string responseString)
+        {
+            lock (Lock)
+            {
+                OutputStream.WriteLine(responseString);
+                _isResponseSent = true;
+                _lastResponseString = responseString;
+            }
+        }
+
+        /// <summary>Sends the response (i.e., the <see cref="ResponseString"/>) back to the client.</summary>
+        public virtual void SendResponse()
+        {
+            SendResponse(this._responseString);
+        }
+
         /// <summary>Gets answer to the request and writes it to the pipe.</summary>
-        public virtual void AnswerRequest()
+        public virtual void RespondToRequest()
         {
             lock (Lock)
             {
@@ -390,23 +602,33 @@ namespace IG.Lib
                 {
                     Console.WriteLine("Response: \"" + ResponseString + "\"");
                 }
-                OutputStream.WriteLine(ResponseString);
-                if (!string.IsNullOrEmpty(StopRequest) && !string.IsNullOrEmpty(RequestString))
+
+                if (!string.IsNullOrEmpty(RequestString))
                 {
-                    if (StopRequest.ToLower() == RequestString.ToLower())
+                    // Verify special requests with pre-defined meaning, such as stop server request:
+                    if (StopRequest == RequestString)
                     {
                         StopServe = true;
+                        SendResponse(StoppedResponse);
                         if (OutputLevel >= 1)
                         {
-                            Console.WriteLine("Stop request sent, server is stopping."
-                                + Environment.NewLine);
+                            Console.WriteLine(Environment.NewLine + "Stop request sent, server is stopping." + Environment.NewLine
+                                + "  Request sting: " + RequestString);
                         }
                     }
                 }
+                if (!_isResponseSent)
+                {
+                    SendResponse();
+                }
+
             }
         }
 
 
+        /// <summary>Enters the serving loop.
+        /// <remarks>Within the loop, only <see cref="ReadRequest"/>() and <see cref="RespondToRequest"/>()
+        /// are executed. The latter must handle things like stopping requests.</remarks></summary>
         public virtual void Serve()
         {
             StopServe = false;
@@ -414,19 +636,39 @@ namespace IG.Lib
             {
                 lock (_lock)
                 {
-                    ReadRequest();
-                    AnswerRequest();
+                    try
+                    {
+                        ReadRequest();
+                        RespondToRequest();
+                    }
+                    catch (Exception ex)
+                    {
+                        _isError = true;
+                        _lastException = ex;
+                        _lastErrorMessage = GetErrorMessage(ex);
+                        if (!_isResponseSent)
+                            SendResponse(ErrorResponse);
+                    }
                 }
             }
+            // After the server stops listneing, reset its state:
+            IsResponseSent = false;
+            IsError = false;
+            RequestString = null;
+            ResponseString = null;
+            LastRequestString = null;
+            LastResponseString = null;
+            LastException = null;
+            LastErrorMessage = null;
         }
 
-        #endregion Data.Operation
 
-
-
+        #endregion Operation
 
 
     } // classs NamedPipeServerBase 
+
+
 
 
 
