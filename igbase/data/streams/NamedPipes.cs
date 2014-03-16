@@ -18,9 +18,11 @@ namespace IG.Lib
 
 
 
-    /// <summary>Base class for named pipe serverrs and clients, contains common stuff for both.</summary>
+    /// <summary>Base class for named pipe servers and clients, contains common stuff for both.</summary>
     public abstract class NamedPipeServerClientBase : ILockable
     {
+
+        // TODO: implement destructors and Close()! - if possible, do it simply on the base class.
 
         /// <summary>Provides an answer string to the specified request string.</summary>
         /// <param name="request">Request string.</param>
@@ -128,165 +130,16 @@ namespace IG.Lib
         /// <summary>Output stream of the server's named pipe.</summary>
         public abstract StreamWriter OutputStream { get; protected set; }
 
-        #endregion Data.Streams
-
-
-    }  // class NamedPipeServerClientBase
-    
-
-
-
-    /// <summary>Server that creates a named pipe, listens on its input stream, and sends responses
-    /// to the client.</summary>
-    /// $A Igor Mar14;
-    public class NamedPipeServerBase : NamedPipeServerClientBase, ILockable
-    {
-
-        private NamedPipeServerBase()
-            : base()
-        {  }
-
-
-        /// <summary>Constructs a new pip server.</summary>
-        /// <param name="pipeName">Name of the pipe used for client-server communication.</param>
-        public NamedPipeServerBase(string pipeName) : base()
-        {
-            this.PipeName = pipeName;
-        }
-
-
-        #region Data.Streams
-
-        private NamedPipeServerStream _serverPipe=null;
-
-        /// <summary>Named pipe used for communication by the server.</summary>
-        public NamedPipeServerStream Pipe
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    if (_serverPipe == null)
-                        _serverPipe = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
-                    return _serverPipe;
-                }
-            }
-            protected set
-            {
-                lock (_lock)
-                {
-                    if (value != _serverPipe)
-                    {
-                        if (_serverPipe != null)
-                        {
-                            _serverPipe.Close();
-                        }
-                        InputStream = null;
-                        OutputStream = null;
-                        _serverPipe = value;
-                    }
-                }
-            }
-        }
-
-        private StreamReader _inputStream = null;
-
-        /// <summary>Input stream of the server's named pipe.</summary>
-        public override StreamReader InputStream
-        {
-            get
-            {
-                lock (Lock)
-                {
-                    if (_inputStream == null)
-                    {
-                        _inputStream = new StreamReader(Pipe);
-                    }
-                    return _inputStream;
-                }
-            }
-            protected set
-            {
-                lock (Lock)
-                {
-                    if (value != _inputStream)
-                    {
-                        if (_inputStream != null)
-                        {
-                            _inputStream.Close();
-                        }
-                        _inputStream = value;
-                    }
-                }
-            }
-        }
-
-
-        private StreamWriter _outputStream = null;
-
-        /// <summary>Output stream of the server's named pipe.</summary>
-        public override StreamWriter OutputStream
-        {
-            get
-            {
-                lock (Lock)
-                {
-                    if (_outputStream == null)
-                    {
-                        _outputStream = new StreamWriter(Pipe);
-                    }
-                    return _outputStream;
-                }
-            }
-            protected set
-            {
-                lock (Lock)
-                {
-                    if (value != _outputStream)
-                    {
-                        if (_outputStream != null)
-                        {
-                            _outputStream.Close();
-                        }
-                        _outputStream = value;
-                    }
-                }
-            }
-        }
-
-        /// <summary>Closes the Server's pipe and the associated streams.</summary>
-        public override void ClosePipe()
-        {
-            Pipe = null;
-        }
-
         /// <summary>Closes the inpt stream.</summary>
-        public void CloseInput()
-        {
-            InputStream = null;
-        }
-
+        public abstract void CloseInput();
+        
         /// <summary>Closes the outut stream.</summary>
-        public void CloseOutput()
-        {
-            OutputStream = null;
-        }
-
+        public abstract void CloseOutput();
 
         #endregion Data.Streams
 
-        #region Data.Operaton
 
-        protected internal bool _isResponseSent = false;
-
-        /// <summary>Auxiliary flag telling whether response to a request has already been sent to the client.
-        /// Used for synchronization of diffeeent parts of the response generation process,
-        /// which enables e.g special handling of Exceptions.</summary>
-        public bool IsResponseSent
-        {
-            get { lock (Lock) { return _isResponseSent; } }
-            protected set { _isResponseSent = value; }
-        }
+        #region Data.Operation
 
         protected internal bool _isError = false;
 
@@ -295,7 +148,6 @@ namespace IG.Lib
             get { lock (Lock) { return _isError; } }
             protected set { _isError = true; }
         }
-
 
         protected internal string _requestString = null;
 
@@ -314,13 +166,6 @@ namespace IG.Lib
             get { lock (_lock) { return _responseString; } }
             protected set { lock (Lock) { _responseString = value; } }
         }
-
-
-        private bool _stopServe = false;
-
-        /// <summary>Whether the pipe should be closed.</summary>
-        public bool StopServe
-        { get { lock (_lock) { return _stopServe; } } protected set { lock (_lock) { _stopServe = value; } } }
 
 
         private static string _defaultStopRequest = "stop";
@@ -496,8 +341,13 @@ namespace IG.Lib
             }
         }
 
-        #endregion Data.Operaton
+ 
+ 
+        /// <summary>Clears all the data related to servig requests (i.e. request and response strings, error flags, exceptions, etc.).</summary>
+        public abstract void ClearData();
+        
 
+        #endregion Data.Operation
 
 
         #region Data.SavedState
@@ -545,6 +395,176 @@ namespace IG.Lib
         #endregion Data.SavedState
 
 
+
+    }  // class NamedPipeServerClientBase
+    
+
+
+
+
+    /// <summary>Server that creates a named pipe, listens on its input stream, and sends responses
+    /// to the client.</summary>
+    /// $A Igor Mar14;
+    public class NamedPipeServerBase : NamedPipeServerClientBase, ILockable
+    {
+
+        private NamedPipeServerBase()
+            : base()
+        {  }
+
+
+        /// <summary>Constructs a new pip server.</summary>
+        /// <param name="pipeName">Name of the pipe used for client-server communication.</param>
+        public NamedPipeServerBase(string pipeName) : base()
+        {
+            this.PipeName = pipeName;
+        }
+
+
+        #region Data.Streams
+
+        private NamedPipeServerStream _serverPipe=null;
+
+        /// <summary>Named pipe used for communication by the server.</summary>
+        public NamedPipeServerStream Pipe
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    if (_serverPipe == null)
+                        _serverPipe = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
+                    return _serverPipe;
+                }
+            }
+            protected set
+            {
+                lock (_lock)
+                {
+                    if (value != _serverPipe)
+                    {
+                        if (_serverPipe != null)
+                        {
+                            _serverPipe.Close();
+                        }
+                        InputStream = null;
+                        OutputStream = null;
+                        _serverPipe = value;
+                    }
+                }
+            }
+        }
+
+        private StreamReader _inputStream = null;
+
+        /// <summary>Input stream of the server's named pipe.</summary>
+        public override StreamReader InputStream
+        {
+            get
+            {
+                lock (Lock)
+                {
+                    if (_inputStream == null)
+                    {
+                        _inputStream = new StreamReader(Pipe);
+                    }
+                    return _inputStream;
+                }
+            }
+            protected set
+            {
+                lock (Lock)
+                {
+                    if (value != _inputStream)
+                    {
+                        if (_inputStream != null)
+                        {
+                            _inputStream.Close();
+                        }
+                        _inputStream = value;
+                    }
+                }
+            }
+        }
+
+
+        private StreamWriter _outputStream = null;
+
+        /// <summary>Output stream of the server's named pipe.</summary>
+        public override StreamWriter OutputStream
+        {
+            get
+            {
+                lock (Lock)
+                {
+                    if (_outputStream == null)
+                    {
+                        _outputStream = new StreamWriter(Pipe);
+                    }
+                    return _outputStream;
+                }
+            }
+            protected set
+            {
+                lock (Lock)
+                {
+                    if (value != _outputStream)
+                    {
+                        if (_outputStream != null)
+                        {
+                            _outputStream.Close();
+                        }
+                        _outputStream = value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>Closes the Server's pipe and the associated streams.</summary>
+        public override void ClosePipe()
+        {
+            Pipe = null;
+        }
+
+        /// <summary>Closes the inpt stream.</summary>
+        public override void CloseInput()
+        {
+            InputStream = null;
+        }
+
+        /// <summary>Closes the outut stream.</summary>
+        public override void CloseOutput()
+        {
+            OutputStream = null;
+        }
+
+
+        #endregion Data.Streams
+
+        #region Data.Operaton
+
+        protected internal bool _isResponseSent = false;
+
+        /// <summary>Auxiliary flag telling whether response to a request has already been sent to the client.
+        /// Used for synchronization of diffeeent parts of the response generation process,
+        /// which enables e.g special handling of Exceptions.</summary>
+        public bool IsResponseSent
+        {
+            get { lock (Lock) { return _isResponseSent; } }
+            protected set { _isResponseSent = value; }
+        }
+
+
+        private bool _stopServe = false;
+
+        /// <summary>Whether the pipe should be closed.</summary>
+        public bool StopServe
+        { get { lock (_lock) { return _stopServe; } } protected set { lock (_lock) { _stopServe = value; } } }
+
+        #endregion Data.Operaton
+
+
+
         #region Operation.ResponseDefinition
         
 
@@ -589,7 +609,7 @@ namespace IG.Lib
             if (ex == null)
                 return "ERROR. Cause unknown.";
             else
-                return "ERROR - " + ex.GetType() + ": " + ex.Message;
+                return "ERROR - " + ex.GetType().Name + ": " + ex.Message;
         }
 
         #endregion Operation.ResponseDefinition
@@ -598,7 +618,7 @@ namespace IG.Lib
         #region Operation
 
         /// <summary>Reads the next request from the pipe.</summary>
-        public virtual void ReadRequest()
+        protected virtual void ReadRequest()
         {
             lock (Lock)
             {
@@ -614,7 +634,7 @@ namespace IG.Lib
 
         /// <summary>Sends the specified response string back to the server.</summary>
         /// <param name="responseString"></param>
-        public virtual void SendResponse(string responseString)
+        protected virtual void SendResponse(string responseString)
         {
             lock (Lock)
             {
@@ -625,12 +645,12 @@ namespace IG.Lib
         }
 
         /// <summary>Sends the response (i.e., the <see cref="ResponseString"/>) back to the client.</summary>
-        public virtual void SendResponse()
+        protected virtual void SendResponse()
         {
-            SendResponse(this._responseString);
+            SendResponse(this.ResponseString);
         }
 
-        /// <summary>Gets answer to the request and writes it to the pipe.</summary>
+        /// <summary>Reads a single request from the client and sends back the response.</summary>
         public virtual void RespondToRequest()
         {
             lock (Lock)
@@ -640,11 +660,6 @@ namespace IG.Lib
                 {
                     Console.WriteLine(Environment.NewLine +
                         "Request: \"" + RequestString + "\"");
-                }
-                ResponseString = GetResponse(RequestString);
-                if (OutputLevel >= 2)
-                {
-                    Console.WriteLine("Response: \"" + ResponseString + "\"");
                 }
 
                 if (!string.IsNullOrEmpty(RequestString))
@@ -663,6 +678,12 @@ namespace IG.Lib
                 }
                 if (!_isResponseSent)
                 {
+                    // Calculate a normal response and send it back to the client:
+                    ResponseString = GetResponse(RequestString);
+                    if (OutputLevel >= 2)
+                    {
+                        Console.WriteLine("Response: \"" + ResponseString + "\"");
+                    }
                     SendResponse();
                 }
 
@@ -682,7 +703,6 @@ namespace IG.Lib
                 {
                     try
                     {
-                        ReadRequest();
                         RespondToRequest();
                     }
                     catch (Exception ex)
@@ -696,21 +716,34 @@ namespace IG.Lib
                 }
             }
             // After the server stops listneing, reset its state:
-            IsResponseSent = false;
-            IsError = false;
-            RequestString = null;
-            ResponseString = null;
-            LastRequestString = null;
-            LastResponseString = null;
-            LastException = null;
-            LastErrorMessage = null;
+            ClearData();
         }
 
+
+        /// <summary>Clears all the data related to servig requests (i.e. request and response strings, error flags, exceptions, etc.).</summary>
+        public override void ClearData()
+        {
+            lock (Lock)
+            {
+                IsResponseSent = false;
+                IsError = false;
+                RequestString = null;
+                ResponseString = null;
+                LastRequestString = null;
+                LastResponseString = null;
+                LastException = null;
+                LastErrorMessage = null;
+            }
+        }
 
         #endregion Operation
 
 
     } // classs NamedPipeServerBase 
+
+
+
+
 
 
 
@@ -747,6 +780,8 @@ namespace IG.Lib
 
         private string _serverAddress = DefaultServerAddress;
 
+        /// <summary>Server address.
+        /// <para>Setting to null sets it to <see cref="DefaultServerAddress"/>.</para></summary>
         public string ServerAddress
         {
             get { lock (_lock) { return _serverAddress; } }
@@ -767,6 +802,7 @@ namespace IG.Lib
 
 
         #endregion Data.General
+
 
         #region Data.Streams
 
@@ -874,24 +910,179 @@ namespace IG.Lib
         }
 
         /// <summary>Closes the inpt stream.</summary>
-        public void CloseInput()
+        public override void CloseInput()
         {
             InputStream = null;
         }
 
         /// <summary>Closes the outut stream.</summary>
-        public void CloseOutput()
+        public override void CloseOutput()
         {
             OutputStream = null;
         }
 
         #endregion Data.Streams
 
+        #region Data.Operation 
+
+        
+        protected internal bool _isResponseReceived = false;
+
+        /// <summary>Auxiliary flag telling whether response to a request has already been received from the server.
+        /// Used for synchronization of diffeeent parts of the request sending process,
+        /// which enables e.g special handling of Exceptions.</summary>
+        public bool IsResponseReceived
+        {
+            get { lock (Lock) { return _isResponseReceived; } }
+            protected set { _isResponseReceived = value; }
+        }
+
+
+
+        #endregion Data.Operation
+
 
         #region  Operation
 
 
+        /// <summary>Returns error message corresponding to the specified exception.</summary>
+        /// <param name="ex"></param>
+        protected virtual string GetErrorMessage(Exception ex)
+        {
+            if (ex == null)
+                return "ERROR. Cause unknown.";
+            else
+                return "Client ERROR " + ex.GetType().Name + ": " + ex.Message;
+        }
 
+
+        /// <summary>Send specified request to server through a named pipe.</summary>
+        /// <param name="requestString">Request string.</param>
+        protected virtual void SendRequest(string requestString)
+        {
+            lock (Lock)
+            {
+                try
+                {
+                    if (OutputLevel >= 2)
+                    {
+                        Console.Write(Environment.NewLine + "Sending request: \"" + requestString + "\"...");
+                    }
+                    OutputStream.WriteLine(requestString);
+                    _requestString = requestString;
+                    _responseString = null;
+                    _isResponseReceived = false;
+                    _isError = false;
+                    _lastErrorMessage = null;
+                    _lastException = null;
+                }
+                catch (Exception ex)
+                {
+                    _isError = true;
+                    _lastException = ex;
+                    _lastErrorMessage = GetErrorMessage(ex);
+                }
+            }
+        }
+
+
+        /// <summary>Sends the current request string (the <see cref="RequestString"/> property) to the 
+        /// server through a named pipe.</summary>
+        protected virtual void SentRequest()
+        {
+            SendRequest(this.RequestString);
+        }
+
+
+        /// <summary>Reads response from the server and stores it.</summary>
+        protected virtual string ReadResponse()
+        {
+            lock (Lock)
+            {
+                try
+                {
+                    if (!_isError)
+                    {
+                        _responseString = InputStream.ReadLine();
+                    }
+                    if (!string.IsNullOrEmpty(_responseString))
+                    {
+                        // Check whether response string indicates an eror:
+                        if (_responseString == ErrorResponse)
+                        {
+                            // Error occurred on the server:
+                            _isError = true;
+                            _lastException = null;
+                            _lastErrorMessage = _responseString;
+                        }
+                    }
+                    if (!_isError)
+                    {
+                        _isResponseReceived = true;
+                        _lastException = null;
+                        _lastErrorMessage = null;
+                    }
+                    _lastRequestString = _requestString;
+                    _lastResponseString = _responseString;
+                    if (_isError)
+                    {
+                        if (OutputLevel >= 1)
+                        {
+                            Console.WriteLine(Environment.NewLine + "Error occurred: " 
+                                + Environment.NewLine + "  " + _lastErrorMessage + Environment.NewLine);
+                        }
+                    }
+                    else
+                    {
+                        if (OutputLevel >= 2)
+                        {
+                            Console.WriteLine(Environment.NewLine + "  Response: \"" + _responseString + "\"." + Environment.NewLine);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _isError = true;
+                    _lastException = ex;
+                    _lastErrorMessage = GetErrorMessage(ex);
+                }
+                return _responseString;
+            }
+        }
+
+
+        /// <summary>Sends a request to the server and returns its response.
+        /// <para>Synchronous.</para></summary>
+        /// <param name="requestString">Request string that is sent to the server.</param>
+        /// <returns>Server's response, which can also be the error string in the case that serving the request has thrown exception.</returns>
+        public string GetServerResponse(string requestString)
+        {
+            lock (Lock)
+            {
+
+
+            }
+
+            throw new NotImplementedException();
+            
+        }
+
+
+        /// <summary>Clears all the data related to servig requests (i.e. request and response strings, error flags, exceptions, etc.).</summary>
+        public override void ClearData()
+        {
+            lock (Lock)
+            {
+                // IsResponseSent = false;
+                IsError = false;
+                RequestString = null;
+                ResponseString = null;
+                LastRequestString = null;
+                LastResponseString = null;
+                LastException = null;
+                LastErrorMessage = null;
+            }
+        }
 
         #endregion Operation
 
