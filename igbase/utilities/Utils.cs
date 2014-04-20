@@ -141,6 +141,7 @@ namespace IG.Lib
 
         #endregion ThreadSynchronization
 
+
         #region OutputLevelGlobal
 
         private static volatile int _outputLevel = 0;
@@ -925,7 +926,203 @@ namespace IG.Lib
         #endregion CollectionToString
 
 
+        #region ToString
+
+        // Globalization:
+
+        /// <summary>Converts obect of the specified type to its string representation, where
+        /// numbers are converted in ivariant culture (ignoring any localization settings).
+        /// <para>This method can be used to avoid problems with differen local settinggs when
+        /// transfering numerical values through text files.</para></summary>
+        /// <typeparam name="ObjectType">Type of the object to be converted to string.</typeparam>
+        /// <param name="obj">Object to be converted.</param>
+        public static string ToString<ObjectType>(ObjectType obj)
+        {
+            return ToString<ObjectType>(obj, System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>Converts obect of the specified type to its string representation, where
+        /// numbers are converted in ivariant culture (ignoring any localization settings).
+        /// <para>This method can be used to avoid problems with differen local settinggs when
+        /// transfering numerical values through text files.</para></summary>
+        /// <typeparam name="ObjectType">Type of the object to be converted to string.</typeparam>
+        /// <param name="obj">Object to be converted.</param>
+        /// <param name="cultureInfo">Culture info used in conversion.</param>
+        public static string ToString<ObjectType>(ObjectType obj,System.Globalization.CultureInfo cultureInfo)
+        {
+            if (IsNumeric(obj))
+            {
+                object expression = obj;
+                return Convert.ToString(expression, cultureInfo);
+            }
+            else
+            {
+                return obj.ToString();
+            }
+        }
+
+
+        /// <summary>Returns a flag indicating whether the specified object is of numeric type (such as int, float, double, etc.).
+        /// <para>When called on an arbitrary object, the correct type parameter will be inferred, and
+        /// we can get the desired information if </para></summary>
+        /// <typeparam name="ObjectType">Type of the object that is queried.</typeparam>
+        /// <param name="obj">Object for which we query whether it represents a numerical value.</param>
+        public static bool IsNumeric<ObjectType>(ObjectType obj)
+        {
+            if (Equals(obj, null))
+            {
+                return false;
+            }
+            Type objType = typeof(ObjectType);
+            if (objType.IsPrimitive)
+            {
+                return (objType != typeof(bool) &&
+                    objType != typeof(char) &&
+                    objType != typeof(IntPtr) &&
+                    objType != typeof(UIntPtr)) ||
+                    objType == typeof(decimal);
+            }
+            return false;
+        }
+
+        
+        /// <summary>Returns true if the specified expression or object is of numeric type (such as int, float, double, etc.),
+        /// and false otherwise.</summary>
+        /// <param name="expression">Expression that is checked for being of numeric type.</param>
+        [Obsolete("Replaced by IsNumeric<ObjectType>.")]
+        protected static bool IsNumericOld(object expression)
+        {
+            if (expression == null)
+                return false;
+            double number;
+            return Double.TryParse(
+                Convert.ToString(expression, System.Globalization.CultureInfo.InvariantCulture), 
+                System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, 
+                out number);
+        }
+
+
+
+        /// <summary>Test conversion to strings with invariant culture info.</summary>
+        public static void TestToString()
+        {
+            Console.WriteLine(Environment.NewLine + "Test of conversion of numbers to string with invariant culture:" + Environment.NewLine);
+            Console.WriteLine("Default (straightfrward) conversion: ");
+            double d = 1.234e-6;
+            Console.WriteLine("Through Console.WriteLine: " + d);
+            Console.WriteLine("Through ToString(): " + d.ToString());
+            Console.WriteLine("Through generic Util.ToString(): " +
+                Util.ToString<double>(d));
+            Console.WriteLine("Through ToString() with NonGeneric Util.ToString(): " +
+                Util.ToString(d));
+            object o = d;
+            Console.WriteLine("Through NonGeneric Util.ToString(), cast to object: " +
+                Util.ToString(o));
+            Console.WriteLine("Through NonGeneric Util.ToString(), cast to object and back to double: " +
+                Util.ToString((double)o));
+            Console.WriteLine("Test of number to string conversion finished.");
+        }
+
+
+
+
+        #endregion ToString
+
+
         #region StringParse
+
+        
+
+        /// <summary>Tries to parse a string representation of an object of the specified type and return 
+        /// it through output argument. Invariant culture is used in parsing.</summary>
+        /// <typeparam name="ReturnType">Type of the object whose value is tried to be parsed from the string.</typeparam>
+        /// <param name="strValue">String that is converted to obect of the specified type.</param>
+        /// <param name="parsedValue">Value (of the specified type)vthat is obtained from the parsed string.</param>
+        /// <returns>true if string was successfully converted to the object of the specified type, false if not 
+        /// (in this case <paramref name="parsedValue"/> retains its previous value).</returns>
+        public static bool TryParse<ReturnType>(string strValue, ref ReturnType parsedValue)
+        {
+            return TryParse<ReturnType> (strValue, ref parsedValue, System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+
+        /// <summary>Converts a string to the object of the specified type and returns the entity, by using the 
+        /// invariant culture.
+        /// <para>This works for simple types, for complex types deserialization must be used.</para></summary>
+        /// <typeparam name="ReturnType">Type of the entity to be returned, can be int.</typeparam>
+        /// <param name="strValue">String to be converted to other type.</param>
+        /// <returns>Object of the specified type converted form a string.</returns>
+        public static ReturnType Parse<ReturnType>(string strValue)
+        {
+            return Parse<ReturnType>(strValue, System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+
+        /// <summary>Converts a string to the entity of the specified type and returns that entity, by using invariant culture.
+        /// <para>This works for simple types, for complex types deserialization must be used.</para></summary>
+        /// <param name="strValue">String to be converted to other type.</param>
+        /// <param name="propertyType">Type of the entity to be parsed from a string.</param>
+        /// <param name="cultureInfo">Culture info used in conversion.</param>
+        /// <returns>Object of the specified type converted form a string.</returns>
+        public static object Parse(string strValue, Type propertyType)
+        {
+            return Parse(strValue, propertyType, System.Globalization.CultureInfo.InvariantCulture);
+        }
+
+
+        /// <summary>Tries to parse a string representation of an object of the specified type and return it through output argument.</summary>
+        /// <typeparam name="ReturnType">Type of the object whose value is tried to be parsed from the string.</typeparam>
+        /// <param name="strValue">String that is converted to obect of the specified type.</param>
+        /// <param name="parsedValue">Value (of the specified type)vthat is obtained from the parsed string.</param>
+        /// <param name="cultureInfo">Culture info used in conversion.</param>
+        /// <returns>true if string was successfully converted to the object of the specified type, false if not 
+        /// (in this case <paramref name="parsedValue"/> retains its previous value).</returns>
+        public static bool TryParse<ReturnType>(string strValue, ref ReturnType parsedValue, System.Globalization.CultureInfo cultureInfo)
+        {
+            bool parsed = false;
+            try
+            {
+                parsedValue = (ReturnType)Parse<ReturnType>(strValue, cultureInfo);
+                parsed = true;
+            }
+            catch (Exception)
+            { }
+            return parsed;
+        }
+
+
+        /// <summary>Converts a string to the object of the specified type and returns the entity, by using the 
+        /// specified culture info.
+        /// <para>This works for simple types, for complex types deserialization must be used.</para></summary>
+        /// <typeparam name="ReturnType">Type of the entity to be returned, can be int.</typeparam>
+        /// <param name="strValue">String to be converted to other type.</param>
+        /// <param name="cultureInfo">Culture info used in conversion.</param>
+        /// <returns>Object of the specified type converted form a string.</returns>
+        public static ReturnType Parse<ReturnType>(string strValue, System.Globalization.CultureInfo cultureInfo)
+        {
+            return (ReturnType)Parse(strValue, typeof(ReturnType), cultureInfo);
+        }
+
+
+        /// <summary>Converts a string to the entity of the specified type and returns that entity.
+        /// <para>This works for simple types, for complex types deserialization must be used.</para></summary>
+        /// <param name="strValue">String to be converted to other type.</param>
+        /// <param name="propertyType">Type of the entity to be parsed from a string.</param>
+        /// <param name="cultureInfo">Culture info used in conversion.</param>
+        /// <returns>Object of the specified type converted form a string.</returns>
+        public static object Parse(string strValue, Type propertyType, System.Globalization.CultureInfo cultureInfo)
+        {
+            var underlyingType = Nullable.GetUnderlyingType(propertyType);
+            if (underlyingType == null)
+                return Convert.ChangeType(strValue, propertyType, cultureInfo);
+            return String.IsNullOrEmpty(strValue)
+              ? null
+              : Convert.ChangeType(strValue, underlyingType, cultureInfo);
+        }
+
+
+
+
 
 
         /// <summary>Tries to parse a string representation of a boolean.</summary>
@@ -945,6 +1142,7 @@ namespace IG.Lib
             { }
             return parsed;
         }
+        
 
         /// <summary>Converts the specified string to a boolean value, if possible, and returns it.
         /// If conversion is not possible then exception is thrown.
@@ -961,7 +1159,7 @@ namespace IG.Lib
             {
                 value = bool.Parse(str);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (string.IsNullOrEmpty(str))
                     throw;
@@ -1007,6 +1205,7 @@ namespace IG.Lib
             { }
             return parsed;
         }
+
 
         /// <summary>Converts the specified string to a <see cref="ThreadPriority"/> enum value, 
         /// if possible, and returns it. If conversion is not possible then exception is thrown.

@@ -13,7 +13,7 @@ namespace IG.Lib
 
 
     /// <summary>Memory representation of CSV data.</summary>
-    /// <remarks>Currently, this is just an exact copy of the <see cref="StringTable"/> class.
+    /// <remarks>Currently, this is just an exact copy of the <see cref="StringTable"/> class (it just inherits it=.
     /// <para>Data access operations are thread safe.</para></remarks>
     /// $A Igor xx;
     public class CsvData : StringTable, ILockable
@@ -199,6 +199,80 @@ namespace IG.Lib
             }
         }
 
+
+        /// <summary>Sets element at the specified position to the specified value.</summary>
+        /// <param name="rowNumber">Row index of the element to be set.</param>
+        /// <param name="columnNumber">Column index of the element to be set.</param>
+        /// <param name="element">Element to be set.</param>
+        public void SetElement(int rowNumber, int columnNumber, string element)
+        {
+            this[rowNumber, columnNumber] = element;
+        }
+
+        /// <summary>Sets element at the specified position to the string representation of the specified value.</summary>
+        /// <param name="rowNumber">Row index of the element to be set.</param>
+        /// <param name="columnNumber">Column index of the element to be set.</param>
+        /// <param name="elementValue">Value whose string representation is to be set.</param>
+        public void SetElement<ElementType>(int rowNumber, int columnNumber, ElementType elementValue)
+        {
+            SetElement(rowNumber, columnNumber, Util.ToString<ElementType>(elementValue));
+        }
+
+        ///// <summary>Sets element at the specified position to the specified value.</summary>
+        ///// <param name="rowNumber">Row index of the element to be set.</param>
+        ///// <param name="columnNumber">Column index of the element to be set.</param>
+        ///// <param name="elementValue">Value whose string representation is to be set.</param>
+        //public void SetElement (int rowNumber, int columnNumber, object elementValue)
+        //{
+        //    SetElement(rowNumber, columnNumber, ToString());
+        //}
+
+
+        /// <summary>Returns the element of the specified type at the specified position.
+        /// <para>Element is parrsed from the string element. Exception is thrown if the element doed not exist 
+        /// or parsing fails.</para></summary>
+        /// <typeparam name="ElementType">Type of the element to be returned.</typeparam>
+        /// <param name="rowNumber">Row index of the element.</param>
+        /// <param name="columnNumber">Column index of the element.</param>
+        /// <returns>Object (of simple type) parsed from the element at the speciffied position.</returns>
+        public ElementType GetElement <ElementType>(int rowNumber, int columnNumber)
+        {
+            return Util.Parse<ElementType>(this[rowNumber, columnNumber]);
+        }
+
+        /// <summary>Tries to obtain a value of the specified type at the specified position, and returns 
+        /// a flag indicating whether parsing the value from a string was successful (and the element existed).
+        /// <para>Value (of the specified type) of the specified element is returned through a ref parameter.</para></summary>
+        /// <typeparam name="ElementType">Type of the element to be extracted.</typeparam>
+        /// <param name="rowNumber">Row index of the element.</param>
+        /// <param name="columnNumber">Column index of the element.</param>
+        /// <param name="elementValue">Argument through which the value is returned.</param>
+        /// <returns>Value of the specified element.</returns>
+        public bool TryGetElement<ElementType> (int rowNumber, int columnNumber, ref ElementType elementValue)
+        {
+            bool successfullyParsed = false;
+            try
+            {
+                GetElement<ElementType> (rowNumber, columnNumber);
+                successfullyParsed = true;
+            }
+            catch (Exception) { };
+            return successfullyParsed;
+        }
+
+        /// <summary>Returns a flag indicating whether the specified position contains a valid string representation
+        /// of a element of the specified type.</summary>
+        /// <typeparam name="ElementType">Element type.</typeparam>
+        /// <param name="rowNumber">Row index of the element.</param>
+        /// <param name="columnNumber">Column index of the element.</param>
+        /// <returns>true if the specified position contains a valid non-null element of the specified type, false otherwise.</returns>
+        public bool IsDefined <ElementType> (int rowNumber, int columnNumber)
+        {
+            ElementType el = default(ElementType);
+            bool ret = TryGetElement<ElementType> (rowNumber, columnNumber, ref el);
+            return ret;
+        }
+
         /// <summary>Returns a flag telling whether the specified element is defined (it exists in the data table) or not.
         /// <para>If the specified element is null, true is returned. Use <see cref="IsNotNullOrEmpty"/> method to check also
         /// if the element is not null or empty string.</para></summary>
@@ -363,6 +437,33 @@ namespace IG.Lib
             }
         }
 
+
+
+        /// <summary>Adds a new row at the end of the data table.</summary>
+        /// <remarks>Throws exception if the data table is read only.</remarks>
+        public void AddRow(params string[] elements)
+        {
+            lock (Lock)
+            {
+                AddRow();
+                AddElements(elements);
+            }
+        }
+
+        /// <summary>Adds (appends) a new row with the specified elements at the end of the table.</summary>
+        /// <typeparam name="ElementType">Type of elements to be added to the newly created row.</typeparam>
+        /// <param name="elements">Elements to ne added to the new row.</param>
+        /// <remarks>Throws exception if the data table is read only.</remarks>
+        public void AddRow<ElementType>(params ElementType[] elements)
+        {
+            lock (Lock)
+            {
+                AddRow();
+                AddElements(elements);
+            }
+        }
+
+
         /// <summary>Adds a new element at the end of the specified row of te data table.</summary>
         /// <param name="rowNum">Sequential number of the row to which the element is added.</param>
         /// <param name="value">Value of the element that is added.</param>
@@ -380,6 +481,36 @@ namespace IG.Lib
             }
         }
 
+        /// <summary>Adds (appends) the speecified element at the end of the table, i.e. at the end of the last row.</summary>
+        /// <param name="value">Value to be added to the table.</param>
+        public void AddElement(string value)
+        {
+            AddElement(_data.Count - 1, value);
+        }
+        
+
+        /// <summary>Adds string representation of a new element of the specified type at the end of the specified 
+        /// row of te data table.</summary>
+        /// <param name="rowNum">Sequential number of the row to which the element is added.</param>
+        /// <param name="value">Value of the element that is added.</param>
+        /// <remarks>Throws exception if the data table is read only, or if the specified row 
+        /// does not exist and the data table is not extensible.</remarks>
+        public void AddElement<ElementType> (int rowNum, ElementType value)
+        {
+            string str = Util.ToString<ElementType>(value);
+            AddElement(rowNum, str);
+        }
+
+
+
+        /// <summary>Adds (appends) string representatin of the speecified element at the end of the table, i.e. at the 
+        /// end of the last row.</summary>
+        /// <param name="value">Value to be added to the table.</param>
+        public void AddElement<ElementType>(ElementType value)
+        {
+            AddElement(_data.Count - 1, value);
+        }
+
 
         /// <summary>Adds the specified elements at the end of the specified row of te data table.</summary>
         /// <param name="rowNum">Sequential number of the row to which the elements are added.</param>
@@ -388,15 +519,60 @@ namespace IG.Lib
         /// does not exist and the data table is not extensible.</remarks>
         public void AddElements(int rowNum, params string[] values)
         {
-            if (values != null)
+            lock (Lock)
             {
-                int num = values.Length;
-                for (int i = 0; i < num; ++i)
+                if (values != null)
                 {
-                    AddElement(rowNum, values[i]);
+                    int num = values.Length;
+                    for (int i = 0; i < num; ++i)
+                    {
+                        AddElement(rowNum, values[i]);
+                    }
                 }
             }
         }
+
+        /// <summary>Adds string representations of the specified elements of the specified type at the end of the 
+        /// specified row of te data table.</summary>
+        /// <typeparam name="ElementType">Type of elements to be added.</typeparam>
+        /// <param name="rowNum">Sequential number of the row to which the elements are added.</param>
+        /// <param name="values">Array of values of the elements that are added.</param>
+        /// <remarks>Throws exception if the data table is read only, or if the specified row 
+        /// does not exist and the data table is not extensible.</remarks>
+        public void AddElements<ElementType>(int rowNum, params ElementType[] values)
+        {
+            lock (Lock)
+            {
+                if (values != null)
+                {
+                    int num = values.Length;
+                    for (int i = 0; i < num; ++i)
+                    {
+                        AddElement<ElementType>(rowNum, values[i]);
+                    }
+                }
+            }
+        }
+
+        /// <summary>Adds (appends ) the specified elements at the end of the table, i.e. at the end of the last row.</param>
+        /// <param name="values">Array of values of the elements that are added.</param>
+        /// <remarks>Throws exception if the data table is read only, or if the specified row 
+        /// does not exist and the data table is not extensible.</remarks>
+        public void AddElements(params string[] values)
+        {
+            AddElements(_data.Count - 1, values);
+        }
+
+        /// <summary>Adds (appends ) string representations of the specified elements of the specified type at 
+        /// the end of the table, i.e. at the end of the last row.</param>
+        /// <param name="values">Array of values of the elements that are added.</param>
+        /// <remarks>Throws exception if the data table is read only, or if the specified row 
+        /// does not exist and the data table is not extensible.</remarks>
+        public void AddElements<ElementType> (params ElementType[] values)
+        {
+            AddElements(_data.Count - 1, values);
+        }
+
 
         /// <summary>Change the number of rows in the data table to the specified number.</summary>
         /// <param name="numRows">New number of rows.</param>
@@ -952,6 +1128,15 @@ namespace IG.Lib
             this.LoadCsv(filePath, this.CsvSeparator);
         }
 
+
+        /// <summary>Converts the current string table to a string in CSV form and returns the string.</summary>
+        public string ToString()
+        {
+            string[][] data = this.Table;
+            string str = UtilCsv.ToCsvString(data, _csvSeparator);
+            return str;
+        }
+
         
         /// <summary>Saves the data of the current object to the specified CSV file.</summary>
         /// <param name="filePath">Path to the file into which data is written.</param>
@@ -1014,7 +1199,7 @@ namespace IG.Lib
             for (int i=0; i<4; ++i)
             {
                 for (int j=0; j<4; ++j)
-                    csv[i, j+2] = RandomGenerator.Global.NextDouble().ToString();
+                    csv[i, j+2] = Util.ToString(RandomGenerator.Global.NextDouble());
             }
             csv.SaveCsv(filePath);
         }

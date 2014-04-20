@@ -16,7 +16,7 @@ namespace IG.Lib
 
     /// <summary>Timer for measuring execution times 
     /// and other intervals of time elapsed between successive events.
-    /// $A Igor Apr10;</summary>
+    /// $A Igor xx Apr10;</summary>
     public class StopWatch: ILockable, IIdentifiable
     {
 
