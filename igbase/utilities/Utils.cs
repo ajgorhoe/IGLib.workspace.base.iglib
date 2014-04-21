@@ -1024,8 +1024,6 @@ namespace IG.Lib
         }
 
 
-
-
         #endregion ToString
 
 
@@ -1119,9 +1117,6 @@ namespace IG.Lib
               ? null
               : Convert.ChangeType(strValue, underlyingType, cultureInfo);
         }
-
-
-
 
 
 
