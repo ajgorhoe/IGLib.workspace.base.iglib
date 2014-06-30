@@ -85,6 +85,12 @@ Quit with '\q' .";
      var const_pi = Math.PI; // pi, ratio between circle circumference and diameter
 	 var const_e = Math.E; // basis of natural logarithm
 
+     var Pi = Math.PI; // pi, ratio between circle circumference and diameter
+     var E = Math.E; // basis of natural logarithm
+     
+     function deg(x) { return x * 180 / Math.PI; }
+     function rad(x) { return x * Math.PI / 180; }
+
 	 function sin(x) { return Math.sin(x); }  // sine
      function cos(x) { return Math.cos(x); }  // cosine
      function tan (x) { return Math.tan(x); } // tangent

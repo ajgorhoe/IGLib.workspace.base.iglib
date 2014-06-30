@@ -66,6 +66,7 @@
     <Compile Include="0unsorted\0NameSpaceIG.Lib.cs" />
     <Compile Include="application\SettingsRreader.cs" />
     <Compile Include="0guests\Tako78\datastructures\SampledDataCsv.cs" />
+    <Compile Include="0obsolete\MultidimensionalArray.cs" />
     <Compile Include="data\presentation\HtmlWriter.cs" />
     <Compile Include="data\serialization\dtos\ArrayDto.cs" />
     <Compile Include="data\serialization\dtos\BoundingBoxDto.cs" />
@@ -275,6 +276,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="0guests\Tako78\0readme_guest_tako78.txt" />
+    <Content Include="0obsolete\0readme_obsolere.txt" />
     <Content Include="0readme\License_IGLib.html" />
     <Content Include="0readme\ReadMe_IGLib.html" />
     <Content Include="data\serialization\json\0readmeJsonPrettyPrinter.txt" />

@@ -6,7 +6,7 @@ using System.Text;
 namespace IG.Lib
 {
 
-    /// <summary>Base class for main application classes containing main method of application,
+    /// <summary>Base class for main application classes that have the main method of the application
     /// based on command line interpreter.</summary>
     /// <remarks><para>Dhis class represent the base for standard scheme for IGLib-based applications that include
     /// command-line interpreter and eventually a number of tests whose selection is hard-coded and which are

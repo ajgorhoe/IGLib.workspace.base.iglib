@@ -13,7 +13,7 @@ namespace IG.Lib
     /// <summary>Tracked thread object that wraps a single created thread and enables that all 
     /// active wrapped threads are are tracked (i.e. a list of all active tracked threads
     /// can be obtained at any time).
-    /// <para>Starting and manipulatin of the wrapped thread is tone through the <see cref="TrackedThread.Thread"/> property.</para>
+    /// <para>Starting and manipulatin of the wrapped thread is done through the <see cref="TrackedThread.Thread"/> property.</para>
     /// <para>The <see cref="TrackedThread.IsParameterizedStart"/> property can be used if the wrapped thread was
     /// created with the parameterized thread start delegate.</para>
     /// <para>The static <see cref="TrackedThread.Threads"/> property returns an array of all <see cref="TrackedThread"/> 

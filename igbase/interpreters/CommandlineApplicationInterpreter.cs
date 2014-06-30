@@ -27,14 +27,14 @@ namespace IG.Lib
     /// <summary>Interface for simple command-line applicatino interpreters.</summary>
     public interface ICommandLineApplicationInterpreter
     {
-        
+
         /// <summary>Name of the current interpreter.</summary>
         string Name
-        { get; set;}
+        { get; set; }
 
         /// <summary>Description of hte current interpreter.</summary>
         string Description
-        { get; set;}
+        { get; set; }
 
         /// <summary>Whether the exit flag is set, usually causing interpreter to stop.</summary>
         bool Exit
@@ -44,7 +44,7 @@ namespace IG.Lib
         /// <para>This property always returns an initialized stopwatch.</para></summary>
         StopWatch Timer
         { get; }
-        
+
         /// <summary>Level of output for some of the interpreter's functionality (e.g. asynchronous command execution).</summary>
         int OutputLevel
         { get; set; }
@@ -64,12 +64,12 @@ namespace IG.Lib
         /// <param name="value">Value that is assigned to the variable.</param>
         /// <returns>New value of the variable (before the method was called).</returns>
         string SetVariable(string varName, string value);
-        
+
         /// <summary>Clears (removes) the specified variable.</summary>
         /// <param name="varName">Name of the variable to be cleared.</param>
         /// <returns>null.</returns>
         string ClearVariable(string varName);
-        
+
         /// <summary>Prints the specified variable.</summary>
         /// <param name="varName">Name of the variable to be cleared.</param>
         /// <returns>null.</returns>
@@ -98,7 +98,7 @@ namespace IG.Lib
         /// <summary>Returns true if the interpreter contains a command with specified name, false otherwise.</summary>
         /// <param name="commandName">Name of the command whose existence is queried.</param>
         bool ContainsCommand(string commandName);
-        
+
         /// <summary>Runs the specified command with specified name, installed on the current application object, without any
         /// modifications of the command arguments.</summary>
         /// <param name="appName">Command name.</param>
@@ -118,32 +118,32 @@ namespace IG.Lib
         /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         string Run(string[] args);
-        
+
         /// <summary>Runs a command asynchronously where the first argument is command name.
         /// Extracts command name and runs the corresponding application delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.</summary>
         /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         string RunAsync(string[] args);
-        
+
         /// <summary>Runs the command with specified name (installed on the current interpreter object) asynchronously.</summary>
         /// <param name="appName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
         /// <returns>ID of asynchronous run used to query results and whether command has completed, or -1 if a call was not
         /// launched (actually, an exception would be thrown in this case).</returns>
         string RunAsync(string commandName, params string[] commandArguments);
-        
+
         /// <summary>Returns true if the asynchronous command execution identified by id has completed, and false otherwise.</summary>
         /// <param name="id">ID of the asynchronous command execution that is querried.</param>
         /// <returns></returns>
         bool AsyncIsCompleted(int id);
-        
+
         /// <summary>Waits until all asynchronously commands that have been eventually executed by the current 
         /// interpreter, complete.
         /// <para>It is sometimes necessary to call this method if any asynchronous command invocations were made because such 
         /// commands are executed in background threads, which are automatically broken when all foreground threads complete.</para></summary>
         void AsyncWaitAll();
-        
+
         /// <summary>Waits for the specified asynchronous command (specified by command ID) to complete.</summary>
         /// <param name="callId">ID of the asynchronous command execution.</param>
         /// <returns>Results of the command if the command has not completed before, null otherwise.</returns>
@@ -173,7 +173,7 @@ namespace IG.Lib
         /// <summary>Loads and initializes the specified module.</summary>
         /// <param name="moduleName">Name of the module. It is case sensitive if commands are case sensitive.</param>
         void LoadModule(string moduleName);
-        
+
         /// <summary>Returns true if the specified module has been loaded on the interpreter,
         /// false if not.</summary>
         /// <param name="moduleName">Name of the module.</param>
@@ -243,7 +243,7 @@ namespace IG.Lib
     /// interpreter. Interpreter to execute the command, command name and arguments, and results of the command
     /// are all stored on the object. The <see cref="CommandLineContainer."/></para>
     /// </remarks>
-    public class CommandLineJobContainer : 
+    public class CommandLineJobContainer :
         ParallelJobContainerGen<CommandLineJobContainer, CommandLineJobContainer>,
             IIdentifiable, ILockable
     {
@@ -251,14 +251,14 @@ namespace IG.Lib
         /// <summary>Prevent calling argument-less constructor.</summary>
         private CommandLineJobContainer()
             : base()
-        {  }
+        { }
 
         /// <summary>Argument-less constructor that is called by all other constructors in order to
         /// properly initialize the data. It sets the input for parallel job container's execution data 
         /// simply to the current object (the object being constructed).</summary>
         /// <param name="interpreter">Interpreter that will execute the command.</param>
         protected CommandLineJobContainer(ICommandLineApplicationInterpreter interpreter)
-            : base(Run) 
+            : base(Run)
         {
             if (interpreter == null)
                 throw new ArgumentException("Interpreter to execute the command is not specified.");
@@ -275,7 +275,8 @@ namespace IG.Lib
         /// <param name="commandName">Name of the command to be executed.</param>
         /// <param name="commandArguments">Arguments to the command.</param>
         public CommandLineJobContainer(ICommandLineApplicationInterpreter interpreter,
-            string commandName, string[] commandArguments): this(interpreter)
+            string commandName, string[] commandArguments)
+            : this(interpreter)
         {
             if (string.IsNullOrEmpty(commandName))
                 throw new ArgumentException("Command name is not specified (null or empty string).");
@@ -289,7 +290,8 @@ namespace IG.Lib
         /// and its eventual arguments.
         /// <para>Must not be null and the first element must not be null.</para></param>
         public CommandLineJobContainer(ICommandLineApplicationInterpreter interpreter,
-            string[] commandAndArguments) : this(interpreter)
+            string[] commandAndArguments)
+            : this(interpreter)
         {
             if (commandAndArguments == null)
                 throw new ArgumentNullException("Commandline is not specified (null reference);");
@@ -387,10 +389,10 @@ namespace IG.Lib
         /// stores the results.</summary>
         protected virtual void RunCommand()
         {
-                this.StartTime = DateTime.Now;
-                this.CommandResult = Interpreter.Run(CommandName, CommandArguments);
-                this.CompletionTime = DateTime.Now;
-                this.ExecutionTime = (CompletionTime - StartTime).TotalSeconds;
+            this.StartTime = DateTime.Now;
+            this.CommandResult = Interpreter.Run(CommandName, CommandArguments);
+            this.CompletionTime = DateTime.Now;
+            this.ExecutionTime = (CompletionTime - StartTime).TotalSeconds;
         }
 
         /// <summary>Executes the command that is represented by the current command data,
@@ -402,7 +404,7 @@ namespace IG.Lib
         /// by the argument-less <see cref="RunCommand"/> function.</returns>
         protected static CommandLineJobContainer Run(CommandLineJobContainer input)
         {
-            
+
             //if (input == null)
             //    input = this;
             input.RunCommand();
@@ -451,7 +453,7 @@ namespace IG.Lib
     }  // class CommandExecutionData
 
 
-   
+
     /// <summary>Simple command-line application interpreters, holds a set of commands that can be executed by name.
     /// Each of these command can take an arbitrary number of string arguments.
     /// Interpreter has its internal variables, which are strings. Each variable has a name and a value.
@@ -460,7 +462,7 @@ namespace IG.Lib
     /// <remarks>This is a case of a very primitive interpreter, which can be used only for finding and executing
     /// commands by name and passing an array of strig arguments to them.</remarks>
     /// $A Igor Nov08;
-    public class CommandLineApplicationInterpreter: ICommandLineApplicationInterpreter, ILockable
+    public class CommandLineApplicationInterpreter : ICommandLineApplicationInterpreter, ILockable
     {
 
         /// <summary>Delegate for commands that are installed on interpreter.</summary>
@@ -480,11 +482,12 @@ namespace IG.Lib
         /// <summary>Default value of the flg indicating whether command names are case sensitive.</summary>
         public const bool DefaultCaseSensitive = false;
 
-        protected  bool _caseSensitive = false;
+        protected bool _caseSensitive = false;
 
         /// <summary>Creates a new MessyApplication object initialized with some basisc applications.
         /// <para>The flag indicating whether interpreter is case sensitive or not is set to <see cref="DefaultCaseSensitive"/></para></summary>
-        public CommandLineApplicationInterpreter(): this(DefaultCaseSensitive  /* casesensitive */)
+        public CommandLineApplicationInterpreter()
+            : this(DefaultCaseSensitive  /* casesensitive */)
         {
         }
 
@@ -529,6 +532,17 @@ namespace IG.Lib
             this.AddCommand("C", CmdComment);
             this.AddCommand("Comment", CmdComment);
             this.AddCommand("//", CmdComment);
+            this.AddCommand("PrintCommands", CmdPrintCommands);
+
+            this.AddCommand("PipeServer", CmdPipeServerCreate);
+            this.AddCommand("PipeServersRemove", CmdPipeServersRemove);
+            this.AddCommand("PipeServerInfo", CmdPipeServerInfo);
+
+            this.AddCommand("PipeClient", CmdPipeClientCreate);
+            this.AddCommand("PipeClientsRemove", CmdPipeClientsRemove);
+            this.AddCommand("PipeClientInfo", CmdPipeClientInfo);
+            this.AddCommand("PipeClientSend", CmdPipeClientGetServerResponse);
+
 
             this.AddCommand("Module", CmdLoadModule);
             this.AddCommand("LoadModule", CmdLoadModule);
@@ -685,13 +699,13 @@ namespace IG.Lib
         /// <param name="varName">Name of the variable.</param>
         public virtual string GetVariable(string varName)
         {
-            lock(Lock)
+            lock (Lock)
             {
-            if (string.IsNullOrEmpty(varName))
-                throw new ArgumentException("Interpreter variable name not specified.");
-            if (!_variables.ContainsKey(varName))
-                throw new ArgumentException("Interpreter variable not defined: " + varName + ".");
-            return _variables[varName]; 
+                if (string.IsNullOrEmpty(varName))
+                    throw new ArgumentException("Interpreter variable name not specified.");
+                if (!_variables.ContainsKey(varName))
+                    throw new ArgumentException("Interpreter variable not defined: " + varName + ".");
+                return _variables[varName];
             }
         }
 
@@ -702,8 +716,8 @@ namespace IG.Lib
         {
             if (str != null)
                 if (str.Length > 1)
-                if (str[0] == variableStart)
-                    return true;
+                    if (str[0] == variableStart)
+                        return true;
             return false;
         }
 
@@ -714,13 +728,13 @@ namespace IG.Lib
         /// represents a variable reference.</param>
         protected virtual string SubstituteVariableReference(string str)
         {
-            if (str==null)
+            if (str == null)
                 return str;
-            else if (str.Length<2)
+            else if (str.Length < 2)
                 return str;
             else if (str[0] != variableStart)
                 return str;
-            else return GetVariable(str.Substring(1,str.Length-1));
+            else return GetVariable(str.Substring(1, str.Length - 1));
         }
 
         /// <summary>Sets the specified variable to the specified value.</summary>
@@ -775,7 +789,7 @@ namespace IG.Lib
         /// <returns>An array of arguments.</returns>
         public virtual string[] GetArguments(string commandLine)
         {
-                return UtilStr.GetArgumentsArray(commandLine);
+            return UtilStr.GetArgumentsArray(commandLine);
         }
 
         /// <summary>Runs all commands that are written in a file.
@@ -794,7 +808,7 @@ namespace IG.Lib
                 string line;
                 string ret = null;
                 int lineNum = 0;
-                while ((line = sr.ReadLine())!=null)
+                while ((line = sr.ReadLine()) != null)
                 {
                     if (Exit)
                         return ret;
@@ -811,7 +825,7 @@ namespace IG.Lib
                     {
                         Exception exRethrown = new InvalidOperationException("Error in line " + lineNum + ", interpreted file: "
                             + Environment.NewLine + "  " + filePath + Environment.NewLine
-                            + "  Details: " + ex.Message , ex /* innerException */);
+                            + "  Details: " + ex.Message, ex /* innerException */);
                         throw (exRethrown);
                     }
                 }
@@ -885,18 +899,21 @@ namespace IG.Lib
                         //if (ThrowExceptions)
                         //    throw;
                     }
-                } else
+                }
+                else
                 {
                     try
                     {
                         string[] commandLineSplit = GetArguments(line);
                         ret = this.Run(commandLineSplit);
-                        if (!string.IsNullOrEmpty(ret))
-                        {
-                            Console.WriteLine("  = " + ret);
-                        }
+                        string retOutput = ret;
+                        if (retOutput == null)
+                            retOutput = "null";
+                        else if (retOutput == "")
+                            retOutput = "\"\"";
+                        Console.WriteLine("  = " + retOutput);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Console.WriteLine();
                         Console.WriteLine("ERROR: " + ex.Message);
@@ -917,7 +934,7 @@ namespace IG.Lib
         {
             if (args == null)
                 throw new ArgumentNullException("Command and arguments are not specified (null table).");
-            if (args.Length<1)
+            if (args.Length < 1)
                 throw new ArgumentNullException("Command and arguments are not specified (table has no elements).");
             string command = args[0];
             string[] commandArgs = new string[args.Length - 1];
@@ -933,9 +950,9 @@ namespace IG.Lib
         {
             string workingDirectory = null;
             bool asynchronous = false;
-            bool useShell = false; 
+            bool useShell = false;
             bool createNoWindow = false;
-            string redirectedOutputPath = null; 
+            string redirectedOutputPath = null;
             bool redirectStandardOutput = false;
             UtilSystem.ExecuteSystemCommand(workingDirectory, asynchronous, useShell,
                 createNoWindow, redirectedOutputPath, redirectStandardOutput,
@@ -1009,7 +1026,7 @@ namespace IG.Lib
         /// <summary>Expression evaluator used by the current </summary>
         public ExpressionEvaluatorJs ExpressionEvaluator
         {
-            get 
+            get
             {
                 lock (Lock)
                 {
@@ -1041,7 +1058,7 @@ namespace IG.Lib
             StringBuilder sb = new StringBuilder();
             if (args != null)
             {
-                for (int i=0; i<args.Length; ++i)
+                for (int i = 0; i < args.Length; ++i)
                     sb.Append(args[i] + " ");
             }
             return ExpressionEvaluator.Execute(sb.ToString());
@@ -1125,7 +1142,7 @@ namespace IG.Lib
                     }
                     if (OutputLevel > 0)
                     {
-                        Console.WriteLine(numRepetitions + " repetitions of command " + cmdName 
+                        Console.WriteLine(numRepetitions + " repetitions of command " + cmdName
                             + " finished in " + t.TotalTime + " s.");
                     }
                     return ret;
@@ -1177,7 +1194,8 @@ namespace IG.Lib
             if (appDelegate == null)
             {
                 throw new InvalidOperationException("Can not find command named " + commandName + ".");
-            }  else
+            }
+            else
             {
                 return appDelegate(this, commandName, commandArguments);
             }
@@ -1262,7 +1280,7 @@ namespace IG.Lib
             return null;
         }
 
-        
+
         /// <summary>Prints the commands that were scheduled for parallel execution, together with their
         /// current status, results and execution times (when available).</summary>
         /// <param name="printAll">Whether all commands are printed (included those already completed).
@@ -1303,14 +1321,15 @@ namespace IG.Lib
                     {
                         if (container == null)
                         {
-                            ++ numNull;
+                            ++numNull;
                             if (printAll)
                                 sb.AppendLine("null container.");
-                        } else 
+                        }
+                        else
                         {
-                            ++ numAll;
-                            if (container.State<ParallelJobState.ResultsReady)
-                                ++ numUnfinished;
+                            ++numAll;
+                            if (container.State < ParallelJobState.ResultsReady)
+                                ++numUnfinished;
                             if (container.State < ParallelJobState.ResultsReady || printAll)
                             {
                                 sb.AppendLine();
@@ -1325,7 +1344,7 @@ namespace IG.Lib
                     sb.AppendLine();
                     sb.AppendLine("Total number of parallel commands: " + numAll);
                     sb.AppendLine("             Number of unfinished: " + numUnfinished);
-                    if (numNull>0)
+                    if (numNull > 0)
                         sb.AppendLine("                   Number of null: " + numNull);
                 }
             }
@@ -1677,7 +1696,7 @@ namespace IG.Lib
                     asyncId = AsyncCommandResults.Count - 1;
                     return asyncId.ToString();
                 }
-           }  // lock
+            }  // lock
         }
 
         private bool _asyncEndInvokeInCallback = true;
@@ -1695,7 +1714,7 @@ namespace IG.Lib
         /// <returns></returns>
         public bool AsyncIsCompleted(int id)
         {
-            if (id<0)
+            if (id < 0)
                 throw new ArgumentException("Asynchronous command execution ID can not be less than 0.");
             lock (Lock)
             {
@@ -1712,7 +1731,7 @@ namespace IG.Lib
             {
                 bool ret = true;
                 int numAsync = 0;
-                    numAsync = AsyncCommandResults.Count;
+                numAsync = AsyncCommandResults.Count;
                 for (int i = 0; i < numAsync; ++i)
                     ret = ret && AsyncIsCompleted(i);
                 return ret;
@@ -1764,7 +1783,8 @@ namespace IG.Lib
                             Console.WriteLine("Asynchronous command already completed before, command ID: " + callId);
                             Console.WriteLine();
                         }
-                    } else
+                    }
+                    else
                     {
                         ApplicationCommandDelegate caller = (ApplicationCommandDelegate)result.AsyncDelegate;  // retrieve the delegate
                         // Call EndInvoke to retrieve the results.
@@ -1776,7 +1796,7 @@ namespace IG.Lib
                             Console.WriteLine("  command result: " + commandResult);
                             Console.WriteLine();
                         }
-                    } 
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1802,7 +1822,7 @@ namespace IG.Lib
         {
             lock (Lock)
             {
-                int Id=-1;
+                int Id = -1;
                 try
                 {
                     AsyncResult result = (AsyncResult)ar;
@@ -1854,11 +1874,11 @@ namespace IG.Lib
                 if (!_caseSensitive)
                     commandName = commandName.ToLower();
                 if (WarnCommandReplacement) if (_commands.ContainsKey(commandName))
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("WARNING: Interpreter command redefined: " + commandName + ".");
-                    Console.WriteLine();
-                }
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("WARNING: Interpreter command redefined: " + commandName + ".");
+                        Console.WriteLine();
+                    }
                 _commands[commandName] = commandDelegate;
                 //if (_commands.ContainsKey(commandName))
                 //    _commands.Remove(commandName);
@@ -1882,7 +1902,7 @@ namespace IG.Lib
             }
         }
 
-        
+
         /// <summary>Removes all commands from the current interpreter.</summary>
         public virtual void RemoveAllCommands()
         {
@@ -1941,14 +1961,14 @@ namespace IG.Lib
         }
 
         protected string _ModuleTestCommandPrefix = "TestModule_";
-        
+
         /// <summary>Returns the standard name for the command that gets installed 
         /// when a module is loaded.</summary>
         /// <param name="modulename">Name of the module that is loaded.</param>
         /// <remarks>Whenever a module is loaded, </remarks>
         public virtual string ModuleTestCommandName(string modulename)
         {
-            return(_ModuleTestCommandPrefix + modulename);
+            return (_ModuleTestCommandPrefix + modulename);
         }
 
         /// <summary>Returns true if the specified module has been loaded on the interpreter,
@@ -1961,7 +1981,7 @@ namespace IG.Lib
             return _loadedModules.Contains(moduleName);
         }
 
-        #endregion Modules 
+        #endregion Modules
 
         #region ScriptLoading
 
@@ -2048,7 +2068,7 @@ namespace IG.Lib
         /// <returns>Results of command execution.</returns>
         public virtual string RunLoadedScript(string commandName, string[] arguments)
         {
-        return LoadableScriptInterpreter.RunCommand(commandName, arguments);
+            return LoadableScriptInterpreter.RunCommand(commandName, arguments);
         }
 
         /// <summary>Returns an array of assemblies that are currently referenced by the script loader
@@ -2091,7 +2111,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>Value of the variable after setting.</returns>
-        protected virtual string CmdSetVariable(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdSetVariable(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2099,7 +2119,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " varName value : sets the variable varName to value.");
                         Console.WriteLine();
@@ -2113,14 +2133,14 @@ namespace IG.Lib
             {
                 string varName = null, value = null;
                 varName = args[0];
-                if (args.Length==2)
+                if (args.Length == 2)
                     value = args[1];
                 else
                 {  // args.Length>2
                     string cmd = args[1];
-                    string[] argsCmd = new string[args.Length-2];
-                    for (int i=2; i<args.Length; ++i)
-                        argsCmd[i-2] = args[i];
+                    string[] argsCmd = new string[args.Length - 2];
+                    for (int i = 2; i < args.Length; ++i)
+                        argsCmd[i - 2] = args[i];
                     value = Run(cmd, argsCmd);
                 }
                 ret = SetVariable(varName, value);
@@ -2135,7 +2155,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>Value of the variable.</returns>
-        protected virtual string CmdGetVariable(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdGetVariable(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2143,7 +2163,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " varName : returns the value of variable varName.");
                         Console.WriteLine();
@@ -2151,7 +2171,7 @@ namespace IG.Lib
                     }
             if (args == null)
                 throw new ArgumentException(cmdName + " : Requires 1 argument.");
-            else if (args.Length!=1)
+            else if (args.Length != 1)
                 throw new ArgumentNullException(cmdName + " : no arguments (null reference); variable name should be specified.");
             else if (args.Length != 1)
                 throw new ArgumentException(cmdName + " : invalid number of arguments, should be 1 (argument being variable name).");
@@ -2170,7 +2190,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
-        protected virtual string CmdClearVariable(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdClearVariable(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2178,7 +2198,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " varName : clears (removes) the variable varName.");
                         Console.WriteLine();
@@ -2205,7 +2225,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
-        protected virtual string CmdPrintVariable(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdPrintVariable(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2213,7 +2233,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " varName : prints the variable varName.");
                         Console.WriteLine();
@@ -2237,7 +2257,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
-        protected virtual string CmdWriteLine(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdWriteLine(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             string ret = CmdWrite(interpreter, cmdName, args);
@@ -2251,7 +2271,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
-        protected virtual string CmdWrite(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdWrite(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2259,7 +2279,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " arg1 arg2 ... : prints the arguments arg1, etc.");
                         Console.WriteLine();
@@ -2290,7 +2310,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>Result of the last command that is run.</returns>
-        protected virtual string CmdRunFile(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdRunFile(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2298,7 +2318,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " filePath : runs the file located at filePath.");
                         Console.WriteLine();
@@ -2325,7 +2345,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>Concatenated results of all runs, separated by spaces.</returns>
-        protected virtual string CmdRunRepeat(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdRunRepeat(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2333,7 +2353,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " numRep cmd arg1 arg2 ... : ");
                         Console.WriteLine("    runs the command specified number of times.");
@@ -2365,19 +2385,19 @@ namespace IG.Lib
         protected virtual string CmdThtrowExceptions(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
-            
+
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
-                        Console.WriteLine(Environment.NewLine 
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine(Environment.NewLine
                             + executableName + " " + cmdName + " <doThrow> : " + Environment.NewLine
                             + "  sets the flag for rethrowing exceptions." + Environment.NewLine
                             + "  When this flag is set, exceptions thrown in interactively run commands " + Environment.NewLine
                             + "    are rethrown, typically resulting in breaking the application." + Environment.NewLine
                             + "  doThrow: optional argument defining value of the flag (default true)."
-                            + Environment.NewLine );
+                            + Environment.NewLine);
                         Console.WriteLine(executableName + " " + cmdName + " command arg1 arg1 ... : runs commands interactively,"
                             + Environment.NewLine + "  running command with specified arguments before entering interactive mode.");
                         return null;
@@ -2405,7 +2425,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>Result of the last command that is run.</returns>
-        protected virtual string CmdRunInteractive(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdRunInteractive(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2413,7 +2433,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " : runs commands interactively.");
                         Console.WriteLine(executableName + " " + cmdName + " command arg1 arg1 ... : runs commands interactively,"
@@ -2429,7 +2449,7 @@ namespace IG.Lib
                     string command = args[0];
                     int numArgs = args.Length - 1;
                     string[] commandArgs = null;
-                    if (numArgs>=1)
+                    if (numArgs >= 1)
                     {
                         commandArgs = new string[numArgs];
                         for (int i = 0; i < numArgs; ++i)
@@ -2452,7 +2472,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name of this command.</param>
         /// <param name="args">Command arguments this command.</param>
         /// <returns>Result of the last command that is run.</returns>
-        protected virtual string CmdRunSystem(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdRunSystem(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2460,7 +2480,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " command arg1 arg2... : runs system command-line.");
                         Console.WriteLine("  command: command to be run (e.g. executable path)");
@@ -2472,11 +2492,13 @@ namespace IG.Lib
             {
                 ExecuteSystemCommandsInteractive();
                 return null;
-            } else if (args.Length < 1)
+            }
+            else if (args.Length < 1)
             {
                 ExecuteSystemCommandsInteractive();
                 return null;
-            } else
+            }
+            else
             {
                 ExecuteSystemCommand(args);
             }
@@ -2498,7 +2520,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + ": Runs interactive expression evaluator.");
                         Console.WriteLine();
@@ -2540,7 +2562,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " <threadPriority> : sets (and prints & returns) thread priority.");
                         Console.WriteLine("  threadPriority: the new thread priority (optional) that is set.");
@@ -2568,20 +2590,20 @@ namespace IG.Lib
                 sb.AppendLine();
                 if (defined)
                     sb.AppendLine(Environment.NewLine + "Settig thread priority to " + newPriority + "...");
-                else 
+                else
                     sb.AppendLine(Environment.NewLine + "Getting thread priority.");
                 sb.AppendLine("  Current global thread priority: " + UtilSystem.ThreadPriority);
                 sb.AppendLine("  Current interpreter's thread priority: " + this.ThreadPriority);
                 if (ParallelDispatcher == null)
                     sb.AppendLine("  Interpreter's parallel job dispatcher is not defined yet.");
-                else 
+                else
                     sb.AppendLine("  Interpreter's parallel dispatcher's priority: " + ParallelDispatcher.ThreadPriority);
             }
             if (defined)
             {
                 UtilSystem.ThreadPriority = newPriority;
                 this.ThreadPriority = newPriority;
-                if (_parallelDispatcher!=null)
+                if (_parallelDispatcher != null)
                     ParallelDispatcher.ThreadPriority = newPriority;
                 if (OutputLevel >= 1)
                 {
@@ -2590,7 +2612,7 @@ namespace IG.Lib
                     sb.AppendLine("  Interpreter's thread priority: " + this.ThreadPriority);
                     if (ParallelDispatcher == null)
                         sb.AppendLine("  Interpreter's parallel job dispatcher is not defined yet.");
-                    else 
+                    else
                         sb.AppendLine("  Interpreter's parallel dispatcher's priority: " + ParallelDispatcher.ThreadPriority);
                 }
             }
@@ -2614,7 +2636,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " command arg1 arg2... : runs comman in a parallel thread.");
                         Console.WriteLine("  command: command to be run ");
@@ -2630,9 +2652,9 @@ namespace IG.Lib
                 throw new ArgumentException("Arguments (command name and eventually its arguments) not specified.");
             string commandName = args[0];
             string[] commandArgumets = new string[args.Length - 1];
-            for (int i=1; i<args.Length; ++i)
+            for (int i = 1; i < args.Length; ++i)
             {
-                commandArgumets[i-1] = args[i];
+                commandArgumets[i - 1] = args[i];
             }
             return RunParallel(commandName, commandArgumets).ToString();
         }
@@ -2654,7 +2676,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " command numRepeats arg1 arg2... : runs comman in several parallel threads.");
                         Console.WriteLine("  command: command to be run ");
@@ -2674,7 +2696,7 @@ namespace IG.Lib
             string[] commandArgumets = new string[args.Length - 2];
             for (int i = 2; i < args.Length; ++i)
             {
-                commandArgumets[i-2] = args[i];
+                commandArgumets[i - 2] = args[i];
             }
             int[] ids = RunParallelRepeat(numRepetitions, commandName, commandArgumets);
             if (ids != null)
@@ -2704,7 +2726,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " <printAll> : prints the parallel commands.");
                         Console.WriteLine("  printall: specifies whether all commands are printed, including those already completed.");
@@ -2712,7 +2734,7 @@ namespace IG.Lib
                         return null;
                     }
             bool printAll = true;
-            if (args!=null)
+            if (args != null)
                 if (args.Length > 0)
                 {
                     bool defined = Util.TryParseBoolean(args[0], ref printAll);
@@ -2742,7 +2764,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " command arg1 arg2... : runs comman asynchronously.");
                         Console.WriteLine("  command: command to be run (e.g. executable path)");
@@ -2774,7 +2796,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " asyncCommandID : waits for results of asynchronous command execution.");
                         Console.WriteLine("  asyncCommandID: ID of the asynchronous invocation whose completion is waited for.");
@@ -2808,7 +2830,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " asyncCommandID : checks whether asynchronous command execution has completed.");
                         Console.WriteLine("  asyncCommandID: ID of the asynchronous invocation whose completion is waited for.");
@@ -2845,7 +2867,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " numSeconds : suspends execution for specified time.");
                         Console.WriteLine("  numSeconds: number of seconds (not necessarily integer) to sleep.");
@@ -2867,7 +2889,7 @@ namespace IG.Lib
                 Console.WriteLine();
                 Console.Write("Suspending execution for " + secondsToSleep + " seconds...");
             }
-            System.Threading.Thread.Sleep((int) (secondsToSleep * 1000.0));
+            System.Threading.Thread.Sleep((int)(secondsToSleep * 1000.0));
             if (OutputLevel > 0)
             {
                 Console.Write(Environment.NewLine + "    ... sleeping {0:G3} s done.", secondsToSleep);
@@ -2887,7 +2909,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
-        protected virtual string CmdLoadModule(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdLoadModule(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2895,7 +2917,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " moduleName : loads the module named moduleName.");
                         Console.WriteLine(executableName + " " + cmdName + " moduleName cmd arg1 arg2 ... : loads the module named moduleName,"
@@ -2910,11 +2932,11 @@ namespace IG.Lib
             else
             {
                 string moduleName = args[0];
-                    this.LoadModule(moduleName);
+                this.LoadModule(moduleName);
                 if (args.Length > 1)
                 {
                     string commandName = args[1];
-                    string[] commandArgs = new string[args.Length-2];
+                    string[] commandArgs = new string[args.Length - 2];
                     for (int i = 2; i < args.Length; ++i)
                         commandArgs[i - 2] = args[i];
                     ret = this.Run(commandName, commandArgs);
@@ -2923,7 +2945,7 @@ namespace IG.Lib
             return ret;
         }
 
-        
+
         /// <summary>Executinon method for command that checks if module is loaded.
         /// Writes to condole whether module is loaded or not, and returns "1" if module
         /// is loaded and "0" if not.</summary>
@@ -2937,7 +2959,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " modulename : checks whether the specified module is loaded.");
                         Console.WriteLine("  moduleName - name of the module that is checked.");
@@ -2946,9 +2968,9 @@ namespace IG.Lib
                         return null;
                     }
             string ret = "0";
-            if (args==null)
+            if (args == null)
                 throw new ArgumentNullException("Checking whether module has been installed: command has no arguments.");
-            else if (args.Length!=1)
+            else if (args.Length != 1)
                 throw new ArgumentNullException("Checking whether module has been installed: Invalid number of arguments, should be 1.");
             else
             {
@@ -2974,14 +2996,14 @@ namespace IG.Lib
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
-        protected virtual string CmdModuleTestCommand(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdModuleTestCommand(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " : test command that gets installed with every module.");
                         Console.WriteLine();
@@ -3022,7 +3044,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " : new test command (for modules), just prints its arguments.");
                         Console.WriteLine();
@@ -3052,6 +3074,659 @@ namespace IG.Lib
 
         #endregion ModuleCommands
 
+
+
+
+        #region NamedPipes
+
+
+
+        /// <summary>Client to the interpreter pipe server (classes derived from <see cref="InterpreterPipeServer"/>).</summary>
+        /// $A Igor xx Mar14;
+        public class InterpreterPipeClient : NamedPipeClientBase
+        {
+
+            #region Construction
+
+            /// <summary>Constructs a new named pipe client with the specified pipe name, default server address (<see cref="DefaultServerAddress"/>)
+            /// and default values for other paramters.</summary>
+            /// <param name="pipeName">Name of the pipe. Must not be null or empty string.</param>
+            public InterpreterPipeClient(string pipeName)
+                : base(pipeName)
+            { }
+
+            /// <summary>Constructs a new named pipe client with the specified pipe name, server address (<see cref="DefaultServerAddress"/>)
+            /// and default values for other paramters.</summary>
+            /// <param name="pipeName">Name of the pipe. Must not be null or empty string.</param>
+            /// <param name="serverAddress">Address of the server where named pipe server is run. If null or empty string then the
+            /// default server address is uesd (<see cref="DefaultServerAddress"/>), referring to the current computer.</param>
+            public InterpreterPipeClient(string pipeName, string serverAddress)
+                : base(pipeName, serverAddress)
+            { }
+
+            /// <summary>Constructs a new named pipe client with the specified pipe name, server address (<see cref="DefaultServerAddress"/>)
+            /// and other paramters.</summary>
+            /// <param name="pipeName">Name of the pipe.</param>
+            /// <param name="serverAddress">Address of the server where named pipe server is run. If null or empty string then the
+            /// default server address is uesd (<see cref="DefaultServerAddress"/>), referring to the current computer.</param>
+            /// <param name="requestEnd">Line that ends each request. If null or empty string then the requests are single line.</param>
+            /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
+            /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
+            /// i.e. <see cref="DefaultErrorBegin"/></param>
+            public InterpreterPipeClient(string pipeName, string serverAddress, string requestEnd, string responseEnd, string errorBegin) :
+                base(pipeName, serverAddress, requestEnd, responseEnd, errorBegin)
+            { }
+
+            #endregion Construction
+
+            #region Data
+
+            protected string _interpretersName = null;
+
+            public string InterpretersName
+            {
+                get { return _interpretersName; }
+                set { _interpretersName = value; }
+            }
+
+            #endregion Data
+
+        }  // class InterpreterPipeClient
+
+
+        /// <summary>Command-line interpreter's server that creates a named pipe, listens on its input stream
+        /// for client requests, executes requests in the corresponding interpreter, and sends responses back 
+        /// to the client.</summary>
+        /// $A Igor xx Jun;
+        public class InterpreterPipeServer : NamedPipeServerBase
+        {
+
+            /// <summary>Constructs a new pip server.</summary>
+            /// <param name="pipeName">Name of the pipe used for client-server communication.</param>
+            public InterpreterPipeServer(ICommandLineApplicationInterpreter interpreter, string pipeName)
+                : base(pipeName)
+            { Interpreter = interpreter; }
+
+            /// <summary>Constructs a new named pipe server with the specified pipe name and other paramters.</summary>
+            /// <param name="pipeName">Name of the pipe.</param>
+            /// <param name="requestEnd">Line that ends each request. If null or empty string then the requests are single line.</param>
+            /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
+            /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
+            /// i.e. <see cref="DefaultErrorBegin"/></param>
+            public InterpreterPipeServer(ICommandLineApplicationInterpreter interpreter, string pipeName, string requestEnd, string responseEnd, string errorBegin) :
+                base(pipeName, requestEnd, responseEnd, errorBegin)
+            { Interpreter = interpreter; }
+
+            protected ICommandLineApplicationInterpreter _interpreter;
+
+            public ICommandLineApplicationInterpreter Interpreter
+            {
+                get { return _interpreter; }
+                protected set { _interpreter = value; }
+            }
+
+
+            /// <summary>Calculates and returns response </summary>
+            /// <param name="request"></param>
+            /// <returns></returns>
+            public override string GetResponse(string request)
+            {
+                string ret = null;
+                try
+                {
+                    string[] commandLine = Interpreter.GetArguments(request);
+                    if (!Interpreter.ContainsCommand(commandLine[0]))
+                    {
+                        throw new ArgumentException("Pipe server's interpreter does not contain the command \"" + commandLine[0] + "\".");
+                    }
+                    ret = Interpreter.Run(commandLine);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                return ret;
+            }
+
+        }
+
+        SortedList<string, InterpreterPipeServer> _pipeServers = null;
+
+        /// <summary>Array of registered pipe servers, accessible through server name.</summary>
+        SortedList<string, InterpreterPipeServer> PipeServers
+        {
+            get
+            {
+                if (_pipeServers == null)
+                {
+                    lock (Lock)
+                    {
+                        if (_pipeServers == null)
+                            _pipeServers = new SortedList<string, InterpreterPipeServer>();
+                    }
+                }
+                return _pipeServers;
+            }
+        }
+
+        SortedList<string, InterpreterPipeClient> _pipeClients = null;
+
+        /// <summary>Array of registered pipe clients, accessible through client name.</summary>
+        SortedList<string, InterpreterPipeClient> PipeClients
+        {
+            get
+            {
+                if (_pipeClients == null)
+                {
+                    lock (Lock)
+                    {
+                        if (_pipeClients == null)
+                            _pipeClients = new SortedList<string, InterpreterPipeClient>();
+                    }
+                }
+                return _pipeClients;
+            }
+        }
+
+
+        #region NamedPipes.InterpreterCommandsServer
+
+
+        /// <summary>Creates and registers a new interpreter's named pipe server.</summary>
+        /// <param name="pipeName">Name of the pipe where the server listens.</param>
+        /// <param name="serverName">name of the pipe server. If not specified then it is the  same as pipe name.</param>
+        /// <returns>The created named pipe server.</returns>
+        public InterpreterPipeServer CreatePipeServer(string pipeName, string serverName = null, bool createCommand = false)
+        {
+            if (string.IsNullOrEmpty(pipeName))
+                throw new ArgumentException("Name of the named pipe is not specified (null or empty string).");
+            if (serverName == null)
+                serverName = pipeName;
+            InterpreterPipeServer server = new InterpreterPipeServer(this, pipeName);
+            PipeServers.Add(serverName, server);
+            server.ThreadServe();
+            return server;
+        }
+
+
+        /// <summary>Removes the specified interpreter's named pipe servers. Servers are stopped and their pipes closed.
+        /// Returns a string contaiing information about the removed servers.</summary>
+        /// <param name="serverNames">Names of the servers to be removed.</param>
+        /// <returns>A string containing basic information about the removed servers (i.e. their interpreter's names and pipe names).</returns>
+        public string RemovePipeServers(params string[] serverNames)
+        {
+            StringBuilder sb = new StringBuilder();
+            lock (Lock)
+            {
+                int numNames = 0;
+                if (serverNames == null)
+                    numNames = serverNames.Length;
+                if (numNames == 0)
+                {
+                    IList<string> keys = PipeServers.Keys;
+                    int numKeys = PipeServers.Keys.Count;
+                    if (numKeys > 0)
+                    {
+                        serverNames = new string[numKeys];
+                        numNames = numKeys;
+                        for (int i = 0; i < numKeys; ++i)
+                        {
+                            serverNames[i] = keys[i];
+                        }
+                    }
+                }
+                for (int i = 0; i < numNames; ++i)
+                {
+                    string serverName = serverNames[i];
+                    if (PipeServers.ContainsKey(serverName))
+                    {
+                        InterpreterPipeServer server = PipeServers[serverName];
+                        PipeServers.Remove(serverName);
+                        if (server != null)
+                        {
+                            server.ClosePipe();
+                            server.StopServer();
+                            sb.AppendLine(serverName + ":" + server.PipeName);
+                        }
+                    }
+                }
+            }
+            return sb.ToString();
+        }
+
+
+
+        /// <summary>Returns a string containing informattion on the installed named pipe servers.</summary>
+        /// <param name="serverName">Name of the pipe server (optional). If specified then information is returned only for the 
+        /// server with this particular name (otherwise information is returned for all installed servers).</param>
+        /// <returns></returns>
+        public string PipeServerInfo(string serverName = null)
+        {
+            if (!string.IsNullOrEmpty(serverName))
+            {
+                string ret = null;
+                if (PipeServers.ContainsKey(serverName))
+                {
+                    InterpreterPipeServer server = PipeServers[serverName];
+                    ret = server.ToString();
+                }
+                return ret;
+            }
+            else
+            {
+                StringBuilder sb = new StringBuilder();
+                if (PipeServers.Count < 1)
+                    sb.AppendLine("There are no pipe servers installed on the interpreter.");
+                else
+                {
+                    sb.AppendLine("Pipe servers installed on the interpreter: ");
+                    IList<string> serverNames = PipeServers.Keys;
+                    for (int i = 0; i < serverNames.Count; ++i)
+                    {
+                        string currentServerName = serverNames[i];
+                        InterpreterPipeServer server = PipeServers[currentServerName];
+                        sb.AppendLine(Environment.NewLine + "Named pipe server \"" + currentServerName + "\":"
+                            + Environment.NewLine + server.ToString());
+                    }
+                }
+                return sb.ToString();
+            }
+        }
+
+
+        /// <summary>Command.
+        /// Creates a new server that listens for interpreter commands on a named pipe, executes them, and writes result
+        /// back to the named pipe.
+        /// Command arguments are pipe name and server name (optional, if not specified then server name is the same as pipe name).</summary>
+        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>A string containing some basic data on the created pipe server.</returns>
+        protected virtual string CmdPipeServerCreate(ICommandLineApplicationInterpreter interpreter,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " pipeName <serverName>: creates a named pipe server." + Environment.NewLine
+                            + "  pipeName: name of the named pipe on which the server listens for requests. " + Environment.NewLine
+                            + "  serverName: name of the server (if omitted, it is set equal to the corresponding pipe name).");
+                        Console.WriteLine();
+                        return null;
+                    }
+            if (args == null)
+                throw new ArgumentException(cmdName + " : Requires at least 1 argument.");
+            else if (args.Length < 1)
+                throw new ArgumentException(cmdName + " : Invalid number of arguments, should be at least 1 (1st argument being pipe name).");
+            else
+            {
+                string pipeName = args[0];
+                string serverName = pipeName;
+                if (args.Length > 1)
+                    serverName = args[1];
+                InterpreterPipeServer server = CreatePipeServer(pipeName, serverName);
+                ret = "PipeServer " + serverName + ", PipeName = '" + pipeName + "'.";
+
+            }
+            return ret;
+        }
+
+
+        /// <summary>Command.
+        /// Removes the spcified (or all, if names are not specified) named pipe servers.
+        /// Command arguments are names of the pipe servers to be removed. If none is specified then all pipe servers 
+        /// installed on the interperter are removed.</summary>
+        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <returns>A string containing the information on the removed servers (their interpreter's names and pipe names).</returns>
+        protected virtual string CmdPipeServersRemove(ICommandLineApplicationInterpreter interpreter,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <serverName1 serverName2 ...> : removes named pipe servers." + Environment.NewLine
+                            + "  serverName1, ...: names of the named pipe servers to be removed. " + Environment.NewLine
+                            + "    If no names are specified then all pipe servers are removed.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            {
+                ret = RemovePipeServers(args);
+                Console.WriteLine("Removed the following named pipe servers: " + Environment.NewLine + ret);
+            }
+            return ret;
+        }
+
+
+        /// <summary>Command.
+        /// Prints and returns inormation on the installed named pipe servers.
+        /// Optional command argument is server name. If not specified then information about all installed servers is printed and returned.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <returns>A string containing the information on pipe servers.</returns>
+        protected virtual string CmdPipeServerInfo(ICommandLineApplicationInterpreter interpreter,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <serverName>: Prints information about installed pipe servers." + Environment.NewLine
+                            + "  serverName: name of the server for which information is printed. If omitted then info for all servers is printed.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            {
+                string serverName = null;
+                if (args != null) if (args.Length >= 1)
+                        serverName = args[0];
+                ret = PipeServerInfo(serverName);
+                Console.WriteLine(ret);
+            }
+            return ret;
+        }
+
+
+        #endregion NamedPipes.InterpreterCommandsServer
+
+
+
+        #region NamedPipes.InterpreterCommandsClient
+
+
+        /// <summary>Creates and registers a new interpreter's named pipe client.</summary>
+        /// <param name="pipeName">Name of the pipe where the client listens.</param>
+        /// <param name="clientName">name of the pipe client. If not specified then it is the  same as pipe name.</param>
+        /// <param name="createCommand">Whether command for direct access is created or not. If true then an interpreter command with the
+        /// same name as the name of the client is created, which can be directly used for sending requests by the created
+        /// client (without specifying the command for sending a request first and then the server name and then the actual command).</param>
+        /// <returns>The created named pipe client.</returns>
+        public InterpreterPipeClient CreatePipeClient(string pipeName, string clientName = null, bool createCommand = false)
+        {
+            if (string.IsNullOrEmpty(pipeName))
+                throw new ArgumentException("Name of the named pipe is not specified (null or empty string).");
+            if (clientName == null)
+                clientName = pipeName;
+            InterpreterPipeClient client = new InterpreterPipeClient(pipeName);
+            PipeClients.Add(clientName, client);
+            return client;
+        }
+
+        /// <summary>Removes the specified interpreter's named pipe clients. Client's pipes are closed.
+        /// Returns a string contaiing information about the removed clients.</summary>
+        /// <param name="clientNames">Names of the clients to be removed.</param>
+        /// <returns>A string containing basic information about the removed clients (i.e. their interpreter's names and pipe names).</returns>
+        public string RemovePipeClients(params string[] clientNames)
+        {
+            StringBuilder sb = new StringBuilder();
+            lock (Lock)
+            {
+                int numNames = 0;
+                if (clientNames == null)
+                    numNames = clientNames.Length;
+                if (numNames == 0)
+                {
+                    IList<string> keys = PipeClients.Keys;
+                    int numKeys = PipeClients.Keys.Count;
+                    if (numKeys > 0)
+                    {
+                        clientNames = new string[numKeys];
+                        numNames = numKeys;
+                        for (int i = 0; i < numKeys; ++i)
+                        {
+                            clientNames[i] = keys[i];
+                        }
+                    }
+                }
+                for (int i = 0; i < numNames; ++i)
+                {
+                    string clientName = clientNames[i];
+                    if (PipeClients.ContainsKey(clientName))
+                    {
+                        InterpreterPipeClient client = PipeClients[clientName];
+                        PipeClients.Remove(clientName);
+                        if (client != null)
+                        {
+                            client.ClosePipe();
+                            sb.AppendLine(clientName + ":" + client.PipeName);
+                        }
+                    }
+                }
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>Returns a string containing informattion on the installed named pipe clients.</summary>
+        /// <param name="clientName">Name of the pipe client. If specified then information is returned only for the 
+        /// client with this particular name (otherwise information is returned for all installed clients).</param>
+        /// <returns></returns>
+        public string PipeClientInfo(string clientName = null)
+        {
+            if (!string.IsNullOrEmpty(clientName))
+            {
+                string ret = null;
+                if (PipeClients.ContainsKey(clientName))
+                {
+                    InterpreterPipeClient client = PipeClients[clientName];
+                    ret = client.ToString();
+                }
+                return ret;
+            }
+            else
+            {
+                StringBuilder sb = new StringBuilder();
+                if (PipeClients.Count < 1)
+                    sb.AppendLine("There are no pipe clients installed on the interpreter.");
+                else
+                {
+                    sb.AppendLine("Pipe clients installed on the interpreter: ");
+                    IList<string> clientNames = PipeClients.Keys;
+                    for (int i = 0; i < clientNames.Count; ++i)
+                    {
+                        string currentClientName = clientNames[i];
+                        InterpreterPipeClient client = PipeClients[currentClientName];
+                        sb.AppendLine(Environment.NewLine + "Named pipe client \"" + currentClientName + "\":"
+                            + Environment.NewLine + client.ToString());
+                    }
+                }
+                return sb.ToString();
+            }
+        }
+
+
+
+        /// <summary>Sends the specified command to the corresponding pipe serverr and reads and returns its response.</summary>
+        /// <param name="clientName">Name of the pipe client that sends the request to the named pipe server and returns the response.</param>
+        /// <param name="commandLineString">Comandline string that is sent to the server as request.</param>
+        /// <returns>Response obtained from the named pipe server with which client is connected.</returns>
+        public string PipeClientGetServerResponse(string clientName, string commandLineString)
+        {
+            string ret = null;
+            if (string.IsNullOrEmpty(clientName))
+                throw new ArgumentException("Pipe client name not specified (null or empty string).");
+            if (!PipeClients.ContainsKey(clientName))
+            {
+                throw new ArgumentException("Pipe client does not exist: \"" + clientName + "\".");
+            }
+            else
+            {
+                InterpreterPipeClient client = PipeClients[clientName];
+                // string commandLine = UtilStr.GetCommandLine(args);
+                ret = client.GetServerResponse(commandLineString);
+            }
+            return ret;
+        }
+
+
+        /// <summary>Command.
+        /// Creates a new client to the interpreter pipe server. The client can send command to the server listening on the
+        /// specified named pipe, and recieves responses from the server and returns them.
+        /// Command arguments are pipe name and client name (optional, if not specified then server name is the same as pipe name).</summary>
+        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <returns>A string containing the information on pipe clients.</returns>
+        protected virtual string CmdPipeClientCreate(ICommandLineApplicationInterpreter interpreter,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " pipeName <clientName>: creates a named pipe client." + Environment.NewLine
+                            + "  pipeName: name of the named pipe on which the client sends requests to the server. " + Environment.NewLine
+                            + "  clientName: name of the client (if omitted, it is set equal to the corresponding pipe name).");
+                        Console.WriteLine();
+                        return null;
+                    }
+            if (args == null)
+                throw new ArgumentException(cmdName + " : Requires at least 1 argument.");
+            else if (args.Length < 1)
+                throw new ArgumentException(cmdName + " : Invalid number of arguments, should be at least 1 (1st argument being pipe name).");
+            else
+            {
+                string pipeName = args[0];
+                string clientName = pipeName;
+                if (args.Length > 1)
+                    clientName = args[1];
+                InterpreterPipeClient client = CreatePipeClient(pipeName, clientName, false);
+                ret = "PipeClient " + clientName + ", PipeName = '" + pipeName + "'.";
+            }
+            return ret;
+        }
+
+        /// <summary>Command.
+        /// Removes the spcified (or all, if names are not specified) named pipe clients.
+        /// Command arguments are names of the pipe clients to be removed. If none is specified then all pipe clients 
+        /// installed on the interperter are removed.</summary>
+        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <returns>A string containing the information on the removed clients (their interpreter's names and pipe names).</returns>
+        protected virtual string CmdPipeClientsRemove(ICommandLineApplicationInterpreter interpreter,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <clientName1 clientName2 ...> : removes named pipe clients." + Environment.NewLine
+                            + "  clientName1, ...: names of the named pipe clients to be removed. " + Environment.NewLine
+                            + "    If no names are specified then all pipe clients are removed.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            {
+                ret = RemovePipeClients(args);
+                Console.WriteLine("Removed the following named pipe clients: " + Environment.NewLine + ret);
+            }
+            return ret;
+        }
+
+
+
+        /// <summary>Command.
+        /// Prints and returns inormation on the installed named pipe clients.
+        /// Optional command argument is client name. If not specified then information about all installed clients is printed and returned.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <returns>A string containing some basic data on the created pipe client.</returns>
+        protected virtual string CmdPipeClientInfo(ICommandLineApplicationInterpreter interpreter,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <clientName>: Prints information about installed pipe clients." + Environment.NewLine
+                            + "  clientName: name of the client for which information is printed. If omitted then info for all clients is printed.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            {
+                string clientName = null;
+                if (args != null) if (args.Length >= 1)
+                        clientName = args[0];
+                ret = PipeClientInfo(clientName);
+                Console.WriteLine(ret);
+            }
+            return ret;
+        }
+
+        /// <summary>Command.
+        /// Sends the specified command to the corresponding pipe serverr and reads and returns its response.
+        /// Command argument is the (interpreter's) name of the pipe client followed by command and eventual arguments sent to the server.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <returns>Server response.</returns>
+        protected virtual string CmdPipeClientGetServerResponse(ICommandLineApplicationInterpreter interpreter,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " clientName commandName <arg 1 arg2 ...>: " + Environment.NewLine 
+                            + "  Seds a command to the named pipe server corresponding to the client, and returns server response." + Environment.NewLine
+                            + "  clientName: name of the client that is used to send the request to the server." + Environment.NewLine
+                            + "  commandName: name of the commands that is sent to the server for execution." + Environment.NewLine
+                            + "  arrg1, arg2, ...: optional arguments to the command sent to the server.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            if (args == null)
+                throw new ArgumentException(cmdName + " : Requires at least 1 argument (client name).");
+            else if (args.Length < 1)
+                throw new ArgumentException(cmdName + " : Requires at least 1 argument (client name).");
+            else
+            {
+                string clientName = clientName = args[0];
+                string commandLine = null;
+                int numArgs = args.Length;
+                if (numArgs > 1)
+                {
+                    string[] commandLineParts = new string[numArgs - 1];
+                    for (int i = 0; i < numArgs - 1; ++i)
+                    {
+                        commandLineParts[i] = args[i + 1];
+                    }
+                    commandLine = UtilStr.GetCommandLine(commandLineParts);
+
+                }
+                ret = PipeClientGetServerResponse(clientName, commandLine);
+            }
+            return ret;
+        }
+
+
+
+        #endregion NamedPipes.InterpreterCommandsClient
+
+
+
+        #endregion NamedPipes
+
+
+
         #region LoadableScriptCommands
 
 
@@ -3072,7 +3747,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " classFullName arg1 arg2 ... :" + Environment.NewLine
                             + "  runs a command based on internal (compiled) scrip class.");
@@ -3125,7 +3800,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " scriptFile arg1 arg2 ... :" + Environment.NewLine
                             + "  runs a command based on dynamically compiled script loaded form a file.");
@@ -3166,14 +3841,14 @@ namespace IG.Lib
         /// <param name="commandName">Name of the command</param>
         /// <param name="commandArgumens">Command arguments.</param>
         /// <returns>null string.</returns>
-        protected virtual string CmdLoadScript(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdLoadScript(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " cmdName scriptFile initArg1 initArg2 ... :" + Environment.NewLine
                             + "  instals a new command based on dynamically compiled script loaded form a file.");
@@ -3223,14 +3898,14 @@ namespace IG.Lib
         /// <param name="commandArgumens">Command arguments. These arguments are directly passed to the 
         /// executable method on the corresponding class.</param>
         /// <returns>Result of command execution.</returns>
-        protected virtual string CmdRunLoadedScript(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdRunLoadedScript(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " arg1 arg2 ... : runs a dynamically loaded script.");
                         Console.WriteLine("  All arguments are directly passed to the executable method of the corresponding "
@@ -3260,14 +3935,14 @@ namespace IG.Lib
         /// <param name="commandName">Name of the command.</param>
         /// <param name="commandArgumens">Command arguments.</param>
         /// <returns>Result of command execution, a list of all referenced assemblies.</returns>
-        protected virtual string WriteLoadableScriptReferencedAssemblies(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string WriteLoadableScriptReferencedAssemblies(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " : Writes a list of all assemblies referenced by .");
                         Console.WriteLine("  the dynamic script loader. ");
@@ -3301,10 +3976,10 @@ namespace IG.Lib
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
-        protected virtual string CmdExit(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdExit(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
-            string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            string executableName = UtilSystem.GetCurrentProcessExecutableName();
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
@@ -3323,10 +3998,10 @@ namespace IG.Lib
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
-        protected virtual string CmdHelp(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdHelp(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
-            string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            string executableName = UtilSystem.GetCurrentProcessExecutableName();
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
@@ -3336,33 +4011,35 @@ namespace IG.Lib
                         Console.WriteLine();
                         Console.WriteLine("Help for the whole command interpreter follows below.");
                     }
-            Console.WriteLine();
-            Console.WriteLine("Run commands in the following way: ");
-            Console.WriteLine("  " + executableName + " commandName arg1 arg2 arg3 ...");
-            Console.WriteLine("where:");
-            Console.WriteLine("  cmd: command name to start the host application ");
-            Console.WriteLine("  commandName: application name ");
-            Console.WriteLine("  arg1, arg2, arg3...: application arguments separated by spaces. ");
-            Console.WriteLine();
-            Console.WriteLine("Installed applications by names: ");
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine();
+            sb.AppendLine("Run commands in the following way: ");
+            sb.AppendLine("  " + executableName + " commandName arg1 arg2 arg3 ...");
+            sb.AppendLine("where:");
+            sb.AppendLine("  cmd: command name to start the host application ");
+            sb.AppendLine("  commandName: application name ");
+            sb.AppendLine("  arg1, arg2, arg3...: application arguments separated by spaces. ");
+            sb.AppendLine();
+            sb.AppendLine("Installed applications by names: ");
             if (_commands == null)
-                Console.WriteLine("  No applications (null reference).");
+                sb.AppendLine("  No applications (null reference).");
             else if (_commands.Count < 1)
-                Console.WriteLine("  No applications. ");
+                sb.AppendLine("  No applications. ");
             else
             {
-                Console.Write(" ");
+                sb.Append(" ");
                 foreach (KeyValuePair<string, ApplicationCommandDelegate> pair in _commands)
                 {
-                    Console.WriteLine("  " + pair.Key );
+                    sb.AppendLine("  " + pair.Key);
                 }
-                Console.WriteLine();
+                sb.AppendLine();
             }
-            Console.WriteLine();
-            Console.WriteLine("Standard command for individual application's help: ");
-            Console.WriteLine("  " + executableName + " commandName ? ");
-            Console.WriteLine();
-            return null;
+            sb.AppendLine();
+            sb.AppendLine("Standard command for individual application's help: ");
+            sb.AppendLine("  " + executableName + " commandName ? ");
+            sb.AppendLine();
+            // Console.WriteLine(sb.ToString());
+            return sb.ToString();
         }
 
         /// <summary>Execution method that prints some information about the application.</summary>
@@ -3375,7 +4052,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " : prints some basic information about the current command interpreter.");
                         Console.WriteLine();
@@ -3391,14 +4068,14 @@ namespace IG.Lib
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
-        protected virtual string CmdComment(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdComment(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " whateverArgs : Comment. Ignores this line.");
                         Console.WriteLine();
@@ -3411,14 +4088,14 @@ namespace IG.Lib
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
-        protected virtual string CmdPrintCommands(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdPrintCommands(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " : prints all commands installed.");
                         Console.WriteLine();
@@ -3435,7 +4112,7 @@ namespace IG.Lib
                 Console.Write(" ");
                 foreach (KeyValuePair<string, ApplicationCommandDelegate> pair in _commands)
                 {
-                    Console.WriteLine("  " + pair.Key );
+                    Console.WriteLine("  " + pair.Key);
                 }
                 Console.WriteLine();
             }
@@ -3448,14 +4125,14 @@ namespace IG.Lib
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
-        protected virtual string CmdTest(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdTest(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " : test command, just prints its arguments.");
                         Console.WriteLine();
@@ -3510,7 +4187,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " numRepeats : tests current speed of numerical computation.");
                         Console.WriteLine("  numRepeats: number of times the test is repeated (to calculate average time).");
@@ -3565,7 +4242,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " numRepeats : " + Environment.NewLine
                             + " tests current speed of numerical computation (longer test).");
@@ -3592,11 +4269,11 @@ namespace IG.Lib
                 }
                 double currentTime = TestComputationalTimesQR(numEquations, 0);
                 totalTime += currentTime;
-                averageTime = totalTime / (double) i;
+                averageTime = totalTime / (double)i;
                 if (numRepeats > 1)
                 {
-                    Console.WriteLine("... done (" + i + "/" + numRepeats + ", thread " + threadId + ")" 
-                        + Environment.NewLine + "        in " + currentTime +  " s.");
+                    Console.WriteLine("... done (" + i + "/" + numRepeats + ", thread " + threadId + ")"
+                        + Environment.NewLine + "        in " + currentTime + " s.");
                     Console.WriteLine("    Average time: " + averageTime + " s, factor: " + (TestSpeedLongReferenceTime / averageTime));
                 }
             }
@@ -3619,17 +4296,17 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>Total wallclock time spent for computation.</returns>
-        protected virtual string CmdTestQR(ICommandLineApplicationInterpreter interpreter, 
+        protected virtual string CmdTestQR(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + "  dimension <numRep> : " + Environment.NewLine 
-                            +"  tests QR dcomposition and prints execution times.");
+                        Console.WriteLine(executableName + " " + cmdName + "  dimension <numRep> : " + Environment.NewLine
+                            + "  tests QR dcomposition and prints execution times.");
                         Console.WriteLine("  dimension: number of equations (optional; default is " + DefaultNumEquations + ")");
                         Console.WriteLine("  numRep: number of repetitions of test (optional; default is " + 1 + ")");
                         Console.WriteLine();
@@ -3694,7 +4371,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + "  dimension <numRep> : " + Environment.NewLine
                             + "  tests LU dcomposition and prints execution times.");
