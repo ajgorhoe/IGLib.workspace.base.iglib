@@ -47,6 +47,21 @@ namespace IG.Gr
 
         #region Data.Basic
 
+
+
+        /// <summary>Gets/sets width of the top level control containing the ZedGraph control.</summary>
+        public int WindowWidth
+        {
+            get { return Window.TopLevelControl.Width;  }
+            set { Window.TopLevelControl.Width = value; }
+        }
+
+        /// <summary>Gets/sets height of the top level control containing the ZedGraph control.</summary>
+        public int WindowHeight
+        {
+            get { return Window.TopLevelControl.Height; }
+            set { Window.TopLevelControl.Height = value; }
+        }
                 
         private ZedGraphControl _window;
 
@@ -59,7 +74,7 @@ namespace IG.Gr
                 {
                     if (_window == null)
                     {
-                        throw new NotImplementedException("Not yet implemented: can not handle stuations where YedGraph control is not specified.");
+                        throw new NotImplementedException("Not yet implemented: can not handle stuations where ZedGraph control is not specified.");
                     }
                     return _window;
                 }

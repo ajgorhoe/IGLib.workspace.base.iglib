@@ -39,7 +39,8 @@ namespace IG.Gr
 		/// </summary>
 		private void InitializeComponent()
 		{
-            this.GraphControl = new ZedGraph.ZedGraphControl();
+            this.components = new System.ComponentModel.Container();
+            this._graphControl = new ZedGraph.ZedGraphControl();
             this.grbox1 = new System.Windows.Forms.GroupBox();
             this.chkBlackBg = new System.Windows.Forms.CheckBox();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -48,23 +49,23 @@ namespace IG.Gr
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // GraphControl
+            // _graphControl
             // 
-            this.GraphControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.GraphControl.EditButtons = System.Windows.Forms.MouseButtons.Left;
-            this.GraphControl.IsAutoScrollRange = true;
-            this.GraphControl.Location = new System.Drawing.Point(0, 0);
-            this.GraphControl.Name = "GraphControl";
-            this.GraphControl.PanModifierKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.None)));
-            this.GraphControl.ScrollGrace = 0D;
-            this.GraphControl.ScrollMaxX = 0D;
-            this.GraphControl.ScrollMaxY = 0D;
-            this.GraphControl.ScrollMaxY2 = 0D;
-            this.GraphControl.ScrollMinX = 0D;
-            this.GraphControl.ScrollMinY = 0D;
-            this.GraphControl.ScrollMinY2 = 0D;
-            this.GraphControl.Size = new System.Drawing.Size(698, 636);
-            this.GraphControl.TabIndex = 0;
+            this._graphControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._graphControl.EditButtons = System.Windows.Forms.MouseButtons.Left;
+            this._graphControl.IsAutoScrollRange = true;
+            this._graphControl.Location = new System.Drawing.Point(0, 0);
+            this._graphControl.Name = "_graphControl";
+            this._graphControl.PanModifierKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.None)));
+            this._graphControl.ScrollGrace = 0D;
+            this._graphControl.ScrollMaxX = 0D;
+            this._graphControl.ScrollMaxY = 0D;
+            this._graphControl.ScrollMaxY2 = 0D;
+            this._graphControl.ScrollMinX = 0D;
+            this._graphControl.ScrollMinY = 0D;
+            this._graphControl.ScrollMinY2 = 0D;
+            this._graphControl.Size = new System.Drawing.Size(698, 636);
+            this._graphControl.TabIndex = 0;
             // 
             // grbox1
             // 
@@ -107,7 +108,7 @@ namespace IG.Gr
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.GraphControl);
+            this.panel1.Controls.Add(this._graphControl);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(698, 636);
@@ -136,12 +137,15 @@ namespace IG.Gr
 
         protected ZedGraph.ZedGraphControl _graphControl;
 
+
+
         /// <summary>Zedgraph control that is used for plotting.</summary>
         public ZedGraph.ZedGraphControl GraphControl
-        { 
+        {
             get { return _graphControl; }
             protected set { _graphControl = value; }
         }
+
 
 
         private System.Windows.Forms.GroupBox grbox1;

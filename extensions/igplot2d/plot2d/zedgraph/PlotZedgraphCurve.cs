@@ -16,7 +16,7 @@ using DashStyle = System.Drawing.Drawing2D.DashStyle;
 namespace IG.Gr
 {
 
-    /// <summary>Curve plots thst is shown on a <see cref="ZedGraphControl"/> object.</summary>
+    /// <summary>Curve plots that is shown on a <see cref="ZedGraphControl"/> object.</summary>
     /// <remarks>
     /// <para>Line and point settings can be specified such that look of the curve plotted is finely adjusted.</para>
     /// <para>Symbol to draw points can be specified as <see cref="SymbolType"/> enum or as integer, which is useful in 
