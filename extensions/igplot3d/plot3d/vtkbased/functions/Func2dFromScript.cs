@@ -26,7 +26,7 @@ namespace IG.Num
 
         // TODO: add different constructurs (with different sets of arguments) for convenience!
 
-        // TODO: maybe add default variable names such as "x", "y", ..., and dd functions where you don't need to specify these
+        // TODO: maybe add default variable names such as "x", "y", ..., and add functions where you don't need to specify these
 
 
         /// <summary>Constructs a scalar function of 2 variables from the specified scalar function 

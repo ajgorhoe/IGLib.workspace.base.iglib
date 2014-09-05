@@ -9,11 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace IG.Neural.Applications.Functions
+using IG.Lib;
+using IG.Num;
+
+namespace IG.Forms
 {
 
-    /// <summary>Window for definition of scalar functions by expressions (through script loader).</summary>
-    /// $A Igor;
+    /// <summary>Window for definition of scalar functions by user defined expressions (through script loader).</summary>
+    /// $A Igor Jun14;
     public partial class ScalarFunctionScriptWindow : Form
     {
         public ScalarFunctionScriptWindow()

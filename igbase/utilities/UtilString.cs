@@ -37,6 +37,142 @@ namespace IG.Lib
             }
         }
 
+        /// <summary>Returns true if the specified arrays are equal (i.e. all corresponding values are equal or 
+        /// both arrays are null), false if not.</summary>
+        /// <param name="originals">First array of strings to be compared.</param>
+        /// <param name="compared">Second array of strings to be compared.</param>
+        public static bool ArraysEqual<ElementType>(ElementType[] originals, ElementType[] compared)
+            where ElementType: IComparable<ElementType>
+        {
+            if (originals == null)
+            {
+                if (compared == null)
+                    return true;
+            }
+            else if (compared == null)
+                return false;
+            else
+            {
+                if (originals.Length != compared.Length)
+                    return false;
+                for (int i = 0; i < originals.Length; ++i)
+                {
+                    if (!EqualityComparer<ElementType>.Default.Equals(originals[i], compared[i]))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+
+        /// <summary>Returns true if the specified string arrays are equal (i.e. all corresponding values are equal or 
+        /// both arrays are null), false if not.</summary>
+        /// <param name="originals">First array of strings to be compared.</param>
+        /// <param name="compared">Second array of strings to be compared.</param>
+        public static bool StringArraysEqual(string[] originals, string[] compared)
+        {
+            if (originals == null)
+            {
+                if (compared == null)
+                    return true;
+            }
+            else if (compared == null)
+                return false;
+            else
+            {
+                if (originals.Length != compared.Length)
+                    return false;
+                for (int i = 0; i < originals.Length; ++i)
+                {
+                    if (originals[i] != compared[i])
+                        return false;
+                }
+            }
+            return true;
+        }
+
+
+        #region ParameterLists
+
+
+        /// <summary>Returns a string array of parameters represented by the specified comma separated list in string form.</summary>
+        /// <param name="listString">List of parameters in string form, comma separated and with possible whitespaces between them.</param>
+        /// <returns></returns>
+        public static string[] GetParametersArrayPlain(string listString)
+        {
+            if (listString == null)
+                return null;
+            else
+            {
+                string [] parNames = listString.Split(',');
+                for (int i=0; i<parNames.Length; ++i)
+                {
+                    parNames[i] = parNames[i].Trim();
+                }
+                return parNames;
+            }
+        }
+
+        /// <summary>Returns a string representation of the list of parameters, 
+        /// separated by commas but not embedded in any braces.</summary>
+        /// <param name="parameters">Array of parameters from which a comma separated list string is formed.</param>
+        public static string GetParametersStringPlain(string[] parameters)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (parameters != null)
+            {
+                for (int i = 0; i < parameters.Length; ++i)
+                {
+                    sb.Append(parameters[i]);
+                    if (i < parameters.Length - 1)
+                        sb.Append(", ");
+                }
+            }
+            return sb.ToString();
+        }
+
+
+        /// <summary>Returns a string array of parameters represented by the specified comma separated list in string form.</summary>
+        /// <param name="linesString">List of parameters in string form, comma separated and with possible whitespaces between them.</param>
+        public static string[] GetLines(string linesString, bool doTrim = true)
+        {
+            if (linesString == null)
+                return null;
+            else
+            {
+                string[] parNames = linesString.Split('\n');
+                if (doTrim)
+                {
+                    for (int i = 0; i < parNames.Length; ++i)
+                    {
+                        parNames[i] = parNames[i].Trim();
+                    }
+                }
+                return parNames;
+            }
+        }
+
+        /// <summary>Returns a string representation of the list of lines, 
+        /// separated by newlines.</summary>
+        /// <param name="lines">Array of parameters from which a comma separated list string is formed.</param>
+        public static string GetLinesStringPlain(string[] lines)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (lines != null)
+            {
+                for (int i = 0; i < lines.Length; ++i)
+                {
+                    sb.Append(lines[i]);
+                    if (i < lines.Length - 1)
+                        sb.Append(Environment.NewLine);
+                }
+            }
+            return sb.ToString();
+        }
+
+
+
+        #endregion ParameterLists
 
         #region CommandLine
 

@@ -808,17 +808,18 @@ namespace IG.Lib
         /// separated by commas but not embedded in any braces.</summary>
         public string GetParametersPlainListString()
         {
-            StringBuilder sb = new StringBuilder();
-            if (IndependentVariableNames != null)
-            {
-                for (int i = 0; i < IndependentVariableNames.Length; ++i)
-                {
-                    sb.Append(IndependentVariableNames[i]);
-                    if (i < IndependentVariableNames.Length - 1)
-                        sb.Append(", ");
-                }
-            }
-            return sb.ToString();
+            return UtilStr.GetParametersStringPlain(IndependentVariableNames);
+            //StringBuilder sb = new StringBuilder();
+            //if (IndependentVariableNames != null)
+            //{
+            //    for (int i = 0; i < IndependentVariableNames.Length; ++i)
+            //    {
+            //        sb.Append(IndependentVariableNames[i]);
+            //        if (i < IndependentVariableNames.Length - 1)
+            //            sb.Append(", ");
+            //    }
+            //}
+            //return sb.ToString();
         }
 
         /// <summary>Generates and returns script code for dynamically loadable function definition.</summary>
@@ -976,6 +977,8 @@ namespace IG.Script
         }
 
 
+        LoadableScriptScalarFunctionBase _creator;
+
         /// <summary>Returns an object of the dynamically compiled class that can create function objects.</summary>
         public LoadableScriptScalarFunctionBase Creator
         {
@@ -983,10 +986,42 @@ namespace IG.Script
             {
                 lock (Lock)
                 {
-                    if (!IsCompiled)
+                    if (!IsCompiled || _creator == null)
+                    {
+                        _function = null;
                         Compile();
-                    return Loader.CreateLoadableObject(null, ScriptClassName) as LoadableScriptScalarFunctionBase;
+                        _creator = Loader.CreateLoadableObject(null, ScriptClassName) as LoadableScriptScalarFunctionBase;
+                    }
+                    return _creator;  // Loader.CreateLoadableObject(null, ScriptClassName) as LoadableScriptScalarFunctionBase;
                 }
+            }
+        }
+
+        private LoadableScalarFunctionBase _function;
+
+        /// <summary>Returns an instance of a scalar function created by the current loader.
+        /// <para>Loader provides a property through which a scalar function created on demand can be accessed. If compiled scripts the invalid
+        /// (e.g. when some contents are changed) the function will be created anew at next access, so it is always consistent with the loader data.</para></summary>
+        /// <remarks>As alternative, the scalar function can be created by the <see cref="CreateScalarFunction"/> call, but this call creates a neew 
+        /// object every time. This property creates a single function that can be used by anoone using this property.</remarks>
+        public LoadableScalarFunctionBase Function
+        {
+            get
+            {
+                if (!IsCompiled)
+                {
+                    // We need to compile (or recompile) the source code first:
+                    _function = null;
+                }
+                if (_function == null)
+                {
+                    _function = Creator.CreateScalarFunction();
+                }
+                return _function;
+            }
+            protected set
+            {
+                _function = value;
             }
         }
 
@@ -994,6 +1029,7 @@ namespace IG.Script
 
 
         #region Operation
+
 
         /// <summary>Compiles the code that contains dynamically loadable definition of a real function of one variable.</summary>
         /// <returns></returns>

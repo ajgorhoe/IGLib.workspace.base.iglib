@@ -505,6 +505,7 @@ namespace IG.Lib
             this.AddCommand("WriteLine", CmdWriteLine);
             this.AddCommand("Run", CmdRunFile);
             this.AddCommand("Repeat", CmdRunRepeat);
+            this.AddCommand("RepeatVerbose", CmdRunRepeatVerbose);
             this.AddCommand("SetPriority", CmdSetPriority);
             this.AddCommand("Parallel", CmdRunParallel);
             this.AddCommand("Par", CmdRunParallel);
@@ -557,6 +558,7 @@ namespace IG.Lib
             this.AddCommand("WriteAssemblies", WriteLoadableScriptReferencedAssemblies);
 
             // Test commands and modules:
+            this.AddCommand("TestProduct", CmdTestProduct);
             this.AddCommand("Test", CmdTest);
             this.AddCommand("TestSpeed", CmdTestSpeed);
             this.AddCommand("TestSpeedLong", CmdTestSpeedLong);
@@ -1097,14 +1099,69 @@ namespace IG.Lib
                 return _commands.ContainsKey(commandName);
             }
         }
-
-
+        
         /// <summary>Runs command several times where the first argument is number of repetitions, second argument is command name.
-        /// Extracts command name and runs the corresponding command delegate.Before running it, arguments
-        /// for the application delegate are extracted and then passed to the delegate.</summary>
+        /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
+        /// for the application delegate are extracted and then passed to the delegate.
+        /// <para>The interpreter's output level is used.</para></summary>
         /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         public virtual string RunRepeat(string[] args)
+        {
+            return RunRepeat(OutputLevel, args);
+        }
+        
+        /// <summary>Runs command several times where the first argument is number of repetitions, second argument is command name.
+        /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
+        /// for the application delegate are extracted and then passed to the delegate.
+        /// <para>Output level 3 is used, such that all information is output to console.</para></summary>
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// are collected and passed to the command delegate.</param>
+        public virtual string RunRepeatVerbose(string[] args)
+        {
+            return RunRepeat(3, args);
+        }
+        
+        /// <summary>Runs command several times where the first argument is number of repetitions, second argument is command name.
+        /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
+        /// for the application delegate are extracted and then passed to the delegate.
+        /// <para>Output level 0 is used, such that no information is output to console.</para></summary>
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// are collected and passed to the command delegate.</param>
+        public virtual string RunRepeatSilent(string[] args)
+        {
+            return RunRepeat(0, args);
+        }
+
+        /// <summary>Runs command several times where the first argument is number of repetitions, second argument is command name.
+        /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
+        /// for the application delegate are extracted and then passed to the delegate.
+        /// <para>Output level is defined by the first argument. Level 0 means no output, level 1 means that summary is written to 
+        /// the console, and level e means that a note is printed before and afterr each repetition starts.</para></summary>
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// are collected and passed to the command delegate.</param>
+        public virtual string RunRepeatSpecificOutputLevel(string[] args)
+        {
+            int whichArgLevel = 1;
+            int outputLevel = int.Parse(args[whichArgLevel]);
+            List<string> arguments = new List<string>();
+            int numArgsOriginal = args.Length;
+            for (int i = 0; i < numArgsOriginal; ++i)
+            {
+                if (i != whichArgLevel)
+                    arguments.Add(args[i]);
+            }
+            return RunRepeat(outputLevel, arguments.ToArray());
+        }
+
+
+        /// <summary>Runs command several times where the first argument is number of repetitions, second argument is command name.
+        /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
+        /// for the application delegate are extracted and then passed to the delegate.</summary>
+        /// <param name="outputLevel">Level of output of the command.</param>
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// are collected and passed to the command delegate.</param>
+        public virtual string RunRepeat(int outputLevel, string[] args)
         {
             lock (Lock)
             {
@@ -1126,7 +1183,7 @@ namespace IG.Lib
                     int threadId = Thread.CurrentThread.GetHashCode();
                     for (int i = 1; i <= numRepetitions; ++i)
                     {
-                        if (OutputLevel > 0)
+                        if (outputLevel >= 2)
                         {
                             Console.WriteLine(Environment.NewLine + "Repeatively running command "
                                 + i + " / " + numRepetitions + " (thread " + threadId + ") ...");
@@ -1134,16 +1191,21 @@ namespace IG.Lib
                         t.Start();
                         ret = ret + " " + Run(cmdName, cmdArgs);
                         t.Stop();
-                        if (OutputLevel > 0)
+                        if (outputLevel >= 2)
                         {
                             Console.WriteLine(Environment.NewLine + "... repetition "
                                 + i + "/" + numRepetitions + " (thread " + threadId + ") fininshed in " + t.Time + " s.");
                         }
                     }
-                    if (OutputLevel > 0)
+                    double numPerSecond = (double)numRepetitions / t.TotalTime;
+                    double numPerSecondCPU = (double) numRepetitions / (t.TotalCpuTime + 1.0e-20);
+                    ret = numPerSecond.ToString();
+                    if (outputLevel >= 1)
                     {
-                        Console.WriteLine(numRepetitions + " repetitions of command " + cmdName
-                            + " finished in " + t.TotalTime + " s.");
+                        Console.WriteLine(Environment.NewLine +  numRepetitions + " repetitions of command " + cmdName
+                            + " finished in " + t.TotalTime + " s (CPU: " + t.TotalCpuTime + " s)."
+                            + Environment.NewLine + "Number of executions per second: " + numPerSecond + " (CPU: " + numPerSecondCPU + ").");
+
                     }
                     return ret;
                 }
@@ -1188,7 +1250,7 @@ namespace IG.Lib
                 if (!_caseSensitive)
                     commandName = commandName.ToLower();
                 if (!_commands.ContainsKey(commandName))
-                    throw new ArgumentException("Interpreter does not contain the following command: " + commandName + ".");
+                    throw new ArgumentException("Interpreter does not contain the following command: \"" + commandName + "\".");
                 appDelegate = _commands[commandName];
             }  // lock
             if (appDelegate == null)
@@ -2261,6 +2323,7 @@ namespace IG.Lib
             string cmdName, string[] args)
         {
             string ret = CmdWrite(interpreter, cmdName, args);
+            ret += Environment.NewLine;
             Console.WriteLine();
             return ret;
         }
@@ -2285,20 +2348,20 @@ namespace IG.Lib
                         Console.WriteLine();
                         return null;
                     }
+            StringBuilder sb = new StringBuilder();
             if (args == null)
-                Console.WriteLine();
+                sb.Append("");
             else if (args.Length < 1)
-                Console.WriteLine();
+                sb.Append("");
             else
             {
                 for (int i = 0; i < args.Length; ++i)
                 {
-                    Console.Write(args[i]);
-                    //if (i < args.Length - 1)
-                    //    Console.Write(" ");
+                    sb.Append(args[i]);
                 }
-                // Console.WriteLine();
             }
+            ret = sb.ToString();
+            Console.Write(ret);
             return ret;
         }
 
@@ -2345,6 +2408,45 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>Concatenated results of all runs, separated by spaces.</returns>
+        protected virtual string CmdRunRepeatVerbose(ICommandLineApplicationInterpreter interpreter,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " numRep cmd arg1 arg2 ... : ");
+                        Console.WriteLine("    runs the command specified number of times, verbose output.");
+                        Console.WriteLine("  numRep: number of repetitions of command.");
+                        Console.WriteLine("  cmd:    command to be run several times in a row.");
+                        Console.WriteLine("  arg1, arg2, ... : Eventual arguments of the command.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            if (args == null)
+                throw new ArgumentNullException(cmdName + " : Requires 1 argument (file name).");
+            else if (args.Length < 2)
+                throw new ArgumentException(cmdName + " : invalid number of arguments, should be at least 2 "
+                    + Environment.NewLine + "  and include number of repetitions and command name.");
+            else
+            {
+                ret = RunRepeatVerbose(args);
+            }
+            return ret;
+        }
+
+        /// <summary>Command.
+        /// Runs another command repetitively the specified number of times.
+        /// First argument must be the number of times command is run, the second argument must
+        /// be command to be run repetitively, and the rest of the arguments are passed to that 
+        /// command as its arguments.</summary>
+        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Concatenated results of all runs, separated by spaces.</returns>
         protected virtual string CmdRunRepeat(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
@@ -2370,7 +2472,7 @@ namespace IG.Lib
                     + Environment.NewLine + "  and include number of repetitions and command name.");
             else
             {
-                RunRepeat(args);
+                ret = RunRepeat(1, args);
             }
             return ret;
         }
@@ -3142,10 +3244,17 @@ namespace IG.Lib
         {
 
             /// <summary>Constructs a new pip server.</summary>
+            /// <param name="interpreter">Interpreter used to serve requests.</param>
             /// <param name="pipeName">Name of the pipe used for client-server communication.</param>
-            public InterpreterPipeServer(ICommandLineApplicationInterpreter interpreter, string pipeName)
-                : base(pipeName)
-            { Interpreter = interpreter; }
+            /// <param name="startImmediately">If true then server is starrted immediately, otherwise this is postponed.</param>
+            public InterpreterPipeServer(ICommandLineApplicationInterpreter interpreter, string pipeName, 
+                bool startImmediately = true)
+                : base(pipeName, false /* startImmediately */)
+            { 
+                Interpreter = interpreter;
+                if (startImmediately)
+                    ThreadServe();
+            }
 
             /// <summary>Constructs a new named pipe server with the specified pipe name and other paramters.</summary>
             /// <param name="pipeName">Name of the pipe.</param>
@@ -3153,9 +3262,15 @@ namespace IG.Lib
             /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
             /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
             /// i.e. <see cref="DefaultErrorBegin"/></param>
-            public InterpreterPipeServer(ICommandLineApplicationInterpreter interpreter, string pipeName, string requestEnd, string responseEnd, string errorBegin) :
-                base(pipeName, requestEnd, responseEnd, errorBegin)
-            { Interpreter = interpreter; }
+            /// <param name="startImmediately">If true then server is starrted immediately, otherwise this is postponed.</param>
+            public InterpreterPipeServer(ICommandLineApplicationInterpreter interpreter, string pipeName, 
+                bool startImmediately, string requestEnd, string responseEnd, string errorBegin) :
+                base(pipeName, requestEnd, responseEnd, errorBegin, false /* startImmediately */)
+            { 
+                Interpreter = interpreter;
+                if (startImmediately)
+                    ThreadServe();
+            }
 
             protected ICommandLineApplicationInterpreter _interpreter;
 
@@ -3235,14 +3350,18 @@ namespace IG.Lib
         /// <summary>Creates and registers a new interpreter's named pipe server.</summary>
         /// <param name="pipeName">Name of the pipe where the server listens.</param>
         /// <param name="serverName">name of the pipe server. If not specified then it is the  same as pipe name.</param>
+        /// <param name="createCommand">Whether an interpreter command is created for accessig the server. Not functional at the moment.</param>
+        /// <param name="outputLevel">Output level with which the server is started.</param>
         /// <returns>The created named pipe server.</returns>
-        public InterpreterPipeServer CreatePipeServer(string pipeName, string serverName = null, bool createCommand = false)
+        public InterpreterPipeServer CreatePipeServer(string pipeName, string serverName = null, bool createCommand = false,
+            int outputLevel = 3)
         {
             if (string.IsNullOrEmpty(pipeName))
                 throw new ArgumentException("Name of the named pipe is not specified (null or empty string).");
             if (serverName == null)
                 serverName = pipeName;
-            InterpreterPipeServer server = new InterpreterPipeServer(this, pipeName);
+            InterpreterPipeServer server = new InterpreterPipeServer(this, pipeName, false /* startImmediately */);
+            server.OutputLevel = outputLevel;
             PipeServers.Add(serverName, server);
             server.ThreadServe();
             return server;
@@ -3352,9 +3471,12 @@ namespace IG.Lib
                     {
                         string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + " pipeName <serverName>: creates a named pipe server." + Environment.NewLine
+                        Console.WriteLine(executableName + " " + cmdName + " pipeName <serverName> <createCommand> <outputLevel>: creates a named pipe server." + Environment.NewLine
                             + "  pipeName: name of the named pipe on which the server listens for requests. " + Environment.NewLine
-                            + "  serverName: name of the server (if omitted, it is set equal to the corresponding pipe name).");
+                            + "  serverName: name of the server (if omitted, it is set equal to the corresponding pipe name)." + Environment.NewLine
+                            + "  createCommand: whether interpreter command for accessing the serrver is created. Not functional." + Environment.NewLine
+                            + "  outputLevel: level of console output generated by server operation."); // + Environment.NewLine
+                            // + "  createcommand: whether a command is created.");
                         Console.WriteLine();
                         return null;
                     }
@@ -3366,9 +3488,17 @@ namespace IG.Lib
             {
                 string pipeName = args[0];
                 string serverName = pipeName;
+                bool createCommand = false;
+                int outputLevel = 3;
                 if (args.Length > 1)
                     serverName = args[1];
-                InterpreterPipeServer server = CreatePipeServer(pipeName, serverName);
+                if (args.Length > 2)
+                    Util.TryParseBoolean(args[2], ref createCommand);
+                if (args.Length > 3)
+                    int.TryParse(args[3], out outputLevel);
+                InterpreterPipeServer server = CreatePipeServer(pipeName, serverName, createCommand, outputLevel);
+                if (this.OutputLevel >= 0)
+                    Console.WriteLine(Environment.NewLine +"Pipe server started: " + serverName + Environment.NewLine);
                 ret = "PipeServer " + serverName + ", PipeName = '" + pipeName + "'.";
 
             }
@@ -3451,15 +3581,19 @@ namespace IG.Lib
         /// <param name="createCommand">Whether command for direct access is created or not. If true then an interpreter command with the
         /// same name as the name of the client is created, which can be directly used for sending requests by the created
         /// client (without specifying the command for sending a request first and then the server name and then the actual command).</param>
+        /// <param name="outputLevel">Output level with which the client is started.</param>
         /// <returns>The created named pipe client.</returns>
-        public InterpreterPipeClient CreatePipeClient(string pipeName, string clientName = null, bool createCommand = false)
+        public InterpreterPipeClient CreatePipeClient(string pipeName, string clientName = null, bool createCommand = false,
+            int outputLevel = 3)
         {
             if (string.IsNullOrEmpty(pipeName))
                 throw new ArgumentException("Name of the named pipe is not specified (null or empty string).");
             if (clientName == null)
                 clientName = pipeName;
             InterpreterPipeClient client = new InterpreterPipeClient(pipeName);
+            client.OutputLevel = outputLevel;
             PipeClients.Add(clientName, client);
+            client.Connect();
             return client;
         }
 
@@ -3588,7 +3722,9 @@ namespace IG.Lib
                         Console.WriteLine();
                         Console.WriteLine(executableName + " " + cmdName + " pipeName <clientName>: creates a named pipe client." + Environment.NewLine
                             + "  pipeName: name of the named pipe on which the client sends requests to the server. " + Environment.NewLine
-                            + "  clientName: name of the client (if omitted, it is set equal to the corresponding pipe name).");
+                            + "  clientName: name of the client (if omitted, it is set equal to the corresponding pipe name)." + Environment.NewLine
+                            + "  createCommand: whether interpreter command for sending commands by client is created." + Environment.NewLine
+                            + "  outputLevel: level of console output generated by client operation.");
                         Console.WriteLine();
                         return null;
                     }
@@ -3600,9 +3736,17 @@ namespace IG.Lib
             {
                 string pipeName = args[0];
                 string clientName = pipeName;
+                bool createCommand = false;
+                int outputLevel = 3;
                 if (args.Length > 1)
                     clientName = args[1];
-                InterpreterPipeClient client = CreatePipeClient(pipeName, clientName, false);
+                if (args.Length > 2)
+                    Util.TryParseBoolean(args[2], ref createCommand);
+                if (args.Length > 3)
+                    int.TryParse(args[3], out outputLevel);
+                InterpreterPipeClient client = CreatePipeClient(pipeName, clientName, createCommand, outputLevel);
+                if (this.OutputLevel >= 1)
+                    Console.WriteLine(Environment.NewLine + "Pipe client created: " + clientName + Environment.NewLine);
                 ret = "PipeClient " + clientName + ", PipeName = '" + pipeName + "'.";
             }
             return ret;
@@ -4119,6 +4263,40 @@ namespace IG.Lib
             Console.WriteLine();
             Console.WriteLine();
             return null;
+        }
+
+        /// <summary>Executinon method for test command, which just prints its name and arguments.</summary>
+        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdTestProduct(ICommandLineApplicationInterpreter interpreter,
+            string cmdName, string[] args)
+        {
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " : test command, just multiplies its arguments.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            //Console.WriteLine();
+            //Console.WriteLine("Test command launched.");
+            //Console.WriteLine("Command name: " + cmdName);
+            //Console.WriteLine("Command arguments (in double quotes): ");
+            if (args == null)
+                return "0";
+            else if (args.Length == 0)
+                return "0";
+            double ret = 1;
+            for (int i = 0; i < args.Length; ++i)
+            {
+                double factor = double.Parse(args[i]);
+                ret *= factor;
+            }
+            return ret.ToString();
         }
 
         /// <summary>Executinon method for test command, which just prints its name and arguments.</summary>

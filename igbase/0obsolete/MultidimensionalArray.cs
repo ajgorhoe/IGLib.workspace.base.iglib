@@ -15,8 +15,9 @@ namespace IG.Lib
     // Add more efficient operations for 2D and 3D array.
 
 
-    /// <summary>Twodimensional array of elements.</summary>
+    /// <summary>2D array of elements.</summary>
     /// $A Igor xx;
+    [Obsolete("This class is not used any more. Use C# multidimensional arrays instead.")]
     public class Array2D<ElementType> : MultiDimensionalArray<ElementType>
     {
 
@@ -73,6 +74,7 @@ namespace IG.Lib
 
     /// <summary>Multidimensional array of elements.</summary>
     /// $A Igor xx;
+    [Obsolete("This class is not used any more. Use C# multidimensional arrays instead.")]
     public class MultiDimensionalArray<ElementType>
     {
 
