@@ -171,7 +171,7 @@ namespace IG.Lib
             MessagePrefix = messagePrefix;
         }
 
-        private char _messageSeparator = _defaultMessageSeparator;
+        private char _messageSeparator = DefaultMessageSeparator;
 
         public char MessageSeparator
         {
@@ -273,6 +273,13 @@ namespace IG.Lib
         }
 
 
+        /// <summary>Creates a built-in message (possibly with arguments) that is to be interpreted directly by the receiver 
+        /// (stream client or server) and is not executed via ordinary path.
+        /// <para>Messages commands are composed of message prefix, separator (jointly <see cref="MessagePrefixWithSeparator"/>), 
+        /// and message name. The first two are fixed parts whire the latter varies and defines the message.</para></summary>
+        /// <param name="messageName">Name of the message (a kind of command name).</param>
+        /// <param name="messageArguments">Optional arguments of the message.</param>
+        /// <returns></returns>
         public string CreateMessage(string messageName, string[] messageArguments)
         {
             StringBuilderInternal.Clear();
@@ -290,6 +297,12 @@ namespace IG.Lib
             return StringBuilderInternal.ToString();
         }
 
+        /// <summary>Generates request and response string in such a way that it can not be mixed up with a message.
+        /// <para>If the original string begins with the message prefix theen a false separator is inserted after the part that
+        /// is the same as message prefix. In this way the string can be distinguished form a message and can be correctly decoded
+        /// on the other side of the communication pipeline (simply by removng the false separator).</para></summary>
+        /// <param name="originalResponseOrRequestString">Original response string that is sent to the other side.</param>
+        /// <returns>The created request string that can be distinguished form a command.</returns>
         public string createResponseOrRequestString(string originalResponseOrRequestString)
         {
             if (originalResponseOrRequestString == null)
@@ -302,11 +315,18 @@ namespace IG.Lib
             }
         }
 
+        /// <summary>Returns the (eventually decoded) request or response string corresponding to the stirng that is read form the 
+        /// communication pipeline, and also parameters that specify whether the request string represents a message or not. Eventual
+        /// command or message parameters are also returned.</summary>
+        /// <param name="responseOrRequestString">Original response or request string that is to be decoded.</param>
+        /// <param name="isMessage">Output flag telling whether the string is a message or not.</param>
+        /// <param name="messageOrCommandName">Name of the message or command extracted from the string.</param>
+        /// <param name="messageArguments">Message or command arguments.</param>
         public void GetRequestOrResponse(ref string responseOrRequestString, out bool isMessage, 
-            out string message, out string [] messageArguments)
+            out string messageOrCommandName, out string [] messageArguments)
         {
             isMessage = false;
-            message = null;
+            messageOrCommandName = null;
             messageArguments = null;
             if (responseOrRequestString != null)
             {
@@ -318,7 +338,7 @@ namespace IG.Lib
                         isMessage = true;
                         responseOrRequestString = responseOrRequestString.Substring(MessagePrefixWithSeparator.Length);
                         string[] parts = responseOrRequestString.Split(new char[] {' ', '\t', '\r', '\n'}, StringSplitOptions.RemoveEmptyEntries);
-                        message = parts[0];
+                        messageOrCommandName = parts[0];
                         int numParts = parts.Length;
                         if (numParts > 1)
                         {
