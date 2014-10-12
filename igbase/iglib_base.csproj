@@ -94,8 +94,11 @@
     <Compile Include="data\serialization\SerializerBase.cs" />
     <Compile Include="data\serialization\SerializerJson.cs" />
     <Compile Include="data\serialization\TestSerializers.cs" />
+    <Compile Include="data\streams\streams_copy\ClientServerStreamBase_Copy.cs" />
     <Compile Include="data\streams\ClientServerStreamBase.cs" />
+    <Compile Include="data\streams\streams_copy\ClientServerStreamBase2_Copy.cs" />
     <Compile Include="data\streams\ClientServerStreamBase2.cs" />
+    <Compile Include="data\streams\streams_copy\NamedPipes_Copy.cs" />
     <Compile Include="data\streams\NamedPipes.cs" />
     <Compile Include="data\StringParserBuffer.cs" />
     <Compile Include="data\StringParserInt.cs" />

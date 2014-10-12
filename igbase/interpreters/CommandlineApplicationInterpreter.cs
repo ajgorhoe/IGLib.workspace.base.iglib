@@ -504,6 +504,7 @@ namespace IG.Lib
             this.AddCommand("WriteLn", CmdWriteLine);
             this.AddCommand("WriteLine", CmdWriteLine);
             this.AddCommand("Run", CmdRunFile);
+            this.AddCommand("Try", CmdTryRun);
             this.AddCommand("Repeat", CmdRunRepeat);
             this.AddCommand("RepeatVerbose", CmdRunRepeatVerbose);
             this.AddCommand("SetPriority", CmdSetPriority);
@@ -1206,6 +1207,52 @@ namespace IG.Lib
                             + " finished in " + t.TotalTime + " s (CPU: " + t.TotalCpuTime + " s)."
                             + Environment.NewLine + "Number of executions per second: " + numPerSecond + " (CPU: " + numPerSecondCPU + ").");
 
+                    }
+                    return ret;
+                }
+            }
+        }
+
+        /// <summary>Runs command in a try-catch block, where first argument is command name.
+        /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
+        /// for the application delegate are extracted and then passed to the delegate.</summary>
+        /// <param name="outputLevel">Level of output of the command.</param>
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// are collected and passed to the command delegate.</param>
+        public virtual string RunTryCatch(int outputLevel, string[] args)
+        {
+            lock (Lock)
+            {
+                if (args == null)
+                    throw new ArgumentNullException("Commandline is not specified (null reference);");
+                else if (args.Length < 1)
+                    throw new ArgumentNullException("Command is not not specified.");
+                else
+                {
+                    string[] cmdArgs = new string[args.Length - 1];
+                    string cmdName = args[0];
+                    for (int i = 1; i < args.Length; ++i)
+                    {
+                        cmdArgs[i - 1] = args[i];
+                    }
+                    string ret = "";
+                    try
+                    {
+                        if (outputLevel >= 2)
+                        {
+                            Console.WriteLine(Environment.NewLine + "Runninng command " + cmdName  + " in a try-catch block ...");
+                        }
+                        ret = Run(cmdName, cmdArgs);
+                        if (outputLevel >= 2)
+                        {
+                            Console.WriteLine(Environment.NewLine + "... command run successfully." + Environment.NewLine);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ret = "ERROR: " + ex.Message;
+                        if (outputLevel >= 1)
+                            Console.WriteLine(Environment.NewLine + "ERROR: " + ex.Message + Environment.NewLine);
                     }
                     return ret;
                 }
@@ -2466,13 +2513,53 @@ namespace IG.Lib
                         return null;
                     }
             if (args == null)
-                throw new ArgumentNullException(cmdName + " : Requires 1 argument (file name).");
+                throw new ArgumentNullException(cmdName + " : Requires 2 argument (number of repetitions and command name).");
             else if (args.Length < 2)
                 throw new ArgumentException(cmdName + " : invalid number of arguments, should be at least 2 "
                     + Environment.NewLine + "  and include number of repetitions and command name.");
             else
             {
                 ret = RunRepeat(1, args);
+            }
+            return ret;
+        }
+
+        /// <summary>Command.
+        /// Runs another command in a try-catch block, such that if command throws an exception execution is not
+        /// broken.
+        /// The second argument must be command to be run, and the rest of the arguments are passed to that 
+        /// command as its arguments.</summary>
+        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Concatenated results of all runs, separated by spaces.</returns>
+        protected virtual string CmdTryRun(ICommandLineApplicationInterpreter interpreter,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " cmd arg1 arg2 ... : ");
+                        Console.WriteLine("    runs the command in a try-catch block such that it can not break execution.");
+                        Console.WriteLine("      Error message is returned if exception is thrown, otherwise command's result");
+                        Console.WriteLine("      is returned.");
+                        Console.WriteLine("  cmd:    command to be run several times in a row.");
+                        Console.WriteLine("  arg1, arg2, ... : Eventual arguments of the command.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            if (args == null)
+                throw new ArgumentNullException(cmdName + " : Requires at least 1 argument (command name).");
+            else if (args.Length < 1)
+                throw new ArgumentException(cmdName + " : invalid number of arguments, should be at least 1 "
+                    + Environment.NewLine + "  and include command name.");
+            else
+            {
+                ret = RunTryCatch(OutputLevel, args);
             }
             return ret;
         }
