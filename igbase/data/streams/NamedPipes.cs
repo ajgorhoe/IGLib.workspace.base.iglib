@@ -17,716 +17,31 @@ namespace IG.Lib
      */
 
 
-
-    /// <summary>Base class for named pipe servers and clients, contains common stuff for both.</summary>
-    /// $A Igor xx Mar14;
-    public abstract class NamedPipeServerClientBase: ClienServerStreamBase, ILockable
-    {
-
-        // TODO: implement destructors and Close()! - if possible, do it simply on the base class.
-
-
-
-        #region Data.General
-
-
-        private static string _defaultPipeName = "IGLibServerPipe";
-
-        /// <summary>Default pipe name.</summary>
-        public static string DefaultPipeName
-        {
-            get { lock (LockGlobal) { return _defaultPipeName; } }
-            set
-            {
-                lock (LockGlobal)
-                {
-                    if (string.IsNullOrEmpty(value))
-                        throw new NullReferenceException("Default pipe name can not be empty or null string.");
-                    else
-                        _defaultPipeName = value;
-                }
-            }
-        }
-
-        private string _pipeName = DefaultPipeName;
-
-        public string PipeName
-        {
-            get { lock (_lock) { return _pipeName; } }
-            set
-            {
-                lock (_lock)
-                {
-                    if (string.IsNullOrEmpty(value))
-                        throw new NullReferenceException("Pipe name can not be an empty or null string.");
-                    if (value != _pipeName)
-                    {
-                        _pipeName = value;
-                        ClosePipe();
-                    }
-                }
-            }
-        }
-
-
-        private static bool _defaultIsMultilineRequest = true;
-
-        /// <summary>Default pipe name.</summary>
-        public static bool DefaultIsMultilineRequest
-        {
-            get { { return _defaultIsMultilineRequest; } }
-        }
-
-        private static string _defaultRequestEnd = "RequestEnd";
-
-        /// <summary>Default string (line) that ends any multiline request.</summary>
-        public static string DefaultRequestEnd
-        {
-            get { { return _defaultRequestEnd; } }
-        }
-
-        private static bool _defaultIsMultilineResponse = true;
-
-        /// <summary>Default pipe name.</summary>
-        public static bool DefaultIsMultilineResponse
-        {
-            get { { return _defaultIsMultilineResponse; } }
-        }
-
-        private static string _defaultResponseEnd = "ResponseEnd";
-
-        /// <summary>Default string (line) that ends any multiline response.</summary>
-        public static string DefaultResponseEnd
-        {
-            get { { return _defaultResponseEnd; } }
-        }
-
-
-        private bool _isMultilineRequest = DefaultIsMultilineRequest;
-
-        /// <summary>Whether or not multi line requests are allowed.</summary>
-        public virtual bool IsMultilineRequest
-        {
-            get { return _isMultilineRequest; }
-            protected set { _isMultilineRequest = value; }
-        }
-
-        /// <summary>String (line) that ends a request (only when multiline requests are allowed).</summary>
-        private string _requestEnd = DefaultRequestEnd;
-
-        public string RequestEnd
-        {
-            get { return _requestEnd; }
-            protected set { _requestEnd = value; }
-        }
-        
-
-        private bool _isMultilineResponse = DefaultIsMultilineResponse;
-
-        /// <summary>Whether or not multi line responses are allowed.</summary>
-        public virtual bool IsMultilineResponse
-        {
-            get { return _isMultilineResponse; }
-            protected set { _isMultilineResponse = value; }
-        }
-
-        /// <summary>String (line) that ends a response (only when multiline responses are allowed).</summary>
-        private string _responseEnd = DefaultResponseEnd;
-
-        public string ResponseEnd
-        {
-            get { return _responseEnd; }
-            protected set { _responseEnd = value; }
-        }
-
-
-        private static string _defaultErrorBegin = "$$ERROR__83753093759$$: ";
-
-        /// <summary>Default string that begins an error report.</summary>
-        public static string DefaultErrorBegin
-        {
-            get { { return _defaultErrorBegin; } }
-        }
-
-        /// <summary>String (line) that ends a response (only when multiline responses are allowed).</summary>
-        private string _errorBegin = DefaultErrorBegin;
-
-        public string ErrorBegin
-        {
-            get { return _errorBegin; }
-            protected set { _errorBegin = value; }
-        }
-
-        /// <summary>Returns true if the specified response string represents an error response (exception), false if not.</summary>
-        /// <param name="responseString">Response string that is inspected.</param>
-        public virtual bool IsErrorResponse(string responseString)
-        {
-            if (string.IsNullOrEmpty(responseString))
-                return false;
-            return (responseString.IndexOf(ErrorBegin) == 0);
-        }
-
-        /// <summary>Returns error message that corresponds to the specified response string.
-        /// <para>Exception is thrown if the response string does not represent an error response.</para></summary>
-        /// <param name="responseString">Response string for which erro message is returned.</param>
-        public virtual string GetErrorMessage(string responseString)
-        {
-            if (!IsErrorResponse(responseString))
-                throw new ArgumentException("The specified string does not represent an error response: " 
-                    + Environment.NewLine + responseString);
-            return responseString.Substring(ErrorBegin.Length);
-        }
-
-
-
-        #endregion Data.General
-
-
-        #region Data.Streams
-
-
-        /// <summary>Closes the pipe and streams that depend on it.</summary>
-        public abstract void ClosePipe();
-        
-        /// <summary>Input stream writer of the server's named pipe.</summary>
-        public abstract StreamReader InputStream { get; protected set; }
-        
-        /// <summary>Output stream reader of the server's named pipe.</summary>
-        public abstract StreamWriter OutputStream { get; protected set; }
-
-        /// <summary>Closes the inpt stream.</summary>
-        public abstract void CloseInput();
-        
-        /// <summary>Closes the outut stream.</summary>
-        public abstract void CloseOutput();
-
-        #endregion Data.Streams
-
-
-        #region Data.Operation
-
-        protected internal bool _isError = false;
-
-        public bool IsError
-        {
-            get { lock (Lock) { return _isError; } }
-            protected set { _isError = true; }
-        }
-
-        protected internal string _requestString = null;
-
-        /// <summary>The last request string that was read from the pipe.</summary>
-        public string RequestString
-        {
-            get { lock (_lock) { return _requestString; } }
-            protected set { lock (Lock) { _requestString = value; } }
-        }
-
-        protected internal string _responseString = null;
-
-        /// <summary>The last answer string that was written to the pipe.</summary>
-        public string ResponseString
-        {
-            get { lock (_lock) { return _responseString; } }
-            protected set { lock (Lock) { _responseString = value; } }
-        }
-
-
-        private static string _defaultStopRequest = "stop";
-
-        /// <summary>Default stop request string - request string that will stop the server.</summary>
-        public static string DefaultStopRequest
-        {
-            get { lock (LockGlobal) { return _defaultStopRequest; } }
-            set
-            {
-                lock (LockGlobal)
-                {
-                    //if (string.IsNullOrEmpty(value))
-                    //    throw new NullReferenceException("Default stop request can not be empty or null string.");
-                    //else
-                    _defaultStopRequest = value;
-                }
-            }
-        }
-
-
-        private string _stopRequest = DefaultStopRequest;
-
-        /// <summary>Request the causes the server stop listening and closing the pipe.</summary>
-        public string StopRequest
-        {
-            get { lock (Lock) { return _stopRequest; } }
-            set { _stopRequest = value; }
-        }
-
-
-        private static string _defaultGenericResponse = "IGLib_PipeServer_GenericResponse";
-
-        /// <summary>Default generic response (sent in absence of any other method to generate the request).</summary>
-        public static string DefaultGenericResponse
-        {
-            get { lock (LockGlobal) { return _defaultGenericResponse; } }
-            set
-            {
-                lock (LockGlobal)
-                {
-                    if (value != _defaultGenericResponse)
-                    {
-                        if (string.IsNullOrEmpty(value))
-                            throw new NullReferenceException("Default generic response of pipe server can not be empty or null string.");
-                        else
-                        {
-                            if (DefaultOutputLevel >= 1)
-                                Console.WriteLine(Environment.NewLine + "Warning: default generic response of pipe servers changed: "
-                                    + Environment.NewLine + "  from " + _defaultGenericResponse + " to " + value + ".");
-                            _defaultGenericResponse = value;
-                        }
-                    }
-                }
-            }
-        }
-
-        private string _genericResponse = DefaultGenericResponse;
-
-        /// <summary>Generic response that is sent back to the client in abscence of any
-        /// method generating responses to specific requests.</summary>
-        public string GenericResponse
-        {
-            get { lock (_lock) { return _genericResponse; } }
-            protected set
-            {
-                lock (_lock)
-                {
-                    if (value != _genericResponse)
-                    {
-                        if (string.IsNullOrEmpty(value))
-                            throw new NullReferenceException("Pipe server's generic response can not be an empty or null string.");
-                        _genericResponse = value;
-                    }
-                }
-            }
-        }
-
-
-        private static string _defaultStoppedResponse = "IGLib_PipeServer_StoppedResponse";
-
-        /// <summary>Default stopped response (sent after the srver has sttopped on request).</summary>
-        public static string DefaultStoppedResponse
-        {
-            get { lock (LockGlobal) { return _defaultStoppedResponse; } }
-            set
-            {
-                lock (LockGlobal)
-                {
-                    if (value != _defaultStoppedResponse)
-                    {
-                        if (string.IsNullOrEmpty(value))
-                            throw new NullReferenceException("Default generic response of pipe server can not be empty or null string.");
-                        else
-                        {
-                            if (DefaultOutputLevel >= 1)
-                                Console.WriteLine(Environment.NewLine + "Warning: default stopped response of pipe servers changed: "
-                                    + Environment.NewLine + "  from " + _defaultStoppedResponse + " to " + value + ".");
-                            _defaultStoppedResponse = value;
-                        }
-                    }
-                }
-            }
-        }
-
-        private string _stoppedResponse = DefaultStoppedResponse;
-
-        /// <summary>Stopped response that is sent back to the client after the server stops on its
-        /// request.</summary>
-        public string StoppedResponse
-        {
-            get { lock (_lock) { return _stoppedResponse; } }
-            protected set
-            {
-                lock (_lock)
-                {
-                    if (value != _stoppedResponse)
-                    {
-                        if (string.IsNullOrEmpty(value))
-                            throw new NullReferenceException("Pipe server's stopped response can not be an empty or null string.");
-                        _stoppedResponse = value;
-                    }
-                }
-            }
-        }
-
-
-
-
-        //private static string _defaultErrorResponse = "IGLib_PipeServer_ErrorResponse";
-
-        ///// <summary>Default error response (sent as response when exception is thrown in the process of 
-        ///// response generation).</summary>
-        //public static string DefaultErrorResponse
-        //{
-        //    get { lock (LockGlobal) { return _defaultErrorResponse; } }
-        //    protected set
-        //    {
-        //        lock (LockGlobal)
-        //        {
-        //            if (value != _defaultErrorResponse)
-        //            {
-        //                if (string.IsNullOrEmpty(value))
-        //                    throw new NullReferenceException("Pipe servers' default error response can not be empty or null string.");
-        //                else
-        //                {
-        //                    if (DefaultOutputLevel > 0)
-        //                        Console.WriteLine(Environment.NewLine + "Default error response of pipe servers has changed: "
-        //                            + Environment.NewLine + "  from " + _defaultErrorResponse + " to " + value + ".");
-        //                    _defaultErrorResponse = value;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-
-        //private string _errorResponse = DefaultErrorResponse;
-
-        ///// <summary>Response that is sent to the client in case of exception.</summary>
-        //public string ErrorResponse
-        //{
-        //    get { lock (_lock) { return _errorResponse; } }
-        //    protected set
-        //    {
-        //        lock (_lock)
-        //        {
-        //            if (value != _errorResponse)
-        //            {
-        //                if (string.IsNullOrEmpty(value))
-        //                    throw new NullReferenceException("Pipe server's error response can not be an empty or null string.");
-        //                _errorResponse = value;
-        //            }
-        //        }
-        //    }
-        //}
-
- 
- 
-        /// <summary>Clears all the data related to servig requests (i.e. request and response strings, error flags, exceptions, etc.).</summary>
-        public abstract void ClearData();
-        
-
-        #endregion Data.Operation
-
-
-        #region Data.SavedState
-
-
-        protected internal Exception _lastException = null;
-
-        /// <summary>Returns the last exception thrown when serving request.</summary>
-        public Exception LastException
-        {
-            get { lock (Lock) { return _lastException; } }
-            protected set { lock (Lock) { _lastException = value; } }
-        }
-
-
-        protected internal string _lastErrorMessage = null;
-
-        /// <summary>Returns the last error message.</summary>
-        public string LastErrorMessage
-        {
-            get { lock (Lock) { return _lastErrorMessage; } }
-            protected set { lock (Lock) { _lastErrorMessage = value; } }
-        }
-
-
-        protected internal string _lastRequestString = null;
-
-        /// <summary>Returns the last request string.</summary>
-        public string LastRequestString
-        {
-            get { lock (Lock) { return _lastRequestString; } }
-            protected set { lock (Lock) { _lastRequestString = value; } }
-        }
-
-
-        protected internal string _lastResponseString = null;
-
-        /// <summary>Returns the last response string.</summary>
-        public string LastResponseString
-        {
-            get { lock (Lock) { return _lastResponseString; } }
-            protected set { lock (Lock) { _lastResponseString = value; } }
-        }
-
-        #endregion Data.SavedState
-
-
-        #region Operation
-
-
-        public override string ToString()
-        {
-            StringBuilderInternal.Clear();
-            StringBuilderInternal.AppendLine("Named pipe server or client.");
-            StringBuilderInternal.AppendLine("Pipe name: \"" + PipeName + "\".");
-            StringBuilderInternal.AppendLine("Multiline requests: " + IsMultilineRequest + ".");
-            StringBuilderInternal.AppendLine("Multiline responses: " + IsMultilineResponse + ".");
-            StringBuilderInternal.AppendLine("End of request mark: \"" + StopRequest + "\".");
-            StringBuilderInternal.AppendLine("End of response mark: \"" + StopRequest + "\".");
-            StringBuilderInternal.AppendLine("End of response: \"" + GenericResponse + "\".");
-            StringBuilderInternal.AppendLine("Server stopped response: \"" + StoppedResponse + "\".");
-            StringBuilderInternal.AppendLine("Last request string: \"" + LastRequestString + "\".");
-            StringBuilderInternal.AppendLine("Last response string: \"" + LastResponseString + "\".");
-            StringBuilderInternal.AppendLine("Last error message string: \"" + LastErrorMessage + "\".");
-            return StringBuilderInternal.ToString();
-        }
-
-        #endregion Operation
-
-
-
-    }  // class NamedPipeServerClientBase
-    
-
+   
 
 
 
     /// <summary>Server that creates a named pipe, listens on its input stream, and sends responses
     /// to the client.</summary>
     /// $A Igor xx Mar14;
-    public class NamedPipeServerBase : NamedPipeServerClientBase, ILockable
+    public abstract class ServerStreamBase : ClientServerStreamBase2, ILockable
     {
-
-        /// <summary>Prevent default  constructor.</summary>
-        private NamedPipeServerBase()
-            : base()
-        {  }
-
-
-        /// <summary>Constructs a new pip server.</summary>
-        /// <param name="pipeName">Name of the pipe used for client-server communication.</param>
-        /// <param name="startImmediately">If true then server is started immediately after created.</param>
-        public NamedPipeServerBase(string pipeName, bool startImmediately = true) : this()
-        {
-            this.PipeName = pipeName;
-            if (startImmediately)
-                ThreadServe();
-        }
-        
-        /// <summary>Constructs a new named pipe server with the specified pipe name and other paramters.</summary>
-        /// <param name="pipeName">Name of the pipe.</param>
-        /// <param name="requestEnd">Line that ends each request. If null or empty string then the requests are single line.</param>
-        /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
-        /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
-        /// i.e. <see cref="DefaultErrorBegin"/></param>
-        /// <param name="startImmediately">If true then server is started immediately after created.</param>
-        public NamedPipeServerBase(string pipeName, string requestEnd, string responseEnd, string errorBegin,
-            bool startImmediately = true):
-            this(pipeName, false /* startImmediately */)
-        {
-            if (string.IsNullOrEmpty(requestEnd))
-                this.IsMultilineRequest = false;
-            else
-            {
-                this.IsMultilineRequest = true;
-                this.RequestEnd = requestEnd;
-            }
-            if (string.IsNullOrEmpty(responseEnd))
-                this.IsMultilineResponse = false;
-            else
-            {
-                this.IsMultilineResponse = true;
-                this.ResponseEnd = responseEnd;
-            }
-            if (!string.IsNullOrEmpty(errorBegin))
-                this.ErrorBegin = errorBegin;
-            if (startImmediately)
-                ThreadServe();
-        }
 
 
         #region Data.Streams
 
-        private NamedPipeServerStream _serverPipe=null;
 
-        /// <summary>Named pipe used for communication by the server.</summary>
-        public NamedPipeServerStream ServerPipe
-        {
-            get
-            {
-                lock (Lock)
-                {
-                    if (_serverPipe == null)
-                    {
-                        if (true)  // $$ TEST
-                            _serverPipe = new NamedPipeServerStream(PipeName);
-                        else
-                            _serverPipe = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
-                        if (OutputLevel >= 1)
-                            Console.WriteLine(Environment.NewLine + "Pipe server created, ({0}, name: '{1}')",
-                                _serverPipe.GetHashCode(), PipeName);
-                    }
-                    // if (!_serverPipe.IsConnected)
-                    //    WaitForConnection(_serverPipe);
-                    //if (OutputLevel >= 1)
-                    //{
-                    //    Console.WriteLine("Named pipe server created (pipe name: '" + PipeName + "'), waiting for connection...");
-                    //}
-                    //_serverPipe.WaitForConnection();
-
-                    //if (OutputLevel >= 2)
-                    //{
-                    //    Console.WriteLine("Pipe server connected (pipe name: '" + PipeName + "')."
-                    //        + Environment.NewLine + "  CanRead:" + _serverPipe.CanRead
-                    //        + Environment.NewLine + "  CanWrite:" + _serverPipe.CanWrite
-                    //        + Environment.NewLine + "  IsAsync:" + _serverPipe.IsAsync
-                    //        + Environment.NewLine + "  ReadTimeout:" + _serverPipe.ReadTimeout
-                    //        + Environment.NewLine + "  ReadTimeout:" + _serverPipe.WriteTimeout
-                    //        + Environment.NewLine + "  ReadTimeout:" + _serverPipe.TransmissionMode);
-                    //} else if (OutputLevel >= 1)
-                    //{
-                    //    Console.WriteLine("Pipe server connected (pipe name: '" + PipeName + "')." + Environment.NewLine);
-                    //}
-                    return _serverPipe;
-                }
-            }
-            protected set
-            {
-                lock (_lock)
-                {
-                    if (value != _serverPipe)
-                    {
-                        if (_serverPipe != null)
-                        {
-                            _serverPipe.Close();
-                        }
-                        InputStream = null;
-                        OutputStream = null;
-                        _serverPipe = value;
-                    }
-                }
-            }
-        }
-
-        public void WaitForConnection()
-        {
-            WaitForConnection(ServerPipe);
-        }
 
         /// <summary>Waits until a client connects to the specified server pipe.</summary>
         /// <param name="pipe">Pipe that waits for connection to be established.</param>
-        protected virtual void WaitForConnection(NamedPipeServerStream pipe)
-        {
-            lock (Lock)
-            {
-                if (pipe.IsConnected)
-                {
-                    if (OutputLevel >= 1)
-                    {
-                        Console.WriteLine(Environment.NewLine + "Attempt to wait for client pipe connection named '" + PipeName + "'."
-                            + Environment.NewLine + "  Already connected.");
-                    }
-                    return;
-                }
-                if (OutputLevel >= 1)
-                {
-                    Console.WriteLine("Named pipe server created (pipe name: '" + PipeName + "'), waiting for connection...");
-                }                
-                pipe.WaitForConnection();
-                if (OutputLevel >= 2)
-                {
-                    Console.WriteLine("Pipe server connected (pipe name: '" + PipeName + "')."
-                        + Environment.NewLine + "  CanRead:" + pipe.CanRead
-                        + Environment.NewLine + "  CanWrite:" + pipe.CanWrite
-                        + Environment.NewLine + "  IsAsync:" + pipe.IsAsync
-                        + Environment.NewLine + "  CanTimeot:" + pipe.CanTimeout
-                        // + Environment.NewLine + "  ReadTimeout:" + pipe.ReadTimeout
-                        // + Environment.NewLine + "  ReadTimeout:" + pipe.WriteTimeout
-                        + Environment.NewLine + "  ReadTimeout:" + pipe.TransmissionMode);
-                    if (pipe.CanTimeout)
-                    {
-                        Console.WriteLine(Environment.NewLine + "  WriteTimeout:" + pipe.WriteTimeout
-                            + Environment.NewLine + "  ReadTimeout:" + pipe.ReadTimeout + Environment.NewLine);
-                    } else
-                        Console.WriteLine();
-
-                } else if (OutputLevel >= 1)
-                {
-                    Console.WriteLine("Pipe server connected (pipe name: '" + PipeName + "')." + Environment.NewLine);
-                }
-            }
-        }
-
-        private StreamReader _inputStream = null;
-
-        /// <summary>Input stream of the server's named pipe.</summary>
-        public override StreamReader InputStream
-        {
-            get
-            {
-                lock (Lock)
-                {
-                    if (_inputStream == null)
-                    {
-                        _inputStream = new StreamReader(ServerPipe);
-                    }
-                    return _inputStream;
-                }
-            }
-            protected set
-            {
-                lock (Lock)
-                {
-                    if (value != _inputStream)
-                    {
-                        if (_inputStream != null)
-                        {
-                            _inputStream.Close();
-                        }
-                        _inputStream = value;
-                    }
-                }
-            }
-        }
+        protected abstract void WaitForConnection();
 
 
-        private StreamWriter _outputStream = null;
+        /// <summary>Closes connection of the server pype.</summary>
+        protected abstract void NullifyServerPipeLine();
 
-        /// <summary>Output stream of the server's named pipe.</summary>
-        public override StreamWriter OutputStream
-        {
-            get
-            {
-                lock (Lock)
-                {
-                    if (_outputStream == null)
-                    {
-                        _outputStream = new StreamWriter(ServerPipe);
-                    }
-                    return _outputStream;
-                }
-            }
-            protected set
-            {
-                lock (Lock)
-                {
-                    if (value != _outputStream)
-                    {
-                        if (_outputStream != null)
-                        {
-                            _outputStream.Close();
-                        }
-                        _outputStream = value;
-                    }
-                }
-            }
-        }
-
-        /// <summary>Closes the Server's pipe and the associated streams.</summary>
-        public override void ClosePipe()
-        {
-            ServerPipe = null;
-        }
+        /// <summary>Returns true if server pipe is connected, .</summary>
+        public abstract bool IsServerPipelineConnected();
 
         /// <summary>Closes the inpt stream.</summary>
         public override void CloseInput()
@@ -773,24 +88,17 @@ namespace IG.Lib
             get { lock (Lock) { return _isServerRunning; } }
             protected set { lock (Lock) { _isServerRunning = true; } }
         }
-        
+
+
+        public abstract void SendDummyRequest();
+
 
         public virtual void StopServer()
         {
             lock (Lock)
             {
                 StopServe = true;
-                // sent a dummy request in order for the serving function to stop blocking:
-                using (NamedPipeClientStream clientStream = new NamedPipeClientStream(PipeName))
-                {
-                    using (StreamWriter clientOutputWriter = new StreamWriter(clientStream))
-                    {
-                        if (IsMultilineRequest)
-                            clientOutputWriter.WriteLine();
-                        else
-                            clientOutputWriter.WriteLine(RequestEnd);
-                    }
-                }
+                SendDummyRequest();
             }
         }
 
@@ -798,7 +106,7 @@ namespace IG.Lib
 
 
         #region Operation.ResponseDefinition
-        
+
 
         /// <summary>The deefault method that returns response to the specified request.
         /// <para>Just returns a string that tells which was the request string.</para></summary>
@@ -874,7 +182,7 @@ namespace IG.Lib
                                 Console.WriteLine("  Waiting for next line of request...");
                             }
                             string line = InputStream.ReadLine();
-                            if (OutputLevel >=2)
+                            if (OutputLevel >= 2)
                             {
                                 Console.WriteLine("... line read: \"" + line + "\"");
                             }
@@ -890,9 +198,10 @@ namespace IG.Lib
                             Console.WriteLine("... multiline request read: \"" + clientRequestString + "\"");
                         }
 
-                    } else
+                    }
+                    else
                     {
-                        if (OutputLevel >=1)
+                        if (OutputLevel >= 1)
                         {
                             Console.WriteLine(Environment.NewLine + "Waiting for a single lne request...");
                         }
@@ -1030,9 +339,15 @@ namespace IG.Lib
             {
                 // Open pipe server stream if not yet opened:
                 // NamedPipeServerStream stream = ServerPipe;
-                NamedPipeServerStream pipeStream = ServerPipe;
-                if (!pipeStream.IsConnected)
-                    WaitForConnection(pipeStream);
+
+
+                //NamedPipeServerStream pipeStream = ServerPipe;
+                //if (!pipeStream.IsConnected)
+                //    WaitForConnection(pipeStream);
+
+                if (!IsServerPipelineConnected())
+                    WaitForConnection();
+                
                 StopServe = false;
                 while (!StopServe)
                 {
@@ -1072,6 +387,8 @@ namespace IG.Lib
             }
         }
 
+
+
         private Thread _workingThread = null;
 
         protected ThreadPriority _threadPriority = UtilSystem.ThreadPriority;
@@ -1107,7 +424,7 @@ namespace IG.Lib
                         AbortWorkingThread();
                     }
                     _workingThread = new Thread(ServeInCurrentThread);
-                    _workingThread.Name = "Named pipe server: pipe \"" + PipeName + "\".";
+                    _workingThread.Name = "Streamed server: \"" + Name + "\".";
                     _workingThread.IsBackground = true;
                     _workingThread.Priority = this.ThreadPriority;
                     _workingThread.Start();
@@ -1142,7 +459,7 @@ namespace IG.Lib
             finally
             {
                 _workingThread = null;
-                ServerPipe = null;
+                NullifyServerPipeLine(); //ServerPipe = null;
             }
         }
 
@@ -1167,28 +484,361 @@ namespace IG.Lib
         #endregion Operation
 
 
+
+
+    }  // abstract class ServerStreamBase
+
+
+
+    /// <summary>Client to the pipe server (classes derived from <see cref="ClientServerStreamBase2"/>).</summary>
+    /// $A Igor xx Mar14;
+    public abstract class ClientStreamBase : ClientServerStreamBase2, ILockable
+    {
+
+    }  // abstract class ClientStreamBase
+
+    /// <summary>Server that creates a named pipe, listens on its input stream, and sends responses
+    /// to the client.</summary>
+    /// $A Igor xx Mar14;
+    public class NamedPipeServerBase : ServerStreamBase, ILockable
+    {
+
+        /// <summary>Prevent default  constructor.</summary>
+        private NamedPipeServerBase()
+            : base()
+        {  }
+
+
+        /// <summary>Constructs a new pip server.</summary>
+        /// <param name="pipeName">Name of the pipe used for client-server communication.</param>
+        /// <param name="startImmediately">If true then server is started immediately after created.</param>
+        public NamedPipeServerBase(string pipeName, bool startImmediately = true) : this()
+        {
+            this.PipeName = pipeName;
+            if (startImmediately)
+                ThreadServe();
+        }
+        
+        /// <summary>Constructs a new named pipe server with the specified pipe name and other paramters.</summary>
+        /// <param name="pipeName">Name of the pipe.</param>
+        /// <param name="requestEnd">Line that ends each request. If null or empty string then the requests are single line.</param>
+        /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
+        /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
+        /// i.e. <see cref="DefaultErrorBegin"/></param>
+        /// <param name="startImmediately">If true then server is started immediately after created.</param>
+        public NamedPipeServerBase(string pipeName, string requestEnd, string responseEnd, string errorBegin,
+            bool startImmediately = true):
+            this(pipeName, false /* startImmediately */)
+        {
+            if (string.IsNullOrEmpty(requestEnd))
+                this.IsMultilineRequest = false;
+            else
+            {
+                this.IsMultilineRequest = true;
+                this.RequestEnd = requestEnd;
+            }
+            if (string.IsNullOrEmpty(responseEnd))
+                this.IsMultilineResponse = false;
+            else
+            {
+                this.IsMultilineResponse = true;
+                this.ResponseEnd = responseEnd;
+            }
+            if (!string.IsNullOrEmpty(errorBegin))
+                this.ErrorBegin = errorBegin;
+            if (startImmediately)
+                ThreadServe();
+        }
+
+
+        #region Data.General
+
+        /// <summary>Server name. The same as pipe name.</summary>
+        public override string Name
+        {
+            get { return PipeName; }
+            set { PipeName = value; }
+        }
+
+        private string _pipeName = DefaultPipeName;
+
+        public string PipeName
+        {
+            get { lock (_lock) { return _pipeName; } }
+            set
+            {
+                lock (_lock)
+                {
+                    if (string.IsNullOrEmpty(value))
+                        throw new NullReferenceException("Pipe name can not be an empty or null string.");
+                    if (value != _pipeName)
+                    {
+                        _pipeName = value;
+                        ClosePipe();
+                    }
+                }
+            }
+        }
+
+        #endregion Data.General
+
+
+        #region Data.Streams
+
+        private NamedPipeServerStream _serverPipe=null;
+
+        /// <summary>Named pipe used for communication by the server.</summary>
+        public NamedPipeServerStream ServerPipe
+        {
+            get
+            {
+                lock (Lock)
+                {
+                    if (_serverPipe == null)
+                    {
+                        if (true)  // $$ TEST
+                            _serverPipe = new NamedPipeServerStream(PipeName);
+                        else
+                            _serverPipe = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
+                        if (OutputLevel >= 1)
+                            Console.WriteLine(Environment.NewLine + "Pipe server created, ({0}, name: '{1}')",
+                                _serverPipe.GetHashCode(), PipeName);
+                    }
+                    // if (!_serverPipe.IsConnected)
+                    //    WaitForConnection(_serverPipe);
+                    //if (OutputLevel >= 1)
+                    //{
+                    //    Console.WriteLine("Named pipe server created (pipe name: '" + PipeName + "'), waiting for connection...");
+                    //}
+                    //_serverPipe.WaitForConnection();
+
+                    //if (OutputLevel >= 2)
+                    //{
+                    //    Console.WriteLine("Pipe server connected (pipe name: '" + PipeName + "')."
+                    //        + Environment.NewLine + "  CanRead:" + _serverPipe.CanRead
+                    //        + Environment.NewLine + "  CanWrite:" + _serverPipe.CanWrite
+                    //        + Environment.NewLine + "  IsAsync:" + _serverPipe.IsAsync
+                    //        + Environment.NewLine + "  ReadTimeout:" + _serverPipe.ReadTimeout
+                    //        + Environment.NewLine + "  ReadTimeout:" + _serverPipe.WriteTimeout
+                    //        + Environment.NewLine + "  ReadTimeout:" + _serverPipe.TransmissionMode);
+                    //} else if (OutputLevel >= 1)
+                    //{
+                    //    Console.WriteLine("Pipe server connected (pipe name: '" + PipeName + "')." + Environment.NewLine);
+                    //}
+                    return _serverPipe;
+                }
+            }
+            protected set
+            {
+                lock (_lock)
+                {
+                    if (value != _serverPipe)
+                    {
+                        if (_serverPipe != null)
+                        {
+                            _serverPipe.Close();
+                        }
+                        InputStream = null;
+                        OutputStream = null;
+                        _serverPipe = value;
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Closes the server pipe.
+        /// </summary>
+        protected override void NullifyServerPipeLine()
+        {
+            // TODO: RENAME this method! (perhaps to CloseConnection?)
+            ServerPipe = null;
+        }
+
+
+
+        /// <summary>Returns true if server pipe is connected, .</summary>
+        public override bool IsServerPipelineConnected()
+        {
+            return ServerPipe.IsConnected;
+        }
+
+
+        /// <summary>Waits until a client connects to the specified server pipe.</summary>
+        /// <param name="pipe">Pipe that waits for connection to be established.</param>
+        protected override void WaitForConnection()
+        {
+            WaitForConnection(ServerPipe);
+        }
+
+        /// <summary>Waits until a client connects to the specified server pipe.</summary>
+        /// <param name="pipe">Pipe that waits for connection to be established.</param>
+        protected virtual void WaitForConnection(NamedPipeServerStream pipe)
+        {
+            lock (Lock)
+            {
+                if (pipe.IsConnected)
+                {
+                    if (OutputLevel >= 1)
+                    {
+                        Console.WriteLine(Environment.NewLine + "Attempt to wait for client pipe connection named '" + PipeName + "'."
+                            + Environment.NewLine + "  Already connected.");
+                    }
+                    return;
+                }
+                if (OutputLevel >= 1)
+                {
+                    Console.WriteLine("Named pipe server created (pipe name: '" + PipeName + "'), waiting for connection...");
+                }
+                pipe.WaitForConnection();
+                if (OutputLevel >= 2)
+                {
+                    Console.WriteLine("Pipe server connected (pipe name: '" + PipeName + "')."
+                        + Environment.NewLine + "  CanRead:" + pipe.CanRead
+                        + Environment.NewLine + "  CanWrite:" + pipe.CanWrite
+                        + Environment.NewLine + "  IsAsync:" + pipe.IsAsync
+                        + Environment.NewLine + "  CanTimeot:" + pipe.CanTimeout
+                        // + Environment.NewLine + "  ReadTimeout:" + pipe.ReadTimeout
+                        // + Environment.NewLine + "  ReadTimeout:" + pipe.WriteTimeout
+                        + Environment.NewLine + "  ReadTimeout:" + pipe.TransmissionMode);
+                    if (pipe.CanTimeout)
+                    {
+                        Console.WriteLine(Environment.NewLine + "  WriteTimeout:" + pipe.WriteTimeout
+                            + Environment.NewLine + "  ReadTimeout:" + pipe.ReadTimeout + Environment.NewLine);
+                    }
+                    else
+                        Console.WriteLine();
+
+                }
+                else if (OutputLevel >= 1)
+                {
+                    Console.WriteLine("Pipe server connected (pipe name: '" + PipeName + "')." + Environment.NewLine);
+                }
+            }
+        }
+
+
+        private StreamReader _inputStream = null;
+
+        /// <summary>Input stream of the server.</summary>
+        public override StreamReader InputStream
+        {
+            get
+            {
+                lock (Lock)
+                {
+                    if (_inputStream == null)
+                    {
+                        _inputStream = new StreamReader(ServerPipe);
+                    }
+                    return _inputStream;
+                }
+            }
+            protected set
+            {
+                lock (Lock)
+                {
+                    if (value != _inputStream)
+                    {
+                        if (_inputStream != null)
+                        {
+                            _inputStream.Close();
+                        }
+                        _inputStream = value;
+                    }
+                }
+            }
+        }
+
+
+        private StreamWriter _outputStream = null;
+
+        /// <summary>Output stream of the server's named pipe.</summary>
+        public override StreamWriter OutputStream
+        {
+            get
+            {
+                lock (Lock)
+                {
+                    if (_outputStream == null)
+                    {
+                        _outputStream = new StreamWriter(ServerPipe);
+                    }
+                    return _outputStream;
+                }
+            }
+            protected set
+            {
+                lock (Lock)
+                {
+                    if (value != _outputStream)
+                    {
+                        if (_outputStream != null)
+                        {
+                            _outputStream.Close();
+                        }
+                        _outputStream = value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>Closes the Server's pipe and the associated streams.</summary>
+        public override void ClosePipe()
+        {
+            ServerPipe = null;
+        }
+
+
+        /// <summary>Sends a dummy request in order for the serving function to stop blocking</summary>
+        public override void SendDummyRequest()
+        {
+            // Send a dummy request in order for the serving function to stop blocking:
+            using (NamedPipeClientStream clientStream = new NamedPipeClientStream(PipeName))
+            {
+                using (StreamWriter clientOutputWriter = new StreamWriter(clientStream))
+                {
+                    if (IsMultilineRequest)
+                        clientOutputWriter.WriteLine();
+                    else
+                        clientOutputWriter.WriteLine(RequestEnd);
+                }
+            }
+        }
+
+        #endregion Data.Streams
+
+
         #region Operation.Auxiliary
+
 
         /// <summary>Returns a stirng containing the server data.</summary>
         public override string ToString()
         {
-            StringBuilderInternal.Clear();
-            StringBuilderInternal.AppendLine("Named pipe server.");
-            StringBuilderInternal.AppendLine("Pipe name: \"" + PipeName + "\".");
-            StringBuilderInternal.AppendLine("Currently running: " + IsServerRunning);
-            StringBuilderInternal.AppendLine("Multiline requests: " + IsMultilineRequest + ".");
-            StringBuilderInternal.AppendLine("Multiline responses: " + IsMultilineResponse + ".");
-            StringBuilderInternal.AppendLine("End of request mark: \"" + StopRequest + "\".");
-            StringBuilderInternal.AppendLine("End of response mark: \"" + StopRequest + "\".");
-            StringBuilderInternal.AppendLine("End of response: \"" + GenericResponse + "\".");
-            StringBuilderInternal.AppendLine("Server stopped response: \"" + StoppedResponse + "\".");
-            StringBuilderInternal.AppendLine("Last request string: \"" + LastRequestString + "\".");
-            StringBuilderInternal.AppendLine("Last response string: \"" + LastResponseString + "\".");
-            StringBuilderInternal.AppendLine("Last error message string: \"" + LastErrorMessage + "\".");
-            return StringBuilderInternal.ToString();
+            lock (Lock)
+            {
+
+                StringBuilderInternal.Clear();
+                StringBuilderInternal.AppendLine("Named pipe server.");
+                StringBuilderInternal.AppendLine("Pipe name: \"" + PipeName + "\".");
+                StringBuilderInternal.AppendLine("Currently running: " + IsServerRunning);
+                StringBuilderInternal.AppendLine("Multiline requests: " + IsMultilineRequest + ".");
+                StringBuilderInternal.AppendLine("Multiline responses: " + IsMultilineResponse + ".");
+                StringBuilderInternal.AppendLine("End of request mark: \"" + StopRequest + "\".");
+                StringBuilderInternal.AppendLine("End of response mark: \"" + StopRequest + "\".");
+                StringBuilderInternal.AppendLine("End of response: \"" + GenericResponse + "\".");
+                StringBuilderInternal.AppendLine("Server stopped response: \"" + StoppedResponse + "\".");
+                StringBuilderInternal.AppendLine("Last request string: \"" + LastRequestString + "\".");
+                StringBuilderInternal.AppendLine("Last response string: \"" + LastResponseString + "\".");
+                StringBuilderInternal.AppendLine("Last error message string: \"" + LastErrorMessage + "\".");
+                return StringBuilderInternal.ToString();
+            }
         }
 
         #endregion Operation.Auxiliary
+
+
 
 
     } // classs NamedPipeServerBase 
@@ -1199,9 +849,9 @@ namespace IG.Lib
 
 
 
-    /// <summary>Client to the pipe server (classes derived from <see cref="NamedPipeServerClientBase"/>).</summary>
+    /// <summary>Client to the pipe server (classes derived from <see cref="ClientServerStreamBase2"/>).</summary>
     /// $A Igor xx Mar14;
-    public class NamedPipeClientBase : NamedPipeServerClientBase, ILockable
+    public class NamedPipeClientBase : ClientStreamBase, ILockable
     {
 
         private NamedPipeClientBase() : base()
@@ -1255,7 +905,37 @@ namespace IG.Lib
         }
 
 
+
+          
         #region Data.General
+
+        /// <summary>Client name. The same as pipe name.</summary>
+        public override string Name
+        {
+            get { return PipeName; }
+            set { PipeName = value; }
+        }
+
+        private string _pipeName = DefaultPipeName;
+
+        public string PipeName
+        {
+            get { lock (_lock) { return _pipeName; } }
+            set
+            {
+                lock (_lock)
+                {
+                    if (string.IsNullOrEmpty(value))
+                        throw new NullReferenceException("Pipe name can not be an empty or null string.");
+                    if (value != _pipeName)
+                    {
+                        _pipeName = value;
+                        ClosePipe();
+                    }
+                }
+            }
+        }
+
 
         private static string _defaultServerAddress = ".";
 
