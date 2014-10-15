@@ -14,7 +14,7 @@ namespace IG.Lib
 
     /// <summary>Base class for named pipe servers and clients, contains common stuff for both.</summary>
     /// $A Igor xx Mar14;
-    public abstract class ClientServerStreamBase2 : ClienServerStreamBase, ILockable
+    public abstract class IpcStreamClientServerBase2 : IpcStreamClientServerBase, ILockable
     {
 
         // TODO: implement destructors and Close()! - if possible, do it simply on the base class.

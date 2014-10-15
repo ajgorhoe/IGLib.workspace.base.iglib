@@ -23,7 +23,7 @@ namespace IG.Lib
     /// <summary>Server that creates a named pipe, listens on its input stream, and sends responses
     /// to the client.</summary>
     /// $A Igor xx Mar14;
-    public class NamedPipeServerBase : ServerStreamBase, ILockable
+    public class NamedPipeServerBase : IpcStreamServerBase, ILockable
     {
 
         /// <summary>Prevent default  constructor.</summary>
@@ -371,9 +371,9 @@ namespace IG.Lib
 
 
 
-    /// <summary>Client to the pipe server (classes derived from <see cref="ClientServerStreamBase2"/>).</summary>
+    /// <summary>Client to the pipe server (classes derived from <see cref="IpcStreamClientServerBase2"/>).</summary>
     /// $A Igor xx Mar14;
-    public class NamedPipeClientBase : ClientStreamBase, ILockable
+    public class NamedPipeClientBase : IpcStreamClientBase, ILockable
     {
 
         private NamedPipeClientBase() : base()

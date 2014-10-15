@@ -17,7 +17,7 @@ namespace IG.Lib
 
     /// <summary>Base class for client and server classes with stream-based communication.</summary>
     /// $A Igor xx Aug14;
-    public abstract class ClienServerStreamBase : ILockable
+    public abstract class IpcStreamClientServerBase : ILockable
     {
 
 

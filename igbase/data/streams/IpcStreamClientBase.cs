@@ -14,9 +14,9 @@ namespace IG.Lib
 
 
 
-    /// <summary>Client to the pipe server (classes derived from <see cref="ClientServerStreamBase2"/>).</summary>
+    /// <summary>Client to the pipe server (classes derived from <see cref="IpcStreamClientServerBase2"/>).</summary>
     /// $A Igor xx Mar14;
-    public abstract class ClientStreamBase : ClientServerStreamBase2, ILockable
+    public abstract class IpcStreamClientBase : IpcStreamClientServerBase2, ILockable
     {
 
 

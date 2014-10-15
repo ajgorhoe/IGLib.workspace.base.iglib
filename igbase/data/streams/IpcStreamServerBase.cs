@@ -14,7 +14,7 @@ namespace IG.Lib
 /// <summary>Server that creates a named pipe, listens on its input stream, and sends responses
 /// to the client.</summary>
 /// $A Igor xx Mar14;
-public abstract class ServerStreamBase : ClientServerStreamBase2, ILockable
+public abstract class IpcStreamServerBase : IpcStreamClientServerBase2, ILockable
 {
 
 
