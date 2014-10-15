@@ -97,11 +97,11 @@
     <Compile Include="data\streams\IpcStreamClientBase.cs" />
     <Compile Include="data\streams\IpcStreamServerBase.cs" />
     <Compile Include="data\streams\streams_copy\ClientServerStreamBase_Copy.cs" />
-    <Compile Include="data\streams\ClientServerStreamBase.cs" />
+    <Compile Include="data\streams\IpcStreamClientServerBase.cs" />
     <Compile Include="data\streams\streams_copy\ClientServerStreamBase2_Copy.cs" />
-    <Compile Include="data\streams\ClientServerStreamBase2.cs" />
+    <Compile Include="data\streams\IpcStreamClientServerBase2.cs" />
     <Compile Include="data\streams\streams_copy\NamedPipes_Copy.cs" />
-    <Compile Include="data\streams\NamedPipes.cs" />
+    <Compile Include="data\streams\IpcNamedPipes.cs" />
     <Compile Include="data\StringParserBuffer.cs" />
     <Compile Include="data\StringParserInt.cs" />
     <Compile Include="0unsorted\Error.cs" />
