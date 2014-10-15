@@ -62,7 +62,7 @@ namespace IG.Lib
 
         public const int MinimalMessagePreffixLength = 3;
 
-        private static string _defaultMessagePrefix = "IGLibMessage";
+        private static string _defaultMessagePrefix = "IGLibMsg";
 
         public static string DefaultMessagePrefix
         {
@@ -206,8 +206,6 @@ namespace IG.Lib
 
 
 
-
-
         private char _messageFalseSeparator = DefaultMessageFalseSeparator;
 
         public char MessageFalseSeparator
@@ -239,8 +237,6 @@ namespace IG.Lib
         {
             MessageFalseSeparator = messageFalseSeparator;
         }
-
-
 
 
 
@@ -359,6 +355,13 @@ namespace IG.Lib
         #endregion Messages
 
 
+        #region StandardMessagesAndStrings
+
+
+
+
+        #endregion StandardMessagesAndStrings
+
 
 
         #region Data.General
@@ -391,7 +394,6 @@ namespace IG.Lib
             get { lock (Lock) { return _otputLevel; } }
             set { lock (Lock) { _otputLevel = value; } }
         }
-
 
 
 
