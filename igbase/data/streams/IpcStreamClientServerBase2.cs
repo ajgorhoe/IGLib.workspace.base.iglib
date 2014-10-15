@@ -50,15 +50,6 @@ namespace IG.Lib
 
 
 
-
-        private static bool _defaultIsMultilineRequest = true;
-
-        /// <summary>Default pipe name.</summary>
-        public static bool DefaultIsMultilineRequest
-        {
-            get { { return _defaultIsMultilineRequest; } }
-        }
-
         private static string _defaultRequestEnd = "RequestEnd";
 
         /// <summary>Default string (line) that ends any multiline request.</summary>
@@ -83,15 +74,6 @@ namespace IG.Lib
             get { { return _defaultResponseEnd; } }
         }
 
-
-        private bool _isMultilineRequest = DefaultIsMultilineRequest;
-
-        /// <summary>Whether or not multi line requests are allowed.</summary>
-        public virtual bool IsMultilineRequest
-        {
-            get { return _isMultilineRequest; }
-            protected set { _isMultilineRequest = value; }
-        }
 
         /// <summary>String (line) that ends a request (only when multiline requests are allowed).</summary>
         private string _requestEnd = DefaultRequestEnd;
