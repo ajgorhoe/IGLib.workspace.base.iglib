@@ -50,60 +50,6 @@ namespace IG.Lib
 
 
 
-        private static string _defaultRequestEnd = "RequestEnd";
-
-        /// <summary>Default string (line) that ends any multiline request.</summary>
-        public static string DefaultRequestEnd
-        {
-            get { { return _defaultRequestEnd; } }
-        }
-
-        private static bool _defaultIsMultilineResponse = true;
-
-        /// <summary>Default pipe name.</summary>
-        public static bool DefaultIsMultilineResponse
-        {
-            get { { return _defaultIsMultilineResponse; } }
-        }
-
-        private static string _defaultResponseEnd = "ResponseEnd";
-
-        /// <summary>Default string (line) that ends any multiline response.</summary>
-        public static string DefaultResponseEnd
-        {
-            get { { return _defaultResponseEnd; } }
-        }
-
-
-        /// <summary>String (line) that ends a request (only when multiline requests are allowed).</summary>
-        private string _requestEnd = DefaultRequestEnd;
-
-        public string RequestEnd
-        {
-            get { return _requestEnd; }
-            protected set { _requestEnd = value; }
-        }
-
-
-        private bool _isMultilineResponse = DefaultIsMultilineResponse;
-
-        /// <summary>Whether or not multi line responses are allowed.</summary>
-        public virtual bool IsMultilineResponse
-        {
-            get { return _isMultilineResponse; }
-            protected set { _isMultilineResponse = value; }
-        }
-
-        /// <summary>String (line) that ends a response (only when multiline responses are allowed).</summary>
-        private string _responseEnd = DefaultResponseEnd;
-
-        public string ResponseEnd
-        {
-            get { return _responseEnd; }
-            protected set { _responseEnd = value; }
-        }
-
-
         private static string _defaultErrorBegin = "$$ERROR__83753093759$$: ";
 
         /// <summary>Default string that begins an error report.</summary>
@@ -120,6 +66,7 @@ namespace IG.Lib
             get { return _errorBegin; }
             protected set { _errorBegin = value; }
         }
+
 
         /// <summary>Returns true if the specified response string represents an error response (exception), false if not.</summary>
         /// <param name="responseString">Response string that is inspected.</param>

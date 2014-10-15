@@ -313,19 +313,26 @@ namespace IG.Lib
         /// <returns></returns>
         public string CreateMessage(string messageName, string[] messageArguments)
         {
-            StringBuilderInternal.Clear();
-            StringBuilderInternal.Append(MessagePrefixWithSeparator);
-            StringBuilderInternal.Append(messageName);
-            if (messageArguments != null)
+            lock (Lock)
             {
-                int num = messageArguments.Length;
-                for (int i = 0; i < num; ++i)
+                StringBuilder sb = StringBuilderInternal;
+                sb.Clear();
+                sb.Append(MessagePrefixWithSeparator);
+                sb.Append(messageName);
+                if (messageArguments != null)
                 {
-                    StringBuilderInternal.Append(" ");
-                    StringBuilderInternal.Append(messageArguments[i]);
+                    int num = messageArguments.Length;
+                    for (int i = 0; i < num; ++i)
+                    {
+                        sb.Append(" ");
+                        string str = messageArguments[i];
+                        if (str.Contains('\n') || str.Contains('\r'))
+                            throw new InvalidOperationException("Message argument contains newline characters.");
+                        sb.Append(messageArguments[i]);
+                    }
                 }
+                return sb.ToString();
             }
-            return StringBuilderInternal.ToString();
         }
 
         /// <summary>Generates request and response string in such a way that it can not be mixed up with a message.
@@ -387,19 +394,113 @@ namespace IG.Lib
             }
         }
 
+
+
         #endregion Messages.General
 
 
         #region Messages
 
 
+        private static string _defaultMsgRequestEnd = "RequestEnd";
 
+        /// <summary>Default message that ends any mulltiline request.</summary>
+        public static string DefaultMsgRequestEnd
+        {
+            get { return _defaultMsgRequestEnd; }
+        }
+
+        private static string _defaultMsgResponseEnd = "ResponseEnd";
+
+        /// <summary>Default message that ends any multiline response.</summary>
+        public static string DefaultMsgResponseEnd
+        {
+            get { return _defaultMsgResponseEnd; }
+        }
+
+
+
+        private static string _defaultMsgTestSquare = "TestStuare";
+
+        /// <summary>Default message that requests a test computation of square to be performed on the other side (a sort of ping command).</summary>
+        public static string DefaultMsgTestSquare
+        {
+            get { return _defaultMsgTestSquare; }
+        }
+
+        private static string _defaultMsgTestSpeed = "TestSpeed";
+
+        /// <summary>Default message that requests a speed test to be performed on the other side (a sort of ping command).</summary>
+        public static string DefaultMsgTestSpeed
+        {
+            get { return _defaultMsgTestSpeed; }
+        }
+
+
+        /// <summary>Message that ends any multiline request (only when multiline requests are allowed).</summary>
+        private string _msgRequestEnd = DefaultMsgRequestEnd;
+
+        public string MsgRequestEnd
+        {
+            get { return _msgRequestEnd; }
+            protected set { _msgRequestEnd = value; }
+        }
+
+
+        private string _msgResponseEnd = DefaultMsgResponseEnd;
+
+        /// <summary>Message that ends any multiline response (only when multiline responses are allowed).</summary>
+        public string MsgResponseEnd
+        {
+            get { return _msgResponseEnd; }
+            protected set { _msgResponseEnd = value; }
+        }
+
+
+        private string _msgTestSquare = DefaultMsgTestSquare;
+
+        /// <summary>Message that requests square of its argument to be sent back. Used as a kind of verifiable ping.</summary>
+        public string MsgTestSquare
+        {
+            get { return _msgTestSquare; }
+            protected set { _msgTestSquare = value; }
+        }
+
+        private string _msgTestSpeed = DefaultMsgTestSpeed;
+
+        /// <summary>Message that requires a kind of speed test to be performed on the other side.</summary>
+        public string MsgTestSpeed
+        {
+            get { return _msgTestSpeed; }
+            protected set { _msgTestSpeed = value; }
+        }
+
+        /// <summary>Responds to a received message.</summary>
+        /// <param name="messageName">Name of the message upon which action is taken.</param>
+        /// <param name="messageArguments">Arguments of the message.</param>
+        /// <param name="responded">Set to true if message has already been responded.</param>
+        public virtual void RespondToMessage(string messageName, string[] messageArguments, ref bool responded)
+        {
+            // base.RespondToMessage(messageName, messageArguments, ref responded);
+            switch (messageName)
+            {
+                default:
+                    break;
+            }
+        }
 
         #endregion Messages
 
 
         #region Operation.Settings
 
+        private static bool _defaultIsMultilineResponse = true;
+
+        /// <summary>Default pipe name.</summary>
+        public static bool DefaultIsMultilineResponse
+        {
+            get { { return _defaultIsMultilineResponse; } }
+        }
 
         private static bool _defaultIsMultilineRequest = true;
 
@@ -418,6 +519,15 @@ namespace IG.Lib
             protected set { _isMultilineRequest = value; }
         }
 
+
+        private bool _isMultilineResponse = DefaultIsMultilineResponse;
+
+        /// <summary>Whether or not multi line responses are allowed.</summary>
+        public virtual bool IsMultilineResponse
+        {
+            get { return _isMultilineResponse; }
+            protected set { _isMultilineResponse = value; }
+        }
 
         #endregion Operation.Settings
 

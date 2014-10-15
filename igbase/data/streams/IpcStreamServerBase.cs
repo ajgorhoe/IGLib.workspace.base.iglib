@@ -176,7 +176,7 @@ public abstract class IpcStreamServerBase : IpcStreamClientServerBase2, ILockabl
                         {
                             Console.WriteLine("... line read: \"" + line + "\"");
                         }
-                        if (line == RequestEnd)
+                        if (line == MsgRequestEnd)
                             stop = true;
                         else
                             StringBuilderInternal.AppendLine(line);
@@ -240,10 +240,10 @@ public abstract class IpcStreamServerBase : IpcStreamClientServerBase2, ILockabl
                 }
                 if (IsMultilineResponse)
                 {
-                    OutputStream.WriteLine(ResponseEnd);
+                    OutputStream.WriteLine(MsgResponseEnd);
                     if (OutputLevel >= 2)
                     {
-                        Console.WriteLine("Multiline response end message sent: \"" + ResponseEnd + "\"");
+                        Console.WriteLine("Multiline response end message sent: \"" + MsgResponseEnd + "\"");
                     }
                 }
                 OutputStream.Flush();

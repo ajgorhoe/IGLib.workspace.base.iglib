@@ -59,14 +59,14 @@ namespace IG.Lib
             else
             {
                 this.IsMultilineRequest = true;
-                this.RequestEnd = requestEnd;
+                this.MsgRequestEnd = requestEnd;
             }
             if (string.IsNullOrEmpty(responseEnd))
                 this.IsMultilineResponse = false;
             else
             {
                 this.IsMultilineResponse = true;
-                this.ResponseEnd = responseEnd;
+                this.MsgResponseEnd = responseEnd;
             }
             if (!string.IsNullOrEmpty(errorBegin))
                 this.ErrorBegin = errorBegin;
@@ -326,7 +326,7 @@ namespace IG.Lib
                     if (IsMultilineRequest)
                         clientOutputWriter.WriteLine();
                     else
-                        clientOutputWriter.WriteLine(RequestEnd);
+                        clientOutputWriter.WriteLine(MsgRequestEnd);
                 }
             }
         }
@@ -413,14 +413,14 @@ namespace IG.Lib
             else
             {
                 this.IsMultilineRequest = true;
-                this.RequestEnd = requestEnd;
+                this.MsgRequestEnd = requestEnd;
             }
             if (string.IsNullOrEmpty(responseEnd))
                 this.IsMultilineResponse = false;
             else
             {
                 this.IsMultilineResponse = true;
-                this.ResponseEnd = responseEnd;
+                this.MsgResponseEnd = responseEnd;
             }
             if (!string.IsNullOrEmpty(errorBegin))
                 this.ErrorBegin = errorBegin;

@@ -90,10 +90,10 @@ namespace IG.Lib
                     OutputStream.WriteLine(requestString);
                     if (IsMultilineRequest)
                     {
-                        OutputStream.WriteLine(RequestEnd);
+                        OutputStream.WriteLine(MsgRequestEnd);
                         if (OutputLevel >= 2)
                         {
-                            Console.WriteLine("Multiline request end message sent: \"" + RequestEnd + "\"");
+                            Console.WriteLine("Multiline request end message sent: \"" + MsgRequestEnd + "\"");
                         }
                     }
                     OutputStream.Flush();
@@ -147,7 +147,7 @@ namespace IG.Lib
                             string line = InputStream.ReadLine();
                             if (OutputLevel >= 2)
                                 Console.WriteLine("  ... next line received: \"" + line + "\"");
-                            if (line == ResponseEnd)
+                            if (line == MsgResponseEnd)
                                 stop = true;
                             else
                                 StringBuilderInternal.AppendLine(line);
