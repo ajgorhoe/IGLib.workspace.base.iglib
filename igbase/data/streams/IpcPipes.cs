@@ -9,27 +9,32 @@ using System.IO;
 using System.IO.Pipes;
 using System.Threading;
 
+using System.Diagnostics;
+
 
 namespace IG.Lib
 {
-    
+
     /* See:
-     * http://stackoverflow.com/questions/1309062/bidirectional-named-pipe-question
-     * http://msdn.microsoft.com/en-us/library/bb546085%28v=vs.110%29.aspx
+     * http://stackoverflow.com/questions/850802/piping-in-a-file-on-the-command-line-using-system-diagnostics-process
+     * http://msdn.microsoft.com/en-us/library/system.io.textreader.peek%28v=vs.110%29.aspx
+     * 
+     * http://stackoverflow.com/questions/3873878/capturing-console-stream-input
      */
 
 
+    // TODO: ADAPT AND REPAIR THESE CLASSES! (copied from NamedPipes) - gothrough all methods!
 
 
 
     /// <summary>Server that creates a named pipe, listens on its input stream, and sends responses
     /// to the client.</summary>
     /// $A Igor xx Mar14;
-    public class NamedPipeServerBase : IpcStreamServerBase, ILockable
+    public class PipeServerBase : IpcStreamServerBase, ILockable
     {
 
         /// <summary>Prevent default  constructor.</summary>
-        private NamedPipeServerBase()
+        private PipeServerBase()
             : base()
         { }
 
@@ -37,7 +42,7 @@ namespace IG.Lib
         /// <summary>Constructs a new pip server.</summary>
         /// <param name="pipeName">Name of the pipe used for client-server communication.</param>
         /// <param name="startImmediately">If true then server is started immediately after created.</param>
-        public NamedPipeServerBase(string pipeName, bool startImmediately = true)
+        public PipeServerBase(string pipeName, bool startImmediately = true)
             : this()
         {
             this.PipeName = pipeName;
@@ -52,7 +57,7 @@ namespace IG.Lib
         /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
         /// i.e. <see cref="DefaultErrorBegin"/></param>
         /// <param name="startImmediately">If true then server is started immediately after created.</param>
-        public NamedPipeServerBase(string pipeName, string requestEnd, string responseEnd, string errorBegin,
+        public PipeServerBase(string pipeName, string requestEnd, string responseEnd, string errorBegin,
             bool startImmediately = true) :
             this(pipeName, false /* startImmediately */)
         {
@@ -375,24 +380,27 @@ namespace IG.Lib
 
     /// <summary>Client to the pipe server (classes derived from <see cref="IpcStreamClientServerBase2"/>).</summary>
     /// $A Igor xx Mar14;
-    public class NamedPipeClientBase : IpcStreamClientBase, ILockable
+    public class PipeClientBase : IpcStreamClientBase, ILockable
     {
 
-        private NamedPipeClientBase() : base()
-        {  }
+        private PipeClientBase()
+            : base()
+        { }
 
         /// <summary>Constructs a new named pipe client with the specified pipe name, default server address (<see cref="DefaultServerAddress"/>)
         /// and default values for other paramters.</summary>
         /// <param name="pipeName">Name of the pipe. Must not be null or empty string.</param>
-        public NamedPipeClientBase(string pipeName): this(pipeName, null)
-        {  }
+        public PipeClientBase(string pipeName)
+            : this(pipeName, null)
+        { }
 
         /// <summary>Constructs a new named pipe client with the specified pipe name, server address (<see cref="DefaultServerAddress"/>)
         /// and default values for other paramters.</summary>
         /// <param name="pipeName">Name of the pipe. Must not be null or empty string.</param>
         /// <param name="serverAddress">Address of the server where named pipe server is run. If null or empty string then the
         /// default server address is uesd (<see cref="DefaultServerAddress"/>), referring to the current computer.</param>
-        public NamedPipeClientBase(string pipeName, string serverAddress): this()
+        public PipeClientBase(string pipeName, string serverAddress)
+            : this()
         {
             this.PipeName = pipeName;
             this.ServerAddress = serverAddress;
@@ -407,7 +415,7 @@ namespace IG.Lib
         /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
         /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
         /// i.e. <see cref="DefaultErrorBegin"/></param>
-        public NamedPipeClientBase(string pipeName, string serverAddress, string requestEnd, string responseEnd, string errorBegin):
+        public PipeClientBase(string pipeName, string serverAddress, string requestEnd, string responseEnd, string errorBegin) :
             this(pipeName, serverAddress)
         {
             if (string.IsNullOrEmpty(requestEnd))
@@ -427,6 +435,77 @@ namespace IG.Lib
             if (!string.IsNullOrEmpty(errorBegin))
                 this.ErrorBegin = errorBegin;
         }
+
+
+
+        // NEW:
+
+        public static bool ExecuteSvnCommandWithFileInput(string command, string arguments, string filePath, out string result, out string errors)
+        {
+
+
+            bool retval = false;
+            string output = string.Empty;
+            string errorLines = string.Empty;
+            Process svnCommand = null;
+            var psi = new ProcessStartInfo(command);
+
+            
+
+            psi.RedirectStandardInput = true;
+            psi.RedirectStandardOutput = true;
+            psi.RedirectStandardError = true;
+            psi.WindowStyle = ProcessWindowStyle.Hidden;
+            psi.UseShellExecute = false;
+            psi.CreateNoWindow = true;
+
+            try
+            {
+                Process.Start(psi);
+                psi.Arguments = arguments;
+                svnCommand = Process.Start(psi);
+
+                var file = new FileInfo(filePath);
+                StreamReader reader = file.OpenText();
+                string fileContents = reader.ReadToEnd();
+                reader.Close();
+
+                StreamWriter myWriter = svnCommand.StandardInput;
+                StreamReader myOutput = svnCommand.StandardOutput;
+                StreamReader myErrors = svnCommand.StandardError;
+
+                myWriter.AutoFlush = true;
+                myWriter.Write(fileContents);
+                myWriter.Close();
+
+                output = myOutput.ReadToEnd();
+                errorLines = myErrors.ReadToEnd();
+
+                // Check for errors
+                if (errorLines.Trim().Length == 0)
+                {
+                    retval = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.Message;
+                errorLines += Environment.NewLine + msg;
+            }
+            finally
+            {
+                if (svnCommand != null)
+                {
+                    svnCommand.Close();
+                }
+            }
+
+            result = output;
+            errors = errorLines;
+
+            return retval;
+        }
+
 
 
         #region Data.General
@@ -747,7 +826,7 @@ namespace IG.Lib
         #endregion Operation.Auxiliary
 
 
-    } // class NamedPipeClientBase
+    } // class PipeClientBase
 
 
 

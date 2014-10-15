@@ -94,6 +94,7 @@
     <Compile Include="data\serialization\SerializerBase.cs" />
     <Compile Include="data\serialization\SerializerJson.cs" />
     <Compile Include="data\serialization\TestSerializers.cs" />
+    <Compile Include="data\streams\IpcPipes.cs" />
     <Compile Include="data\streams\IpcStreamClientBase.cs" />
     <Compile Include="data\streams\IpcStreamServerBase.cs" />
     <Compile Include="data\streams\streams_copy\ClientServerStreamBase_Copy.cs" />
