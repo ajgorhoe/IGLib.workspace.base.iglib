@@ -29,12 +29,6 @@ public abstract class IpcStreamServerBase : IpcStreamClientServerBase2, ILockabl
     protected abstract void WaitForConnection();
 
 
-    /// <summary>Closes connection of the server pype.</summary>
-    protected abstract void NullifyServerPipeLine();
-
-    /// <summary>Returns true if server pipe is connected, .</summary>
-    public abstract bool IsServerPipelineConnected();
-
     /// <summary>Closes the inpt stream.</summary>
     public override void CloseInput()
     {
@@ -337,7 +331,7 @@ public abstract class IpcStreamServerBase : IpcStreamClientServerBase2, ILockabl
             //if (!pipeStream.IsConnected)
             //    WaitForConnection(pipeStream);
 
-            if (!IsServerPipelineConnected())
+            if (!IsConnected())
                 WaitForConnection();
 
             StopServe = false;
@@ -451,7 +445,7 @@ public abstract class IpcStreamServerBase : IpcStreamClientServerBase2, ILockabl
         finally
         {
             _workingThread = null;
-            NullifyServerPipeLine(); //ServerPipe = null;
+            CloseConnection(); //ServerPipe = null;
         }
     }
 

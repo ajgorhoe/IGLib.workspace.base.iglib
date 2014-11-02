@@ -145,130 +145,6 @@ namespace IG.Lib
         }
 
 
-        private static string _defaultStopRequest = "stop";
-
-        /// <summary>Default stop request string - request string that will stop the server.</summary>
-        public static string DefaultStopRequest
-        {
-            get { lock (LockGlobal) { return _defaultStopRequest; } }
-            set
-            {
-                lock (LockGlobal)
-                {
-                    //if (string.IsNullOrEmpty(value))
-                    //    throw new NullReferenceException("Default stop request can not be empty or null string.");
-                    //else
-                    _defaultStopRequest = value;
-                }
-            }
-        }
-
-
-        private string _stopRequest = DefaultStopRequest;
-
-        /// <summary>Request that causes the server stop listening and closing the pipe.</summary>
-        public string StopRequest
-        {
-            get { lock (Lock) { return _stopRequest; } }
-            set { _stopRequest = value; }
-        }
-
-
-        private static string _defaultGenericResponse = "IGLib_PipeServer_GenericResponse";
-
-        /// <summary>Default generic response (sent in absence of any other method to generate the response).</summary>
-        public static string DefaultGenericResponse
-        {
-            get { lock (LockGlobal) { return _defaultGenericResponse; } }
-            set
-            {
-                lock (LockGlobal)
-                {
-                    if (value != _defaultGenericResponse)
-                    {
-                        if (string.IsNullOrEmpty(value))
-                            throw new NullReferenceException("Default generic response of pipe server can not be empty or null string.");
-                        else
-                        {
-                            if (DefaultOutputLevel >= 1)
-                                Console.WriteLine(Environment.NewLine + "Warning: default generic response of pipe servers changed: "
-                                    + Environment.NewLine + "  from " + _defaultGenericResponse + " to " + value + ".");
-                            _defaultGenericResponse = value;
-                        }
-                    }
-                }
-            }
-        }
-
-        private string _genericResponse = DefaultGenericResponse;
-
-        /// <summary>Generic response that is sent back to the client in abscence of any
-        /// method generating responses to specific requests.</summary>
-        public string GenericResponse
-        {
-            get { lock (_lock) { return _genericResponse; } }
-            protected set
-            {
-                lock (_lock)
-                {
-                    if (value != _genericResponse)
-                    {
-                        if (string.IsNullOrEmpty(value))
-                            throw new NullReferenceException("Pipe server's generic response can not be an empty or null string.");
-                        _genericResponse = value;
-                    }
-                }
-            }
-        }
-
-
-        private static string _defaultStoppedResponse = "IGLib_PipeServer_StoppedResponse";
-
-        /// <summary>Default stopped response (sent after the srver has sttopped on request).</summary>
-        public static string DefaultStoppedResponse
-        {
-            get { lock (LockGlobal) { return _defaultStoppedResponse; } }
-            set
-            {
-                lock (LockGlobal)
-                {
-                    if (value != _defaultStoppedResponse)
-                    {
-                        if (string.IsNullOrEmpty(value))
-                            throw new NullReferenceException("Default generic response of pipe server can not be empty or null string.");
-                        else
-                        {
-                            if (DefaultOutputLevel >= 1)
-                                Console.WriteLine(Environment.NewLine + "Warning: default stopped response of pipe servers changed: "
-                                    + Environment.NewLine + "  from " + _defaultStoppedResponse + " to " + value + ".");
-                            _defaultStoppedResponse = value;
-                        }
-                    }
-                }
-            }
-        }
-
-        private string _stoppedResponse = DefaultStoppedResponse;
-
-        /// <summary>Stopped response that is sent back to the client after the server stops on its
-        /// request.</summary>
-        public string StoppedResponse
-        {
-            get { lock (_lock) { return _stoppedResponse; } }
-            protected set
-            {
-                lock (_lock)
-                {
-                    if (value != _stoppedResponse)
-                    {
-                        if (string.IsNullOrEmpty(value))
-                            throw new NullReferenceException("Pipe server's stopped response can not be an empty or null string.");
-                        _stoppedResponse = value;
-                    }
-                }
-            }
-        }
-
 
 
 
@@ -376,6 +252,12 @@ namespace IG.Lib
 
         #region Operation
 
+
+        /// <summary>Closes connection of the server pype.</summary>
+        protected abstract void CloseConnection();
+
+        /// <summary>Returns true if server pipe is connected, .</summary>
+        public abstract bool IsConnected();
 
         //public override string ToString()
         //{

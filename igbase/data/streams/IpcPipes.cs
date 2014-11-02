@@ -181,18 +181,24 @@ namespace IG.Lib
         /// <summary>
         /// Closes the server pipe.
         /// </summary>
-        protected override void NullifyServerPipeLine()
+        protected override void CloseConnection()
         {
-            // TODO: RENAME this method! (perhaps to CloseConnection?)
+
+            InputStream = null;
+            OutputStream = null;
+
             ServerPipe = null;
         }
 
 
 
         /// <summary>Returns true if server pipe is connected, .</summary>
-        public override bool IsServerPipelineConnected()
+        public override bool IsConnected()
         {
-            return ServerPipe.IsConnected;
+            if (InputStream != null && OutputStream != null)
+                if (ServerPipe.IsConnected)
+                    return true;
+            return false;
         }
 
 
@@ -803,6 +809,32 @@ namespace IG.Lib
 
 
         #region Operation.Auxiliary
+
+
+
+        /// <summary>
+        /// Closes the server pipe.
+        /// </summary>
+        protected override void CloseConnection()
+        {
+
+            InputStream = null;
+            OutputStream = null;
+
+            ClientPipe = null;
+        }
+
+
+
+        /// <summary>Returns true if server pipe is connected, .</summary>
+        public override bool IsConnected()
+        {
+            if (InputStream != null && OutputStream != null)
+                if (ClientPipe.IsConnected)
+                    return true;
+            return false;
+        }
+
 
         /// <summary>Returns a stirng containing the server data.</summary>
         public override string ToString()

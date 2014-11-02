@@ -15,6 +15,13 @@ using System.Threading;
 namespace IG.Lib
 {
 
+    public enum IpcStage {
+        WritingRequest, 
+        ReadingRequest,
+        WritingResponse,
+        ReadingResponse
+    }
+
     /// <summary>Base class for client and server classes with stream-based communication.</summary>
     /// $A Igor xx Aug14;
     public abstract class IpcStreamClientServerBase : ILockable
@@ -341,15 +348,20 @@ namespace IG.Lib
         /// on the other side of the communication pipeline (simply by removng the false separator).</para></summary>
         /// <param name="originalResponseOrRequestString">Original response string that is sent to the other side.</param>
         /// <returns>The created request string that can be distinguished form a command.</returns>
-        public string createResponseOrRequestString(string originalResponseOrRequestString)
+        public string CreateResponseOrRequestString(string originalResponseOrRequestString, bool multiLine)
         {
             if (originalResponseOrRequestString == null)
                 return null;
-            else if (!originalResponseOrRequestString.StartsWith(MessagePrefix))
-                return originalResponseOrRequestString;
             else
             {
-                return MessagePrefix + MessageFalseSeparator + originalResponseOrRequestString.Substring(MessagePrefix.Length);
+                string ret = null;
+                if (!originalResponseOrRequestString.StartsWith(MessagePrefix))
+                    ret = originalResponseOrRequestString;
+                else 
+                    ret = MessagePrefix + MessageFalseSeparator + originalResponseOrRequestString.Substring(MessagePrefix.Length);
+                if (!multiLine)
+                    ret = ret.Replace("\n", "\\n").Replace("\r","\\r");
+                return ret;
             }
         }
 
@@ -360,7 +372,7 @@ namespace IG.Lib
         /// <param name="isMessage">Output flag telling whether the string is a message or not.</param>
         /// <param name="messageOrCommandName">Name of the message or command extracted from the string.</param>
         /// <param name="messageArguments">Message or command arguments.</param>
-        public void GetRequestOrResponse(ref string responseOrRequestString, out bool isMessage, 
+        public void InterpretRequestOrResponseLine(ref string responseOrRequestString, out bool isMessage, 
             out string messageOrCommandName, out string [] messageArguments)
         {
             isMessage = false;
@@ -395,12 +407,59 @@ namespace IG.Lib
         }
 
 
+        /// <summary>Writes a mesage to the output stream. What is written is decorated message (including the standard message
+        /// prefix and separator) and message arguments.</summary>
+        /// <param name="outputStream">Stream where the message is written to.</param>
+        /// <param name="message">Message name. The name is decorated with prefix and separator when message is written to a stream.</param>
+        /// <param name="args">Arguments of the message. Can be null for message without arguments.</param>
+        public void writeMessage(StreamWriter outputStream, string message, string[] args)
+        {
+            if (message.Contains('\n'))
+                throw new InvalidDataException("Invalid message name: contains newlines.");
+            outputStream.Write(MessagePrefix);
+            outputStream.Write(MessageSeparator);
+            outputStream.Write(message);
+            if (args != null)
+            {
+                int numArgs = args.Length;
+                for (int i = 0; i < numArgs; ++i)
+                {
+                    string argStr = args[i];
+                    if (string.IsNullOrEmpty(argStr))
+                        outputStream.Write("  \"\"");
+                    else
+                    {
+                        if (argStr.Contains('\n'))
+                            throw new InvalidDataException("Invalid message argument No. " + i + ": contains newlines.");
+                        outputStream.Write(" ");
+                        outputStream.Write(argStr);
+                    }
+                }
+            }
+            outputStream.WriteLine();
+        }
+
 
         #endregion Messages.General
 
 
+        public virtual void WorkMessage(string messageName, string[] messageArguments, IpcStage context, ref bool worked)
+        {
+
+        }
+
+
+
         #region Messages
 
+
+        private static string _defaultMsgRequestBegin = "RequestBegin";
+
+        /// <summary>Default message that begins any mulltiline request.</summary>
+        public static string DefaultMsgRequestBegin
+        {
+            get { return _defaultMsgRequestBegin; }
+        }
 
         private static string _defaultMsgRequestEnd = "RequestEnd";
 
@@ -408,6 +467,14 @@ namespace IG.Lib
         public static string DefaultMsgRequestEnd
         {
             get { return _defaultMsgRequestEnd; }
+        }
+
+        private static string _defaultMsgResponseBegin = "ResponseBegin";
+
+        /// <summary>Default message that begins any multiline response.</summary>
+        public static string DefaultMsgResponseBegin
+        {
+            get { return _defaultMsgResponseBegin; }
         }
 
         private static string _defaultMsgResponseEnd = "ResponseEnd";
@@ -437,6 +504,15 @@ namespace IG.Lib
         }
 
 
+        /// <summary>Message that begins any multiline request (only when multiline requests are allowed).</summary>
+        private string _msgRequestBegin = DefaultMsgRequestBegin;
+
+        public string MsgRequestBegin
+        {
+            get { return _msgRequestBegin; }
+            protected set { _msgRequestBegin = value; }
+        }
+
         /// <summary>Message that ends any multiline request (only when multiline requests are allowed).</summary>
         private string _msgRequestEnd = DefaultMsgRequestEnd;
 
@@ -446,6 +522,15 @@ namespace IG.Lib
             protected set { _msgRequestEnd = value; }
         }
 
+
+        private string _msgResponseBegin = DefaultMsgResponseBegin;
+
+        /// <summary>Message that begins any multiline response (only when multiline responses are allowed).</summary>
+        public string MsgResponseBegin
+        {
+            get { return _msgResponseBegin; }
+            protected set { _msgResponseBegin = value; }
+        }
 
         private string _msgResponseEnd = DefaultMsgResponseEnd;
 
@@ -490,6 +575,150 @@ namespace IG.Lib
         }
 
         #endregion Messages
+
+
+
+
+
+
+
+        #region Messages.Old
+
+
+
+        private static string _defaultStopRequest = "stop";
+
+        /// <summary>Default stop request string - request string that will stop the server.</summary>
+        public static string DefaultStopRequest
+        {
+            get { lock (LockGlobal) { return _defaultStopRequest; } }
+            set
+            {
+                lock (LockGlobal)
+                {
+                    //if (string.IsNullOrEmpty(value))
+                    //    throw new NullReferenceException("Default stop request can not be empty or null string.");
+                    //else
+                    _defaultStopRequest = value;
+                }
+            }
+        }
+
+
+        private string _stopRequest = DefaultStopRequest;
+
+        /// <summary>Request that causes the server stop listening and closing the pipe.</summary>
+        public string StopRequest
+        {
+            get { lock (Lock) { return _stopRequest; } }
+            set { _stopRequest = value; }
+        }
+
+
+        private static string _defaultGenericResponse = "IGLib_PipeServer_GenericResponse";
+
+        /// <summary>Default generic response (sent in absence of any other method to generate the response).</summary>
+        public static string DefaultGenericResponse
+        {
+            get { lock (LockGlobal) { return _defaultGenericResponse; } }
+            set
+            {
+                lock (LockGlobal)
+                {
+                    if (value != _defaultGenericResponse)
+                    {
+                        if (string.IsNullOrEmpty(value))
+                            throw new NullReferenceException("Default generic response of pipe server can not be empty or null string.");
+                        else
+                        {
+                            if (DefaultOutputLevel >= 1)
+                                Console.WriteLine(Environment.NewLine + "Warning: default generic response of pipe servers changed: "
+                                    + Environment.NewLine + "  from " + _defaultGenericResponse + " to " + value + ".");
+                            _defaultGenericResponse = value;
+                        }
+                    }
+                }
+            }
+        }
+
+        private string _genericResponse = DefaultGenericResponse;
+
+        /// <summary>Generic response that is sent back to the client in abscence of any
+        /// method generating responses to specific requests.</summary>
+        public string GenericResponse
+        {
+            get { lock (_lock) { return _genericResponse; } }
+            protected set
+            {
+                lock (_lock)
+                {
+                    if (value != _genericResponse)
+                    {
+                        if (string.IsNullOrEmpty(value))
+                            throw new NullReferenceException("Pipe server's generic response can not be an empty or null string.");
+                        _genericResponse = value;
+                    }
+                }
+            }
+        }
+
+
+        private static string _defaultStoppedResponse = "IGLib_PipeServer_StoppedResponse";
+
+        /// <summary>Default stopped response (sent after the srver has sttopped on request).</summary>
+        public static string DefaultStoppedResponse
+        {
+            get { lock (LockGlobal) { return _defaultStoppedResponse; } }
+            set
+            {
+                lock (LockGlobal)
+                {
+                    if (value != _defaultStoppedResponse)
+                    {
+                        if (string.IsNullOrEmpty(value))
+                            throw new NullReferenceException("Default generic response of pipe server can not be empty or null string.");
+                        else
+                        {
+                            if (DefaultOutputLevel >= 1)
+                                Console.WriteLine(Environment.NewLine + "Warning: default stopped response of pipe servers changed: "
+                                    + Environment.NewLine + "  from " + _defaultStoppedResponse + " to " + value + ".");
+                            _defaultStoppedResponse = value;
+                        }
+                    }
+                }
+            }
+        }
+
+        private string _stoppedResponse = DefaultStoppedResponse;
+
+        /// <summary>Stopped response that is sent back to the client after the server stops on its
+        /// request.</summary>
+        public string StoppedResponse
+        {
+            get { lock (_lock) { return _stoppedResponse; } }
+            protected set
+            {
+                lock (_lock)
+                {
+                    if (value != _stoppedResponse)
+                    {
+                        if (string.IsNullOrEmpty(value))
+                            throw new NullReferenceException("Pipe server's stopped response can not be an empty or null string.");
+                        _stoppedResponse = value;
+                    }
+                }
+            }
+        }
+
+
+
+
+
+        #endregion Messages.Old
+
+
+
+
 
 
         #region Operation.Settings

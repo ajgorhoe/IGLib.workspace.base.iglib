@@ -3392,10 +3392,10 @@ namespace IG.Lib
 
         }
 
-        SortedList<string, InterpreterPipeServer> _pipeServers = null;
+        SortedList<string, IpcStreamServerBase> _pipeServers = null;
 
         /// <summary>Array of registered pipe servers, accessible through server name.</summary>
-        SortedList<string, InterpreterPipeServer> PipeServers
+        SortedList<string, IpcStreamServerBase> PipeServers
         {
             get
             {
@@ -3404,17 +3404,36 @@ namespace IG.Lib
                     lock (Lock)
                     {
                         if (_pipeServers == null)
-                            _pipeServers = new SortedList<string, InterpreterPipeServer>();
+                            _pipeServers = new SortedList<string, IpcStreamServerBase>();
                     }
                 }
                 return _pipeServers;
             }
         }
 
-        SortedList<string, InterpreterPipeClient> _pipeClients = null;
+        //SortedList<string, InterpreterPipeClient> _pipeClients = null;
+
+        SortedList<string, IpcStreamClientBase> _pipeClients = null;
+
+        ///// <summary>Array of registered pipe clients, accessible through client name.</summary>
+        //SortedList<string, InterpreterPipeClient> PipeClients
+        //{
+        //    get
+        //    {
+        //        if (_pipeClients == null)
+        //        {
+        //            lock (Lock)
+        //            {
+        //                if (_pipeClients == null)
+        //                    _pipeClients = new SortedList<string, InterpreterPipeClient>();
+        //            }
+        //        }
+        //        return _pipeClients;
+        //    }
+        //}
 
         /// <summary>Array of registered pipe clients, accessible through client name.</summary>
-        SortedList<string, InterpreterPipeClient> PipeClients
+        SortedList<string, IpcStreamClientBase> IpcClients
         {
             get
             {
@@ -3423,7 +3442,7 @@ namespace IG.Lib
                     lock (Lock)
                     {
                         if (_pipeClients == null)
-                            _pipeClients = new SortedList<string, InterpreterPipeClient>();
+                            _pipeClients = new SortedList<string, IpcStreamClientBase>();
                     }
                 }
                 return _pipeClients;
@@ -3486,13 +3505,13 @@ namespace IG.Lib
                     string serverName = serverNames[i];
                     if (PipeServers.ContainsKey(serverName))
                     {
-                        InterpreterPipeServer server = PipeServers[serverName];
+                        IpcStreamServerBase server = PipeServers[serverName];
                         PipeServers.Remove(serverName);
                         if (server != null)
                         {
                             server.ClosePipe();
                             server.StopServer();
-                            sb.AppendLine(serverName + ":" + server.PipeName);
+                            sb.AppendLine(serverName + ":" + server.Name);
                         }
                     }
                 }
@@ -3513,7 +3532,7 @@ namespace IG.Lib
                 string ret = null;
                 if (PipeServers.ContainsKey(serverName))
                 {
-                    InterpreterPipeServer server = PipeServers[serverName];
+                    IpcStreamServerBase server = PipeServers[serverName];
                     ret = server.ToString();
                 }
                 return ret;
@@ -3530,7 +3549,7 @@ namespace IG.Lib
                     for (int i = 0; i < serverNames.Count; ++i)
                     {
                         string currentServerName = serverNames[i];
-                        InterpreterPipeServer server = PipeServers[currentServerName];
+                        IpcStreamServerBase server = PipeServers[currentServerName];
                         sb.AppendLine(Environment.NewLine + "Named pipe server \"" + currentServerName + "\":"
                             + Environment.NewLine + server.ToString());
                     }
@@ -3679,7 +3698,7 @@ namespace IG.Lib
                 clientName = pipeName;
             InterpreterPipeClient client = new InterpreterPipeClient(pipeName);
             client.OutputLevel = outputLevel;
-            PipeClients.Add(clientName, client);
+            IpcClients.Add(clientName, client);
             client.Connect();
             return client;
         }
@@ -3698,8 +3717,8 @@ namespace IG.Lib
                     numNames = clientNames.Length;
                 if (numNames == 0)
                 {
-                    IList<string> keys = PipeClients.Keys;
-                    int numKeys = PipeClients.Keys.Count;
+                    IList<string> keys = IpcClients.Keys;
+                    int numKeys = IpcClients.Keys.Count;
                     if (numKeys > 0)
                     {
                         clientNames = new string[numKeys];
@@ -3713,14 +3732,14 @@ namespace IG.Lib
                 for (int i = 0; i < numNames; ++i)
                 {
                     string clientName = clientNames[i];
-                    if (PipeClients.ContainsKey(clientName))
+                    if (IpcClients.ContainsKey(clientName))
                     {
-                        InterpreterPipeClient client = PipeClients[clientName];
-                        PipeClients.Remove(clientName);
+                        IpcStreamClientBase client = IpcClients[clientName];
+                        IpcClients.Remove(clientName);
                         if (client != null)
                         {
                             client.ClosePipe();
-                            sb.AppendLine(clientName + ":" + client.PipeName);
+                            sb.AppendLine(clientName + ":" + client.Name);
                         }
                     }
                 }
@@ -3737,9 +3756,9 @@ namespace IG.Lib
             if (!string.IsNullOrEmpty(clientName))
             {
                 string ret = null;
-                if (PipeClients.ContainsKey(clientName))
+                if (IpcClients.ContainsKey(clientName))
                 {
-                    InterpreterPipeClient client = PipeClients[clientName];
+                    IpcStreamClientBase client = IpcClients[clientName];
                     ret = client.ToString();
                 }
                 return ret;
@@ -3747,17 +3766,17 @@ namespace IG.Lib
             else
             {
                 StringBuilder sb = new StringBuilder();
-                if (PipeClients.Count < 1)
+                if (IpcClients.Count < 1)
                     sb.AppendLine("There are no pipe clients installed on the interpreter.");
                 else
                 {
                     sb.AppendLine("Pipe clients installed on the interpreter: ");
-                    IList<string> clientNames = PipeClients.Keys;
+                    IList<string> clientNames = IpcClients.Keys;
                     for (int i = 0; i < clientNames.Count; ++i)
                     {
                         string currentClientName = clientNames[i];
-                        InterpreterPipeClient client = PipeClients[currentClientName];
-                        sb.AppendLine(Environment.NewLine + "Named pipe client \"" + currentClientName + "\":"
+                        IpcStreamClientBase client = IpcClients[currentClientName];
+                        sb.AppendLine(Environment.NewLine + "IPC stream client \"" + currentClientName + "\":"
                             + Environment.NewLine + client.ToString());
                     }
                 }
@@ -3776,13 +3795,13 @@ namespace IG.Lib
             string ret = null;
             if (string.IsNullOrEmpty(clientName))
                 throw new ArgumentException("Pipe client name not specified (null or empty string).");
-            if (!PipeClients.ContainsKey(clientName))
+            if (!IpcClients.ContainsKey(clientName))
             {
                 throw new ArgumentException("Pipe client does not exist: \"" + clientName + "\".");
             }
             else
             {
-                InterpreterPipeClient client = PipeClients[clientName];
+                IpcStreamClientBase client = IpcClients[clientName];
                 // string commandLine = UtilStr.GetCommandLine(args);
                 ret = client.GetServerResponse(commandLineString);
             }

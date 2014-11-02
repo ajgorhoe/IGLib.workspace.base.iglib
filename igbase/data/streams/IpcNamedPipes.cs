@@ -176,7 +176,7 @@ namespace IG.Lib
         /// <summary>
         /// Closes the server pipe.
         /// </summary>
-        protected override void NullifyServerPipeLine()
+        protected override void CloseConnection()
         {
             // TODO: RENAME this method! (perhaps to CloseConnection?)
             ServerPipe = null;
@@ -185,7 +185,7 @@ namespace IG.Lib
 
 
         /// <summary>Returns true if server pipe is connected, .</summary>
-        public override bool IsServerPipelineConnected()
+        public override bool IsConnected()
         {
             return ServerPipe.IsConnected;
         }
@@ -632,6 +632,31 @@ namespace IG.Lib
             ClientPipe = null;
         }
 
+        #region Operation
+
+
+
+        /// <summary> Closes the server pipe. </summary>
+        protected override void CloseConnection()
+        {
+
+            InputStream = null;
+            OutputStream = null;
+
+            ClientPipe = null;
+        }
+
+
+
+        /// <summary>Returns true if server pipe is connected, .</summary>
+        public override bool IsConnected()
+        {
+            if (InputStream != null && OutputStream != null)
+                if (ClientPipe.IsConnected)
+                    return true;
+            return false;
+        }
+
 
         /// <summary>Connects with the server.
         /// <para>If timeout is not specifies then it tries to connect indefinitely.</para></summary>
@@ -722,6 +747,7 @@ namespace IG.Lib
             }
         }
 
+        #endregion Operation
 
         #region Operation.Auxiliary
 

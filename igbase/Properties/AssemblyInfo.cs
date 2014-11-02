@@ -32,5 +32,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.4.0.0")]
-[assembly: AssemblyFileVersion("1.4.0.0")]
+// See also (espec. T4 templating mechanisim): http://stackoverflow.com/questions/826777/how-to-have-an-auto-incrementing-version-number-visual-studio 
+//  http://stackoverflow.com/questions/356543/can-i-automatically-increment-the-file-build-version-when-using-visual-studio 
+[assembly: AssemblyVersion("1.5.*")]
+// [assembly: AssemblyFileVersion("1.5.*")]

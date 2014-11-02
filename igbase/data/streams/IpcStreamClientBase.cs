@@ -89,10 +89,28 @@ namespace IG.Lib
                         Console.WriteLine(Environment.NewLine + "Sending request: \"" + requestString + "\"...");
                     }
                     RequestString = requestString;
-                    OutputStream.WriteLine(requestString);
                     if (IsMultilineRequest)
                     {
-                        OutputStream.WriteLine(MsgRequestEnd);
+                        //OutputStream.WriteLine(MsgRequestBegin);
+                        writeMessage(OutputStream, MsgRequestBegin, null);
+                        if (OutputLevel >= 2)
+                            Console.WriteLine("Multiline request begin message sent: \"" + MsgRequestBegin + "\"");
+                    } else
+                    {
+                        if (requestString != null)
+                            if (requestString.Contains('\n'))
+                        {
+                            requestString = requestString.Replace("\r\n", " ").Replace('\n', ' ').Replace('\r',' ');
+                        }
+                    }
+
+
+                    OutputStream.WriteLine(requestString);
+
+                    if (IsMultilineRequest)
+                    {
+                        //OutputStream.WriteLine(MsgRequestEnd);
+                        writeMessage(OutputStream, MsgRequestEnd, null);
                         if (OutputLevel >= 2)
                         {
                             Console.WriteLine("Multiline request end message sent: \"" + MsgRequestEnd + "\"");
@@ -121,7 +139,7 @@ namespace IG.Lib
 
         /// <summary>Sends the current request string (the <see cref="RequestString"/> property) to the 
         /// server through a named pipe.</summary>
-        protected virtual void SentRequest()
+        protected virtual void SendRequest()
         {
             SendRequest(this.RequestString);
         }
@@ -138,28 +156,79 @@ namespace IG.Lib
                 try
                 {
                     string serverResponseString = null;
-                    if (IsMultilineResponse)
+                    if (IsMultilineResponse || true)
                     {
                         StringBuilderInternal.Clear();
                         bool stop = false;
+                        bool responseBegun = false;
+                        if (!IsMultilineResponse)
+                            responseBegun = false;
+
+                        string line;
+                        bool isMessage;
+                        string messageOrCommandName;
+                        string [] messageArguments;
+
                         do
                         {
                             if (OutputLevel >= 2)
                                 Console.WriteLine("  Waiting for next line of response...");
-                            string line = InputStream.ReadLine();
+                            line = InputStream.ReadLine();
+                            InterpretRequestOrResponseLine(ref line, out isMessage, 
+                                out messageOrCommandName, out messageArguments);
+
+
                             if (OutputLevel >= 2)
                                 Console.WriteLine("  ... next line received: \"" + line + "\"");
-                            if (line == MsgResponseEnd)
-                                stop = true;
-                            else
-                                StringBuilderInternal.AppendLine(line);
+                            if (!isMessage)
+                            {
+                                if (responseBegun)
+                                {
+                                    StringBuilderInternal.AppendLine(line);
+                                }
+                                else
+                                {
+                                }
+                            } else
+                            {
+                                // Message received:
+                                bool messageWorked = false;
+
+                                if (messageOrCommandName == MsgResponseBegin)
+                                {
+                                    responseBegun = true;
+                                    messageWorked = true;
+                                    if (!IsMultilineResponse)
+                                        throw new InvalidOperationException("Response begin message received in single line response mode.");
+                                }
+                                else if (messageOrCommandName == MsgResponseEnd)
+                                {
+                                    stop = true;
+                                    messageWorked = true;
+                                    if (!IsMultilineResponse)
+                                        throw new InvalidOperationException("Response begin message received in single line response mode.");
+                                } else
+                                {
+                                    WorkMessage(messageOrCommandName, messageArguments, IpcStage.ReadingResponse, ref messageWorked);
+                                    if (!messageWorked)
+                                        throw new InvalidOperationException("Message not worked while working on server response: '" + messageOrCommandName + "'.");
+                                }
+                                
+                            }
+
+
+                            //if (line == MsgResponseEnd)
+                            //    stop = true;
+                            //else
+                            //    StringBuilderInternal.AppendLine(line);
                         } while (!stop);
                         serverResponseString = StringBuilderInternal.ToString();
                         serverResponseString = serverResponseString.TrimEnd('\n', '\r');
                         if (OutputLevel >= 1)
                             Console.WriteLine("Received multiline response: \"" + serverResponseString + "\"");
                     }
-                    else
+
+                    else if (false)
                     {
                         if (OutputLevel >= 1)
                         {
