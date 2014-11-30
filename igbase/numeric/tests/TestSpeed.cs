@@ -400,7 +400,7 @@ namespace IG.Num
             // Form system of equations:
             Matrix A = new Matrix(numEq, numEq);
             // Matrix.SetRandomSymmetricPositiveDefinite(A);
-            Matrix.SetRandomPositiveDiagonallyDominantSymmetric(A, 2.0);
+            Matrix.SetRandomPositiveDiagonallyDominantSymmetric(A, null /* randomGenerator - take global */, 2.0);
             Vector b = Vector.Random(numEq);
             t.Stop();
             if (outLevel > 0)

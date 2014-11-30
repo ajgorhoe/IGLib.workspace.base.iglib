@@ -917,13 +917,13 @@ namespace IG.Num
 
         /// <summary>Sets the current matrix such that it contains random elements on the interval (0,1].</summary>
         /// <param name="mat">Matrix whose components are set.</param>
-        /// <param name="rnd">Random generator used to generate matrix elements.</param>
-        public static void SetRandom(IMatrix mat, IRandomGenerator rnd)
+        /// <param name="rnd">Random generator used to generate matrix elements. If null then the default (global) random generator iis taken.</param>
+        public static void SetRandom(IMatrix mat, IRandomGenerator rnd = null)
         {
             if (mat == null)
                 throw new ArgumentNullException("Matrix to be set to zero is not specified (null argument).");
             if (rnd == null)
-                throw new ArgumentNullException("Random number generator for generation of components is not specified (null reference).");
+                rnd = RandomGenerator.Global;
             int d1 = mat.RowCount, d2 = mat.ColumnCount;
             double element;
             for (int i = 0; i < d1; ++i)
@@ -947,13 +947,13 @@ namespace IG.Num
 
         /// <summary>Sets the specified matrix such that it is symmetric and contains random elements on the interval (0,1].</summary>
         /// <param name="mat">Matrix whose components are set.</param>
-        /// <param name="rnd">Random generator used to generate matrix elements.</param>
+        /// <param name="rnd">Random generator used to generate matrix elements. If null then the default (global) random generator iis taken.</param>
         public static void SetRandomSymmetric(IMatrix mat, IRandomGenerator rnd)
         {
             if (mat == null)
                 throw new ArgumentNullException("Matrix to be set to symmetric random matrix is not specified (null argument).");
             if (rnd == null)
-                throw new ArgumentNullException("Random number generator for generation of components is not specified (null reference).");
+                rnd = RandomGenerator.Global;
             int d1 = mat.RowCount, d2 = mat.ColumnCount;
             if (d1 != d2)
                 throw new ArgumentException("Matrix to be set to random symmetric matrix is not square (dimensions: " 
@@ -985,13 +985,13 @@ namespace IG.Num
         /// <summary>Sets the specified matrix such that it is antisymmetric and contains random elements on the interval (0,1].
         /// <para>Matrix will have zero elements on the diagonal.</para></summary>
         /// <param name="mat">Matrix whose components are set.</param>
-        /// <param name="rnd">Random generator used to generate matrix elements.</param>
+        /// <param name="rnd">Random generator used to generate matrix elements. If null then the default (global) random generator iis taken.</param>
         public static void SetRandomAntiSymmetric(IMatrix mat, IRandomGenerator rnd)
         {
             if (mat == null)
                 throw new ArgumentNullException("Matrix to be set to antisymmetric random matrix is not specified (null argument).");
             if (rnd == null)
-                throw new ArgumentNullException("Random number generator for generation of components is not specified (null reference).");
+                rnd = RandomGenerator.Global;
             int d1 = mat.RowCount, d2 = mat.ColumnCount;
             if (d1 != d2)
                 throw new ArgumentException("Matrix to be set to random antisymmetric matrix is not square (dimensions: "
@@ -1022,13 +1022,13 @@ namespace IG.Num
 
         /// <summary>Sets the specified matrix such that it is lower triangular and contains random elements on the interval (0,1].</summary>
         /// <param name="mat">Matrix whose components are set.</param>
-        /// <param name="rnd">Random generator used to generate matrix elements.</param>
+        /// <param name="rnd">Random generator used to generate matrix elements. If null then the default (global) random generator iis taken.</param>
         public static void SetRandomLowerTriangular(IMatrix mat, IRandomGenerator rnd)
         {
             if (mat == null)
                 throw new ArgumentNullException("Matrix to be set to lower triangular random matrix is not specified (null argument).");
             if (rnd == null)
-                throw new ArgumentNullException("Random number generator for generation of components is not specified (null reference).");
+                rnd = RandomGenerator.Global;
             int d1 = mat.RowCount, d2 = mat.ColumnCount;
             double element;
             for (int i = 0; i < d1; ++i)
@@ -1059,13 +1059,13 @@ namespace IG.Num
 
         /// <summary>Sets the specified matrix such that it is upper triangular and contains random elements on the interval (0,1].</summary>
         /// <param name="mat">Matrix whose components are set.</param>
-        /// <param name="rnd">Random generator used to generate matrix elements.</param>
+        /// <param name="rnd">Random generator used to generate matrix elements. If null then the default (global) random generator iis taken.</param>
         public static void SetRandomUpperTriangular(IMatrix mat, IRandomGenerator rnd)
         {
             if (mat == null)
                 throw new ArgumentNullException("Matrix to be set to lower triangular random matrix is not specified (null argument).");
             if (rnd == null)
-                throw new ArgumentNullException("Random number generator for generation of components is not specified (null reference).");
+                rnd = RandomGenerator.Global;
             int d1 = mat.RowCount, d2 = mat.ColumnCount;
             double element;
             for (int i = 0; i < d1; ++i)
@@ -1136,30 +1136,19 @@ namespace IG.Num
             MatrixStore.TryStore(LT as Matrix);
         }
 
-
-        /// <summary>Sets the specified matrix such that it is has random elements and is diagonally dominant with positive diagonal
-        /// elements, i.e. any diagonal element is greater by absolute value than sum of absolute values of nondiagonal 
-        /// elements in the corresponding column.</summary>
-        /// <param name="mat">Matrix whose components are set.</param>
-        public static void SetRandomPositiveDiagonallyDominant(IMatrix mat, double dominancyFactor)
-        {
-            IRandomGenerator rnd = RandomGenerator.Global; 
-            SetRandomPositiveDiagonallyDominant(mat, rnd, dominancyFactor);
-        }
-
         /// <summary>Sets the specified matrix such that it is has random elements and is diagonally dominant with positive diagonal 
         /// elements, i.e. any diagonal element is greater by absolute value than sum of absolute values of nondiagonal 
         /// elements in the corresponding column.</summary>
         /// <param name="mat">Matrix whose components are set.</param>
-        /// <param name="rnd">Random generator used to generate matrix elements.</param>
+        /// <param name="rnd">Random generator used to generate matrix elements. If null then global ranom generator is taken.</param>
         /// <param name="dominancyFactor">Factor such that any diagonal element is by absolute value at least by this
         /// factor greater than the sum of absolute values of nondiagonal elements in the corresponding column.</param>
-        public static void SetRandomPositiveDiagonallyDominant(IMatrix mat, IRandomGenerator rnd, double dominancyFactor)
+        public static void SetRandomPositiveDiagonallyDominant(IMatrix mat, IRandomGenerator rnd = null, double dominancyFactor = 100.0)
         {
             if (mat == null)
                 throw new ArgumentNullException("Matrix to be set to lower triangular random matrix is not specified (null argument).");
             if (rnd == null)
-                throw new ArgumentNullException("Random number generator for generation of components is not specified (null reference).");
+                rnd = RandomGenerator.Global;
             int d1 = mat.RowCount, d2 = mat.ColumnCount;
             double element;
             if (dominancyFactor < 0)
@@ -1188,79 +1177,126 @@ namespace IG.Num
             }
         }
 
-        
         /// <summary>Sets the specified matrix such that it is has random elements and is diagonally dominant with positive diagonal
         /// elements, i.e. any diagonal element is greater by absolute value than sum of absolute values of nondiagonal 
         /// elements in the corresponding column.</summary>
         /// <param name="mat">Matrix whose components are set.</param>
-        public static void SetRandomPositiveDiagonallyDominant(IMatrix mat)
-        {
-            IRandomGenerator rnd = RandomGenerator.Global; 
-            SetRandomPositiveDiagonallyDominant(mat, rnd, 100 /* dominancyFactor */);
-        }
-
-        /// <summary>Sets the specified matrix such that it is has random elements and is diagonally dominant with positive diagonal 
-        /// elements, i.e. any diagonal element is greater by absolute value than sum of absolute values of nondiagonal 
-        /// elements in the corresponding column.</summary>
-        /// <param name="mat">Matrix whose components are set.</param>
-        /// <param name="rnd">Random generator used to generate matrix elements.</param>
         /// <param name="dominancyFactor">The average ratio between absolute value of any diagonal term and the sum of absolute values of 
         /// out of diagonal terms in the same column. Should be greater than 1.</param>
-        public static void SetRandomPositiveDiagonallyDominant(IMatrix mat, IRandomGenerator rnd)
+        public static void SetRandomPositiveDiagonallyDominant(IMatrix mat, double dominancyFactor)
         {
-            SetRandomPositiveDiagonallyDominant(mat, rnd, 100 /* dominancyFactor */ );
-        }
-
-
-        /// <summary>Sets the specified matrix such that it is has random elements and is symmetric diagonally dominant with positive diagonal
-        /// elements, i.e. any diagonal element is greater by absolute value than sum of absolute values of nondiagonal 
-        /// elements in the corresponding column.</summary>
-        /// <param name="mat">Matrix whose components are set.</param>
-        /// <dominancyFactor>The average ratio between absolute value of any diagonal term and the sum of absolute values of 
-        /// out of diagonal terms in the same column. Should be greater than 1.</dominancyFactor>
-        public static void SetRandomPositiveDiagonallyDominantSymmetric(IMatrix mat, double dominancyFactor)
-        {
-            IRandomGenerator rnd = RandomGenerator.Global;
-            SetRandomPositiveDiagonallyDominantSymmetric(mat, rnd, dominancyFactor);
+            SetRandomPositiveDiagonallyDominant(mat, null /* rnd */, dominancyFactor);
         }
 
         /// <summary>Sets the specified matrix such that it is has random elements and is symmetric diagonally dominant with positive diagonal 
         /// elements, i.e. any diagonal element is greater by absolute value than sum of absolute values of nondiagonal 
         /// elements in the corresponding column.</summary>
         /// <param name="mat">Matrix whose components are set.</param>
-        /// <param name="rnd">Random generator used to generate matrix elements.</param>
+        /// <param name="rnd">Random generator used to generate matrix elements. If null then global random generator is taken.</param>
         /// <param name="dominancyFactor">Factor such that any diagonal element is by absolute value at least by this
         /// factor greater than the sum of absolute values of nondiagonal elements in the corresponding column.</param>
-        /// <dominancyFactor>The average ratio between absolute value of any diagonal term and the sum of absolute values of 
-        /// out of diagonal terms in the same column. Should be greater than 1.</dominancyFactor>
-        public static void SetRandomPositiveDiagonallyDominantSymmetric(IMatrix mat, IRandomGenerator rnd, double dominancyFactor)
+        public static void SetRandomPositiveDiagonallyDominantSymmetric(IMatrix mat, IRandomGenerator rnd = null, double dominancyFactor = 100.0)
         {
             SetRandomPositiveDiagonallyDominant(mat, rnd, dominancyFactor);
             SymmetricPart(mat, mat);
         }
 
-
         /// <summary>Sets the specified matrix such that it is has random elements and is symmetric diagonally dominant with positive diagonal
         /// elements, i.e. any diagonal element is greater by absolute value than sum of absolute values of nondiagonal 
         /// elements in the corresponding column.</summary>
         /// <param name="mat">Matrix whose components are set.</param>
-        public static void SetRandomPositiveDiagonallyDominantSymmetric(IMatrix mat)
+        /// <param name="dominancyFactor">The average ratio between absolute value of any diagonal term and the sum of absolute values of 
+        /// out of diagonal terms in the same column. Should be greater than 1.</param>
+        public static void SetRandomPositiveDiagonallyDominantSymmetric(IMatrix mat, double dominancyFactor)
         {
-            IRandomGenerator rnd = RandomGenerator.Global;
-            SetRandomPositiveDiagonallyDominantSymmetric(mat, rnd, 100 /* dominancyFactor */);
+            SetRandomPositiveDiagonallyDominantSymmetric(mat, null /* rnd */, dominancyFactor);
         }
 
-        /// <summary>Sets the specified matrix such that it is has random elements and is symmetric diagonally dominant with positive diagonal 
-        /// elements, i.e. any diagonal element is greater by absolute value than sum of absolute values of nondiagonal 
-        /// elements in the corresponding column.</summary>
+
+        // Generation of random invertible or positive definite matrices:
+
+
+
+        /// <summary>Sets the specified QUADRATIC matrix such that it is has random elements and is nonsingular.
+        /// <para>Matrix elements are generated from a product of random lower triangular matrix with 1 on diagonal
+        /// and a random upper triangular matrix with elements on the diagonal betweeen 1 and 2, both with nondiagonal terms
+        /// between 0 (inclusive) and 1.</para></summary>
         /// <param name="mat">Matrix whose components are set.</param>
-        /// <param name="rnd">Random generator used to generate matrix elements.</param>
-        /// <param name="dominancyFactor">Factor such that any diagonal element is by absolute value at least by this
-        /// factor greater than the sum of absolute values of nondiagonal elements in the corresponding column.</param>
-        public static void SetRandomPositiveDiagonallyDominantSymmetric(IMatrix mat, IRandomGenerator rnd)
+        /// <param name="rnd">Random generator used to generate matrix elements. If null then global random generator is taken.</param>
+        public static void SetRandomInvertible(IMatrix mat, IRandomGenerator rnd = null)
         {
-            SetRandomPositiveDiagonallyDominantSymmetric(mat, rnd, 100 /* dominancyFactor */ );
+            if (mat == null)
+                throw new ArgumentNullException("Matrix to be set to lower triangular random matrix is not specified (null argument).");
+            if (mat.RowCount != mat.ColumnCount)
+                throw new InvalidOperationException("Random invertible matrix can not be generated for non-square matrices.");
+            if (rnd == null)
+                rnd = RandomGenerator.Global;
+            int d1 = mat.RowCount, d2 = mat.ColumnCount;
+            IMatrix lower = new Matrix(d1, d2);
+            IMatrix upper = new Matrix(d1, d2);
+            for (int row = 0; row < d1; ++row)
+                for (int col = 0; col < d2; ++col)
+                {
+                    if (col < row)
+                    {
+                        // below diagonal
+                        lower[row, col] = rnd.NextDouble();
+                        upper[row, col] = 0.0;
+                    }
+                    else if (col > row)
+                    {
+                        // above diagonal
+                        lower[row, col] = 0.0;
+                        upper[row, col] = rnd.NextDouble();
+                    }
+                    else
+                    {
+                        // diagonal elements
+                        lower[row, col] = 1.0;
+                        upper[row, col] = 1.0 + rnd.NextDouble();
+                    }
+                }
+            MultiplyPlain(lower, upper, mat);
         }
+
+
+
+        /// <summary>Sets the specified QUADRATIC matrix such that it is has random elements and is a symmetric positive definite matrix.
+        /// <para>Matrix elements are generated from a product of random lower triangular matrix with diagonal elements betweeen 1 and 2,
+        /// and below diagonal elements between 0 (inclusive) and 1, and its transpose (i.e. from random Cholesky factors).</para></summary>
+        /// <param name="mat">Matrix whose components are set.</param>
+        /// <param name="rnd">Random generator used to generate matrix elements. If null then global random generator is taken.</param>
+        public static void SetRandomPositiveDefiniteSymmetric(IMatrix mat, IRandomGenerator rnd = null)
+        {
+            if (mat == null)
+                throw new ArgumentNullException("Matrix to be set to random symmetric positive definite is not specified (null argument).");
+            if (mat.RowCount != mat.ColumnCount)
+                throw new InvalidOperationException("Random symmetric positive definite matrix can not be generated for non-square matrices.");
+            if (rnd == null)
+                rnd = RandomGenerator.Global;
+            int d1 = mat.RowCount, d2 = mat.ColumnCount;
+            IMatrix lower = new Matrix(d1, d2);
+            for (int row = 0; row < d1; ++row)
+                for (int col = 0; col < d2; ++col)
+                {
+                    if (col < row)
+                    {
+                        // below diagonal
+                        lower[row, col] = rnd.NextDouble();
+                    }
+                    else if (col > row)
+                    {
+                        // above diagonal
+                        lower[row, col] = 0.0;
+                    } else
+                    {
+                        // diagonal elements
+                        lower[row, col] = 1.0 + rnd.NextDouble();
+                    }
+                }
+            MultiplyTranspMatPlain(lower, lower, mat);
+        }
+
 
 
         #endregion SetValueStatic
@@ -5374,7 +5410,7 @@ namespace IG.Num
             return passed;
         }
 
-         
+        
         /// <summary>A test method, just prints some output.</summary>
         public static void TestStaticMethodCommon()
         {
@@ -5392,12 +5428,17 @@ namespace IG.Num
         /// Returns true if successful, false othwrwise.</summary>
         /// <param name="dim1">Number of rows.</param>
         /// <param name="dim2">Number of columns.</param>
+        /// <param name="providedMatrix">If not null, this matrix will be taken for testing indices.</param>
         /// <returns>true if successful, false if not.</returns>
-        public static bool TestIndices(int dim1 = 3, int dim2 = 4)
+        public static bool TestIndices(int dim1 = 3, int dim2 = 4, IMatrix providedMatrix = null)
         {
             Console.WriteLine(Environment.NewLine + "Test of matrix index conversions ...");
             bool ret = true;
-            IMatrix mat = new Matrix(3, 4);
+            IMatrix mat = null;
+            if (providedMatrix == null)
+                mat = new Matrix(dim1, dim2);
+            else
+                mat = providedMatrix;
             MatrixBase.SetRandom(mat);
             int iFlat = 0;
             for (int row = 0; row < mat.RowCount; ++row)
