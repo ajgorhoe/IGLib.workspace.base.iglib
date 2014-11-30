@@ -40,6 +40,10 @@ namespace IG.Num
         /// <param name="j">Column index.</param>
         ComponentType this[int i, int j] { get; set; }
 
+        /// <summary>Gets or set the element indexed by the specified <c>flat index</c> in the <c>Matrix</c>.</summary>
+        /// <param name="flatIndex">Flat (one dimensional) index that addresses matrix element.</param>
+        ComponentType this[int flatIndex] { get; set; }
+
         /// <summary>Creates and returns a rectangular 2D array that contains a component-wise copy of the matrix.</summary>
         ComponentType[,] ToArray();
 
@@ -167,6 +171,16 @@ namespace IG.Num
         /// and their transposes and between RMS of out of diagonal terms, below which matrix is considered symmetric.</param>
         bool IsSymmetric(double relativeRMSTolerance);
 
+        
+         
+        /// <summary>Returns a readable an easily string form of a matrix, accuracy and padding can be set.</summary>
+        /// <param name="mat">Matrix to be changed to a string.</param>
+        /// <param name="accuracy">Accuracy of matrix elments representations.</param>
+        /// <param name="padding">Paddind of matrix elements.</param>
+        /// <returns>A readable string representation in tabular form.</returns>
+        string ToStringReadable(int accuracy = 4, int padding = 8);
+
+
         /// <summary>Returns a string representation of this matrix with newlines inserted after each row.
         /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
         string ToStringNewlines();
@@ -219,16 +233,18 @@ namespace IG.Num
     public static class MatrixExtensions
     {
 
-        /// <summary>Returns string representation of the current matrix in the standard IGLib form. 
-        /// Rows and elements are printed in comma separated lists in curly brackets.
-        /// Extension method for IMatrix interface.</summary>
-        /// <param name="mat">Matrix whose string representation is returned.</param>
-        public static string ToString(this IMatrix mat)
+        #region ToString
+
+        /// <summary>Easily readable string form of a matrix, accuracy and padding can be set.</summary>
+        /// <param name="mat">Matrix to be changed to a string.</param>
+        /// <param name="accuracy">Accuracy of matrix elments representations.</param>
+        /// <param name="padding">Paddind of matrix elements.</param>
+        /// <returns>A readable string representation in tabular form.</returns>
+        public static string ToStringReadable(this IMatrix mat, int accuracy = 4, int padding = 8)
         {
-            if (mat == null)
-                return Util.NullRepresentationString;
-            return MatrixBase.ToString(mat);
+            return MatrixBase.ToStringReadable(mat, accuracy, padding);
         }
+
 
         /// <summary>Returns string representation of the current matrix in the standard IGLib form. 
         /// Rows and elements are printed in comma separated lists in curly brackets.
@@ -246,8 +262,6 @@ namespace IG.Num
         /// <param name="mat">Matrix whose string representation is returned.</param>
         public static string ToString(this IMatrix mat, string elementFormat)
         {
-            if (mat == null)
-                return Util.NullRepresentationString;
             return MatrixBase.ToString(mat, elementFormat);
         }
 
@@ -292,6 +306,10 @@ namespace IG.Num
             return MatrixBase.ToStringMath(mat);
         }
 
+        #endregion ToString
+
+
+
     } // MatrixExtensions
 
 
@@ -314,14 +332,14 @@ namespace IG.Num
             get;
         }
 
-        /// <summary>Gets or sets the specified component of the current matrix.</summary>
-        /// <param name="i">Row number of the component.</param>
-        /// <param name="j">Column number of the component.</param>
-        public abstract double this[int i, int j]
-        {
-            get;
-            set;
-        }
+        ///// <summary>Gets or sets the specified component of the current matrix.</summary>
+        ///// <param name="i">Row number of the component.</param>
+        ///// <param name="j">Column number of the component.</param>
+        //public abstract double this[int i, int j]
+        //{
+        //    get;
+        //    set;
+        //}
 
 
         /// <summary>Creates and returns a copy of the current matrix.</summary>
@@ -415,6 +433,121 @@ namespace IG.Num
         #endregion Data
 
 
+        #region Indices
+
+        /// <summary>Gets or set the element indexed by a flat index in the <c>Matrix</c>.
+        /// <remarks>This method just provides a mechanism of addressing elements by a single (flat) index in derived 
+        /// classes where implementation adheres to addressing by a single index (e.g. where elements are
+        /// stored in a two dimensional array). In other cases, this indexing operator will be overridden.</remarks></summary>
+        /// <param name="flatIndex">Flat element index, i.e. one dimensional index of a matrix element
+        /// when elements are expanded to one dimensional array.</param>
+        public virtual double this[int flatIndex]
+        {
+            get
+            {
+                return this[flatIndex / ColumnCount, flatIndex % ColumnCount];
+            }
+            set 
+            {
+                this[flatIndex / ColumnCount, flatIndex % ColumnCount] = value;
+            }
+        }
+
+        /// <summary>Gets or set the element indexed by <c>(i, j)</c> in the <c>Matrix</c>.
+        /// <remarks>This method just provides a mechanism of addressing elements by two indices in derived 
+        /// classes where implementation adheres to addressing by a single index (e.g. where elements are
+        /// stored in a one dimensional array). In other cases, this indexing operator will be overridden.</remarks></summary>
+        /// <param name="row">Row index of the element.</param>
+        /// <param name="column">Column index of the element.</param>
+        public virtual double this[int row, int column]
+        {
+            get
+            {
+                return this[row * ColumnCount + column];
+            }
+            set 
+            {
+                this[row * ColumnCount + column] = value;
+            }
+        }
+
+
+        /// <summary>Returns flat index corresponding to the specified row and column indices of a matrix
+        /// with specified dimensions.</summary>
+        /// <param name="dim1">First index.</param>
+        /// <param name="dim2">Second index.</param>
+        /// <param name="row">Row number (0-based).</param>
+        /// <param name="column">Coolumn number (0-based).</param>
+        public static int Index(int dim1, int dim2, int row, int column)
+        {
+            return row * dim2 + column;
+        }
+        
+        /// <summary>Calculates and returns flat index corresponding to the specified row and column indices of the 
+        /// specified matrix.</summary>
+        /// <param name="mat">Matrix for which flat index is calculated.</param>
+        /// <param name="row">Row number (0-based).</param>
+        /// <param name="column">Coolumn number (0-based).</param>
+        public static int Index(IMatrix mat, int row, int column)
+        {
+            if (mat == null)
+                throw new ArgumentException("Matrix where index is looked for is not specified (null reference).");
+            return Index(mat.RowCount, mat.ColumnCount, row, column);
+        }
+       
+        /// <summary>Calculates and returns flat index corresponding to the specified row and column indices of the 
+        /// current matrix.</summary>
+        /// <param name="row">Row number (0-based).</param>
+        /// <param name="column">Coolumn number (0-based).</param>
+        public virtual int Index(int row, int column)
+        {
+            return Index(this.RowCount, this.ColumnCount, row, column);
+        }
+
+        /// <summary>Returns (through output arguments) row and column indices corresponding to the
+        /// specified flat index in a matrix with the specified dimensions.</summary>
+        /// <param name="dim1">First dimension of the matrix (number of rows).</param>
+        /// <param name="dim2">Second dimension of the matrix (number of columns).</param>
+        /// <param name="flatIndex">Flat element index, i.e. one dimensional index of a matrix element
+        /// when elements are expanded to one dimensional array.</param>
+        /// <param name="row">Row index corresponding to the specified flat index.</param>
+        /// <param name="column">Column index corresponding to the specified flat index.</param>
+        public static void Indices(int dim1, int dim2, int flatIndex, out int row, out int column)
+        {
+            row = flatIndex / dim2;
+            column = flatIndex % dim2;
+        }
+
+        /// <summary>Returns (through output arguments) row and column indices corresponding to the
+        /// specified flat index in the specified matrix.</summary>
+        /// <param name="mat">Matrix for which flat index is calculated.</param>
+        /// <param name="flatIndex">Flat element index, i.e. one dimensional index of a matrix element
+        /// obtained as if elements were expanded to one dimensional array.</param>
+        /// <param name="row">Row index corresponding to the specified flat index.</param>
+        /// <param name="column">Column index corresponding to the specified flat index.</param>
+        public static void Indices(IMatrix mat, int flatIndex, out int row, out int column)
+        {
+            if (mat == null)
+                throw new ArgumentException("Matrix where index is looked for is not specified (null reference).");
+            Indices(mat.RowCount, mat.ColumnCount, flatIndex, out row, out column);
+        }
+
+        /// <summary>Returns (through output arguments) row and column indices corresponding to the
+        /// specified flat index in the current matrix.</summary>
+        /// <param name="flatIndex">Flat element index, i.e. one dimensional index of a matrix element
+        /// obtained as if elements were expanded to one dimensional array.</param>
+        /// <param name="row">Row index corresponding to the specified flat index.</param>
+        /// <param name="column">Column index corresponding to the specified flat index.</param>
+        public virtual void Indices(int flatIndex, out int row, out int column)
+        {
+            Indices(RowCount, ColumnCount, flatIndex, out row, out column);
+        }
+
+
+        #endregion Indices
+
+
+
         #region Operations
 
         #region SetValue
@@ -492,6 +625,7 @@ namespace IG.Num
 
         #endregion SetValue
 
+
         #region QueryType
 
         /// <summary>Returns true if the current matrix is a square matrix, and false if not.</summary>
@@ -513,7 +647,7 @@ namespace IG.Num
         /// If the matrix is null then false is returned.</summary>
         /// <param name="relativeRMSTolerance">Tolerance on the ratio between RMS of differences between out of diagonal terms
         /// and their transposes and between RMS of out of diagonal terms, below which matrix is considered symmetric.</param>
-        public virtual bool IsSymmetric(double relativeRMSTolerance)
+        public virtual bool IsSymmetric(double relativeRMSTolerance = 0.0)
         {
             return IsSymmetric(this, relativeRMSTolerance);
         }
@@ -563,6 +697,7 @@ namespace IG.Num
         }
 
 
+
         #region Norms
 
 
@@ -592,6 +727,7 @@ namespace IG.Num
 
 
         #endregion Norms
+
 
 
         #region Operations.Auxiliary
@@ -641,7 +777,10 @@ namespace IG.Num
 
         #endregion Operations.Auxiliary
 
+
+
         #endregion Operations
+
 
 
         #region StaticOperations
@@ -4635,7 +4774,9 @@ namespace IG.Num
         #endregion StaticOperations
 
 
+
         #region InputOutput
+
 
 
         #region StaticInputOutput
@@ -4672,6 +4813,30 @@ namespace IG.Num
         //    }
         //    return sb.ToString();
         //}
+
+
+        /// <summary>Returns a readable string form of a matrix, accuracy and padding can be set.</summary>
+        /// <param name="mat">Matrix whose string representation is returned.</param>
+        /// <param name="accuracy">Accuracy of matrix elments representations.</param>
+        /// <param name="padding">Padding of matrix elements.</param>
+        /// <returns>A readable string representation in tabular form, with the specified accuracy and padding of elements.</returns>
+        public static string ToStringReadable(IMatrix mat, int accuracy = 4, int padding = 8)
+        {
+            if (mat == null)
+                return Util.NullRepresentationString;
+            string accStr = "F" + accuracy.ToString();
+            StringBuilder sb = new StringBuilder();
+
+            // string s = "";
+            for (int i = 0; i < mat.RowCount; ++i)
+            {
+                for (int j = 0; j < mat.ColumnCount; ++j)
+                    sb.Append(mat[i, j].ToString(accStr).PadLeft(padding) + " ");
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
 
 
         /// <summary>Returns a string representation of the specified matrix with newlines inserted after each row.
@@ -4871,9 +5036,19 @@ namespace IG.Num
             return ToString(this);
         }
 
+        /// <summary>Returns a readable an easily string form of a matrix, accuracy and padding can be set.</summary>
+        /// <param name="mat">Matrix to be changed to a string.</param>
+        /// <param name="accuracy">Accuracy of matrix elments representations.</param>
+        /// <param name="padding">Paddind of matrix elements.</param>
+        /// <returns>A readable string representation in tabular form.</returns>
+        public virtual string ToStringReadable(int accuracy = 4, int padding = 8)
+        {
+            return MatrixBase.ToStringReadable(this, accuracy, padding);
+        }
+
         /// <summary>Returns a string representation of this matrix with newlines inserted after each row.
         /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        public string ToStringNewlines()
+        public virtual string ToStringNewlines()
         {
             return ToStringNewlines(this);
         }
@@ -4882,7 +5057,7 @@ namespace IG.Num
         /// with the specified format for elements of the matrix.
         /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
         /// <param name="elementFormat">Format specification for printing individual element.</param>
-        public string ToStringNewlines(string elementFormat)
+        public virtual string ToStringNewlines(string elementFormat)
         {
             return ToStringNewlines(this, elementFormat);
         }
@@ -4891,7 +5066,7 @@ namespace IG.Num
         /// <summary>Returns string representation of the current matrix in the standard IGLib form
         /// (Mathematica-like format but with C representation of numbers).
         /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        public string ToStringMath()
+        public virtual string ToStringMath()
         {
             return ToStringMath(this);
         }
@@ -4901,7 +5076,7 @@ namespace IG.Num
         /// (Mathematica-like format but with C representation of numbers), with the specified  
         /// format for elements of the matrix.</summary>
         /// <param name="elementFormat">Format specification for printing individual element.</param>
-        public string ToString(string elementFormat)
+        public virtual string ToString(string elementFormat)
         {
             return ToString(this, elementFormat);
         }
@@ -4910,7 +5085,7 @@ namespace IG.Num
         /// (Mathematica-like format but with C representation of numbers), with the specified  
         /// format for elements of the matrix.</summary>
         /// <param name="elementFormat">Format specification for printing individual element.</param>
-        public string ToStringMath(string elementFormat)
+        public virtual string ToStringMath(string elementFormat)
         {
             return ToStringMath(this, elementFormat);
         }

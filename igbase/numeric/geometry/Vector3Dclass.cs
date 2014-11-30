@@ -215,7 +215,7 @@ namespace IG.Num
 
 
         /// <summary>Constructs a vector from a 1-D array.</summary>
-        /// <param name="vec">One-dimensional array of doubles.</param>
+        /// <param name="components">One-dimensional array of doubles.</param>
         /// <seealso cref="Create"/>
         public Vector3d(double[] components) 
         {
