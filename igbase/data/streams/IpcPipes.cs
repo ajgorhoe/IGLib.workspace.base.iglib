@@ -16,6 +16,9 @@ namespace IG.Lib
 {
 
     /* See:
+     * 
+     * https://social.msdn.microsoft.com/Forums/vstudio/en-US/46c91711-755f-48fa-a4a8-92956082218f/howto-launch-process-and-write-to-its-stdin
+     * 
      * http://stackoverflow.com/questions/850802/piping-in-a-file-on-the-command-line-using-system-diagnostics-process
      * http://msdn.microsoft.com/en-us/library/system.io.textreader.peek%28v=vs.110%29.aspx
      * 

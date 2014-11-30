@@ -92,7 +92,7 @@ namespace IG.Lib
                     if (IsMultilineRequest)
                     {
                         //OutputStream.WriteLine(MsgRequestBegin);
-                        writeMessage(OutputStream, MsgRequestBegin, null);
+                        WriteMessage(OutputStream, MsgRequestBegin, null);
                         if (OutputLevel >= 2)
                             Console.WriteLine("Multiline request begin message sent: \"" + MsgRequestBegin + "\"");
                     } else
@@ -110,7 +110,7 @@ namespace IG.Lib
                     if (IsMultilineRequest)
                     {
                         //OutputStream.WriteLine(MsgRequestEnd);
-                        writeMessage(OutputStream, MsgRequestEnd, null);
+                        WriteMessage(OutputStream, MsgRequestEnd, null);
                         if (OutputLevel >= 2)
                         {
                             Console.WriteLine("Multiline request end message sent: \"" + MsgRequestEnd + "\"");

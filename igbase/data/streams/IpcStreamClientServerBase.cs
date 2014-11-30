@@ -412,7 +412,7 @@ namespace IG.Lib
         /// <param name="outputStream">Stream where the message is written to.</param>
         /// <param name="message">Message name. The name is decorated with prefix and separator when message is written to a stream.</param>
         /// <param name="args">Arguments of the message. Can be null for message without arguments.</param>
-        public void writeMessage(StreamWriter outputStream, string message, string[] args)
+        public void WriteMessage(StreamWriter outputStream, string message, string[] args)
         {
             if (message.Contains('\n'))
                 throw new InvalidDataException("Invalid message name: contains newlines.");

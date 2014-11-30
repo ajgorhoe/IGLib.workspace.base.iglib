@@ -229,6 +229,17 @@ public abstract class IpcStreamServerBase : IpcStreamClientServerBase2, ILockabl
                 {
                     Console.WriteLine("Sending response to client...");
                 }
+                if (IsMultilineResponse)
+                {
+                    WriteMessage(OutputStream, MsgResponseBegin, null);
+                } else 
+                {
+                    if (responseString != null)
+                        if (responseString.Contains('\n'))
+                        {
+                            responseString = responseString.Replace("\r\n", " ").Replace('\n', ' ').Replace('\r', ' ');
+                        }
+                }
                 OutputStream.WriteLine(responseString);
                 if (OutputLevel >= 1)
                 {
@@ -236,7 +247,7 @@ public abstract class IpcStreamServerBase : IpcStreamClientServerBase2, ILockabl
                 }
                 if (IsMultilineResponse)
                 {
-                    OutputStream.WriteLine(MsgResponseEnd);
+                    WriteMessage(OutputStream, MsgResponseEnd, null);
                     if (OutputLevel >= 2)
                     {
                         Console.WriteLine("Multiline response end message sent: \"" + MsgResponseEnd + "\"");
