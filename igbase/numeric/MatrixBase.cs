@@ -35,6 +35,11 @@ namespace IG.Num
         /// <summary>Gets the number of columns.</summary>
         int ColumnCount { get; }
 
+        /// <summary>Gets total number of elements.
+        /// <para>Warning: this is usually done by multiplying <see cref="RowCount"/> and <see cref="ColumnCount"/>,
+        /// so it is not a priceless operation.</para></summary>
+        int Count { get; }
+
         /// <summary>Gets or set the element indexed by <c>(i, j)</c> in the <c>Matrix</c>.</summary>
         /// <param name="i">Row index.</param>
         /// <param name="j">Column index.</param>
@@ -331,6 +336,11 @@ namespace IG.Num
         {
             get;
         }
+
+        /// <summary>Gets total number of elements.
+        /// <para>Warning: this is usually done by multiplying <see cref="RowCount"/> and <see cref="ColumnCount"/>,
+        /// so it is not a priceless operation.</para></summary>
+        public virtual int Count { get { return RowCount + ColumnCount; } }
 
         ///// <summary>Gets or sets the specified component of the current matrix.</summary>
         ///// <param name="i">Row number of the component.</param>
@@ -5376,6 +5386,52 @@ namespace IG.Num
         public static void TestStaticMethodSpecific()
         {
             Console.WriteLine("TestStaticMethod from MatrixBase.");
+        }
+
+        /// <summary>Performs test of converson between double indexing and flat indexing of matric elements,.
+        /// Returns true if successful, false othwrwise.</summary>
+        /// <param name="dim1">Number of rows.</param>
+        /// <param name="dim2">Number of columns.</param>
+        /// <returns>true if successful, false if not.</returns>
+        public static bool TestIndices(int dim1 = 3, int dim2 = 4)
+        {
+            Console.WriteLine(Environment.NewLine + "Test of matrix index conversions ...");
+            bool ret = true;
+            IMatrix mat = new Matrix(3, 4);
+            MatrixBase.SetRandom(mat);
+            int iFlat = 0;
+            for (int row = 0; row < mat.RowCount; ++row)
+                for (int col = 0; col < mat.ColumnCount; ++col)
+                {
+                    double element = mat[row, col];
+                    int flatIndex = MatrixBase.Index(mat, row, col);
+                    double elementFlat = mat[flatIndex];
+                    int rowCalc, colCalc;
+                    MatrixBase.Indices(mat, flatIndex, out rowCalc, out colCalc);
+                    Console.WriteLine(row + ", " + col + ": flat = " + flatIndex + ", restored = ("
+                        + rowCalc + ", " + colCalc + "), el. = " + elementFlat);
+                    if (flatIndex != iFlat)
+                    {
+                        ret = false;
+                        Console.WriteLine("  Error (" + row + ", " + col + "): Calculated flat index (" + flatIndex 
+                            + ") different from actual one (" + flatIndex + ").");
+                    }
+                    if (rowCalc != row || colCalc != col)
+                    {
+                        ret = false;
+                        Console.WriteLine("  Error (" + row + ", " + col + "): Calculated indices from flat form (" 
+                            + rowCalc + ", " + colCalc + ") don't match original indices.");
+                    }
+                    if (flatIndex != iFlat)
+                    {
+                        ret = false;
+                        Console.WriteLine("  Error (" + row + ", " + col + "): Calculated flat index (" + flatIndex
+                            + ") different from actual one (" + flatIndex + ").");
+                    }
+                    ++ iFlat;
+                }
+            Console.WriteLine("... test done " + (ret?"successfully.":" with ERRORS.") + Environment.NewLine);
+            return ret;
         }
 
 
