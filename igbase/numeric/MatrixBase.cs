@@ -6574,6 +6574,613 @@ namespace IG.Num
 
 
 
+        #region CholeskyDecomposition
+
+
+        /// <summary>Calculates Cholesky decomposition of a real symmetric square matrix.
+        /// <para>L is lower triangular matrix with 1s on diagonal, and D is a diagonal matrix.</para>
+        /// <para>Decomposition can be done in place.</para>
+        /// <para>Can be done in place (input and result matrices can reference the same object).</para></summary>
+        /// <param name="A">Matrix whose decomposition is calculated.</param>
+        /// <param name="tol">Tolerance for detection of singularity (must be a small positive number greater or equal to 0).</param>
+        /// <param name="result">Matrix where the result of calculation is stored.</param>
+        /// $A Igor Dec14;
+        public static bool CholeskyDecompose(IMatrix A, ref IMatrix result, double tol = 1e-12)
+        {
+            if (tol <= 0)
+                tol = 1.0e-12;
+            if (A == null)
+                throw new ArgumentException("Matrix to be Cholesky decomposed is not specified (null reference).");
+            int dim = A.RowCount;
+            if (A.ColumnCount != dim)
+                throw new ArgumentException("Matrix to be Cholesky decomposed is not a square matrix.");
+            if (result == null)
+                result = result.GetNew(dim, dim);
+            if (result.RowCount != dim || result.ColumnCount != dim)
+                result = result.GetNew(dim, dim);
+
+            if (!object.ReferenceEquals(A, result))
+                MatrixBase.CopyPlain(A, result);
+
+            for (int i = 0; i < dim; i++)
+            {
+                // Working on the i-th column:
+                // Determine the i-th diagonal element:
+                double q = A[i, i];
+                for (int j = 0; j < i; j++)
+                {
+                    double el = result[i, j];
+                    q -= el * el;
+                }
+                if (q < tol)
+                    throw new InvalidOperationException("Matrix whose Cholesky decomposition is calculated is singular.");
+                q = Math.Sqrt(q);
+                result[i, i] = q;
+                // Determine lower entries:
+                for (int j = i + 1; j < dim; j++)
+                {
+                    double p = A[j, i];
+                    for (int k = 0; k < i; k++)
+                    {
+                        p -= result[i, k] * result[j, k];
+                    }
+                    double el = p / q;
+                    result[j, i] = el;
+                    result[i, j] = el;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>Solves a system of eauations with the specified Cholesky decomposition of a real symmetric square matrix.
+        /// <para>Used in conjunction with the <see cref="DecomposeLDL"/> method for calculation of decomposition.</para>
+        /// <para>Can be done in place (input and result vectors can reference the same object).</para></summary>
+        /// <param name="decomposed">Decomposed original matrix (obtained by <see cref="CholeskyDecompose"/>).
+        /// <para>Matrix is in form of 1D flat arrat with row-wise element arrangement.</para></param>
+        /// <param name="b">Vector of the right-hand sides of the system of equations.</param>
+        /// <param name="x">Vector where result is stored.</param>
+        /// $A Igor Dec14;
+        public static void CholeskySolve(IMatrix decomposed, IVector b, ref IVector x)
+        {
+            if (decomposed == null)
+                throw new ArgumentException("Cholesky decomposed matrix not specified (null reference).");
+            int dim = decomposed.RowCount;
+            if (decomposed.ColumnCount != dim)
+                throw new ArgumentException("Decomposed matrix is not a square matrix.");
+            if (b == null)
+                throw new ArgumentException("Vector of right-hand sides is not specified (null reference).");
+            if (b.Length != dim)
+                throw new ArgumentException("Vector of right-hand sides is of inconsistent dimentions.");
+            if (x == null)
+                x = b.GetNew(dim);
+            else if (x.Length != dim)
+                x = b.GetNew(dim);
+            if (!object.ReferenceEquals(x, b))
+                VectorBase.Copy(b, x);
+
+
+            // Determine Ly = b
+            IVector y = decomposed.GetNewVector(dim);
+            for (int i = 0; i < dim; i++)
+            {
+                y[i] = b[i];
+                for (int j = 0; j < i; j++)
+                {
+                    y[i] -= decomposed[j, i] * y[j];
+                }
+                y[i] = y[i] / decomposed[i, i];
+            }
+
+            // Determine L^T x = y
+            // double[] z = new double[dim];
+
+            // Re-use y for z, since we don't need a value after it's set
+            for (int i = (dim - 1); i >= 0; i--)
+            {
+                x[i] = y[i];
+                for (int j = (dim - 1); j > i; j--)
+                {
+                    x[i] -= decomposed[i, j] * x[j];
+                }
+                x[i] = x[i] / decomposed[i, i];
+            }
+
+
+
+        }
+
+        /// <summary>Calculates inverse of the matrix from its specified Cholesky-decomposed matrix.</summary>
+        /// <param name="CholeskyMatrix">Matrix containing the Cholesky decomposition of the original matrix.</param>
+        /// <param name="auxX">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary.</param>
+        /// <param name="X">Matrix where result will be stored. Reallocated if necessary.</param>
+        /// $A Igor Dec14;
+        public static void CholeskySolve(IMatrix CholeskyMatrix, IMatrix B, ref IVector auxX, ref IMatrix X)
+        {
+            if (CholeskyMatrix == null)
+                throw new ArgumentException("Matrix containing Cholesky decomposition is not specified (null reference).");
+            int dim = CholeskyMatrix.RowCount;
+            if (B == null)
+                throw new ArgumentException("Matrix of right-hand sides is not specified (null reference).");
+            if (B.RowCount != dim)
+                throw new ArgumentException("Matrix of right-hand sides does not have as many rows as there are equations.");
+            int numSystems = B.ColumnCount;
+            if (CholeskyMatrix.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing LU decomposition is not a square matrix.");
+            if (auxX == null)
+                auxX = CholeskyMatrix.GetNewVector(dim);
+            if (auxX.Length != dim)
+                auxX = CholeskyMatrix.GetNewVector(dim);
+            if (X == null)
+                X = CholeskyMatrix.GetNew(dim, numSystems);
+            if (X.RowCount != dim || X.ColumnCount != dim)
+                X = CholeskyMatrix.GetNew(dim, numSystems);
+            if (object.ReferenceEquals(CholeskyMatrix, X) || object.ReferenceEquals(CholeskyMatrix, B) || object.ReferenceEquals(B, X))
+                throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place to such extent.");
+            for (int whichSystem = 0; whichSystem < numSystems; ++whichSystem)
+            {
+                // Get column of B as right-hand sides:
+                for (int j = 0; j < dim; ++j)
+                    auxX[j] = B[j, whichSystem];
+                // Solve the system with this vector:
+                CholeskySolve(CholeskyMatrix, auxX, ref auxX);
+                for (int j = 0; j < dim; ++j)
+                    X[j, whichSystem] = auxX[j];
+            }
+        }
+
+        /// <summary>Calculates inverse of the matrix from its specified Cholesky decomposition.</summary>
+        /// <param name="CholeskyMatrix">Matrix containing the Cholesky decomposition of the original matrix (with partial pivoting).</param>
+        /// <param name="auxX">Another auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary.</param>
+        /// <param name="res">Matrix where result will be stored. Reallocated if necessary.</param>
+        /// $A Igor Dec14;
+        public static void CholeskyInverse(IMatrix CholeskyMatrix, ref IVector auxX, ref IMatrix res)
+        {
+            if (CholeskyMatrix == null)
+                throw new ArgumentException("Matrix containing Cholesky decomposition is not specified (null reference).");
+            int dim = CholeskyMatrix.RowCount;
+            if (CholeskyMatrix.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing Cholesky decomposition is not a square matrix.");
+            if (auxX == null)
+                auxX = CholeskyMatrix.GetNewVector(dim);
+            if (auxX.Length != dim)
+                auxX = CholeskyMatrix.GetNewVector(dim);
+            if (res == null)
+                res = CholeskyMatrix.GetNew(dim, dim);
+            if (res.RowCount != dim || res.ColumnCount != dim)
+                res = CholeskyMatrix.GetNew(dim, dim);
+            if (object.ReferenceEquals(CholeskyMatrix, res))
+                throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place to this extent.");
+            for (int whichSystem = 0; whichSystem < dim; ++whichSystem)
+            {
+                // Get column of B as right-hand sides:
+                for (int j = 0; j < dim; ++j)
+                {
+                    // make right-hand vector contain a column of identity matrix:
+                    if (j != whichSystem)
+                        auxX[j] = 0.0;
+                    else
+                        auxX[j] = 1.0;
+                }
+                // Solve the system with this vector:
+                CholeskySolve(CholeskyMatrix, auxX, ref auxX);
+                for (int j = 0; j < dim; ++j)
+                    res[j, whichSystem] = auxX[j];
+            }
+        }
+
+        /// <summary>Calculates and returns determinant of a square symmetric matrix form its specified Cholesky decomposition.</summary>
+        /// <param name="CholeskyMatrix">Matrix containing the Cholesky decomposition of the matrix whose determinant is to be calculated.</param>
+        /// <returns>Determinant calculated from the precalculated Cholesky decomposition of a symmetric matrix.</returns>
+        /// $A Igor Dec14;
+        public static double CholeskyDeterminant(IMatrix CholeskyMatrix)
+        {
+            if (CholeskyMatrix == null)
+                throw new ArgumentException("Determinant calculation: Matrix containing Cholesky decomposition is not specified.");
+            int dim = CholeskyMatrix.RowCount;
+            if (CholeskyMatrix.ColumnCount != dim)
+                throw new ArgumentException("Determinant calculation: Matrix containing Cholesky decomposition is not a square matrix.");
+            double result = 1.0;
+            for (int i = 0; i < dim; ++i)
+                result *= CholeskyMatrix[i, i];
+            result *= result;  // there are two factors with the same diagonal
+            return result;
+        }
+
+        /// <summary>Extracts the lower part of the specified Cholesky decomposition (0s above diagonal)
+        /// and stores it in the specified result matrix.
+        /// <para>Although operatioin can be done in place, it is not allowed for input and output matrix to be the same.
+        /// Reason is that the operation always done in in combination (with extracting all parts).</para></summary>
+        /// <param name="matCholesky">Matrix containng the Cholesky decomposition of some matrix.</param>
+        /// <param name="result">Matrix where the lower part of the decomposition is stored.</param>
+        /// $A Igor Dec14;
+        public static void CholeskyExtractLower(IMatrix matCholesky, ref IMatrix result)
+        {
+            if (matCholesky == null)
+                throw new ArgumentException("Marix containing Cholesky decomposed original is not specified (null reference).");
+            int dim = matCholesky.RowCount;
+            if (matCholesky.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing Cholesky decomposition is not a square matrix.");
+            if (result == null)
+                result = matCholesky.GetNew(dim, dim);
+            if (result.RowCount != dim || result.ColumnCount != dim)
+                result = matCholesky.GetNew(dim, dim);
+            if (object.ReferenceEquals(matCholesky, result))
+                throw new ArgumentException("Input and result matrix are the same, which is not allowed.");
+            for (int i = 0; i < dim; ++i)
+            {
+                for (int j = 0; j < dim; ++j)
+                {
+                    if (i >= j)
+                        result[i, j] = matCholesky[i, j];
+                    else
+                        result[i, j] = 0.0;
+                }
+            }
+        }
+
+        /// <summary>Extracts the upper part of the specified Cholesky decomposition (0s in below diagonal)
+        /// and stores it in the specified result matrix.
+        /// <para>Although operatioin can be done in place, it is not allowed for input and output matrix to be the same.
+        /// Reason is that the operation always done in in combination (with extracting all parts).</para></summary>
+        /// <param name="matCholesky">Matrix containng the Cholesky decomposition of some matrix.</param>
+        /// <param name="result">Matrix where the upper part of the specified matrix is stored.</param>
+        /// $A Igor Dec14;
+        static IMatrix CholeskyExtractUpper(IMatrix matCholesky, ref IMatrix result)
+        {
+            if (matCholesky == null)
+                throw new ArgumentException("Marix containing Cholesky decomposed original is not specified (null reference).");
+            int dim = matCholesky.RowCount;
+            if (matCholesky.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing Cholesky decomposition is not a square matrix.");
+            if (result == null)
+                result = matCholesky.GetNew(dim, dim);
+            if (result.RowCount != dim || result.ColumnCount != dim)
+                result = matCholesky.GetNew(dim, dim);
+            if (object.ReferenceEquals(matCholesky, result))
+                throw new ArgumentException("Input and result matrix are the same, which is not allowed.");
+            for (int i = 0; i < dim; ++i)
+            {
+                for (int j = 0; j < dim; ++j)
+                {
+                    if (i <= j)
+                        result[i, j] = matCholesky[j, i];  // take from lower part; with current implementation, upper part can also be used.
+                    else
+                        result[i, j] = 0.0;
+                }
+            }
+            return result;
+        }
+
+
+        #region CholeskyDecomposition.Tests
+
+
+        /// <summary>Performs test of calculatons performed via Cholesky decomposition of a matrix.
+        /// Calculation times and error extents are measured and reported (if specified so).
+        /// <para>If relative errors are below the specified tolerance, true is returned, otherwise false is returned.</para></summary>
+        /// <param name="dim">Dimension of the problems generated for tests.</param>
+        /// <param name="numRepetitions">Number of repetitions of the tests. If greater than 1 then tests are repeated
+        /// with inputs generated anew each time.</param>
+        /// <param name="tol">Tolerance on relative errors of test results.</param>
+        /// <param name="outputLevel">Level of output. If 0 then no reports are launched to the console.</param>
+        /// <param name="randomGenerator">Random generator used for generation of test inputs.</param>
+        /// <param name="A">System matrix used in the test. If specified (i.e., not null) then this matrix is Cholesky decomposed and
+        /// used in the first repetition of tests instead of a randomly generated matrix. In this case, its dimension
+        /// overrides (when not the same) the specified dimension <paramref name="dim"/> of test matrices and vectors.
+        /// If there are more than one repetitions (parameter <paramref name="numRepetitions"/>) then subsequent repetitions
+        /// still use randomly generated inputs. If specified (i.e., not null) then this vector is  used in the first repetition 
+        /// of tests instead of a a randomly generated vector. Similar rules apply as for <paramref name="A"/>.</param>
+        /// <param name="b">Vector of right-hand sides used in the test.</param>
+        /// <returns>True if all tests passed successfully (i.e., if errors are below the specified tolerance).</returns>
+        /// $A Igor Dec14;
+        public static bool TestCholeskyDecomposition(int dim, int numRepetitions = 1, double tol = 1e-6, int outputLevel = 0,
+            IRandomGenerator randomGenerator = null, IMatrix A = null, IVector b = null)
+        {
+            bool passed = true;
+            if (tol <= 0)
+                tol = 1.0e-6;
+            double smallNumber = 1e-20;  // e.g. for guarging division by 0
+            StopWatch t = new StopWatch();
+            try
+            {
+                double determinant = 0;
+                if (randomGenerator == null)
+                    randomGenerator = RandomGenerator.Global;
+                if (numRepetitions < 1)
+                    numRepetitions = 1;
+                if (A != null)
+                {
+                    dim = A.RowCount;
+                    if (!MatrixBase.IsSymmetric(A, tol))
+                        throw new ArgumentException("The specified matrix for testing Cholesky decomposition is not symmetric.");
+                    determinant = DeterminantSlow(A);
+                }
+                else if (b != null)
+                    dim = b.Length;
+                if (outputLevel >= 1)
+                {
+                    if (numRepetitions < 2)
+                        Console.WriteLine(Environment.NewLine + "Test of Cholesky decomposition..." + Environment.NewLine);
+                    else
+                        Console.WriteLine(Environment.NewLine + "Test of Cholesky decomposition (" + numRepetitions + " repetitions)..."
+                            + Environment.NewLine);
+                }
+                for (int repetition = 0; repetition < numRepetitions; ++repetition)
+                {
+                    if (numRepetitions > 1 && outputLevel >= 1)
+                    {
+                        Console.WriteLine(Environment.NewLine + "REPETITION No. " + repetition + " of the Cholesky decomposition test..." + Environment.NewLine);
+                    }
+                    t.Start();
+                    if (A == null || repetition > 1)
+                    {
+                        A = new Matrix(dim, dim);
+                        determinant = MatrixBase.SetRandomPositiveDefiniteSymmetric(A, randomGenerator);
+                    }
+                    if (b == null || repetition > 1)
+                    {
+                        b = new Vector(dim);
+                        VectorBase.SetRandom(b);
+                    }
+                    if (A.RowCount != dim || A.ColumnCount != dim || b.Length != dim)
+                        throw new ArgumentException("Provided matrix and/or right/hand sides are not of correct dimensions.");
+                    t.Stop();
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Preparation of test input done in " + t.Time + "s (CPU: " + t.CpuTime + ").");
+                        Console.WriteLine("Dimension of the matrix for Cholesky testing decomposition: " + dim + "." + Environment.NewLine);
+                    }
+                    IMatrix Cholesky = new Matrix(dim, dim);
+                    t.Start();
+                    CholeskyDecompose(A, ref Cholesky);
+                    t.Stop();
+                    // Check the product:
+                    IMatrix product = null;
+                    IMatrix auxMat = null;
+                    IMatrix diffMat = null;
+                    IMatrix lower = null;
+                    IMatrix upper = null;
+                    IMatrix diagonal = null;
+                    CholeskyExtractLower(Cholesky, ref lower);
+                    CholeskyExtractUpper(Cholesky, ref upper);
+                    MatrixBase.Multiply(lower, upper, ref product);
+                    //Console.WriteLine(Environment.NewLine + "Dedomposed matrices: \nCholesky: \n"
+                    //    + Cholesky.ToStringReadable() + "lower: \n" + lower.ToStringReadable() + "upper: \n" + upper.ToStringReadable());
+                    MatrixBase.Multiply(lower, upper, ref product);
+                    //Console.WriteLine(Environment.NewLine + "Dedomposed matrices: \nCholesky: \n"
+                    //    + Cholesky.ToStringReadable() + "lower: \n" + lower.ToStringReadable() + "upper: \n" + upper.ToStringReadable()
+                    //    + "product: \n" + product.ToStringReadable()
+                    //    + "original: \n" + A.ToStringReadable());
+                    MatrixBase.Subtract(product, A, ref diffMat);
+                    // IMatrix restored = null;
+                    double relativeError = diffMat.NormForbenius / (A.NormForbenius + smallNumber);
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Cholesky decompositin calculated in "
+                            + t.Time.ToString("G2") + "s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: product of lower and upperr does not match original, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Product of factors: relative error = " + relativeError.ToString("G2"));
+                    }
+                    // Check soution of system of equations: 
+                    IVector x = null;
+                    IVector auxVec1 = null;
+                    t.Start();
+                    CholeskySolve(Cholesky, b, ref x);
+                    t.Stop();
+                    IVector testVec = null;
+                    IVector diffVec = null;
+                    MatrixBase.Multiply(A, x, ref testVec);
+                    VectorBase.Subtract(testVec, b, ref diffVec);
+                    relativeError = diffVec.Norm / (b.Norm + smallNumber);
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Equations solved (just back substitution) in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: soCholeskytion of system of equations not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Solution of system of equations: relative error = " + relativeError.ToString("G2"));
+                    }
+
+                    // Check calculation of determinant:
+                    t.Start();
+                    double detCalc = CholeskyDeterminant(Cholesky);
+                    t.Stop();
+                    relativeError = Math.Abs(detCalc - determinant) / (Math.Abs(determinant) + smallNumber);
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Determinant caCholeskyclated from decomposition in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: calculation of determinant not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Calculation of determinant from decomposition: relative error = " + relativeError.ToString("G2"));
+                    }
+                    // Check calculation of inverse matrix (directly):
+                    IMatrix inverseMat = null;
+                    t.Start();
+                    CholeskyInverse(Cholesky, ref auxVec1, ref inverseMat);
+                    t.Stop();
+                    IMatrix identityMat = new Matrix(dim, dim); MatrixBase.SetIdentity(identityMat);
+                    MatrixBase.Multiply(A, inverseMat, ref product);
+                    Matrix.Subtract(product, identityMat, ref diffMat);
+                    relativeError = diffMat.NormForbenius / (Math.Sqrt((double)dim));
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Matrix inverse directly from decomposition in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: calculation of matrix inverse not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Matrix inverse directly from decomposition: relative error = " + relativeError.ToString("G2"));
+                    }
+                    // Check calculation of inverse matrix (through soCholeskytions of equations with identity right-hand side):
+                    MatrixBase.SetZero(inverseMat);
+                    t.Start();
+                    CholeskySolve(Cholesky, identityMat, ref auxVec1, ref inverseMat);
+                    t.Stop();
+                    MatrixBase.Multiply(A, inverseMat, ref product);
+                    Matrix.Subtract(product, identityMat, ref diffMat);
+                    relativeError = diffMat.NormForbenius / (Math.Sqrt((double)dim));
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Matrix inverse through equation solving in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: calculation of matrix inverse through equation solving not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Matrix inverse through equation solving: relative error = " + relativeError.ToString("G2"));
+                    }
+                } // loop over repetitions
+            }
+            catch (Exception ex)
+            {
+                passed = false;
+                if (outputLevel >= 0)
+                {
+                    Console.WriteLine(Environment.NewLine + "ERROR: Exception throwin in the Cholesky test." +
+                        Environment.NewLine + "  Message: " + ex.Message);
+                }
+            }
+            if (outputLevel >= 1)
+            {
+                Console.WriteLine(Environment.NewLine + "Total time spent for test operations: "
+                    + t.TotalTime.ToString("G4") + " s (CPU: " + t.TotalCpuTime.ToString("G4") + " s)." + Environment.NewLine);
+                if (passed)
+                    Console.WriteLine(Environment.NewLine + "Test of Cholesky decomposition completed SUCCESSFULLY." + Environment.NewLine);
+                else
+                    Console.WriteLine(Environment.NewLine + "Test of Cholesky decomposition completed with ERRORS." + Environment.NewLine);
+            }
+            return passed;
+        }
+
+
+
+        /// <summary>Demonstration of usae of Cholesky decomposition.</summary>
+        /// $A Igor Dec14;
+        public static void TestCholeskyDecompositionDemo()
+        {
+            Console.WriteLine(Environment.NewLine + "Begin Cholesky decomposition demo." + Environment.NewLine);
+
+            int dim = 3;
+            IMatrix m = new Matrix(dim, dim);
+            m[0, 0] = 4; m[0, 1] = 12; m[0, 2] = -16;
+            m[1, 0] = 12; m[1, 1] = 37; m[1, 2] = -43;
+            m[2, 0] = -16; m[2, 1] = -43; m[2, 2] = 98;
+
+            Console.WriteLine("System matrix = " + Environment.NewLine + m.ToStringReadable());
+
+            int[] perm = new int[dim];
+            int toggle;
+            IMatrix CholeskyMatrix = m.GetNew(dim, dim);
+            CholeskyDecompose(m, ref CholeskyMatrix);
+
+            IMatrix lower = null;
+            IMatrix upper = null;
+
+            CholeskyExtractLower(CholeskyMatrix, ref lower);
+            CholeskyExtractUpper(CholeskyMatrix, ref upper);
+
+            Console.WriteLine("The (combined) Cholesky decomposition of m is" + Environment.NewLine + CholeskyMatrix.ToStringReadable());
+            Console.WriteLine("The decomposition permutation array is: " + perm.ToString());
+            Console.WriteLine(Environment.NewLine + "The lower part of Cholesky is " + Environment.NewLine + lower.ToStringReadable());
+            Console.WriteLine("The upper part of Cholesky is " + Environment.NewLine + upper.ToStringReadable());
+
+            IVector auxRight = null;
+            IVector auxX = null;
+
+            // Cslvulsyion of inverse:
+            IMatrix inverse = null;
+            CholeskyInverse(CholeskyMatrix, ref auxX, ref inverse);
+            Console.WriteLine("Inverse of m computed from its decomposition is " + Environment.NewLine + inverse.ToStringReadable());
+            IMatrix prod = m.GetNew();
+            MatrixBase.Multiply(inverse, m, ref prod);
+            // Console.WriteLine("Product of matrix and its inverse is\n" + MatrixAsString(prod));
+            // Test inverse correctness:
+            IMatrix diff = m.GetNew();
+            MatrixBase.SetIdentity(diff);
+            MatrixBase.Subtract(prod, diff, ref diff);
+            Console.WriteLine("Error norm for matrix inverse: " + (diff.NormForbenius).ToString() + Environment.NewLine);
+
+            // Calculate inverse in another way - by solbving multiple systems of equations with right-hand 
+            //  sides defined by identity matrix:
+
+            inverse = null;
+            IVector auxVec = null;
+            IMatrix B = m.GetNew(dim, dim);
+            MatrixBase.SetIdentity(B);
+            CholeskySolve(CholeskyMatrix, B, ref auxX, ref inverse);
+            Console.WriteLine("Inverse of m computed by explicit equation solving (identity right-hand) is " + Environment.NewLine + inverse.ToStringReadable());
+            prod = null;
+            MatrixBase.Multiply(inverse, m, ref prod);
+            // Test inverse correctness:
+            MatrixBase.SetIdentity(diff);
+            MatrixBase.Subtract(prod, diff, ref diff);
+            Console.WriteLine("Inverse by solving with matrix right-hand sides, error norm: " + (diff.NormForbenius).ToString() + Environment.NewLine);
+
+            double det = CholeskyDeterminant(CholeskyMatrix);
+            Console.WriteLine("Determinant of m computed via decomposition = " + det.ToString("F1"));
+
+            double[] bArray = new double[] { 49.0, 30.0, 43.0, 52.0 };
+
+            IVector b = new Vector(bArray);
+            Console.WriteLine(Environment.NewLine + "Right-hand side vector: " + b.ToStringMath());
+
+            Console.WriteLine("Solving system via decomposition...");
+            IVector x = null;
+            CholeskySolve(CholeskyMatrix, b, ref x);
+
+            Console.WriteLine(Environment.NewLine + "Solution is x = " + x.ToStringMath());
+
+            // Insight in matrix decomposition concepts:
+            IMatrix Cholesky = null;
+            Multiply(lower, upper, ref Cholesky);
+            IMatrix orig = null;
+            int[] auxArray = null;
+            UnPermute(Cholesky, perm, ref auxArray, ref orig);  // use a custom method with the perm array to unscramble Cholesky
+            MatrixBase.Subtract(orig, m, ref diff);
+            if (diff.NormForbenius < 0.000000001)
+                Console.WriteLine("\nProduct of L and U successfully unpermuted using perm array.");
+            else
+                Console.WriteLine("\nPruduct of L and U unpermuted UNSUCCESSFULLY using perm array.");
+
+            IMatrix permMatrix = m.GetNew(dim, dim);
+            PermutationArrayToMatrix(perm, ref permMatrix); // convert the perm array to a matrix
+            MatrixBase.Multiply(permMatrix, Cholesky, ref orig); // another way to unscramble
+            MatrixBase.Subtract(orig, m, ref diff);
+            if (diff.NormForbenius < 0.000000001)
+                Console.WriteLine("\nProduct of L and U successfully unpermuted using perm matrix.");
+            else
+                Console.WriteLine("\nPruduct of L and U unpermuted UNSUCCESSFULLY using permutation matrix.");
+
+            Console.WriteLine("\nEnd of matrix decomposition demo.\n");
+            // Console.ReadLine();
+        }  // TestCholeskyDecompositionDemo()
+
+
+
+
+        #endregion CholeskyDecomposition.Tests
+
+
+        #endregion CholeskyDecomposition
+
+
+
+
         #region Testing
 
 
