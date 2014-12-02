@@ -4741,6 +4741,1332 @@ namespace IG.Num
         #endregion DiagonalMatrixProducts
 
 
+
+        #region LuDecomposition
+
+
+
+        /// <summary>Simpler but slower (compared to <see cref="Determinant"/>) implementation of determinant
+        /// calculation of an arbitrary square real matrix.
+        /// <para>Auxiliary variable are allocated internally by the function, which makes it slower with respect to
+        /// <see cref="Determinant"/> where auxiliary parameters can be provided by the caller.</para></summary>
+        /// <param name="A">Matrix whose determinant is calculated.</param>
+        /// <returns>The calculated determinant of the specified matrix.</returns>
+        public static double DeterminantSlow(IMatrix A)
+        {
+            int[] permutations = null;
+            IMatrix LU = null;
+            return Determinant(A, ref permutations, ref LU);
+        }
+
+        /// <summary>Calculates and returns determinant of a real-valued square matrix.
+        /// <para>This function is efficient when auxiliary parameters <paramref name=""/> and <paramref name=""/>
+        /// are provided that are already initialized with the same dimensions as the matrix whose determinant is calculated.</para></summary>
+        /// <param name="A">Matrix whose determinant is to be calculated.</param>
+        /// <param name="auxLU">Auxiliary matrix where LU decomposition of <paramref name="A"/> will be stored. For best performance,
+        /// caller should pass a matrix that is alredy initialized with the same dimensions.</param>
+        /// <param name="auxLU">Auxiliary array where row permutations of LU decomposition of <paramref name="A"/> will be stored. 
+        /// For best performance, caller should pass an array that is alredy initialized with the same dimensions.</param>
+        /// <returns>The calculated determinant of the specified matrix.</returns>
+        public static double Determinant(IMatrix A, ref int[] auxPermutations, ref IMatrix auxLU)
+        {
+            if (A == null)
+                throw new ArgumentException("Matrix whose determinant is calculateed is not specified (nulll reference).");
+            else if (A.RowCount != A.ColumnCount || A.RowCount < 1)
+                throw new ArgumentException("Invalid dimensions of matrix whose determinant is calculated. Should be square with dimension greater than 0.");
+            int toggle = 0;
+            LuDecompose(A, out toggle, ref auxPermutations, ref auxLU);
+            return LuDeterminant(auxLU, toggle);
+        }
+
+
+
+
+        /// <summary>Calculates thr Doolittle LU decomposition with partial pivoting (LUP) of a square real matrix.
+        /// <para>Throws <see cref="InvalidOperationException"/> if the matrix is singular.</para>
+        /// <para>http://en.wikipedia.org/wiki/LU_decomposition#Doolittle_algorithm </para></summary>
+        /// <param name="A">Square matrix whose decomposition is calculated.</param>
+        /// <param name="toggle">Attains value 1 for even number of row swaps, or -1 for odd number of row swaps
+        /// (important for calculation of matrix determinant).</param>
+        /// <param name="perm">Array where the performed row permutations are stored. Reallocated if necessary.</param>
+        /// <param name="result">Matrix where the resulting LU decomposition is stored. Reallocated if necessary.
+        /// <para>Result is lower triangular matrix L with 1s on diagonal (stored below diagonal), and upper triangular matrix.</para></param>
+        /// $A Igor Dec14;
+        public static void LuDecompose(IMatrix A, out int toggle, ref int[] perm, ref IMatrix result)
+        {
+            if (A == null)
+                throw new ArgumentException("Matrix to LU-decompose is not specified (null reference).");
+            int dim = A.RowCount;
+            if (dim != A.ColumnCount)
+                throw new ArgumentException("Matrix to LU-decompose is a non-square mattrix");
+            if (perm == null)
+                perm = new int[dim];
+            else if (perm.Length != dim)
+                perm = new int[dim];
+            if (object.ReferenceEquals(A, result))
+                throw new ArgumentException("Result matrix is the same as inpuut matrix. Can not be done in place.");
+            MatrixBase.Copy(A, ref result);  /// prepare a copy to work on, resize performed if necessary
+            for (int i = 0; i < dim; ++i) { perm[i] = i; } // prepare row permutation array (initialize to identity)
+
+            toggle = 1; // toggle will tracks row swaps. +1 for even, -1 for odd, use by determinant calculation
+
+            for (int j = 0; j < dim - 1; ++j)
+            {
+                // Iterate over columns: 
+                double colMax = Math.Abs(result[j, j]); // find largest value in column j
+                int rowMaxCol = j;
+                for (int i = j + 1; i < dim; ++i)
+                {
+                    if (result[i, j] > colMax)
+                    {
+                        colMax = result[i, j];
+                        rowMaxCol = i;
+                    }
+                }
+
+                if (rowMaxCol != j) // if the largest value is not on pivot, swap rows
+                {
+                    for (int iCol = 0; iCol < dim; ++iCol)
+                    {
+                        double rowEl = result[rowMaxCol, iCol];
+                        result[rowMaxCol, iCol] = result[j, iCol];
+                        result[j, iCol] = rowEl;
+                    }
+                    int tmp = perm[rowMaxCol]; // swap permutation array entries correspondingly
+                    perm[rowMaxCol] = perm[j];
+                    perm[j] = tmp;
+
+                    toggle = -toggle; // adjust the toggle
+                }
+
+                if (Math.Abs(result[j, j]) < 1.0E-20) // if diagonal element after swap is zero,throw exception
+                    throw new InvalidOperationException("Zero diagonal term in LU decomposition, matrix is singular.");
+
+                for (int i = j + 1; i < dim; ++i)
+                {
+                    result[i, j] /= result[j, j];
+                    for (int k = j + 1; k < dim; ++k)
+                    {
+                        result[i, k] -= result[i, j] * result[j, k];
+                    }
+                }
+            } // loop over columns
+
+        } // LuDecompose
+
+        /// <summary>Solves a system of equations with the specified LU decomposition with already permuted b.
+        /// <para>Helper method. Before it is used, right-hand side vector must be permuted according to row permutations
+        /// contained in LU decomposition.</para>
+        /// <para>Parameters must be of correct dimensions. No reallocations are performed.</para>
+        /// <para>No consistency checks are performed on arguments.</para></summary>
+        /// <param name="luMatrix">Matrix containing LU decomposition of the originall system matrix.</param>
+        /// <param name="b">Vector containing right-hand sides permuted according to permutations of LU decomposition.</param>
+        /// <param name="x">Vector where permuted results are stored.</param>
+        /// $A Igor Dec14;
+        protected static void LuSolveNoPermutationsPlain(IMatrix luMatrix, IVector b, IVector x)
+        {
+            int n = luMatrix.RowCount;
+            VectorBase.CopyPlain(b, x);
+            for (int i = 1; i < n; ++i)
+            {
+                double sum = x[i];
+                for (int j = 0; j < i; ++j)
+                    sum -= luMatrix[i, j] * x[j];
+                x[i] = sum;
+            }
+
+            x[n - 1] /= luMatrix[n - 1, n - 1];
+            for (int i = n - 2; i >= 0; --i)
+            {
+                double sum = x[i];
+                for (int j = i + 1; j < n; ++j)
+                    sum -= luMatrix[i, j] * x[j];
+                x[i] = sum / luMatrix[i, i];
+            }
+        }
+
+        /// <summary>Solves a system of equations with the specified right-hand sides and the specified LU decomposition 
+        /// of the system matrix.</summary>
+        /// <param name="luMatrix">Matrix containing LU decomposition of the original matrix with permuted rows.</param>
+        /// <param name="perm">Permutation array containing information about row permutations performed during LU decomposition.</param>
+        /// <param name="b">Vextor of right-hand sides.</param>
+        /// <param name="auxVec">Auxiliary vector of the same dimension as the system matrix.</param>
+        /// <param name="x">Vector where the solution is stored.</param>
+        /// $A Igor Dec14;
+        public static void LuSolve(IMatrix luMatrix, int[] perm, IVector b, ref IVector auxVec, ref IVector x)
+        {
+            if (luMatrix == null)
+                throw new ArgumentException("Matrix containing LU decomposition is not specified (null reference).");
+            if (perm == null)
+                throw new ArgumentException("Permutation array is not specified.");
+            int dim = luMatrix.RowCount;
+            if (luMatrix.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing LU decomposition is not a square matrix.");
+            if (perm.Length != dim)
+                throw new ArgumentException("Length of permutation array in does not correspond to dimension of the LU decomposed matrix.");
+            if (x == null)
+                x = luMatrix.GetNewVector(dim);
+            if (x.Length != dim)
+                x = luMatrix.GetNewVector(dim);
+            if (auxVec == null)
+                auxVec = luMatrix.GetNewVector(dim);
+            if (auxVec.Length != dim)
+                auxVec = luMatrix.GetNewVector(dim);
+            if (object.ReferenceEquals(b, x))
+                throw new ArgumentException("Input and output vectors are the same. Can not be done in place.");
+            else if (object.ReferenceEquals(b, auxVec) || object.ReferenceEquals(x, auxVec))
+                throw new ArgumentException("Auxiliary vector the same as input or output. Needs separate instance.");
+            // Permute b according to perm & store it in auxVec:
+            for (int i = 0; i < dim; ++i)
+                auxVec[i] = b[perm[i]];
+            // Solve the system with permuted right-hand sides by calling the helper function:
+            LuSolveNoPermutationsPlain(luMatrix, auxVec, x);
+        }
+
+
+        /// <summary>Calculates inverse of the matrix from its specified LU decomposition.</summary>
+        /// <param name="ldltMatrix">Matrix containing the LU decomposition of the original matrix (with partial pivoting).</param>
+        /// <param name="perm">Array containing information of row permutations from the LU decomposition procedure.</param>
+        /// <param name="auxVec">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary.</param>
+        /// <param name="auxRight">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary.</param>
+        /// <param name="auxX">Another auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary.</param>
+        /// <param name="X">Matrix where result will be stored. Reallocated if necessary.</param>
+        /// $A Igor Dec14;
+        public static void LuSolve(IMatrix luMatrix, int[] perm, IMatrix B, ref IVector auxVec, ref IVector auxRight,
+            ref IVector auxX, ref IMatrix X)
+        {
+            if (luMatrix == null)
+                throw new ArgumentException("Matrix containing LU decomposition is not specified (null reference).");
+            if (perm == null)
+                throw new ArgumentException("Permutation array is not specified.");
+            int dim = luMatrix.RowCount;
+            if (B == null)
+                throw new ArgumentException("Matrix of right-hand sides is not specified (null reference).");
+            if (B.RowCount != dim)
+                throw new ArgumentException("Matrix of right-hand sides does not have as many rows as there are equations.");
+            int numSystems = B.ColumnCount;
+            if (luMatrix.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing LU decomposition is not a square matrix.");
+            if (perm.Length != dim)
+                throw new ArgumentException("Length of permutation array in does not correspond to dimension of the LU decomposed matrix.");
+            if (auxVec == null)
+                auxVec = luMatrix.GetNewVector(dim);
+            if (auxVec.Length != dim)
+                auxVec = luMatrix.GetNewVector(dim);
+            if (auxRight == null)
+                auxRight = luMatrix.GetNewVector(dim);
+            if (auxRight.Length != dim)
+                auxRight = luMatrix.GetNewVector(dim);
+            if (auxX == null)
+                auxX = luMatrix.GetNewVector(dim);
+            if (auxX.Length != dim)
+                auxX = luMatrix.GetNewVector(dim);
+            if (X == null)
+                X = luMatrix.GetNew(dim, numSystems);
+            if (X.RowCount != dim || X.ColumnCount != dim)
+                X = luMatrix.GetNew(dim, numSystems);
+            if (object.ReferenceEquals(luMatrix, X) || object.ReferenceEquals(luMatrix, B) || object.ReferenceEquals(B, X))
+                throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place.");
+            if (object.ReferenceEquals(auxVec, auxRight) || object.ReferenceEquals(auxVec, auxX) || object.ReferenceEquals(auxRight, auxX))
+                throw new ArgumentException("Auxiliary vectors are the same references. Need separate instances.");
+            for (int whichSystem = 0; whichSystem < numSystems; ++whichSystem)
+            {
+                // Get column of B as right-hand sides:
+                for (int j = 0; j < dim; ++j)
+                    auxRight[j] = B[j, whichSystem];
+                // Solve the system with this vector:
+                LuSolve(luMatrix, perm, auxRight, ref auxVec, ref auxX);
+                for (int j = 0; j < dim; ++j)
+                    X[j, whichSystem] = auxX[j];
+            }
+        }
+
+        /// <summary>Calculates inverse of the matrix from its specified LU decomposition.</summary>
+        /// <param name="luMatrix">Matrix containing the LU decomposition of the original matrix (with partial pivoting).</param>
+        /// <param name="perm">Array containing information of row permutations from the LU decomposition procedure.</param>
+        /// <param name="auxRight">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary.</param>
+        /// <param name="auxX">Another auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary.</param>
+        /// <param name="res">Matrix where result will be stored. Reallocated if necessary.</param>
+        /// $A Igor Dec14;
+        public static void LuInverse(IMatrix luMatrix, int[] perm, ref IVector auxRight, ref IVector auxX, ref IMatrix res)
+        {
+            if (luMatrix == null)
+                throw new ArgumentException("Matrix containing LU decomposition is not specified (null reference).");
+            if (perm == null)
+                throw new ArgumentException("Permutation array is not specified.");
+            int dim = luMatrix.RowCount;
+            if (luMatrix.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing LU decomposition is not a square matrix.");
+            if (perm.Length != dim)
+                throw new ArgumentException("Length of permutation array in does not correspond to dimension of the LU decomposed matrix.");
+            if (auxRight == null)
+                auxRight = luMatrix.GetNewVector(dim);
+            if (auxRight.Length != dim)
+                auxRight = luMatrix.GetNewVector(dim);
+            if (auxX == null)
+                auxX = luMatrix.GetNewVector(dim);
+            if (auxX.Length != dim)
+                auxX = luMatrix.GetNewVector(dim);
+            if (res == null)
+                res = luMatrix.GetNew(dim, dim);
+            if (res.RowCount != dim || res.ColumnCount != dim)
+                res = luMatrix.GetNew(dim, dim);
+            if (object.ReferenceEquals(luMatrix, res))
+                throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place.");
+            if (object.ReferenceEquals(auxRight, auxX))
+                throw new ArgumentException("Auxiliary vectors are the same references. Need separate instances.");
+            for (int i = 0; i < dim; ++i)
+            {
+                for (int j = 0; j < dim; ++j)
+                {
+                    if (i == perm[j])
+                        auxRight[j] = 1.0;
+                    else
+                        auxRight[j] = 0.0;
+                }
+                LuSolveNoPermutationsPlain(luMatrix, auxRight, auxX);
+                for (int j = 0; j < dim; ++j)
+                    res[j, i] = auxX[j];
+            }
+        }
+
+        /// <summary>Calculates and returns matrix determinant form its specified LU decomposition.</summary>
+        /// <param name="luMatrix">Matrix containing the LU decomposition of the matrix whose determinant is to be calculated.</param>
+        /// <param name="toggle">Toggle that contains information about number of row permutations when building LU decomposittion,
+        /// 1 for even and -1 for odd number of permutations.</param>
+        /// <returns>Determinant calculated from matrix LU decomposition.</returns>
+        /// $A Igor Dec14;
+        public static double LuDeterminant(IMatrix luMatrix, int toggle)
+        {
+            if (luMatrix == null)
+                throw new ArgumentException("Determinant calculation: Matrix containing LU decomposition is not specified.");
+            int dim = luMatrix.RowCount;
+            if (luMatrix.ColumnCount != dim)
+                throw new ArgumentException("Determinant calculation: Matrix containing LU decomposition is not a square matrix.");
+            if (toggle != -1 && toggle != 1)
+                throw new ArgumentException("Determinant calculation: toggle should be either -1 or 1.");
+            double result = toggle;
+            for (int i = 0; i < dim; ++i)
+                result *= luMatrix[i, i];
+            return result;
+        }
+
+
+        /// <summary>Extracts the lower part of the Doolittle specified LU decomposition (1s on diagonal, 0s in above diagonal)
+        /// and stores it in the specified result matrix.
+        /// <para>Although operatioin can be done in place, it is not allowed for input and output matrix to be the same.
+        /// Reason is that the operation always done in in combination (with extracting all parts).</para></summary>
+        /// <param name="matLu">Matrix containng the LU decomposition of some matrix.</param>
+        /// <param name="result">Matrix where the lower part of the specified matrix is stored.</param>
+        /// $A Igor Dec14;
+        public static void LuExtractLower(IMatrix matLu, ref IMatrix result)
+        {
+            if (matLu == null)
+                throw new ArgumentException("Marix containing LU decomposed original is not specified (null reference).");
+            int dim = matLu.RowCount;
+            if (matLu.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing LU decomposition is not a square matrix.");
+            if (result == null)
+                result = matLu.GetNew(dim, dim);
+            if (result.RowCount != dim || result.ColumnCount != dim)
+                result = matLu.GetNew(dim, dim);
+            if (object.ReferenceEquals(matLu, result))
+                throw new ArgumentException("Input and result matrix are the same, which is not allowed.");
+            for (int i = 0; i < dim; ++i)
+            {
+                for (int j = 0; j < dim; ++j)
+                {
+                    if (i == j)
+                        result[i, j] = 1.0;
+                    else if (i > j)
+                        result[i, j] = matLu[i, j];
+                    else
+                        result[i, j] = 0.0;
+                }
+            }
+        }
+
+        /// <summary>Extracts the upper part of the specified Doolittle LU decomposition 0s below diagonal)
+        /// and stores it in the specified result matrix.
+        /// <para>Although operatioin can be done in place, it is not allowed for input and output matrix to be the same.
+        /// Reason is that the operation always done in in combination (with extracting all parts).</para></summary>
+        /// <param name="matLu">Matrix containng the LU decomposition of some matrix.</param>
+        /// <param name="result">Matrix where the upper part of the specified matrix is stored.</param>
+        /// $A Igor Dec14;
+        static IMatrix LuExtractUpper(IMatrix matLu, ref IMatrix result)
+        {
+            if (matLu == null)
+                throw new ArgumentException("Marix containing LU decomposed original is not specified (null reference).");
+            int dim = matLu.RowCount;
+            if (matLu.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing LU decomposition is not a square matrix.");
+            if (result == null)
+                result = matLu.GetNew(dim, dim);
+            if (result.RowCount != dim || result.ColumnCount != dim)
+                result = matLu.GetNew(dim, dim);
+            if (object.ReferenceEquals(matLu, result))
+                throw new ArgumentException("Input and result matrix are the same, which is not allowed.");
+            for (int i = 0; i < dim; ++i)
+            {
+                for (int j = 0; j < dim; ++j)
+                {
+                    if (i <= j)
+                        result[i, j] = matLu[i, j];
+                    else
+                        result[i, j] = 0.0;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>Calculates and stores permutation matrix that correspond to the specified permutation array.
+        /// <para>Used only for testing.</para></summary>
+        /// <param name="perm">Permutation array, contains information on how matrix rows were permted.</param>
+        /// <param name="res">Matrix where the corresponding permutation matrix is sttored. Reallocated if necessary.</param>
+        /// $A Igor Dec14;
+        public static void PermutationArrayToMatrix(int[] perm, ref IMatrix res)
+        {
+            if (perm == null)
+                throw new ArgumentException("Permutation array not specified (null reference).");
+            if (res == null)
+                throw new ArgumentException("Matrix where permutation matrix is to be stored is not specified (null referrence).");
+            int dim = perm.Length;
+            if (dim == 0)
+                throw new ArgumentException("Length of permutation array is 0.");
+            if (res.RowCount != dim || res.ColumnCount != dim)
+                res = res.GetNew(dim, dim);
+            MatrixBase.SetZero(res);
+            // Convert Doolittle perm array to corresponding perm matrix
+            for (int i = 0; i < dim; ++i)
+                res[i, perm[i]] = 1.0;
+        }
+
+        /// <summary>Permutes rows of the specified aquare matrix according to the specified permutations array.
+        /// <para>Mainly used for testing.</para></summary>
+        /// <param name="A">Matrix to be Permuted.</param>
+        /// <param name="permutations">Array that contains information on row permutations that must be performed.</param>
+        /// <param name="result">Matrix where resultt is stored, i.e. the original matrix with permuted rows.</param>
+        /// $A Igor Dec14;
+        public static void Permute(IMatrix A, int[] permutations, ref IMatrix result)
+        {
+            if (A == null)
+                throw new ArgumentException("Matrix whose rows should be permuted is not specified (null reference).");
+            int numRows = A.RowCount;
+            int numColumns = A.ColumnCount;
+            if (result == null)
+                result = A.GetNew(numRows, numColumns);
+            else if (result.RowCount != numRows || result.ColumnCount != numColumns)
+                result = A.GetNew(numRows, numColumns);
+            if (object.ReferenceEquals(A, result))
+                throw new ArgumentException("Result matrix is the same as original.");
+            for (int row = 0; row < numRows; ++row)
+            {
+                for (int col = 0; col < numColumns; ++col)
+                {
+                    result[row, col] = A[permutations[row], col];
+                }
+            }
+        } // Permute()
+
+        /// <summary>Unpermutes the product of the specified DooLittle LU decomposition according to permutations array.
+        /// <para>The method can be used for reversing any row permutation performed on a sqyare matrix.</para></summary>
+        /// <param name="Apermuted">Matrix containing the permuted LU decomposition of some decomposed original matrix. 
+        /// Must be a square matrix.</param>
+        /// <param name="permutations">Array that contains information on row permutations that were perfomed during the LU decomposition.</param>
+        /// <param name="auxArray">Auxilliary array, should have the same dimension as <paramref name="permutations"/>.</param>
+        /// <param name="result">Matrix where resultt is stored, i.e. the unpermuted LU product.</param>
+        /// $A Igor Dec14;
+        public static void UnPermute(IMatrix Apermuted, int[] permutations, ref int[] auxArray, ref IMatrix result)
+        {
+            if (Apermuted == null)
+                throw new ArgumentException("Matrix whose rows should be permuted is not specified (null reference).");
+            int numRows = Apermuted.RowCount;
+            int numColumns = Apermuted.ColumnCount;
+            if (result == null)
+                result = Apermuted.GetNew(numRows, numColumns);
+            else if (result.RowCount != numRows || result.ColumnCount != numColumns)
+                result = Apermuted.GetNew(numRows, numColumns);
+            if (auxArray == null)
+                auxArray = new int[numRows];
+            else if (auxArray.Length != numRows)
+                auxArray = new int[numRows];
+            if (object.ReferenceEquals(permutations, auxArray))
+                throw new ArgumentException("Auxiliary array is the same as the permutations array.");
+            if (object.ReferenceEquals(Apermuted, result))
+                throw new ArgumentException("Result matrix is the same as the permuted matrix.");
+            for (int i = 0; i < permutations.Length; ++i)
+                auxArray[permutations[i]] = i;
+            for (int row = 0; row < numRows; ++row)
+            {
+                for (int col = 0; col < numColumns; ++col)
+                {
+                    result[row, col] = Apermuted[auxArray[row], col];
+                }
+            }
+        } // UnPermute()
+
+
+        #region LuDecomposition.Tests
+
+        /// <summary>Performs a test of calculatons performed via LU decomposition of a matrix.
+        /// Calculation times and error extents are measured and reported (if specified).
+        /// <para>If relative errors are below the specified tolerance, true is returned, otherwise false is returned.</para></summary>
+        /// <param name="dim">Dimension of the problems generated for tests.</param>
+        /// <param name="numRepetitions">Number of repetitions of the tests. If greater than 1 then tests are repeated
+        /// with inputs generated anew each time.</param>
+        /// <param name="tol">Tolerance on relative errors of test results.</param>
+        /// <param name="outputLevel">Level of output. If 0 then no reports are launched to the console.</param>
+        /// <param name="randomGenerator">Random generator used for generation of test inputs.</param>
+        /// <param name="A">System matrix used in the test. If specified (i.e., not null) then this matrix is LU decomposed and
+        /// used in the first repetition of tests instead of a randomly generated matrix. In this case, its dimension
+        /// overrides (when not the same) the specified dimension <paramref name="dim"/> of test matrices and vectors.
+        /// If there are more than one repetitions (parameter <paramref name="numRepetitions"/>) then subsequent repetitions
+        /// still use randomly generated inputs. If specified (i.e., not null) then this vector is  used in the first repetition 
+        /// of tests instead of a a randomly generated vector. Similar rules apply as for <paramref name="A"/>.</param>
+        /// <param name="b">Vector of right-hand sides used in the test.</param>
+        /// <returns>True if all tests passed successfully (i.e., if errors are below the specified tolerance).</returns>
+        /// $A Igor Dec14;
+        public static bool TestLuDecomposition(int dim, int numRepetitions = 1, double tol = 1e-6, int outputLevel = 0,
+            IRandomGenerator randomGenerator = null, IMatrix A = null, IVector b = null)
+        {
+            bool passed = true;
+            if (tol <= 0)
+                tol = 1.0e-6;
+            double smallNumber = 1e-20;  // e.g. for guarging division by 0
+            StopWatch t = new StopWatch();
+            try
+            {
+                double determinant = 0;
+                if (randomGenerator == null)
+                    randomGenerator = RandomGenerator.Global;
+                if (numRepetitions < 1)
+                    numRepetitions = 1;
+                if (A != null)
+                {
+                    dim = A.RowCount;
+                    determinant = DeterminantSlow(A);  // reference calculation of determinant (since it is not provided in this case)
+                }
+                else if (b != null)
+                    dim = b.Length;
+                if (outputLevel >= 1)
+                {
+                    if (numRepetitions < 2)
+                        Console.WriteLine(Environment.NewLine + "Test of LU decomposition..." + Environment.NewLine);
+                    else
+                        Console.WriteLine(Environment.NewLine + "Test of LU decomposition (" + numRepetitions + " repetitions)..."
+                            + Environment.NewLine);
+                }
+                for (int repetition = 0; repetition < numRepetitions; ++repetition)
+                {
+                    if (numRepetitions > 1 && outputLevel >= 1)
+                    {
+                        Console.WriteLine(Environment.NewLine + "REPETITION No. " + repetition + " of the LU decomposition test..." + Environment.NewLine);
+                    }
+                    t.Start();
+                    if (A == null || repetition > 1)
+                    {
+                        A = new Matrix(dim, dim);
+                        determinant = MatrixBase.SetRandomInvertible(A, randomGenerator);
+                    }
+                    if (b == null || repetition > 1)
+                    {
+                        b = new Vector(dim);
+                        VectorBase.SetRandom(b);
+                    }
+                    if (A.RowCount != dim || A.ColumnCount != dim || b.Length != dim)
+                        throw new ArgumentException("Provided matrix and/or right/hand sides are not of correct dimensions.");
+                    t.Stop();
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Preparation of test input done in " + t.Time + "s (CPU: ", t.CpuTime + ").");
+                        Console.WriteLine("Dimension of the matrix for LU testing decomposition: " + dim + "." + Environment.NewLine);
+                    }
+                    IMatrix LU = new Matrix(dim, dim);
+                    int[] permutations = new int[dim];
+                    int toggle = 0;
+                    t.Start();
+                    LuDecompose(A, out toggle, ref permutations, ref LU);
+                    t.Stop();
+                    // Check the product:
+                    IMatrix product = null;
+                    IMatrix diffMat = null;
+                    IMatrix lower = null;
+                    IMatrix upper = null;
+                    LuExtractLower(LU, ref lower);
+                    LuExtractUpper(LU, ref upper);
+                    Multiply(lower, upper, ref product);
+                    IMatrix restored = null;
+                    int[] auxArray1 = null;
+                    UnPermute(product, permutations, ref auxArray1, ref restored);  // use a custom method with the perm array to unscramble LU
+                    MatrixBase.Subtract(restored, A, ref diffMat);
+                    double relativeError = diffMat.NormForbenius / (A.NormForbenius + smallNumber);
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("LU decompositin calculated in "
+                            + t.Time.ToString("G2") + "s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: product of lower and upperr does not match original, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Product of factors: relative error = " + relativeError.ToString("G2"));
+                    }
+                    // Check solution of system of equations: 
+                    IVector x = null;
+                    IVector auxVec1 = null;
+                    t.Start();
+                    LuSolve(LU, permutations, b, ref auxVec1, ref x);
+                    t.Stop();
+                    IVector testVec = null;
+                    IVector diffVec = null;
+                    MatrixBase.Multiply(A, x, ref testVec);
+                    VectorBase.Subtract(testVec, b, ref diffVec);
+                    relativeError = diffVec.Norm / (b.Norm + smallNumber);
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Equations solved (just back substitution) in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: solution of system of equations not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Solution of system of equations: relative error = " + relativeError.ToString("G2"));
+                    }
+                    // Check calculation of determinant:
+
+                    t.Start();
+                    double detCalc = LuDeterminant(LU, toggle);
+                    t.Stop();
+                    relativeError = Math.Abs(detCalc - determinant) / (Math.Abs(determinant) + smallNumber);
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Determinant caluclated from decomposition in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: calculation of determinant not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Calculation of determinant from decomposition: relative error = " + relativeError.ToString("G2"));
+                    }
+                    // Check calculation of inverse matrix (directly):
+                    IMatrix inverseMat = null;
+                    IVector auxVec2 = null;
+                    t.Start();
+                    LuInverse(LU, permutations, ref auxVec1, ref auxVec2, ref inverseMat);
+                    t.Stop();
+                    IMatrix identityMat = Matrix.Identity(dim);
+                    MatrixBase.Multiply(A, inverseMat, ref product);
+                    Matrix.Subtract(product, identityMat, ref diffMat);
+                    relativeError = diffMat.NormForbenius / (Math.Sqrt((double)dim));
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Matrix inverse directly from decomposition in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: calculation of matrix inverse not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Matrix inverse directly from decomposition: relative error = " + relativeError.ToString("G2"));
+                    }
+                    // Check calculation of inverse matrix (through solutions of equations with identity right-hand side):
+                    IVector auxVec3 = null;
+                    MatrixBase.SetZero(inverseMat);
+                    t.Start();
+                    LuSolve(LU, permutations, identityMat, ref auxVec1, ref auxVec2, ref auxVec3, ref inverseMat);
+                    t.Stop();
+                    MatrixBase.Multiply(A, inverseMat, ref product);
+                    Matrix.Subtract(product, identityMat, ref diffMat);
+                    relativeError = diffMat.NormForbenius / (Math.Sqrt((double)dim));
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Matrix inverse through equation solving in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: calculation of matrix inverse through equation solving not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Matrix inverse through equation solving: relative error = " + relativeError.ToString("G2"));
+                    }
+                } // loop over repetitions
+            }
+            catch (Exception ex)
+            {
+                passed = false;
+                if (outputLevel >= 0)
+                {
+                    Console.WriteLine(Environment.NewLine + "ERROR: Exception throwin in the LU test." +
+                        Environment.NewLine + "  Message: " + ex.Message);
+                }
+            }
+            if (outputLevel >= 1)
+            {
+                Console.WriteLine(Environment.NewLine + "Total time spent for test operations: "
+                    + t.TotalTime.ToString("G4") + " s (CPU: " + t.TotalCpuTime.ToString("G4") + " s)." + Environment.NewLine);
+                if (passed)
+                    Console.WriteLine(Environment.NewLine + "Test of LU decomposition completed SUCCESSFULLY." + Environment.NewLine);
+                else
+                    Console.WriteLine(Environment.NewLine + "Test of LU decomposition completed with ERRORS." + Environment.NewLine);
+            }
+            return passed;
+        }  // TestLuDecomposition()
+
+        /// <summary>Demonstration of usage of LU decomposition.</summary>
+        /// $A Igor Dec14;
+        public static void TestLuDecompositionDemo()
+        {
+            Console.WriteLine(Environment.NewLine + "Begin LU decomposition demo." + Environment.NewLine);
+
+            int dim = 4;
+            IMatrix m = new Matrix(dim, dim);
+            m[0, 0] = 3.0; m[0, 1] = 7.0; m[0, 2] = 2.0; m[0, 3] = 5.0;
+            m[1, 0] = 1.0; m[1, 1] = 8.0; m[1, 2] = 4.0; m[1, 3] = 2.0;
+            m[2, 0] = 2.0; m[2, 1] = 1.0; m[2, 2] = 9.0; m[2, 3] = 3.0;
+            m[3, 0] = 5.0; m[3, 1] = 4.0; m[3, 2] = 7.0; m[3, 3] = 1.0;
+
+            Console.WriteLine("System matrix = " + Environment.NewLine + MatrixAsString(m));
+
+            int[] perm = new int[dim];
+            int toggle;
+            IMatrix luMatrix = m.GetNew(dim, dim);
+            LuDecompose(m, out toggle, ref perm, ref luMatrix);
+
+            IMatrix lower = null;
+            IMatrix upper = null;
+
+            LuExtractLower(luMatrix, ref lower);
+            LuExtractUpper(luMatrix, ref upper);
+
+            Console.WriteLine("The (combined) LUP decomposition of m is" + Environment.NewLine + luMatrix.ToStringReadable());
+            Console.WriteLine("The decomposition permutation array is: " + perm.ToString());
+            Console.WriteLine("The decomposition toggle value is: " + toggle);
+            Console.WriteLine(Environment.NewLine + "The lower part of LU is " + Environment.NewLine + lower.ToStringReadable());
+            Console.WriteLine("The upper part of LU is " + Environment.NewLine + upper.ToStringReadable());
+
+            IVector auxRight = null;
+            IVector auxX = null;
+
+            // Cslvulsyion of inverse:
+            IMatrix inverse = null;
+            LuInverse(luMatrix, perm, ref auxRight, ref auxX, ref inverse);
+            Console.WriteLine("Inverse of m computed from its decomposition is " + Environment.NewLine + inverse.ToStringReadable());
+            IMatrix prod = m.GetNew();
+            MatrixBase.Multiply(inverse, m, ref prod);
+            // Console.WriteLine("Product of matrix and its inverse is\n" + MatrixAsString(prod));
+            // Test inverse correctness:
+            IMatrix diff = m.GetNew();
+            MatrixBase.SetIdentity(diff);
+            MatrixBase.Subtract(prod, diff, ref diff);
+            Console.WriteLine("Error norm for matrix inverse: " + (diff.NormForbenius).ToString() + Environment.NewLine);
+
+            // Calculate inverse in another way - by solbving multiple systems of equations with right-hand 
+            //  sides defined by identity matrix:
+
+            inverse = null;
+            IVector auxVec = null;
+            IMatrix B = m.GetNew(dim, dim);
+            MatrixBase.SetIdentity(B);
+            LuSolve(luMatrix, perm, B, ref auxVec, ref auxRight, ref auxX, ref inverse);
+            Console.WriteLine("Inverse of m computed by explicit equation solving (identity right-hand) is " + Environment.NewLine + inverse.ToStringReadable());
+            prod = null;
+            MatrixBase.Multiply(inverse, m, ref prod);
+            // Test inverse correctness:
+            MatrixBase.SetIdentity(diff);
+            MatrixBase.Subtract(prod, diff, ref diff);
+            Console.WriteLine("Inverse by solving with matrix right-hand sides, error norm: " + (diff.NormForbenius).ToString() + Environment.NewLine);
+
+            double det = LuDeterminant(luMatrix, toggle);
+            Console.WriteLine("Determinant of m computed via decomposition = " + det.ToString("F1"));
+
+            double[] bArray = new double[] { 49.0, 30.0, 43.0, 52.0 };
+
+            IVector b = new Vector(bArray);
+            Console.WriteLine(Environment.NewLine + "Right-hand side vector: " + b.ToStringMath());
+
+            Console.WriteLine("Solving system via decomposition...");
+            IVector x = null;
+            LuSolve(luMatrix, perm, b, ref auxRight, ref x);
+
+            Console.WriteLine(Environment.NewLine + "Solution is x = " + x.ToStringMath());
+
+            // Insight in matrix decomposition concepts:
+            IMatrix lu = null;
+            Multiply(lower, upper, ref lu);
+            IMatrix orig = null;
+            int[] auxArray = null;
+            UnPermute(lu, perm, ref auxArray, ref orig);  // use a custom method with the perm array to unscramble LU
+            MatrixBase.Subtract(orig, m, ref diff);
+            if (diff.NormForbenius < 0.000000001)
+                Console.WriteLine("\nProduct of L and U successfully unpermuted using perm array.");
+            else
+                Console.WriteLine("\nPruduct of L and U unpermuted UNSUCCESSFULLY using perm array.");
+
+            IMatrix permMatrix = m.GetNew(dim, dim);
+            PermutationArrayToMatrix(perm, ref permMatrix); // convert the perm array to a matrix
+            MatrixBase.Multiply(permMatrix, lu, ref orig); // another way to unscramble
+            MatrixBase.Subtract(orig, m, ref diff);
+            if (diff.NormForbenius < 0.000000001)
+                Console.WriteLine("\nProduct of L and U successfully unpermuted using perm matrix.");
+            else
+                Console.WriteLine("\nPruduct of L and U unpermuted UNSUCCESSFULLY using permutation matrix.");
+
+            Console.WriteLine("\nEnd of matrix decomposition demo.\n");
+            // Console.ReadLine();
+        }  // TestLuDecompositionDemo()
+
+        #endregion LuDecomposition.Tests
+
+
+        #endregion LuDecomposition
+
+
+        #region LDLTDecomposition
+
+
+        /// <summary>Calculates LDLT decomposition of a real symmetric square matrix.
+        /// <para>L is lower triangular matrix with 1s on diagonal, and D is a diagonal matrix.</para>
+        /// <para>Decomposition can be done in place.</para>
+        /// <para>Can be done in place (input and result matrices can reference the same object).</para></summary>
+        /// <param name="A">Matrix whose decomposition is calculated.</param>
+        /// <param name="tol">Tolerance for detection of singularity (must be a small positive number greater or equal to 0).</param>
+        /// <param name="result">Matrix where the result of calculation is stored.</param>
+        /// $A Igor Dec14;
+        public static bool LdltDecompose(IMatrix A, ref IMatrix result, double tol = 1e-12)
+        {
+            if (tol <= 0)
+                tol = 1.0e-12;
+            if (A == null)
+                throw new ArgumentException("Matrix to be LDLT decomposed is not specified (null reference).");
+            int dim = A.RowCount;
+            if (A.ColumnCount != dim)
+                throw new ArgumentException("Matrix to be LDLT decomposed is not a square matrix.");
+            if (result == null)
+                result = result.GetNew(dim, dim);
+            if (result.RowCount != dim || result.ColumnCount != dim)
+                result = result.GetNew(dim, dim);
+
+            if (!object.ReferenceEquals(A, result))
+                MatrixBase.CopyPlain(A, result);
+            for (int j = 0; j < dim; j++)
+            {
+                double dj = result[dim * j + j];
+                for (int k = 0; k < j; k++)
+                {
+                    double ajk = result[j * dim + k];
+                    dj -= ajk * ajk * result[dim * k + k];
+                }
+
+                result[dim * j + j] = dj;
+                if (Math.Abs(dj) < tol)
+                    return false;
+
+                double djInv = 1.0 / dj;
+
+                for (int i = j + 1; i < dim; i++)
+                {
+                    double lij = result[i * dim + j];
+                    for (int k = 0; k < j; k++)
+                        lij -= result[i * dim + k] * result[j * dim + k] * result[k * dim + k];
+
+                    double element = lij * djInv;
+                    result[i * dim + j] = element;
+                    result[j * dim + i] = element;  // also populate symmetric elment
+                }
+            }
+            //for (int i = 0; i < dim; i++)
+            //{
+            //    // Symmetrically populate above diagonal:
+            //    for (int j = i + 1; j < dim; ++j)
+            //    {
+            //        result[i, j] = result[j, i];
+            //    }
+            //}
+
+            return true;
+        }
+
+        /// <summary>Solves a system of eauations with the specified LDLT decomposition of a real symmetric square matrix.
+        /// <para>Used in conjunction with the <see cref="DecomposeLDL"/> method for calculation of decomposition.</para>
+        /// <para>Can be done in place (input and result vectors can reference the same object).</para></summary>
+        /// <param name="decomposed">Decomposed original matrix (obtained by <see cref="LdltDecompose"/>).
+        /// <para>Matrix is in form of 1D flat arrat with row-wise element arrangement.</para></param>
+        /// <param name="b">Vector of the right-hand sides of the system of equations.</param>
+        /// <param name="x">Vector where result is stored.</param>
+        /// $A Igor Dec14;
+        public static void LdltSolve(IMatrix decomposed, IVector b, ref IVector x)
+        {
+            if (decomposed == null)
+                throw new ArgumentException("LDLT decomposed matrix not specified (null reference).");
+            int dim = decomposed.RowCount;
+            if (decomposed.ColumnCount != dim)
+                throw new ArgumentException("Decomposed matrix is not a square matrix.");
+            if (b == null)
+                throw new ArgumentException("Vector of right-hand sides is not specified (null reference).");
+            if (b.Length != dim)
+                throw new ArgumentException("Vector of right-hand sides is of inconsistent dimentions.");
+            if (x == null)
+                x = b.GetNew(dim);
+            else if (x.Length != dim)
+                x = b.GetNew(dim);
+            if (!object.ReferenceEquals(x, b))
+                VectorBase.Copy(b, x);
+            for (int i = 0; i < dim; i++)
+            {
+                for (int j = 0; j < i; j++)
+                    x[i] -= x[j] * decomposed[i * dim + j];
+            }
+
+            for (int i = 0; i < dim; i++)
+                x[i] /= decomposed[i * dim + i];
+
+            for (int i = dim; i >= 0; i--)
+            {
+                for (int j = i + 1; j < dim; j++)
+                    x[i] -= x[j] * decomposed[j * dim + i];
+            }
+        }
+
+
+        /// <summary>Calculates inverse of the matrix from its specified LDLT-decomposed matrix.</summary>
+        /// <param name="ldltMatrix">Matrix containing the LDLT decomposition of the original matrix.</param>
+        /// <param name="auxX">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary.</param>
+        /// <param name="X">Matrix where result will be stored. Reallocated if necessary.</param>
+        /// $A Igor Dec14;
+        public static void LdltSolve(IMatrix ldltMatrix, IMatrix B, ref IVector auxX, ref IMatrix X)
+        {
+            if (ldltMatrix == null)
+                throw new ArgumentException("Matrix containing LDLT decomposition is not specified (null reference).");
+            int dim = ldltMatrix.RowCount;
+            if (B == null)
+                throw new ArgumentException("Matrix of right-hand sides is not specified (null reference).");
+            if (B.RowCount != dim)
+                throw new ArgumentException("Matrix of right-hand sides does not have as many rows as there are equations.");
+            int numSystems = B.ColumnCount;
+            if (ldltMatrix.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing LU decomposition is not a square matrix.");
+            if (auxX == null)
+                auxX = ldltMatrix.GetNewVector(dim);
+            if (auxX.Length != dim)
+                auxX = ldltMatrix.GetNewVector(dim);
+            if (X == null)
+                X = ldltMatrix.GetNew(dim, numSystems);
+            if (X.RowCount != dim || X.ColumnCount != dim)
+                X = ldltMatrix.GetNew(dim, numSystems);
+            if (object.ReferenceEquals(ldltMatrix, X) || object.ReferenceEquals(ldltMatrix, B) || object.ReferenceEquals(B, X))
+                throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place to such extent.");
+            for (int whichSystem = 0; whichSystem < numSystems; ++whichSystem)
+            {
+                // Get column of B as right-hand sides:
+                for (int j = 0; j < dim; ++j)
+                    auxX[j] = B[j, whichSystem];
+                // Solve the system with this vector:
+                LdltSolve(ldltMatrix, auxX, ref auxX);
+                for (int j = 0; j < dim; ++j)
+                    X[j, whichSystem] = auxX[j];
+            }
+        }
+
+        /// <summary>Calculates inverse of the matrix from its specified LDLT decomposition.</summary>
+        /// <param name="ldltMatrix">Matrix containing the LDLT decomposition of the original matrix (with partial pivoting).</param>
+        /// <param name="auxX">Another auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary.</param>
+        /// <param name="res">Matrix where result will be stored. Reallocated if necessary.</param>
+        /// $A Igor Dec14;
+        public static void LdltInverse(IMatrix ldltMatrix, ref IVector auxX, ref IMatrix res)
+        {
+            if (ldltMatrix == null)
+                throw new ArgumentException("Matrix containing LDLT decomposition is not specified (null reference).");
+            int dim = ldltMatrix.RowCount;
+            if (ldltMatrix.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing LDLT decomposition is not a square matrix.");
+            if (auxX == null)
+                auxX = ldltMatrix.GetNewVector(dim);
+            if (auxX.Length != dim)
+                auxX = ldltMatrix.GetNewVector(dim);
+            if (res == null)
+                res = ldltMatrix.GetNew(dim, dim);
+            if (res.RowCount != dim || res.ColumnCount != dim)
+                res = ldltMatrix.GetNew(dim, dim);
+            if (object.ReferenceEquals(ldltMatrix, res))
+                throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place to this extent.");
+            for (int whichSystem = 0; whichSystem < dim; ++whichSystem)
+            {
+                // Get column of B as right-hand sides:
+                for (int j = 0; j < dim; ++j)
+                {
+                    // make right-hand vector contain a column of identity matrix:
+                    if (j != whichSystem)
+                        auxX[j] = 0.0;
+                    else
+                        auxX[j] = 1.0;
+                }
+                // Solve the system with this vector:
+                LdltSolve(ldltMatrix, auxX, ref auxX);
+                for (int j = 0; j < dim; ++j)
+                    res[j, whichSystem] = auxX[j];
+            }
+        }
+
+
+
+        /// <summary>Calculates and returns determinant of a square symmetric matrix form its specified LDLT decomposition.</summary>
+        /// <param name="ldltMatrix">Matrix containing the LDLT decomposition of the matrix whose determinant is to be calculated.</param>
+        /// <returns>Determinant calculated from the precalculated LDLT decomposition of a symmetric matrix.</returns>
+        /// $A Igor Dec14;
+        public static double LdltDeterminant(IMatrix ldltMatrix)
+        {
+            if (ldltMatrix == null)
+                throw new ArgumentException("Determinant calculation: Matrix containing LDLT decomposition is not specified.");
+            int dim = ldltMatrix.RowCount;
+            if (ldltMatrix.ColumnCount != dim)
+                throw new ArgumentException("Determinant calculation: Matrix containing LDLT decomposition is not a square matrix.");
+            double result = 1.0;
+            for (int i = 0; i < dim; ++i)
+                result *= ldltMatrix[i, i];
+            return result;
+        }
+
+
+
+
+        /// <summary>Extracts the lower part of the specified LDLT decomposition (1s on diagonal, 0s above diagonal)
+        /// and stores it in the specified result matrix.
+        /// <para>Although operatioin can be done in place, it is not allowed for input and output matrix to be the same.
+        /// Reason is that the operation always done in in combination (with extracting all parts).</para></summary>
+        /// <param name="matLdlt">Matrix containng the LDLT decomposition of some matrix.</param>
+        /// <param name="result">Matrix where the lower part of the decomposition is stored.</param>
+        /// $A Igor Dec14;
+        public static void LdltExtractLower(IMatrix matLdlt, ref IMatrix result)
+        {
+            if (matLdlt == null)
+                throw new ArgumentException("Marix containing LDLT decomposed original is not specified (null reference).");
+            int dim = matLdlt.RowCount;
+            if (matLdlt.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing LDLT decomposition is not a square matrix.");
+            if (result == null)
+                result = matLdlt.GetNew(dim, dim);
+            if (result.RowCount != dim || result.ColumnCount != dim)
+                result = matLdlt.GetNew(dim, dim);
+            if (object.ReferenceEquals(matLdlt, result))
+                throw new ArgumentException("Input and result matrix are the same, which is not allowed.");
+            for (int i = 0; i < dim; ++i)
+            {
+                for (int j = 0; j < dim; ++j)
+                {
+                    if (i == j)
+                        result[i, j] = 1.0;
+                    else if (i > j)
+                        result[i, j] = matLdlt[i, j];
+                    else
+                        result[i, j] = 0.0;
+                }
+            }
+        }
+
+        /// <summary>Extracts the upper part of the specified LDLT decomposition (1s on diagonal, 0s in below diagonal)
+        /// and stores it in the specified result matrix.
+        /// <para>Although operatioin can be done in place, it is not allowed for input and output matrix to be the same.
+        /// Reason is that the operation always done in in combination (with extracting all parts).</para></summary>
+        /// <param name="matLdlt">Matrix containng the LDLT decomposition of some matrix.</param>
+        /// <param name="result">Matrix where the upper part of the specified matrix is stored.</param>
+        /// $A Igor Dec14;
+        static IMatrix LdltExtractUpper(IMatrix matLdlt, ref IMatrix result)
+        {
+            if (matLdlt == null)
+                throw new ArgumentException("Marix containing LDLT decomposed original is not specified (null reference).");
+            int dim = matLdlt.RowCount;
+            if (matLdlt.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing LDLT decomposition is not a square matrix.");
+            if (result == null)
+                result = matLdlt.GetNew(dim, dim);
+            if (result.RowCount != dim || result.ColumnCount != dim)
+                result = matLdlt.GetNew(dim, dim);
+            if (object.ReferenceEquals(matLdlt, result))
+                throw new ArgumentException("Input and result matrix are the same, which is not allowed.");
+            for (int i = 0; i < dim; ++i)
+            {
+                for (int j = 0; j < dim; ++j)
+                {
+                    if (i == j)
+                        result[i, j] = 1.0;
+                    else if (i < j)
+                        result[i, j] = matLdlt[j, i];  // take from lower part; with current implementation, upper part can also be used.
+                    else
+                        result[i, j] = 0.0;
+                }
+            }
+            return result;
+        }
+
+        /// <summary>Extracts the diagonal part of the specified LDLT decomposition 
+        /// and stores it in the specified result matrix.
+        /// <para>Although operatioin can be done in place, it is not allowed for input and output matrix to be the same.
+        /// Reason is that the operation always done in in combination (with extracting all parts).</para></summary>
+        /// <param name="matLdlt">Matrix containng the LDLT decomposition of some matrix.</param>
+        /// <param name="result">Matrix where the upper part of the specified matrix is stored.</param>
+        /// $A Igor Dec14;
+        static IMatrix LdltExtractDiagonal(IMatrix matLdlt, ref IMatrix result)
+        {
+            if (matLdlt == null)
+                throw new ArgumentException("Marix containing LDLT decomposed original is not specified (null reference).");
+            int dim = matLdlt.RowCount;
+            if (matLdlt.ColumnCount != dim)
+                throw new ArgumentException("Matrix containing LDLT decomposition is not a square matrix.");
+            if (result == null)
+                result = matLdlt.GetNew(dim, dim);
+            if (result.RowCount != dim || result.ColumnCount != dim)
+                result = matLdlt.GetNew(dim, dim);
+            if (object.ReferenceEquals(matLdlt, result))
+                throw new ArgumentException("Input and result matrix are the same, which is not allowed.");
+            for (int i = 0; i < dim; ++i)
+            {
+                for (int j = 0; j < dim; ++j)
+                {
+                    if (i == j)
+                        result[i, j] = matLdlt[i, j];
+                    else
+                        result[i, j] = 0.0;
+                }
+            }
+            return result;
+        }
+
+
+        #region LDLTDecomposition.Tests
+
+
+        /// <summary>Performs a test of calculatons performed via LDLT decomposition of a matrix.
+        /// Calculation times and error extents are measured and reported (if specified).
+        /// <para>If relative errors are below the specified tolerance, true is returned, otherwise false is returned.</para></summary>
+        /// <param name="dim">Dimension of the problems generated for tests.</param>
+        /// <param name="numRepetitions">Number of repetitions of the tests. If greater than 1 then tests are repeated
+        /// with inputs generated anew each time.</param>
+        /// <param name="tol">Tolerance on relative errors of test results.</param>
+        /// <param name="outputLevel">Level of output. If 0 then no reports are launched to the console.</param>
+        /// <param name="randomGenerator">Random generator used for generation of test inputs.</param>
+        /// <param name="A">System matrix used in the test. If specified (i.e., not null) then this matrix is LDLT decomposed and
+        /// used in the first repetition of tests instead of a randomly generated matrix. In this case, its dimension
+        /// overrides (when not the same) the specified dimension <paramref name="dim"/> of test matrices and vectors.
+        /// If there are more than one repetitions (parameter <paramref name="numRepetitions"/>) then subsequent repetitions
+        /// still use randomly generated inputs. If specified (i.e., not null) then this vector is  used in the first repetition 
+        /// of tests instead of a a randomly generated vector. Similar rules apply as for <paramref name="A"/>.</param>
+        /// <param name="b">Vector of right-hand sides used in the test.</param>
+        /// <returns>True if all tests passed successfully (i.e., if errors are below the specified tolerance).</returns>
+        /// $A Igor Dec14;
+        public static bool TestLdltDecomposition(int dim, int numRepetitions = 1, double tol = 1e-6, int outputLevel = 0,
+            IRandomGenerator randomGenerator = null, IMatrix A = null, IVector b = null)
+        {
+            bool passed = true;
+            if (tol <= 0)
+                tol = 1.0e-6;
+            double smallNumber = 1e-20;  // e.g. for guarging division by 0
+            StopWatch t = new StopWatch();
+            try
+            {
+                double determinant = 0;
+                if (randomGenerator == null)
+                    randomGenerator = RandomGenerator.Global;
+                if (numRepetitions < 1)
+                    numRepetitions = 1;
+                if (A != null)
+                {
+                    dim = A.RowCount;
+                    if (!MatrixBase.IsSymmetric(A, tol))
+                        throw new ArgumentException("The specified matrix for testing LDLT decomposition is not symmetric.");
+                    determinant = DeterminantSlow(A);
+                }
+                else if (b != null)
+                    dim = b.Length;
+                if (outputLevel >= 1)
+                {
+                    if (numRepetitions < 2)
+                        Console.WriteLine(Environment.NewLine + "Test of LDLT decomposition..." + Environment.NewLine);
+                    else
+                        Console.WriteLine(Environment.NewLine + "Test of LDLT decomposition (" + numRepetitions + " repetitions)..."
+                            + Environment.NewLine);
+                }
+                for (int repetition = 0; repetition < numRepetitions; ++repetition)
+                {
+                    if (numRepetitions > 1 && outputLevel >= 1)
+                    {
+                        Console.WriteLine(Environment.NewLine + "REPETITION No. " + repetition + " of the LDLT decomposition test..." + Environment.NewLine);
+                    }
+                    t.Start();
+                    if (A == null || repetition > 1)
+                    {
+                        A = new Matrix(dim, dim);
+                        determinant = MatrixBase.SetRandomPositiveDefiniteSymmetric(A, randomGenerator);
+                    }
+                    if (b == null || repetition > 1)
+                    {
+                        b = new Vector(dim);
+                        VectorBase.SetRandom(b);
+                    }
+                    if (A.RowCount != dim || A.ColumnCount != dim || b.Length != dim)
+                        throw new ArgumentException("Provided matrix and/or right/hand sides are not of correct dimensions.");
+                    t.Stop();
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Preparation of test input done in " + t.Time + "s (CPU: " + t.CpuTime + ").");
+                        Console.WriteLine("Dimension of the matrix for LDLT testing decomposition: " + dim + "." + Environment.NewLine);
+                    }
+                    IMatrix LDLT = new Matrix(dim, dim);
+                    t.Start();
+                    LdltDecompose(A, ref LDLT);
+                    t.Stop();
+                    // Check the product:
+                    IMatrix product = null;
+                    IMatrix auxMat = null;
+                    IMatrix diffMat = null;
+                    IMatrix lower = null;
+                    IMatrix upper = null;
+                    IMatrix diagonal = null;
+                    LdltExtractLower(LDLT, ref lower);
+                    LdltExtractUpper(LDLT, ref upper);
+                    LdltExtractDiagonal(LDLT, ref diagonal);
+                    //MatrixBase.Multiply(lower, diagonal, upper, ref product);
+                    //Console.WriteLine(Environment.NewLine + "Dedomposed matrices: \nLDLT: \n"
+                    //    + LDLT.ToStringReadable() + "lower: \n" + lower.ToStringReadable() + "upper: \n" + upper.ToStringReadable()
+                    //    + "diagonal: \n" + diagonal.ToStringReadable());
+                    MatrixBase.Multiply(lower, diagonal, ref auxMat);
+                    MatrixBase.Multiply(auxMat, upper, ref product);
+                    //Console.WriteLine(Environment.NewLine + "Dedomposed matrices: \nLDLT: \n"
+                    //    + LDLT.ToStringReadable() + "lower: \n" + lower.ToStringReadable() + "upper: \n" + upper.ToStringReadable()
+                    //    + "diagonal: \n" + diagonal.ToStringReadable()
+                    //    + "\nfirst product: \n" + auxMat.ToStringReadable() + "second product: \n" + product.ToStringReadable()
+                    //    + "original: \n" + A.ToStringReadable());
+                    MatrixBase.Subtract(product, A, ref diffMat);
+                    // IMatrix restored = null;
+                    double relativeError = diffMat.NormForbenius / (A.NormForbenius + smallNumber);
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("LDLT decompositin calculated in "
+                            + t.Time.ToString("G2") + "s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: product of lower and upperr does not match original, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Product of factors: relative error = " + relativeError.ToString("G2"));
+                    }
+                    // Check soution of system of equations: 
+                    IVector x = null;
+                    IVector auxVec1 = null;
+                    t.Start();
+                    LdltSolve(LDLT, b, ref x);
+                    t.Stop();
+                    IVector testVec = null;
+                    IVector diffVec = null;
+                    MatrixBase.Multiply(A, x, ref testVec);
+                    VectorBase.Subtract(testVec, b, ref diffVec);
+                    relativeError = diffVec.Norm / (b.Norm + smallNumber);
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Equations solved (just back substitution) in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: soLDLTtion of system of equations not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Solution of system of equations: relative error = " + relativeError.ToString("G2"));
+                    }
+
+                    // Check calculation of determinant:
+                    t.Start();
+                    double detCalc = LdltDeterminant(LDLT);
+                    t.Stop();
+                    relativeError = Math.Abs(detCalc - determinant) / (Math.Abs(determinant) + smallNumber);
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Determinant caLDLTclated from decomposition in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: calculation of determinant not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Calculation of determinant from decomposition: relative error = " + relativeError.ToString("G2"));
+                    }
+                    // Check calculation of inverse matrix (directly):
+                    IMatrix inverseMat = null;
+                    IVector auxVec2 = null;
+                    t.Start();
+                    LdltInverse(LDLT, ref auxVec1, ref inverseMat);
+                    t.Stop();
+                    IMatrix identityMat = new Matrix(dim, dim); MatrixBase.SetIdentity(identityMat);
+                    MatrixBase.Multiply(A, inverseMat, ref product);
+                    Matrix.Subtract(product, identityMat, ref diffMat);
+                    relativeError = diffMat.NormForbenius / (Math.Sqrt((double)dim));
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Matrix inverse directly from decomposition in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: calculation of matrix inverse not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Matrix inverse directly from decomposition: relative error = " + relativeError.ToString("G2"));
+                    }
+                    // Check calculation of inverse matrix (through soLDLTtions of equations with identity right-hand side):
+                    MatrixBase.SetZero(inverseMat);
+                    t.Start();
+                    LdltSolve(LDLT, identityMat, ref auxVec1, ref inverseMat);
+                    t.Stop();
+                    MatrixBase.Multiply(A, inverseMat, ref product);
+                    Matrix.Subtract(product, identityMat, ref diffMat);
+                    relativeError = diffMat.NormForbenius / (Math.Sqrt((double)dim));
+                    if (relativeError > tol)
+                        passed = false;
+                    if (outputLevel >= 0)
+                    {
+                        Console.WriteLine("Matrix inverse through equation solving in "
+                            + t.Time.ToString("G2") + " s (CPU: " + t.CpuTime.ToString("G2") + " s).");
+                        if (relativeError > tol)
+                            Console.WriteLine(Environment.NewLine + "ERROR: calculation of matrix inverse through equation solving not correct, relative error = "
+                                + relativeError + Environment.NewLine);
+                        Console.WriteLine("Matrix inverse through equation solving: relative error = " + relativeError.ToString("G2"));
+                    }
+                } // loop over repetitions
+            }
+            catch (Exception ex)
+            {
+                passed = false;
+                if (outputLevel >= 0)
+                {
+                    Console.WriteLine(Environment.NewLine + "ERROR: Exception throwin in the LDLT test." +
+                        Environment.NewLine + "  Message: " + ex.Message);
+                }
+            }
+            if (outputLevel >= 1)
+            {
+                Console.WriteLine(Environment.NewLine + "Total time spent for test operations: "
+                    + t.TotalTime.ToString("G4") + " s (CPU: " + t.TotalCpuTime.ToString("G4") + " s)." + Environment.NewLine);
+                if (passed)
+                    Console.WriteLine(Environment.NewLine + "Test of LDLT decomposition completed SUCCESSFULLY." + Environment.NewLine);
+                else
+                    Console.WriteLine(Environment.NewLine + "Test of LDLT decomposition completed with ERRORS." + Environment.NewLine);
+            }
+            return passed;
+        }
+
+
+
+        #endregion LDLTDecomposition.Tests
+
+
+        #endregion LDLTDecomposition
+
+
+
+
+
         #region Auxiliary
 
         /// <summary>Returns hash code of the specified matrix.</summary>
