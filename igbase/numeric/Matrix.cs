@@ -212,7 +212,7 @@ namespace IG.Num
             if (numColumns == 0)
                 throw new ArgumentException("Invalid jagged array to create a matrix from: The first row has 0 elements.");
             _elements = new double[numRows][];
-            for (int i = 1; i < numRows; ++i)
+            for (int i = 0; i < numRows; ++i) 
             {
                 if (A[i].Length != numColumns)
                     throw new ArgumentException("Invalid jagged array to create a matrix from: not all rows are of the same length; caused by row No. "

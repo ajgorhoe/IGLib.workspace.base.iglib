@@ -1216,15 +1216,18 @@ namespace IG.Num
         // Generation of random invertible or positive definite matrices:
 
 
-
+         
         /// <summary>Sets the specified QUADRATIC matrix such that it is has random elements and is nonsingular.
         /// <para>Matrix elements are generated from a product of random lower triangular matrix with 1 on diagonal
         /// and a random upper triangular matrix with elements on the diagonal betweeen 1 and 2, both with nondiagonal terms
-        /// between 0 (inclusive) and 1.</para></summary>
+        /// between 0 (inclusive) and 1.</para>
+        /// <para>Determminant of the generated matrix is returned.</para></summary>
         /// <param name="mat">Matrix whose components are set.</param>
         /// <param name="rnd">Random generator used to generate matrix elements. If null then global random generator is taken.</param>
-        public static void SetRandomInvertible(IMatrix mat, IRandomGenerator rnd = null)
+        /// <returns>Determinant of the generated matrix, so it can be used in checks.</returns>
+        public static double SetRandomInvertible(IMatrix mat, IRandomGenerator rnd = null)
         {
+            double determinant = 1.0;
             if (mat == null)
                 throw new ArgumentNullException("Matrix to be set to lower triangular random matrix is not specified (null argument).");
             if (mat.RowCount != mat.ColumnCount)
@@ -1252,22 +1255,28 @@ namespace IG.Num
                     else
                     {
                         // diagonal elements
+                        double element = 1.0 + rnd.NextDouble();
+                        determinant *= element;
                         lower[row, col] = 1.0;
-                        upper[row, col] = 1.0 + rnd.NextDouble();
+                        upper[row, col] = element;
                     }
                 }
             MultiplyPlain(lower, upper, mat);
+            return determinant;
         }
 
 
 
         /// <summary>Sets the specified QUADRATIC matrix such that it is has random elements and is a symmetric positive definite matrix.
         /// <para>Matrix elements are generated from a product of random lower triangular matrix with diagonal elements betweeen 1 and 2,
-        /// and below diagonal elements between 0 (inclusive) and 1, and its transpose (i.e. from random Cholesky factors).</para></summary>
+        /// and below diagonal elements between 0 (inclusive) and 1, and its transpose (i.e. from random Cholesky factors).</para>
+        /// <para>Determminant of the generated matrix is returned.</para></summary>
         /// <param name="mat">Matrix whose components are set.</param>
         /// <param name="rnd">Random generator used to generate matrix elements. If null then global random generator is taken.</param>
-        public static void SetRandomPositiveDefiniteSymmetric(IMatrix mat, IRandomGenerator rnd = null)
+        /// <returns>Determinant of the generated matrix, so it can be used in checks.</returns>
+        public static double SetRandomPositiveDefiniteSymmetric(IMatrix mat, IRandomGenerator rnd = null)
         {
+            double determinant = 1.0;
             if (mat == null)
                 throw new ArgumentNullException("Matrix to be set to random symmetric positive definite is not specified (null argument).");
             if (mat.RowCount != mat.ColumnCount)
@@ -1291,10 +1300,13 @@ namespace IG.Num
                     } else
                     {
                         // diagonal elements
-                        lower[row, col] = 1.0 + rnd.NextDouble();
+                        double element = 1.0 + rnd.NextDouble();
+                        determinant *= element;
+                        lower[row, col] = element;
                     }
                 }
             MultiplyTranspMatPlain(lower, lower, mat);
+            return determinant;
         }
 
 
