@@ -5852,6 +5852,8 @@ namespace IG.Num
                     double detCalc = LuDeterminant(LU, toggle);
                     t.Stop();
                     relativeError = Math.Abs(detCalc - determinant) / (Math.Abs(determinant) + smallNumber);
+                    if (relativeError > tol)
+                        passed = false;
                     if (outputLevel >= 0)
                     {
                         Console.WriteLine("Determinant caluclated from decomposition in "
@@ -5925,7 +5927,7 @@ namespace IG.Num
             return passed;
         }  // TestLuDecomposition()
 
-        /// <summary>Demonstration of usage of LU decomposition.</summary>
+        /// <summary>Demonstration of usae of LU decomposition.</summary>
         /// $A Igor Dec14;
         public static void TestLuDecompositionDemo()
         {
@@ -6492,6 +6494,8 @@ namespace IG.Num
                     double detCalc = LdltDeterminant(LDLT);
                     t.Stop();
                     relativeError = Math.Abs(detCalc - determinant) / (Math.Abs(determinant) + smallNumber);
+                    if (relativeError > tol)
+                        passed = false;
                     if (outputLevel >= 0)
                     {
                         Console.WriteLine("Determinant caLDLTclated from decomposition in "
@@ -6562,8 +6566,6 @@ namespace IG.Num
             }
             return passed;
         }
-
-
 
         #endregion LDLTDecomposition.Tests
 
