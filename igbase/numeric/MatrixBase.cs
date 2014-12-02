@@ -5430,7 +5430,7 @@ namespace IG.Num
             m[2, 0] = 2.0; m[2, 1] = 1.0; m[2, 2] = 9.0; m[2, 3] = 3.0;
             m[3, 0] = 5.0; m[3, 1] = 4.0; m[3, 2] = 7.0; m[3, 3] = 1.0;
 
-            Console.WriteLine("System matrix = " + Environment.NewLine + MatrixAsString(m));
+            Console.WriteLine("System matrix = " + Environment.NewLine + m.ToStringReadable());
 
             int[] perm = new int[dim];
             int toggle;
