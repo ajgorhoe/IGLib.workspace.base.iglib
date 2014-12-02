@@ -4835,6 +4835,420 @@ namespace IG.Num
 
 
 
+
+        #region InputOutput
+
+
+
+        #region StaticInputOutput
+
+
+
+        ///// <summary>Returns string representation of the specified matrix in the standard IGLib form. 
+        ///// Rows and elements are printed in comma separated lists in curly brackets.</summary>
+        ///// <param name="mat">Matrix whose string representation is returned.</param>
+        //public static string ToString(IMatrix mat)
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    if (mat == null)
+        //        sb.Append("{}");
+        //    else
+        //    {
+        //        int d1 = mat.RowCount - 1;
+        //        int d2 = mat.ColumnCount - 1;
+        //        sb.Append('{');
+        //        for (int i = 0; i <= d1; ++i)
+        //        {
+        //            sb.Append("{");
+        //            for (int j = 0; j <= d2; ++j)
+        //            {
+        //                sb.Append(mat[i, j].ToString(null, CultureInfo.InvariantCulture));
+        //                if (j < d2)
+        //                    sb.Append(", ");
+        //            }
+        //            sb.Append("}");
+        //            if (i < d1)
+        //                sb.Append(", ");
+        //        }
+        //        sb.Append("}");
+        //    }
+        //    return sb.ToString();
+        //}
+
+
+        /// <summary>Returns a readable string form of a matrix, accuracy and padding can be set.</summary>
+        /// <param name="mat">Matrix whose string representation is returned.</param>
+        /// <param name="accuracy">Accuracy of matrix elments representations.</param>
+        /// <param name="padding">Padding of matrix elements.</param>
+        /// <returns>A readable string representation in tabular form, with the specified accuracy and padding of elements.</returns>
+        public static string ToStringReadable(IMatrix mat, int accuracy = 4, int padding = 8)
+        {
+            if (mat == null)
+                return Util.NullRepresentationString;
+            string accStr = "F" + accuracy.ToString();
+            StringBuilder sb = new StringBuilder();
+
+            // string s = "";
+            for (int i = 0; i < mat.RowCount; ++i)
+            {
+                for (int j = 0; j < mat.ColumnCount; ++j)
+                    sb.Append(mat[i, j].ToString(accStr).PadLeft(padding) + " ");
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
+
+
+        /// <summary>Returns a string representation of the specified matrix with newlines inserted after each row.
+        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
+        /// <param name="mat">Matrix whose string representation is returned.</param>
+        public static string ToStringNewlines(IMatrix mat)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (mat == null)
+                sb.Append("{}");
+            else
+            {
+                int d1 = mat.RowCount - 1;
+                int d2 = mat.ColumnCount - 1;
+                sb.Append('{' + Environment.NewLine);
+                for (int i = 0; i <= d1; ++i)
+                {
+                    sb.Append("  {");
+                    for (int j = 0; j <= d2; ++j)
+                    {
+                        sb.Append(mat[i, j].ToString(null, CultureInfo.InvariantCulture));
+                        if (j < d2)
+                            sb.Append(", ");
+                    }
+                    sb.Append("}");
+                    if (i < d1)
+                        sb.Append(", " + Environment.NewLine);
+                }
+                sb.Append("}" + Environment.NewLine);
+            }
+            return sb.ToString();
+        }
+
+
+        /// <summary>Returns a string representation of the specified matrix with newlines inserted after each row, 
+        /// with the specified format for elements of the matrix.
+        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
+        /// <param name="mat">Matrix whose string representation is returned.</param>
+        /// <param name="elementFormat">Format specification for printing individual element.</param>
+        public static string ToStringNewlines(IMatrix mat, string elementFormat)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (mat == null)
+                sb.Append("{}");
+            else
+            {
+                int d1 = mat.RowCount - 1;
+                int d2 = mat.ColumnCount - 1;
+                sb.Append('{' + Environment.NewLine);
+                for (int i = 0; i <= d1; ++i)
+                {
+                    sb.Append("  {");
+                    for (int j = 0; j <= d2; ++j)
+                    {
+                        sb.Append(mat[i, j].ToString(elementFormat, CultureInfo.InvariantCulture));
+                        if (j < d2)
+                            sb.Append(", ");
+                    }
+                    sb.Append("}");
+                    if (i < d1)
+                        sb.Append(", " + Environment.NewLine);
+                }
+                sb.Append("}" + Environment.NewLine);
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>Returns string representation of the current matrix in the standard IGLib form
+        /// (Mathematica-like format but with C representation of numbers).
+        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
+        /// <param name="mat">Matrix whose string representation is returned.</param>
+        public static string ToString(IMatrix mat)
+        {
+            return ToStringMath(mat);
+        }
+
+        /// <summary>Returns string representation of the current matrix in the standard IGLib form
+        /// (Mathematica-like format but with C representation of numbers).
+        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
+        /// <param name="mat">Matrix whose string representation is returned.</param>
+        public static string ToStringMath(IMatrix mat)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (mat == null)
+                sb.Append("{}");
+            else
+            {
+                int d1 = mat.RowCount - 1;
+                int d2 = mat.ColumnCount - 1;
+                sb.Append('{');
+                for (int i = 0; i <= d1; ++i)
+                {
+                    sb.Append("{");
+                    for (int j = 0; j <= d2; ++j)
+                    {
+                        sb.Append(mat[i, j].ToString(null, CultureInfo.InvariantCulture));
+                        if (j < d2)
+                            sb.Append(", ");
+                    }
+                    sb.Append("}");
+                    if (i < d1)
+                        sb.Append(", ");
+                }
+                sb.Append("}");
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>Returns string representation of the current matrix in the standard IGLib form
+        /// (Mathematica-like format but with C representation of numbers), with the specified  
+        /// format for elements of the matrix.
+        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
+        /// <param name="mat">Matrix whose string representation is returned.</param>
+        /// <param name="elementFormat">Format specification for printing individual element.</param>
+        public static string ToString(IMatrix mat, string elementFormat)
+        {
+            return ToStringMath(mat, elementFormat);
+        }
+
+        /// <summary>Returns string representation of the current matrix in the standard IGLib form
+        /// (Mathematica-like format but with C representation of numbers), with the specified  
+        /// format for elements of the matrix.
+        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
+        /// <param name="mat">Matrix whose string representation is returned.</param>
+        /// <param name="elementFormat">Format specification for printing individual element.</param>
+        public static string ToStringMath(IMatrix mat, string elementFormat)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (mat == null)
+                sb.Append("{}");
+            else
+            {
+                int d1 = mat.RowCount - 1;
+                int d2 = mat.ColumnCount - 1;
+                sb.Append('{');
+                for (int i = 0; i <= d1; ++i)
+                {
+                    sb.Append("{");
+                    for (int j = 0; j <= d2; ++j)
+                    {
+                        sb.Append(mat[i, j].ToString(elementFormat, CultureInfo.InvariantCulture));
+                        if (j < d2)
+                            sb.Append(", ");
+                    }
+                    sb.Append("}");
+                    if (i < d1)
+                        sb.Append(", ");
+                }
+                sb.Append("}");
+            }
+            return sb.ToString();
+        }
+
+
+        /// <summary>Saves (serializes) the specified matrix to the specified JSON file.
+        /// File is owerwritten if it exists.</summary>
+        /// <param name="mat">Object that is saved to a file.</param>
+        /// <param name="filePath">Path to the file in which object is is saved.</param>
+        public static void SaveJson(IMatrix mat, string filePath)
+        {
+            SaveJson(mat, filePath, false /* append */ );
+        }
+
+        /// <summary>Saves (serializes) the specified matrix to the specified JSON file.</summary>
+        /// <param name="mat">Object that is saved to a file.</param>
+        /// <param name="filePath">Path to the file in which object is is saved.</param>
+        /// <param name="append">Specifies whether serialized data is appended at the end of the file
+        /// in the case that the file already exists.</param>
+        public static void SaveJson(IMatrix mat, string filePath, bool append)
+        {
+            MatrixDtoBase dtoOriginal = new MatrixDtoBase();
+            dtoOriginal.CopyFrom(mat);
+            ISerializer serializer = new SerializerJson();
+            serializer.Serialize<MatrixDtoBase>(dtoOriginal, filePath, append);
+        }
+
+        /// <summary>Restores (deserializes) a matrix object from the specified file in JSON format.</summary>
+        /// <param name="filePath">File from which object data is restored.</param>
+        /// <param name="matRestored">Object that is restored by deserialization.</param>
+        public static void LoadJson(string filePath, ref IMatrix matRestored)
+        {
+            ISerializer serializer = new SerializerJson();
+            MatrixDtoBase dtoRestored = serializer.DeserializeFile<MatrixDtoBase>(filePath);
+            dtoRestored.CopyTo(ref matRestored);
+        }
+
+
+        #endregion StaticInputOutput
+
+
+
+
+        /// <summary>Returns string representation of the current matrix in the standard IGLib form. 
+        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
+        public override string ToString()
+        {
+            return ToString(this);
+        }
+
+        /// <summary>Returns a readable an easily string form of a matrix, accuracy and padding can be set.</summary>
+        /// <param name="mat">Matrix to be changed to a string.</param>
+        /// <param name="accuracy">Accuracy of matrix elments representations.</param>
+        /// <param name="padding">Paddind of matrix elements.</param>
+        /// <returns>A readable string representation in tabular form.</returns>
+        public virtual string ToStringReadable(int accuracy = 4, int padding = 8)
+        {
+            return MatrixBase.ToStringReadable(this, accuracy, padding);
+        }
+
+        /// <summary>Returns a string representation of this matrix with newlines inserted after each row.
+        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
+        public virtual string ToStringNewlines()
+        {
+            return ToStringNewlines(this);
+        }
+
+        /// <summary>Returns a string representation of this matrix with newlines inserted after each row, 
+        /// with the specified format for elements of the matrix.
+        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
+        /// <param name="elementFormat">Format specification for printing individual element.</param>
+        public virtual string ToStringNewlines(string elementFormat)
+        {
+            return ToStringNewlines(this, elementFormat);
+        }
+
+
+        /// <summary>Returns string representation of the current matrix in the standard IGLib form
+        /// (Mathematica-like format but with C representation of numbers).
+        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
+        public virtual string ToStringMath()
+        {
+            return ToStringMath(this);
+        }
+
+
+        /// <summary>Returns a string representation of the current matrix in a standard IGLib form
+        /// (Mathematica-like format but with C representation of numbers), with the specified  
+        /// format for elements of the matrix.</summary>
+        /// <param name="elementFormat">Format specification for printing individual element.</param>
+        public virtual string ToString(string elementFormat)
+        {
+            return ToString(this, elementFormat);
+        }
+
+        /// <summary>Returns a string representation of the current matrix in a standard IGLib form
+        /// (Mathematica-like format but with C representation of numbers), with the specified  
+        /// format for elements of the matrix.</summary>
+        /// <param name="elementFormat">Format specification for printing individual element.</param>
+        public virtual string ToStringMath(string elementFormat)
+        {
+            return ToStringMath(this, elementFormat);
+        }
+        
+
+        #endregion InputOutput
+
+
+        #region Operators_Overloading
+
+
+        /// <summary>Unary plus, returns the operand.</summary>
+        public static MatrixBase operator +(MatrixBase m)
+        {
+            if (m == null)
+                return null;
+            else
+                return m.GetCopyBase();
+        }
+
+        /// <summary>Unary negation, returns the negative operand.</summary>
+        public static MatrixBase operator -(MatrixBase m)
+        {
+            if (m == null)
+                return null;
+            else
+            {
+                MatrixBase ret = m.GetCopyBase();
+                ret.Negate();
+                return ret;
+            }
+        }
+
+        /// <summary>Matrix addition.</summary>
+        public static MatrixBase operator +(MatrixBase a, MatrixBase b)
+        {
+            MatrixBase ret = a.GetCopyBase();
+            Add(a, b, ret);
+            return ret;
+        }
+
+
+        /// <summary>Matrix subtraction.</summary>
+        public static MatrixBase operator -(MatrixBase a, MatrixBase b)
+        {
+            MatrixBase ret = a.GetCopyBase();
+            Subtract(a, b, ret);
+            return ret;
+        }
+
+
+
+        /// <summary>Product of two matrices.</summary>
+        public static MatrixBase operator *(MatrixBase a, MatrixBase b)
+        {
+            if (a == null)
+                return null;
+            else if (b == null)
+                return null;
+            MatrixBase ret = a.GetNewBase(a.RowCount, b.ColumnCount);
+            Multiply(a, b, ret);
+            return ret;
+        }
+
+        /// <summary>Product of a matrix and a vector.</summary>
+        public static VectorBase operator *(MatrixBase a, VectorBase b)
+        {
+            VectorBase ret = b.GetNewBase();
+            Multiply(a, b, ret);
+            return ret;
+        }
+
+        /// <summary>Product of a matrix by a scalar.</summary>
+        public static MatrixBase operator *(MatrixBase a, double b)
+        {
+            MatrixBase ret = a.GetNewBase();
+            MatrixBase.Multiply(a, b, ret);
+            return ret;
+        }
+
+        /// <summary>Product of a matrix by a scalar.</summary>
+        public static MatrixBase operator *(double a, MatrixBase b)
+        {
+            MatrixBase ret = b.GetNewBase();
+            Multiply(b, a, ret);
+            return ret;
+        }
+
+        /// <summary>Matrix subtraction.</summary>
+        public static MatrixBase operator /(MatrixBase a, double b)
+        {
+            MatrixBase ret = a.GetNewBase();
+            Divide(a, b, ret);
+            return ret;
+        }
+
+
+
+        #endregion  // Operators_Overloading
+
+
+
         #region LuDecomposition
 
 
@@ -6088,7 +6502,6 @@ namespace IG.Num
                     }
                     // Check calculation of inverse matrix (directly):
                     IMatrix inverseMat = null;
-                    IVector auxVec2 = null;
                     t.Start();
                     LdltInverse(LDLT, ref auxVec1, ref inverseMat);
                     t.Stop();
@@ -6156,419 +6569,6 @@ namespace IG.Num
 
         #endregion LDLTDecomposition
 
-
-
-
-        #region InputOutput
-
-
-
-        #region StaticInputOutput
-
-
-
-        ///// <summary>Returns string representation of the specified matrix in the standard IGLib form. 
-        ///// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        ///// <param name="mat">Matrix whose string representation is returned.</param>
-        //public static string ToString(IMatrix mat)
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    if (mat == null)
-        //        sb.Append("{}");
-        //    else
-        //    {
-        //        int d1 = mat.RowCount - 1;
-        //        int d2 = mat.ColumnCount - 1;
-        //        sb.Append('{');
-        //        for (int i = 0; i <= d1; ++i)
-        //        {
-        //            sb.Append("{");
-        //            for (int j = 0; j <= d2; ++j)
-        //            {
-        //                sb.Append(mat[i, j].ToString(null, CultureInfo.InvariantCulture));
-        //                if (j < d2)
-        //                    sb.Append(", ");
-        //            }
-        //            sb.Append("}");
-        //            if (i < d1)
-        //                sb.Append(", ");
-        //        }
-        //        sb.Append("}");
-        //    }
-        //    return sb.ToString();
-        //}
-
-
-        /// <summary>Returns a readable string form of a matrix, accuracy and padding can be set.</summary>
-        /// <param name="mat">Matrix whose string representation is returned.</param>
-        /// <param name="accuracy">Accuracy of matrix elments representations.</param>
-        /// <param name="padding">Padding of matrix elements.</param>
-        /// <returns>A readable string representation in tabular form, with the specified accuracy and padding of elements.</returns>
-        public static string ToStringReadable(IMatrix mat, int accuracy = 4, int padding = 8)
-        {
-            if (mat == null)
-                return Util.NullRepresentationString;
-            string accStr = "F" + accuracy.ToString();
-            StringBuilder sb = new StringBuilder();
-
-            // string s = "";
-            for (int i = 0; i < mat.RowCount; ++i)
-            {
-                for (int j = 0; j < mat.ColumnCount; ++j)
-                    sb.Append(mat[i, j].ToString(accStr).PadLeft(padding) + " ");
-                sb.AppendLine();
-            }
-            return sb.ToString();
-        }
-
-
-
-        /// <summary>Returns a string representation of the specified matrix with newlines inserted after each row.
-        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        /// <param name="mat">Matrix whose string representation is returned.</param>
-        public static string ToStringNewlines(IMatrix mat)
-        {
-            StringBuilder sb = new StringBuilder();
-            if (mat == null)
-                sb.Append("{}");
-            else
-            {
-                int d1 = mat.RowCount - 1;
-                int d2 = mat.ColumnCount - 1;
-                sb.Append('{' + Environment.NewLine);
-                for (int i = 0; i <= d1; ++i)
-                {
-                    sb.Append("  {");
-                    for (int j = 0; j <= d2; ++j)
-                    {
-                        sb.Append(mat[i, j].ToString(null, CultureInfo.InvariantCulture));
-                        if (j < d2)
-                            sb.Append(", ");
-                    }
-                    sb.Append("}");
-                    if (i < d1)
-                        sb.Append(", " + Environment.NewLine);
-                }
-                sb.Append("}" + Environment.NewLine);
-            }
-            return sb.ToString();
-        }
-
-
-        /// <summary>Returns a string representation of the specified matrix with newlines inserted after each row, 
-        /// with the specified format for elements of the matrix.
-        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        /// <param name="mat">Matrix whose string representation is returned.</param>
-        /// <param name="elementFormat">Format specification for printing individual element.</param>
-        public static string ToStringNewlines(IMatrix mat, string elementFormat)
-        {
-            StringBuilder sb = new StringBuilder();
-            if (mat == null)
-                sb.Append("{}");
-            else
-            {
-                int d1 = mat.RowCount - 1;
-                int d2 = mat.ColumnCount - 1;
-                sb.Append('{' + Environment.NewLine);
-                for (int i = 0; i <= d1; ++i)
-                {
-                    sb.Append("  {");
-                    for (int j = 0; j <= d2; ++j)
-                    {
-                        sb.Append(mat[i, j].ToString(elementFormat, CultureInfo.InvariantCulture));
-                        if (j < d2)
-                            sb.Append(", ");
-                    }
-                    sb.Append("}");
-                    if (i < d1)
-                        sb.Append(", " + Environment.NewLine);
-                }
-                sb.Append("}" + Environment.NewLine);
-            }
-            return sb.ToString();
-        }
-
-        /// <summary>Returns string representation of the current matrix in the standard IGLib form
-        /// (Mathematica-like format but with C representation of numbers).
-        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        /// <param name="mat">Matrix whose string representation is returned.</param>
-        public static string ToString(IMatrix mat)
-        {
-            return ToStringMath(mat);
-        }
-
-        /// <summary>Returns string representation of the current matrix in the standard IGLib form
-        /// (Mathematica-like format but with C representation of numbers).
-        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        /// <param name="mat">Matrix whose string representation is returned.</param>
-        public static string ToStringMath(IMatrix mat)
-        {
-            StringBuilder sb = new StringBuilder();
-            if (mat == null)
-                sb.Append("{}");
-            else
-            {
-                int d1 = mat.RowCount - 1;
-                int d2 = mat.ColumnCount - 1;
-                sb.Append('{');
-                for (int i = 0; i <= d1; ++i)
-                {
-                    sb.Append("{");
-                    for (int j = 0; j <= d2; ++j)
-                    {
-                        sb.Append(mat[i, j].ToString(null, CultureInfo.InvariantCulture));
-                        if (j < d2)
-                            sb.Append(", ");
-                    }
-                    sb.Append("}");
-                    if (i < d1)
-                        sb.Append(", ");
-                }
-                sb.Append("}");
-            }
-            return sb.ToString();
-        }
-
-        /// <summary>Returns string representation of the current matrix in the standard IGLib form
-        /// (Mathematica-like format but with C representation of numbers), with the specified  
-        /// format for elements of the matrix.
-        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        /// <param name="mat">Matrix whose string representation is returned.</param>
-        /// <param name="elementFormat">Format specification for printing individual element.</param>
-        public static string ToString(IMatrix mat, string elementFormat)
-        {
-            return ToStringMath(mat, elementFormat);
-        }
-
-        /// <summary>Returns string representation of the current matrix in the standard IGLib form
-        /// (Mathematica-like format but with C representation of numbers), with the specified  
-        /// format for elements of the matrix.
-        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        /// <param name="mat">Matrix whose string representation is returned.</param>
-        /// <param name="elementFormat">Format specification for printing individual element.</param>
-        public static string ToStringMath(IMatrix mat, string elementFormat)
-        {
-            StringBuilder sb = new StringBuilder();
-            if (mat == null)
-                sb.Append("{}");
-            else
-            {
-                int d1 = mat.RowCount - 1;
-                int d2 = mat.ColumnCount - 1;
-                sb.Append('{');
-                for (int i = 0; i <= d1; ++i)
-                {
-                    sb.Append("{");
-                    for (int j = 0; j <= d2; ++j)
-                    {
-                        sb.Append(mat[i, j].ToString(elementFormat, CultureInfo.InvariantCulture));
-                        if (j < d2)
-                            sb.Append(", ");
-                    }
-                    sb.Append("}");
-                    if (i < d1)
-                        sb.Append(", ");
-                }
-                sb.Append("}");
-            }
-            return sb.ToString();
-        }
-
-
-        /// <summary>Saves (serializes) the specified matrix to the specified JSON file.
-        /// File is owerwritten if it exists.</summary>
-        /// <param name="mat">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file in which object is is saved.</param>
-        public static void SaveJson(IMatrix mat, string filePath)
-        {
-            SaveJson(mat, filePath, false /* append */ );
-        }
-
-        /// <summary>Saves (serializes) the specified matrix to the specified JSON file.</summary>
-        /// <param name="mat">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file in which object is is saved.</param>
-        /// <param name="append">Specifies whether serialized data is appended at the end of the file
-        /// in the case that the file already exists.</param>
-        public static void SaveJson(IMatrix mat, string filePath, bool append)
-        {
-            MatrixDtoBase dtoOriginal = new MatrixDtoBase();
-            dtoOriginal.CopyFrom(mat);
-            ISerializer serializer = new SerializerJson();
-            serializer.Serialize<MatrixDtoBase>(dtoOriginal, filePath, append);
-        }
-
-        /// <summary>Restores (deserializes) a matrix object from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which object data is restored.</param>
-        /// <param name="matRestored">Object that is restored by deserialization.</param>
-        public static void LoadJson(string filePath, ref IMatrix matRestored)
-        {
-            ISerializer serializer = new SerializerJson();
-            MatrixDtoBase dtoRestored = serializer.DeserializeFile<MatrixDtoBase>(filePath);
-            dtoRestored.CopyTo(ref matRestored);
-        }
-
-
-        #endregion StaticInputOutput
-
-
-
-
-        /// <summary>Returns string representation of the current matrix in the standard IGLib form. 
-        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        public override string ToString()
-        {
-            return ToString(this);
-        }
-
-        /// <summary>Returns a readable an easily string form of a matrix, accuracy and padding can be set.</summary>
-        /// <param name="mat">Matrix to be changed to a string.</param>
-        /// <param name="accuracy">Accuracy of matrix elments representations.</param>
-        /// <param name="padding">Paddind of matrix elements.</param>
-        /// <returns>A readable string representation in tabular form.</returns>
-        public virtual string ToStringReadable(int accuracy = 4, int padding = 8)
-        {
-            return MatrixBase.ToStringReadable(this, accuracy, padding);
-        }
-
-        /// <summary>Returns a string representation of this matrix with newlines inserted after each row.
-        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        public virtual string ToStringNewlines()
-        {
-            return ToStringNewlines(this);
-        }
-
-        /// <summary>Returns a string representation of this matrix with newlines inserted after each row, 
-        /// with the specified format for elements of the matrix.
-        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        /// <param name="elementFormat">Format specification for printing individual element.</param>
-        public virtual string ToStringNewlines(string elementFormat)
-        {
-            return ToStringNewlines(this, elementFormat);
-        }
-
-
-        /// <summary>Returns string representation of the current matrix in the standard IGLib form
-        /// (Mathematica-like format but with C representation of numbers).
-        /// Rows and elements are printed in comma separated lists in curly brackets.</summary>
-        public virtual string ToStringMath()
-        {
-            return ToStringMath(this);
-        }
-
-
-        /// <summary>Returns a string representation of the current matrix in a standard IGLib form
-        /// (Mathematica-like format but with C representation of numbers), with the specified  
-        /// format for elements of the matrix.</summary>
-        /// <param name="elementFormat">Format specification for printing individual element.</param>
-        public virtual string ToString(string elementFormat)
-        {
-            return ToString(this, elementFormat);
-        }
-
-        /// <summary>Returns a string representation of the current matrix in a standard IGLib form
-        /// (Mathematica-like format but with C representation of numbers), with the specified  
-        /// format for elements of the matrix.</summary>
-        /// <param name="elementFormat">Format specification for printing individual element.</param>
-        public virtual string ToStringMath(string elementFormat)
-        {
-            return ToStringMath(this, elementFormat);
-        }
-        
-
-        #endregion InputOutput
-
-
-        #region Operators_Overloading
-
-
-        /// <summary>Unary plus, returns the operand.</summary>
-        public static MatrixBase operator +(MatrixBase m)
-        {
-            if (m == null)
-                return null;
-            else
-                return m.GetCopyBase();
-        }
-
-        /// <summary>Unary negation, returns the negative operand.</summary>
-        public static MatrixBase operator -(MatrixBase m)
-        {
-            if (m == null)
-                return null;
-            else
-            {
-                MatrixBase ret = m.GetCopyBase();
-                ret.Negate();
-                return ret;
-            }
-        }
-
-        /// <summary>Matrix addition.</summary>
-        public static MatrixBase operator +(MatrixBase a, MatrixBase b)
-        {
-            MatrixBase ret = a.GetCopyBase();
-            Add(a, b, ret);
-            return ret;
-        }
-
-
-        /// <summary>Matrix subtraction.</summary>
-        public static MatrixBase operator -(MatrixBase a, MatrixBase b)
-        {
-            MatrixBase ret = a.GetCopyBase();
-            Subtract(a, b, ret);
-            return ret;
-        }
-
-
-
-        /// <summary>Product of two matrices.</summary>
-        public static MatrixBase operator *(MatrixBase a, MatrixBase b)
-        {
-            if (a == null)
-                return null;
-            else if (b == null)
-                return null;
-            MatrixBase ret = a.GetNewBase(a.RowCount, b.ColumnCount);
-            Multiply(a, b, ret);
-            return ret;
-        }
-
-        /// <summary>Product of a matrix and a vector.</summary>
-        public static VectorBase operator *(MatrixBase a, VectorBase b)
-        {
-            VectorBase ret = b.GetNewBase();
-            Multiply(a, b, ret);
-            return ret;
-        }
-
-        /// <summary>Product of a matrix by a scalar.</summary>
-        public static MatrixBase operator *(MatrixBase a, double b)
-        {
-            MatrixBase ret = a.GetNewBase();
-            MatrixBase.Multiply(a, b, ret);
-            return ret;
-        }
-
-        /// <summary>Product of a matrix by a scalar.</summary>
-        public static MatrixBase operator *(double a, MatrixBase b)
-        {
-            MatrixBase ret = b.GetNewBase();
-            Multiply(b, a, ret);
-            return ret;
-        }
-
-        /// <summary>Matrix subtraction.</summary>
-        public static MatrixBase operator /(MatrixBase a, double b)
-        {
-            MatrixBase ret = a.GetNewBase();
-            Divide(a, b, ret);
-            return ret;
-        }
-
-
-
-        #endregion  // Operators_Overloading
 
 
         #region Testing
