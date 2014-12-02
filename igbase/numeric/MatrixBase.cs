@@ -1305,6 +1305,7 @@ namespace IG.Num
                         lower[row, col] = element;
                     }
                 }
+            determinant *= determinant;  // because thre are 2 factors with the same determinant
             MultiplyTranspMatPlain(lower, lower, mat);
             return determinant;
         }
