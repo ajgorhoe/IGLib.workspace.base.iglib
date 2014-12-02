@@ -4742,6 +4742,99 @@ namespace IG.Num
 
 
 
+
+        #region Auxiliary
+
+        /// <summary>Returns hash code of the specified matrix.</summary>
+        /// <param name="mat">Matrix whose hath code is returned.</param>
+        /// <remarks>This method should be used when overriding the GetHashCode() in  vector classes, 
+        /// in order to unify calculation of hash code over different vector classes.</remarks>
+        public static int GetHashCode(IMatrix mat)
+        {
+            if (mat == null)
+                return int.MaxValue;
+            int dim1 = mat.RowCount;
+            int dim2 = mat.ColumnCount;
+            if (dim1 < 1 || dim2 < 1)
+            {
+                return int.MaxValue - 1 - Math.Abs(dim1 * dim2) - Math.Abs(dim2);
+            }
+            int ret = 0;
+            for (int i = 0; i < dim1; i++)
+            {
+                for (int j = 0; j < dim2; j++)
+                {
+                    ret ^= mat[i, j].GetHashCode(); ;
+                }
+            }
+            return ret;
+        }
+
+        /// <summary>Returns true if the specified matrices are equal, false if not.</summary>
+        /// <param name="m1">The first of the two matrices that are checked for equality.</param>
+        /// <param name="m2">The second of the two matrices that are checked for equality.</param>
+        /// <remarks>
+        /// <para>This method should be used when overriding the Equals() method in  matrix classes, 
+        /// in order to unify the equality check over different matrix classes.</para>
+        /// <para>If both matrices are null or both have one dimension less than 1 and the other dimension the same 
+        /// then then they considered equal.</para>
+        /// <para>This method is consistent with the <see cref="MatrixBase.Compare"/> method, i.e. it returns the 
+        /// same value as the expression <see cref="MatrixBase.Compare"/>(<paramref name="m1"/>, <paramref name="m2"/>==0).</para>
+        /// </remarks>
+        public static bool Equals(IMatrix m1, IMatrix m2)
+        {
+            if (m1 == null)
+            {
+                if (m2 == null)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                int dim1 = m1.RowCount;
+                int dim2 = m1.ColumnCount;
+                if (m2.RowCount != dim1 || m2.ColumnCount!=dim2)
+                    return false;
+                else
+                {
+                    for (int i = 0; i < dim1; i++)
+                        for (int j=0; j<dim2; j++)
+                    {
+                        if (m1[i, j] != m2[i, j])
+                            return false;
+                    }
+                    return true;
+                }
+            }
+        }
+
+        /// <summary>Returns an integer valued hash function of the specified matrix object.
+        /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
+        /// <mat>Matrix object whose hash function is calculated and returned.</vec>
+        /// <seealso cref="Util.GetHashFunctionInt"/>
+        public static int GetHashFunctionInt(IMatrix mat)
+        {
+            return Util.GetHashFunctionInt(mat);
+        }
+
+        /// <summary>Returns a string valued hash function of the specified matrix object.
+        /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
+        /// <mat>Matrix object whose hash function is calculated and returned.</vec>
+        /// <seealso cref="Util.GetHashFunctionString"/>
+        public static string GetHashFunctionString(IMatrix mat)
+        {
+            return Util.GetHashFunctionString(mat);
+        }
+
+
+        #endregion Auxiliary
+
+
+        #endregion StaticOperations
+
+
+
         #region LuDecomposition
 
 
@@ -5098,7 +5191,7 @@ namespace IG.Num
         /// <param name="matLu">Matrix containng the LU decomposition of some matrix.</param>
         /// <param name="result">Matrix where the upper part of the specified matrix is stored.</param>
         /// $A Igor Dec14;
-        static IMatrix LuExtractUpper(IMatrix matLu, ref IMatrix result)
+        public static IMatrix LuExtractUpper(IMatrix matLu, ref IMatrix result)
         {
             if (matLu == null)
                 throw new ArgumentException("Marix containing LU decomposed original is not specified (null reference).");
@@ -6063,99 +6156,6 @@ namespace IG.Num
 
         #endregion LDLTDecomposition
 
-
-
-
-
-        #region Auxiliary
-
-        /// <summary>Returns hash code of the specified matrix.</summary>
-        /// <param name="mat">Matrix whose hath code is returned.</param>
-        /// <remarks>This method should be used when overriding the GetHashCode() in  vector classes, 
-        /// in order to unify calculation of hash code over different vector classes.</remarks>
-        public static int GetHashCode(IMatrix mat)
-        {
-            if (mat == null)
-                return int.MaxValue;
-            int dim1 = mat.RowCount;
-            int dim2 = mat.ColumnCount;
-            if (dim1 < 1 || dim2 < 1)
-            {
-                return int.MaxValue - 1 - Math.Abs(dim1 * dim2) - Math.Abs(dim2);
-            }
-            int ret = 0;
-            for (int i = 0; i < dim1; i++)
-            {
-                for (int j = 0; j < dim2; j++)
-                {
-                    ret ^= mat[i, j].GetHashCode(); ;
-                }
-            }
-            return ret;
-        }
-
-        /// <summary>Returns true if the specified matrices are equal, false if not.</summary>
-        /// <param name="m1">The first of the two matrices that are checked for equality.</param>
-        /// <param name="m2">The second of the two matrices that are checked for equality.</param>
-        /// <remarks>
-        /// <para>This method should be used when overriding the Equals() method in  matrix classes, 
-        /// in order to unify the equality check over different matrix classes.</para>
-        /// <para>If both matrices are null or both have one dimension less than 1 and the other dimension the same 
-        /// then then they considered equal.</para>
-        /// <para>This method is consistent with the <see cref="MatrixBase.Compare"/> method, i.e. it returns the 
-        /// same value as the expression <see cref="MatrixBase.Compare"/>(<paramref name="m1"/>, <paramref name="m2"/>==0).</para>
-        /// </remarks>
-        public static bool Equals(IMatrix m1, IMatrix m2)
-        {
-            if (m1 == null)
-            {
-                if (m2 == null)
-                    return true;
-                else
-                    return false;
-            }
-            else
-            {
-                int dim1 = m1.RowCount;
-                int dim2 = m1.ColumnCount;
-                if (m2.RowCount != dim1 || m2.ColumnCount!=dim2)
-                    return false;
-                else
-                {
-                    for (int i = 0; i < dim1; i++)
-                        for (int j=0; j<dim2; j++)
-                    {
-                        if (m1[i, j] != m2[i, j])
-                            return false;
-                    }
-                    return true;
-                }
-            }
-        }
-
-        /// <summary>Returns an integer valued hash function of the specified matrix object.
-        /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
-        /// <mat>Matrix object whose hash function is calculated and returned.</vec>
-        /// <seealso cref="Util.GetHashFunctionInt"/>
-        public static int GetHashFunctionInt(IMatrix mat)
-        {
-            return Util.GetHashFunctionInt(mat);
-        }
-
-        /// <summary>Returns a string valued hash function of the specified matrix object.
-        /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
-        /// <mat>Matrix object whose hash function is calculated and returned.</vec>
-        /// <seealso cref="Util.GetHashFunctionString"/>
-        public static string GetHashFunctionString(IMatrix mat)
-        {
-            return Util.GetHashFunctionString(mat);
-        }
-
-
-        #endregion Auxiliary
-
-
-        #endregion StaticOperations
 
 
 
