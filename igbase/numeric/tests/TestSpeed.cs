@@ -100,14 +100,14 @@ namespace IG.Num
         #region IGLib
 
 
-        /// <summary>Test of LU decomposition.</summary>
-        /// <param name="outLevel">Level of output.</param>
-        /// <param name="numEq">Number of equations to be solved with decomposition.</param>
-        /// <returns>Total wallclock time (in seconds) spent for the test.</returns>
-        public static double TestComputationalTimesLU_IGLib(int numEq, int outLevel)
-        {
-            return TestComputationalTimesLU_IGLib(numEq, outLevel, false /* testProduct */);
-        }
+        ///// <summary>Test of LU decomposition.</summary>
+        ///// <param name="outLevel">Level of output.</param>
+        ///// <param name="numEq">Number of equations to be solved with decomposition.</param>
+        ///// <returns>Total wallclock time (in seconds) spent for the test.</returns>
+        //public static double TestComputationalTimesLU_IGLib(int numEq, int outLevel)
+        //{
+        //    return TestComputationalTimesLU_IGLib(numEq, outLevel, false /* testProduct */);
+        //}
 
         /// <summary>Test of LU decomposition.</summary>
         /// <param name="outLevel">Level of output.</param>
@@ -115,7 +115,7 @@ namespace IG.Num
         /// <param name="testProduct">If true then it is tested if the product of factors gives the original 
         /// matrix. Otherwise, this test is skipped.</param>
         /// <returns>Total wallclock time (in seconds) spent for the test.</returns>
-        public static double TestComputationalTimesLU_IGLib(int numEq, int outLevel, bool testProduct)
+        public static double TestComputationalTimesLU_IGLib(int numEq, int outLevel, bool testProduct = false)
         {
             if (outLevel > 0)
             {
@@ -233,14 +233,14 @@ namespace IG.Num
         }  // TestComputationalTimesLU()
 
 
-        /// <summary>Test of QR decomposition, also measures time necessary fo rindividual operations.</summary>
-        /// <param name="outLevel">Level of output.</param>
-        /// <param name="numEq">Number of equations to be solved with decomposition.</param>
-        /// <returns>Total wallclock time (in seconds) spent for the test.</returns>
-        public static double TestComputationalTimesQR_IGLib(int numEq, int outLevel)
-        {
-            return TestComputationalTimesQR_IGLib(numEq, outLevel, false /* testProduct */);
-        }
+        ///// <summary>Test of QR decomposition, also measures time necessary fo rindividual operations.</summary>
+        ///// <param name="outLevel">Level of output.</param>
+        ///// <param name="numEq">Number of equations to be solved with decomposition.</param>
+        ///// <returns>Total wallclock time (in seconds) spent for the test.</returns>
+        //public static double TestComputationalTimesQR_IGLib(int numEq, int outLevel)
+        //{
+        //    return TestComputationalTimesQR_IGLib(numEq, outLevel, false /* testProduct */);
+        //}
 
         /// <summary>Test of QR decomposition, also measures time necessary fo rindividual operations.</summary>
         /// <param name="outLevel">Level of output.</param>
@@ -248,7 +248,7 @@ namespace IG.Num
         /// <param name="testProduct">If true then it is tested if the product of factors gives the original 
         /// matrix. Otherwise, this test is skipped.</param>
         /// <returns>Total wallclock time (in seconds) spent for the test.</returns>
-        public static double TestComputationalTimesQR_IGLib(int numEq, int outLevel, bool testProduct)
+        public static double TestComputationalTimesQR_IGLib(int numEq, int outLevel, bool testProduct = false)
         {
             if (outLevel > 0)
             {
@@ -361,14 +361,14 @@ namespace IG.Num
         }  // TestComputationalTimesQR()
 
 
-        /// <summary>Test of Cholesky decomposition, also measures time necessary fo rindividual operations.</summary>
-        /// <param name="outLevel">Level of output.</param>
-        /// <param name="numEq">Number of equations to be solved with decomposition.</param>
-        /// <returns>Total wallclock time (in seconds) spent for the test.</returns>
-        public static double TestComputationalTimesCholesky_IGLib(int numEq, int outLevel)
-        {
-            return TestComputationalTimesCholesky_IGLib(numEq, outLevel, false /* testProduct */);
-        }
+        ///// <summary>Test of Cholesky decomposition, also measures time necessary fo rindividual operations.</summary>
+        ///// <param name="outLevel">Level of output.</param>
+        ///// <param name="numEq">Number of equations to be solved with decomposition.</param>
+        ///// <returns>Total wallclock time (in seconds) spent for the test.</returns>
+        //public static double TestComputationalTimesCholesky_IGLib(int numEq, int outLevel)
+        //{
+        //    return TestComputationalTimesCholesky_IGLib(numEq, outLevel, false /* testProduct */);
+        //}
 
         /// <summary>Test of Cholesky decomposition, also measures time necessary fo rindividual operations.</summary>
         /// <param name="outLevel">Level of output.</param>
@@ -376,7 +376,7 @@ namespace IG.Num
         /// <param name="testProduct">If true then it is tested if the product of factors gives the original 
         /// matrix. Otherwise, this test is skipped.</param>
         /// <returns>Total wallclock time (in seconds) spent for the test.</returns>
-        public static double TestComputationalTimesCholesky_IGLib(int numEq, int outLevel, bool testProduct)
+        public static double TestComputationalTimesCholesky_IGLib(int numEq, int outLevel, bool testProduct = false)
         {
             if (outLevel > 0)
             {
@@ -491,7 +491,407 @@ namespace IG.Num
 
 
         #endregion IGLib
-        
+
+
+        #region IgBase
+
+        /// <summary>Test of LU decomposition.</summary>
+        /// <param name="outLevel">Level of output.</param>
+        /// <param name="numEq">Number of equations to be solved with decomposition.</param>
+        /// <param name="testProduct">If true then it is tested if the product of factors gives the original 
+        /// matrix. Otherwise, this test is skipped.</param>
+        /// <returns>Total wallclock time (in seconds) spent for the test.</returns>
+        public static double TestComputationalTimesLU_Base(int numEq, int outLevel, bool testProduct = false)
+        {
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Measuring time needed for LU decomposition (from MatrixBase):");
+                Console.WriteLine();
+            }
+            if (numEq < 1)
+                throw new ArgumentException("Number of equations must be greater than 0.");
+            // Naredimo štoparico, s katero merimo čas. V konstruktorju z argumentom podamo ime, po katerem
+            // lahko identificiramo narejeno štoparico. To pride prav, če jih imamo več.
+            StopWatch t = new StopWatch("Decomposition");
+            // Naredimo še eno štoparico, ki meri čisti čas računanja brez preizkusov:
+            StopWatch tbare = new StopWatch("Decomposition, pure time");
+
+            if (outLevel > 0)
+            {
+                Console.Write(Environment.NewLine + Environment.NewLine);
+                Console.WriteLine("========================================================================");
+                Console.WriteLine("Solution of system of " + numEq.ToString() + " equations with LU decomposition: " + Environment.NewLine);
+            }
+            t.Start();
+            // Form system of equations:
+            IMatrix A = Matrix.Random(numEq, numEq);  // naredimo kvadratno matriko z naključnimi elementi
+            A[0, 0] = 0.0;  // Element [1,1] is set to 0, so pivoting is needed in LU (swapping of lines)
+            IVector b = Vector.Random(numEq);
+            t.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for CREATION of system matrix and right-hand side vector:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+            }
+            t.Start();
+            int[] permutations = null;
+            int toggle = 0;
+            IMatrix LU = null;
+            tbare.Start();
+            // LUDecomposition LU = new LUDecomposition(A);  // Calculation of LU decomposition
+            Matrix.LuDecompose(A, out toggle, ref permutations, ref LU);
+            t.Stop();
+            tbare.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for LU DECOMPOSITION:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+            }
+            if (testProduct)
+            {
+                t.Start();
+
+                // Check the product:
+                IMatrix product = null;
+                IMatrix diffMat = null;
+                IMatrix lower = null;
+                IMatrix upper = null;
+                Matrix.LuExtractLower(LU, ref lower);
+                Matrix.LuExtractUpper(LU, ref upper);
+                Matrix.Multiply(lower, upper, ref product);
+                IMatrix restored = null;
+                int[] auxArray1 = null;
+                Matrix.UnPermute(product, permutations, ref auxArray1, ref restored);  // use a custom method with the perm array to unscramble LU
+                MatrixBase.Subtract(restored, A, ref diffMat);
+
+                double NormProductDifference = diffMat.NormForbenius;
+                t.Stop();
+                if (outLevel > 0)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Error of decomposition - norm of the difference ||A-L*U|| = " + NormProductDifference.ToString());
+                    Console.WriteLine();
+                    Console.WriteLine("Time necessary for verification of decomposition:");
+                    Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                    Console.WriteLine();
+                }
+            }
+            // Solution of system of equations with decomposition (back substitution):
+            t.Start();
+            tbare.Start();
+
+            IVector auxVec = null;
+            IVector x = null;
+            Matrix.LuSolve(LU, permutations, b, ref auxVec, ref x);
+
+            t.Stop();
+            tbare.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for SOLUTION with decomposed matrix:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+            }
+
+            // Verification: calculation of error:
+            t.Start();
+            IVector residuum = null;
+            Matrix.Multiply(A, x, ref residuum);
+            Vector.Subtract(residuum, b, ref residuum);
+            double normResiduum = residuum.Norm;
+            t.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Error of solution: Norm of the difference ||A x - b|| = " + normResiduum.ToString());
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for calculating solution error:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+
+                Console.WriteLine();
+                Console.WriteLine("Total time for all operations (LU, " + numEq + " equations): ");
+                Console.WriteLine("    t = " + t.TotalTime + " s (CPU: " + t.TotalCpuTime + " s)");
+                Console.WriteLine();
+
+                //Console.WriteLine();
+                //Console.WriteLine("Data from stopwatch:");
+                //Console.WriteLine(t.ToString());
+                //Console.WriteLine();
+                //Console.WriteLine("Stopwatch for pure execution time (without testing):");
+                //Console.WriteLine(tbare.ToString());
+                Console.WriteLine("____________________________________________________________");
+
+                Console.WriteLine(Environment.NewLine);
+            }
+
+            //t.Reset();
+            //numEq *= 10;
+
+            return t.TotalTime;
+        }  // TestComputationalTimesLU_Base()
+
+        /// <summary>Test of Cholesky decomposition, also measures time necessary fo rindividual operations.</summary>
+        /// <param name="outLevel">Level of output.</param>
+        /// <param name="numEq">Number of equations to be solved with decomposition.</param>
+        /// <param name="testProduct">If true then it is tested if the product of factors gives the original 
+        /// matrix. Otherwise, this test is skipped.</param>
+        /// <returns>Total wallclock time (in seconds) spent for the test.</returns>
+        public static double TestComputationalTimesCholesky_Base(int numEq, int outLevel, bool testProduct = false)
+        {
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Measuring time needed for Cholesky decomposition (from MatrixBase):");
+                Console.WriteLine();
+            }
+            if (numEq < 1)
+                throw new ArgumentException("Number of equations must be greater than 0.");
+            StopWatch t = new StopWatch("Decomposition");
+            // Naredimo še eno štoparico, ki meri čisti čas računanja brez preizkusov:
+            StopWatch tbare = new StopWatch("Decomposition, pure time");
+
+            if (outLevel > 0)
+            {
+                Console.Write(Environment.NewLine + Environment.NewLine);
+                Console.WriteLine("========================================================================");
+                Console.WriteLine("Solution of system of " + numEq.ToString() + " equations with Cholesky decomposition: " + Environment.NewLine);
+            }
+            t.Start();
+            // Form system of equations:
+            IMatrix A = new Matrix(numEq, numEq);
+            // Matrix.SetRandomSymmetricPositiveDefinite(A);
+            Matrix.SetRandomPositiveDiagonallyDominantSymmetric(A, null /* randomGenerator - take global */, 2.0);
+            IVector b = Vector.Random(numEq);
+            t.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for CREATION of system matrix and right-hand side vector:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+            }
+            t.Start();
+            tbare.Start();
+            IMatrix Cholesky = null;
+            MatrixBase.CholeskyDecompose(A, ref Cholesky);  // Calculation of QR decomposition
+            t.Stop();
+            tbare.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for Cholesky DECOMPOSITION:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+            }
+            if (testProduct)
+            {
+                t.Start();
+                IMatrix product = null;
+                IMatrix diffMat = null;
+                IMatrix lower = null;
+                IMatrix upper = null;
+                MatrixBase.CholeskyExtractLower(Cholesky, ref lower);
+                MatrixBase.CholeskyExtractUpper(Cholesky, ref upper);
+                MatrixBase.Multiply(lower, upper, ref product);
+                MatrixBase.Subtract(product, A, ref diffMat);
+                double NormProductDifference = diffMat.NormForbenius;
+                t.Stop();
+                if (outLevel > 0)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Error of decomposition - norm of the difference ||A-Q*R|| = " + NormProductDifference.ToString());
+                    Console.WriteLine();
+                    Console.WriteLine("Time necessary for verification of decomposition:");
+                    Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                    Console.WriteLine();
+                }
+            }
+            // Solution of system of equations with decomposition (back substitution):
+            t.Start();
+            tbare.Start();
+            IVector x = null;
+            MatrixBase.CholeskySolve(Cholesky, b, ref x);
+            t.Stop();
+            tbare.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for SOLUTION with decomposed matrix:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+            }
+
+            // Verification: calculation of error:
+            t.Start();
+            IVector residuum = null;
+            Matrix.Multiply(A, x, ref residuum);
+            Vector.Subtract(residuum, b, ref residuum);
+            double normResiduum = residuum.Norm;
+            t.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Error of solution: Norm of the difference ||A x - b|| = " + normResiduum.ToString());
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for calculating solution error:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+
+                Console.WriteLine();
+                Console.WriteLine("Total time for all operations (Cholesky, " + numEq + " equations): ");
+                Console.WriteLine("    t = " + t.TotalTime + " s (CPU: " + t.TotalCpuTime + " s)");
+                Console.WriteLine();
+
+                //Console.WriteLine();
+                //Console.WriteLine("Data from stopwatch:");
+                //Console.WriteLine(t.ToString());
+                //Console.WriteLine();
+                //Console.WriteLine("Stopwatch for pure execution time (without testing):");
+                //Console.WriteLine(tbare.ToString());
+                Console.WriteLine("____________________________________________________________");
+
+                Console.WriteLine(Environment.NewLine);
+            }
+
+            return t.TotalTime;
+        }  // TestComputationalTimesCholesky_Base()
+
+        /// <summary>Test of Ldlt decomposition, also measures time necessary fo rindividual operations.</summary>
+        /// <param name="outLevel">Level of output.</param>
+        /// <param name="numEq">Number of equations to be solved with decomposition.</param>
+        /// <param name="testProduct">If true then it is tested if the product of factors gives the original 
+        /// matrix. Otherwise, this test is skipped.</param>
+        /// <returns>Total wallclock time (in seconds) spent for the test.</returns>
+        public static double TestComputationalTimesLdlt_Base(int numEq, int outLevel, bool testProduct = false)
+        {
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Measuring time needed for Ldlt decomposition (from MatrixBase):");
+                Console.WriteLine();
+            }
+            if (numEq < 1)
+                throw new ArgumentException("Number of equations must be greater than 0.");
+            StopWatch t = new StopWatch("Decomposition");
+            // Naredimo še eno štoparico, ki meri čisti čas računanja brez preizkusov:
+            StopWatch tbare = new StopWatch("Decomposition, pure time");
+
+            if (outLevel > 0)
+            {
+                Console.Write(Environment.NewLine + Environment.NewLine);
+                Console.WriteLine("========================================================================");
+                Console.WriteLine("Solution of system of " + numEq.ToString() + " equations with Ldlt decomposition: " + Environment.NewLine);
+            }
+            t.Start();
+            // Form system of equations:
+            IMatrix A = new Matrix(numEq, numEq);
+            // Matrix.SetRandomSymmetricPositiveDefinite(A);
+            Matrix.SetRandomPositiveDiagonallyDominantSymmetric(A, null /* randomGenerator - take global */, 2.0);
+            IVector b = Vector.Random(numEq);
+            t.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for CREATION of system matrix and right-hand side vector:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+            }
+            t.Start();
+            tbare.Start();
+            IMatrix Ldlt = null;
+            MatrixBase.LdltDecompose(A, ref Ldlt);  // Calculation of QR decomposition
+            t.Stop();
+            tbare.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for Ldlt DECOMPOSITION:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+            }
+            if (testProduct)
+            {
+                t.Start();
+                IMatrix product = null;
+                IMatrix diffMat = null;
+                IMatrix lower = null;
+                IMatrix upper = null;
+                MatrixBase.LdltExtractLower(Ldlt, ref lower);
+                MatrixBase.LdltExtractUpper(Ldlt, ref upper);
+                MatrixBase.Multiply(lower, upper, ref product);
+                MatrixBase.Subtract(product, A, ref diffMat);
+                double NormProductDifference = diffMat.NormForbenius;
+                t.Stop();
+                if (outLevel > 0)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Error of decomposition - norm of the difference ||A-Q*R|| = " + NormProductDifference.ToString());
+                    Console.WriteLine();
+                    Console.WriteLine("Time necessary for verification of decomposition:");
+                    Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                    Console.WriteLine();
+                }
+            }
+            // Solution of system of equations with decomposition (back substitution):
+            t.Start();
+            tbare.Start();
+            IVector x = null;
+            MatrixBase.LdltSolve(Ldlt, b, ref x);
+            t.Stop();
+            tbare.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for SOLUTION with decomposed matrix:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+            }
+
+            // Verification: calculation of error:
+            t.Start();
+            IVector residuum = null;
+            Matrix.Multiply(A, x, ref residuum);
+            Vector.Subtract(residuum, b, ref residuum);
+            double normResiduum = residuum.Norm;
+            t.Stop();
+            if (outLevel > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Error of solution: Norm of the difference ||A x - b|| = " + normResiduum.ToString());
+                Console.WriteLine();
+                Console.WriteLine("Time necessary for calculating solution error:");
+                Console.WriteLine("    t = " + t.Time + " s (CPU: " + t.CpuTime + " s)");
+                Console.WriteLine();
+
+                Console.WriteLine();
+                Console.WriteLine("Total time for all operations (Ldlt, " + numEq + " equations): ");
+                Console.WriteLine("    t = " + t.TotalTime + " s (CPU: " + t.TotalCpuTime + " s)");
+                Console.WriteLine();
+
+                //Console.WriteLine();
+                //Console.WriteLine("Data from stopwatch:");
+                //Console.WriteLine(t.ToString());
+                //Console.WriteLine();
+                //Console.WriteLine("Stopwatch for pure execution time (without testing):");
+                //Console.WriteLine(tbare.ToString());
+                Console.WriteLine("____________________________________________________________");
+
+                Console.WriteLine(Environment.NewLine);
+            }
+
+            return t.TotalTime;
+        }  // TestComputationalTimesLdlt_Base()
+
+        #endregion IgBase
+  
+
         #endregion Static
 
         #region ExamplesMathNetNumerics

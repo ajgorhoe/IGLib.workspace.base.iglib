@@ -5331,7 +5331,6 @@ namespace IG.Num
                         rowMaxCol = i;
                     }
                 }
-
                 if (rowMaxCol != j) // if the largest value is not on pivot, swap rows
                 {
                     for (int iCol = 0; iCol < dim; ++iCol)
@@ -5346,7 +5345,6 @@ namespace IG.Num
 
                     toggle = -toggle; // adjust the toggle
                 }
-
                 if (Math.Abs(result[j, j]) < 1.0E-20) // if diagonal element after swap is zero,throw exception
                     throw new InvalidOperationException("Zero diagonal term in LU decomposition, matrix is singular.");
 
@@ -6057,9 +6055,9 @@ namespace IG.Num
             if (A.ColumnCount != dim)
                 throw new ArgumentException("Matrix to be LDLT decomposed is not a square matrix.");
             if (result == null)
-                result = result.GetNew(dim, dim);
+                result = A.GetNew(dim, dim);
             if (result.RowCount != dim || result.ColumnCount != dim)
-                result = result.GetNew(dim, dim);
+                result = A.GetNew(dim, dim);
 
             if (!object.ReferenceEquals(A, result))
                 MatrixBase.CopyPlain(A, result);
@@ -6244,8 +6242,6 @@ namespace IG.Num
         }
 
 
-
-
         /// <summary>Extracts the lower part of the specified LDLT decomposition (1s on diagonal, 0s above diagonal)
         /// and stores it in the specified result matrix.
         /// <para>Although operatioin can be done in place, it is not allowed for input and output matrix to be the same.
@@ -6287,7 +6283,7 @@ namespace IG.Num
         /// <param name="matLdlt">Matrix containng the LDLT decomposition of some matrix.</param>
         /// <param name="result">Matrix where the upper part of the specified matrix is stored.</param>
         /// $A Igor Dec14;
-        static IMatrix LdltExtractUpper(IMatrix matLdlt, ref IMatrix result)
+        public static IMatrix LdltExtractUpper(IMatrix matLdlt, ref IMatrix result)
         {
             if (matLdlt == null)
                 throw new ArgumentException("Marix containing LDLT decomposed original is not specified (null reference).");
@@ -6322,7 +6318,7 @@ namespace IG.Num
         /// <param name="matLdlt">Matrix containng the LDLT decomposition of some matrix.</param>
         /// <param name="result">Matrix where the upper part of the specified matrix is stored.</param>
         /// $A Igor Dec14;
-        static IMatrix LdltExtractDiagonal(IMatrix matLdlt, ref IMatrix result)
+        public static IMatrix LdltExtractDiagonal(IMatrix matLdlt, ref IMatrix result)
         {
             if (matLdlt == null)
                 throw new ArgumentException("Marix containing LDLT decomposed original is not specified (null reference).");
@@ -6595,9 +6591,9 @@ namespace IG.Num
             if (A.ColumnCount != dim)
                 throw new ArgumentException("Matrix to be Cholesky decomposed is not a square matrix.");
             if (result == null)
-                result = result.GetNew(dim, dim);
+                result = A.GetNew(dim, dim);
             if (result.RowCount != dim || result.ColumnCount != dim)
-                result = result.GetNew(dim, dim);
+                result = A.GetNew(dim, dim);
 
             if (!object.ReferenceEquals(A, result))
                 MatrixBase.CopyPlain(A, result);
@@ -6828,7 +6824,7 @@ namespace IG.Num
         /// <param name="matCholesky">Matrix containng the Cholesky decomposition of some matrix.</param>
         /// <param name="result">Matrix where the upper part of the specified matrix is stored.</param>
         /// $A Igor Dec14;
-        static IMatrix CholeskyExtractUpper(IMatrix matCholesky, ref IMatrix result)
+        public static IMatrix CholeskyExtractUpper(IMatrix matCholesky, ref IMatrix result)
         {
             if (matCholesky == null)
                 throw new ArgumentException("Marix containing Cholesky decomposed original is not specified (null reference).");
@@ -6939,17 +6935,14 @@ namespace IG.Num
                     t.Stop();
                     // Check the product:
                     IMatrix product = null;
-                    IMatrix auxMat = null;
                     IMatrix diffMat = null;
                     IMatrix lower = null;
                     IMatrix upper = null;
-                    IMatrix diagonal = null;
                     CholeskyExtractLower(Cholesky, ref lower);
                     CholeskyExtractUpper(Cholesky, ref upper);
                     MatrixBase.Multiply(lower, upper, ref product);
                     //Console.WriteLine(Environment.NewLine + "Dedomposed matrices: \nCholesky: \n"
                     //    + Cholesky.ToStringReadable() + "lower: \n" + lower.ToStringReadable() + "upper: \n" + upper.ToStringReadable());
-                    MatrixBase.Multiply(lower, upper, ref product);
                     //Console.WriteLine(Environment.NewLine + "Dedomposed matrices: \nCholesky: \n"
                     //    + Cholesky.ToStringReadable() + "lower: \n" + lower.ToStringReadable() + "upper: \n" + upper.ToStringReadable()
                     //    + "product: \n" + product.ToStringReadable()
@@ -7095,14 +7088,13 @@ namespace IG.Num
             CholeskyExtractUpper(CholeskyMatrix, ref upper);
 
             Console.WriteLine("The (combined) Cholesky decomposition of m is" + Environment.NewLine + CholeskyMatrix.ToStringReadable());
-            Console.WriteLine("The decomposition permutation array is: " + perm.ToString());
             Console.WriteLine(Environment.NewLine + "The lower part of Cholesky is " + Environment.NewLine + lower.ToStringReadable());
             Console.WriteLine("The upper part of Cholesky is " + Environment.NewLine + upper.ToStringReadable());
 
             IVector auxRight = null;
             IVector auxX = null;
 
-            // Cslvulsyion of inverse:
+            // Calculation of inverse:
             IMatrix inverse = null;
             CholeskyInverse(CholeskyMatrix, ref auxX, ref inverse);
             Console.WriteLine("Inverse of m computed from its decomposition is " + Environment.NewLine + inverse.ToStringReadable());
@@ -7134,7 +7126,7 @@ namespace IG.Num
             double det = CholeskyDeterminant(CholeskyMatrix);
             Console.WriteLine("Determinant of m computed via decomposition = " + det.ToString("F1"));
 
-            double[] bArray = new double[] { 49.0, 30.0, 43.0, 52.0 };
+            double[] bArray = new double[] { 49.0, 30.0, 43.0 };
 
             IVector b = new Vector(bArray);
             Console.WriteLine(Environment.NewLine + "Right-hand side vector: " + b.ToStringMath());
