@@ -131,6 +131,7 @@
     <Compile Include="interpreters\scriptloader\ScalarFunctionScriptLoader.cs" />
     <Compile Include="interpreters\scriptloader\scripts\ScriptAppBase.cs" />
     <Compile Include="0guests\Tako78\scripts\ScriptAppBase1.cs" />
+    <Compile Include="numeric\approximation\linear\ApproxBasis.cs" />
     <Compile Include="numeric\approximation\neural\testneural\NeuralFileConst.cs" />
     <Compile Include="numeric\approximation\neural\testneural\NeuralFileManager.cs" />
     <Compile Include="numeric\approximation\neural\testneural\NeuralMapData.cs" />
