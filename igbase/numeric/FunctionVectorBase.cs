@@ -386,6 +386,7 @@ namespace IG.Num
         public abstract override double SecondDerivative(IVectorFunctionResults evaluationData, int which,
             int rowNum, int columnNum);
 
+
         #endregion ComponentWise
 
 
