@@ -55,7 +55,7 @@ namespace IG.Num
 
         /// <summary>Performs evaluation of requested vector function results and writes them
         /// to the provided data structure.</summary>
-        /// <param name="analysisData">Data structure where request parameters are
+        /// <param name="evaluationData">Data structure where request parameters are
         /// obtained and where results are written.</param>
         void Evaluate(IVectorFunctionResults evaluationData);
 

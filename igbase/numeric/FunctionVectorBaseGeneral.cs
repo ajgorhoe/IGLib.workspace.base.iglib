@@ -318,7 +318,7 @@ namespace IG.Num
         /// <param name="evaluationData">Data used for evaluation that also contains parameters
         /// (in evaluationData.Parameters)</param>
         /// <param name="coefficients">Coefficients of linear combination.</param>
-        double LinearCombinationValue(IVectorFunctionResults evaluationData, IVector coefficients)
+        public double LinearCombinationValue(IVectorFunctionResults evaluationData, IVector coefficients)
         {
             double ret = 0;
             for (int which = 0; which < coefficients.Length; ++which)
@@ -332,7 +332,7 @@ namespace IG.Num
         /// (in evaluationData.Parameters)</param>
         /// <param name="coefficients">Coefficients of linear combination.</param>
         /// <param name="res">Output parameter where gradient is written to.</param>
-        void LinearCombinationDerivative(IVectorFunctionResults evaluationData, 
+        public void LinearCombinationDerivative(IVectorFunctionResults evaluationData, 
             IVector coefficients, ref IVector res)
         {
             if (evaluationData == null)
@@ -362,7 +362,7 @@ namespace IG.Num
         /// (in evaluationData.Parameters)</param>
         /// <param name="coefficients">Coefficients of linear combination.</param>
         /// <param name="component">Specifies which gradient component to return.</param>
-        double LinearCombinationDerivative(IVectorFunctionResults evaluationData, 
+        public double LinearCombinationDerivative(IVectorFunctionResults evaluationData, 
                 IVector coefficients, int component)
         {
             double ret = 0;
@@ -371,7 +371,7 @@ namespace IG.Num
             return ret;
         }
 
-        void LinearCombinationSecondDerivative(IVectorFunctionResults evaluationData, IVector coefficients,
+        public void LinearCombinationSecondDerivative(IVectorFunctionResults evaluationData, IVector coefficients,
             ref IMatrix res)
         {
             if (evaluationData==null)
@@ -404,7 +404,7 @@ namespace IG.Num
         /// <param name="coefficients">Coefficients of linear combination.</param>
         /// <param name="rowNum">Row number of the returned component.</parparam>
         /// <param name="columnNum">Column number of the returned component.</param>
-        double LinearCombinationSecondDerivative(IVectorFunctionResults evaluationData, 
+        public double LinearCombinationSecondDerivative(IVectorFunctionResults evaluationData, 
             IVector coefficients, int rowNum, int columnNum)
         {
             double ret = 0;
@@ -416,7 +416,105 @@ namespace IG.Num
 
 
 
+        /// <summary>Returns value of linear combination of functions contained in this vector
+        /// function, with specified coefficients at specified parameters.</summary>
+        /// <param name="parameters">Parameters where functions are evaluated.</param>
+        /// <param name="coefficients">Coefficients of linear combination.</param>
+        public double LinearCombinationValue(IVector parameters, IVector coefficients)
+        {
+            double ret = 0;
+            for (int which = 0; which < coefficients.Length; ++which)
+                ret += coefficients[which] * Value(parameters, which);
+            return ret;
+        }
+
+        /// <summary>Returns gradient of linear combination of functions contained in this vector
+        /// function, with specified coefficients at specified parameters.</summary>
+        /// <param name="parameters">Parameters where functions are evaluated.</param>
+        /// <param name="coefficients">Coefficients of linear combination.</param>
+        /// <param name="res">Output parameter where gradient is written to.</param>
+        public void LinearCombinationDerivative(IVector parameters,
+            IVector coefficients, ref IVector res)
+        {
+            if (parameters == null)
+                throw new ArgumentException("Linear combination Gradient: Parameters are not specified (null reference).");
+            if (coefficients == null)
+                throw new ArgumentException("Linear combination Gradient: Coefficients are not specified.");
+            int dim = parameters.Length;
+            int numTerms = coefficients.Length;
+            if (res == null)
+                res = new Vector(dim);
+            else if (res.Length != dim)
+                res = new Vector(dim);
+            for (int i = 0; i < dim; ++i)
+                res[i] = 0.0;
+            for (int which = 0; which < numTerms; ++which)
+                for (int i = 0; i < dim; ++i)
+                    res[i] += Derivative(parameters, which, i);
+
+        }
+
+        /// <summary>Returns the specified component of gradient of  combination of functions 
+        /// contained in this vector function, with specified coefficients at specified parameters.</summary>
+        /// <param name="parameters">Parameters where functions are evaluated.</param>
+        /// <param name="coefficients">Coefficients of linear combination.</param>
+        /// <param name="component">Specifies which gradient component to return.</param>
+        public double LinearCombinationDerivative(IVector parameters,
+                IVector coefficients, int component)
+        {
+            double ret = 0;
+            for (int which = 0; which < coefficients.Length; ++which)
+                ret += coefficients[which] * Derivative(parameters, which, component);
+            return ret;
+        }
+
+        /// <summary>Calculates second derivatives of the linear combination of components of vector functions and 
+        /// stores them to the specified matrix.</summary>
+        /// <param name="parameters">Parameters where linear combination second derivative is evaluated.</param>
+        /// <param name="coefficients">Coefficients of the linear combination.</param>
+        /// <param name="res">Matrix where second derivatives of the linear combination are stored.</param>
+        public void LinearCombinationSecondDerivative(IVector parameters, IVector coefficients,
+            ref IMatrix res)
+        {
+            if (parameters == null)
+                throw new ArgumentException("Linear combination Hessian: Parameters are not specified (null reference).");
+            if (coefficients == null)
+                throw new ArgumentException("Linear combination Hessian: Coefficients are not specified.");
+            int dim = parameters.Length;
+            int numTerms = coefficients.Length;
+            if (res == null)
+                res = new Matrix(dim, dim);
+            else if (res.RowCount != dim || res.ColumnCount != dim)
+                res = new Matrix(dim, dim);
+            for (int i = 0; i < dim; ++i)
+                for (int j = 0; j < dim; ++j)
+                    res[i, j] = 0.0;
+            for (int which = 0; which < numTerms; ++which)
+                for (int i = 0; i < dim; ++i)
+                    for (int j = 0; j < dim; ++j)
+                        res[i, j] += SecondDerivative(parameters, which, i, j);
+        }
+
+
+        /// <summary>Returns the specified component of Hessian of  combination of functions 
+        /// contained in this vector function, with specified coefficients at specified parameters.</summary>
+        /// <param name="parameters">Parameters where functions are evaluated.</param>
+        /// <param name="coefficients">Coefficients of linear combination.</param>
+        /// <param name="rowNum">Row number of the returned component.</parparam>
+        /// <param name="columnNum">Column number of the returned component.</param>
+        public double LinearCombinationSecondDerivative(IVector parameters,
+            IVector coefficients, int rowNum, int columnNum)
+        {
+            double ret = 0;
+            for (int which = 0; which < coefficients.Length; ++which)
+                ret += coefficients[which] * SecondDerivative(parameters, which,
+                    rowNum, columnNum);
+            return ret;
+        }
+
+
         #endregion LinearCombinations
+
 
 
         #region ResultStore
