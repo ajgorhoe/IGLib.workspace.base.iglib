@@ -178,6 +178,75 @@ namespace IG.Num
         public abstract double SecondDerivative(IVectorFunctionResults evaluationData, int which,
             int rowNum, int columnNum);
 
+
+        VectorFunctionResults _auxResults = null;
+
+        protected IVectorFunctionResults AuxResults
+        {
+            get {
+                if (_auxResults == null)
+                    _auxResults = new VectorFunctionResults();
+                return _auxResults;
+            }
+        } 
+
+        /// <summary>Calculates and returns the particular component of the vector
+        /// function value.</summary>
+        /// <param name="parameters">Parameters for which value of the specified component is calculated.</param>
+        /// <param name="which">Specifies which function to evaluate.</param>
+        public virtual double Value(IVector parameters, int which)
+        {
+            IVectorFunctionResults res = AuxResults;
+            res.SetParametersReference(parameters);
+            res.ReqValues = true;
+            res.ReqGradients = false;
+            res.ReqHessians = false;
+            Evaluate(res);
+            if (res.CalculatedValues == true)
+                return res.Values[which];
+            else throw new InvalidOperationException("Counld not calculate the specific vector function value.");
+        }
+
+        /// <summary>Calculates and returns the particular component of the vector
+        /// function derivative.</summary>
+        /// <param name="parameters">Parameters for which derivative of the specified component is calculated.</param>
+        /// <param name="which">Specifies which function to take.</param>
+        /// <param name="component">Specifies which compoonent of the gradient should be returned.</param>
+        public virtual double Derivative(IVector parameters, int which, int component)
+        {
+            IVectorFunctionResults res = AuxResults;
+            res.SetParametersReference(parameters);
+            res.ReqValues = false;
+            res.ReqGradients = true;
+            res.ReqHessians = false;
+            Evaluate(res);
+            if (res.CalculatedGradients == true)
+                return res.Gradients[which][component];
+            else throw new InvalidOperationException("Counld not calculate the specific vector function derivative.");
+        }
+
+        /// <summary>Calculates and returns the particular component of the vector
+        /// function's second derivative (Hessian).</summary>
+        /// <param name="parameters">Parameters for which the specified second derivative of the specified component is calculated.</param>
+        /// <param name="which">Specifies which function to take.</param>
+        /// <param name="rowNum">Specifies which row of the Hessian (matrix of second derivatives) should 
+        /// be returned.</param>
+        /// <param name="columnNum">Specifies which column of the Hessian (matrix of second derivatives) should 
+        /// be returned.</param>
+        public virtual double SecondDerivative(IVector parameters, int which, int rowNum, int columnNum)
+        {
+            IVectorFunctionResults res = AuxResults;
+            res.SetParametersReference(parameters);
+            res.ReqValues = false;
+            res.ReqGradients = false;
+            res.ReqHessians = true;
+            Evaluate(res);
+            if (res.CalculatedHessians == true)
+                return res.Values[which];
+            else throw new InvalidOperationException("Counld not calculate the specific vector function second derivative.");
+        }
+
+
         #endregion ComponentWise
 
 

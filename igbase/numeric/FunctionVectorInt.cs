@@ -101,6 +101,31 @@ namespace IG.Num
             int rowNum, int columnNum);
 
 
+        /// <summary>Calculates and returns the particular component of the vector
+        /// function value.</summary>
+        /// <param name="parameters">Parameters for which value of the specified component is calculated.</param>
+        /// <param name="which">Specifies which function to evaluate.</param>
+        double Value(IVector parameters, int which);
+
+        /// <summary>Calculates and returns the particular component of the vector
+        /// function derivative.</summary>
+        /// <param name="parameters">Parameters for which derivative of the specified component is calculated.</param>
+        /// <param name="which">Specifies which function to take.</param>
+        /// <param name="component">Specifies which compoonent of the gradient should be returned.</param>
+        double Derivative(IVector parameters, int which,
+            int component);
+
+        /// <summary>Calculates and returns the particular component of the vector
+        /// function's second derivative (Hessian).</summary>
+        /// <param name="parameters">Parameters for which the specified second derivative of the specified component is calculated.</param>
+        /// <param name="which">Specifies which function to take.</param>
+        /// <param name="rowNum">Specifies which row of the Hessian (matrix of second derivatives) should 
+        /// be returned.</param>
+        /// <param name="columnNum">Specifies which column of the Hessian (matrix of second derivatives) should 
+        /// be returned.</param>
+        double SecondDerivative(IVector parameters, int which,
+            int rowNum, int columnNum);
+
         #endregion ComponentWise
 
 
