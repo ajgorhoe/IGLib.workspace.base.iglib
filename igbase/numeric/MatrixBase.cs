@@ -91,7 +91,7 @@ namespace IG.Num
 
     /// <summary>Real matrix interface.</summary>
     /// $A Igor Sep08 Dec09;
-    public interface IMatrix : IMatrix<double>
+    public interface IMatrix : IMatrix<double> 
     {
 
         ///// <summary>Creates and returns a copy of the current matrix.</summary>
@@ -179,7 +179,6 @@ namespace IG.Num
         
          
         /// <summary>Returns a readable an easily string form of a matrix, accuracy and padding can be set.</summary>
-        /// <param name="mat">Matrix to be changed to a string.</param>
         /// <param name="accuracy">Accuracy of matrix elments representations.</param>
         /// <param name="padding">Paddind of matrix elements.</param>
         /// <returns>A readable string representation in tabular form.</returns>
@@ -225,7 +224,7 @@ namespace IG.Num
         
         /// <summary>Returns a string valued hash function of the current matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
-        /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString"/> method.
+        /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString()"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific matrix.</remarks>
         /// <seealso cref="Util.GetHashFunctionString"/>
         string GetHashFunctionString();
@@ -265,6 +264,7 @@ namespace IG.Num
         /// Rows and elements are printed in comma separated lists in curly brackets.
         /// Extension method for IMatrix interface.</summary>
         /// <param name="mat">Matrix whose string representation is returned.</param>
+        /// <param name="elementFormat">Elsment format.</param>
         public static string ToString(this IMatrix mat, string elementFormat)
         {
             return MatrixBase.ToString(mat, elementFormat);
@@ -275,6 +275,7 @@ namespace IG.Num
         /// Rows and elements are printed in comma separated lists in curly brackets.
         /// Extension method for IMatrix interface.</summary>
         /// <param name="mat">Matrix whose string representation is returned.</param>
+        /// <param name="elementFormat">Element format.</param>
         public static string ToStringMath(this IMatrix mat, string elementFormat)
         {
             return MatrixBase.ToStringMath(mat, elementFormat);
@@ -362,7 +363,7 @@ namespace IG.Num
         /// <param name="rowCount">Number fo rows of the newly created matrix.</param>
         /// <param name="columnCount">Number of columns of the newly created matrix.</param>
         /// <returns>A newly created matrix of the specified dimensions and of the same type as the current matrix.</returns>
-        public abstract MatrixBase GetNewBase(int rowCount, int ColumnCount);
+        public abstract MatrixBase GetNewBase(int rowCount, int columnCount);
 
                 
         /// <summary>Creates and returns a new matrix with the same dimensions and of the same type as 
@@ -745,7 +746,7 @@ namespace IG.Num
 
         /// <summary>Returns the hash code (hash function) of the current matrix.</summary>
         /// <remarks>
-        /// <para>This method calls the <see cref="MatrixBase.GetHashCode"/> to calculate the 
+        /// <para>This method calls the <see cref="MatrixBase.GetHashCode(IMatrix)"/> to calculate the 
         /// hash code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
         /// <para>Two matrices that have the same dimensions and equal elements will produce the same hash codes.</para>
         /// <para>Probability that two different matrices will produce the same hash code is small but it exists.</para>
@@ -759,9 +760,9 @@ namespace IG.Num
         /// <summary>Returns a value indicating whether the specified object is equal to the current matrix.
         /// <para>True is returned if the object is a non-null matrix (i.e. it implements the <see cref="IMatrix"/>
         /// interface), and has the same dimension and equal elements as the current matrix.</para></summary>
-        /// <remarks>This method calls the <see cref="MatrixBase.Equals"/> to obtain the returned value, which is
+        /// <remarks>This method calls the <see cref="MatrixBase.Equals(IMatrix, IMatrix)"/> to obtain the returned value, which is
         /// standard for all implementations of the <see cref="IMatrix"/> interface.
-        /// <para>Overrides the <see cref="object.Equals"/> method.</para></remarks>
+        /// <para>Overrides the <see cref="object.Equals(Object)"/> method.</para></remarks>
         public override bool Equals(Object obj)
         {
             return MatrixBase.Equals(this, obj as IMatrix);
@@ -777,7 +778,7 @@ namespace IG.Num
 
         /// <summary>Returns a string valued hash function of the current matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
-        /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString"/> method.
+        /// <remarks>The returned string is always of the same length, and is based on the <see cref="ToString()"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific matrix.</remarks>
         /// <seealso cref="Util.GetHashFunctionString"/>
         public string GetHashFunctionString()
@@ -1099,13 +1100,13 @@ namespace IG.Num
         /// <param name="mat">Matrix whose components are set.</param>
         /// <param name="rnd">Random generator used to generate matrix elements.</param>
         /// <remarks><para>This method is relativley slow because of multiplication of two matrices.
-        /// For quicker method use <see cref="SetRandomPositiveDiagonallyDominantSymmetric"/>().</para>
+        /// For quicker method use <see cref="SetRandomPositiveDiagonallyDominantSymmetric(IMatrix, IRandomGenerator, double)"/>.</para>
         /// <para>Matrix is created in such a way that a random lower triangular matrix with positive diagonal elements
         /// is created first, then it is multiplied by its transpose.</para>
         /// <para>It seems that generation of positive definite matrices in this way is not stable when elements of the 
         /// lower triangular matrix are random on the interval [0,1). For this reason, 
         /// 1 is added to all diagonal elements of the lower triangular matrix.</para></remarks>
-        public static void SetRandomSymmetricPositiveDefinite(IMatrix mat, IRandomGenerator rnd)
+        public static void SetRandomSymmetricPositiveDefinite(IMatrix mat, IRandomGenerator rnd) 
         {
             if (mat == null)
                 throw new ArgumentException("Matrix to be set to random positive definite matrix is not specified (null argument).");
@@ -1995,11 +1996,11 @@ namespace IG.Num
             }
         }  // SymmetrizePlain(...)
 
-        /// <summary>Stores transpose of the matrix operand in another matrix.
-        /// Can be done in-place.
+        /// <summary>Stores symmetrized and antisymmetirzed matrix obtained from the specified matrix.
         /// Resulting matrix is allocated or reallocated if necessary.</summary>
         /// <param name="a">Original matrix.</param>
-        /// <param name="result">Matrix where result of negation is be stored.</param>
+        /// <param name="sym">Matrix where result of symmetrization is stored.</param>
+        /// <param name="antiSym">Matrix where result of antisymmetrization is stored.</param>
         public static void Symmetrize(IMatrix a, ref IMatrix sym, ref IMatrix antiSym)
         {
             if (a == null)
@@ -4212,7 +4213,7 @@ namespace IG.Num
         /// Can be performed in place.
         /// This is a plain version of the method that does not perform any consistency checks.
         /// WARNING: dimensions of matrices must match, otherwise an exception is thrown.</summary>
-        /// <left>Left factor (vector as one row matrix).</left>
+        /// <param name="left">Left vector factor (transpose vector as one row matrix).</param>
         /// <param name="a">Matrix factor.</param>
         /// <param name="right">Right factor (vector as one column matrix).</param>
         public static double MultiplyPlain(IVector left, IMatrix a, IVector right)
@@ -4234,7 +4235,7 @@ namespace IG.Num
         /// and returns the final result.
         /// Can be performed in place.
         /// WARNING: dimensions of matrices must match, otherwise an exception is thrown.</summary>
-        /// <left>Left factor (vector as one row matrix).</left>
+        /// <param name="left">Left factor (vector as one row matrix).</param>
         /// <param name="a">Matrix factor.</param>
         /// <param name="right">Right factor (vector as one column matrix).</param>
         public static double Multiply(IVector left, IMatrix a, IVector right)
@@ -4264,9 +4265,10 @@ namespace IG.Num
         /// Can be performed in place.
         /// WARNING: dimensions of operands must match, otherwise an exception is thrown.
         /// If dimensions of the result do not match then the result is re-allocated.</summary>
-        /// <left>Left factor (vector as one row matrix).</left>
+        /// <param name="left">Left factor (vector as one row matrix).</param>
         /// <param name="a">Matrix factor.</param>
         /// <param name="right">Right factor (vector as one column matrix).</param>
+        /// <param name="result">Vector where result of operation is stored. Reallocated if necessary.</param>
         public static double Multiply(IVector left, IMatrix a, IVector right, ref IVector result)
         {
             if (a == null || left == null || right == null)
@@ -4314,7 +4316,7 @@ namespace IG.Num
 
         /// <summary>Multiplies matrix by scalar and stores the result in the specified result matrix.
         /// This operation can be performed in place.
-        /// WARNING: dimensions of matrices must match, otherwise an exception is thrown.
+        /// WARNING: dimensions of matrices must match, otherwise an exception is thrown.</summary>
         /// <param name="a">First operand.</param>
         /// <param name="b">Second operand.</param>
         /// <param name="result">Matrix where the result is stored. Dimensions must match dimensions of operands.</param>
@@ -4812,7 +4814,7 @@ namespace IG.Num
 
         /// <summary>Returns an integer valued hash function of the specified matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
-        /// <mat>Matrix object whose hash function is calculated and returned.</vec>
+        /// <param name="mat">Matrix object whose hash function is calculated and returned.</param>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         public static int GetHashFunctionInt(IMatrix mat)
         {
@@ -4821,7 +4823,7 @@ namespace IG.Num
 
         /// <summary>Returns a string valued hash function of the specified matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
-        /// <mat>Matrix object whose hash function is calculated and returned.</vec>
+        /// <param name="mat">Matrix object whose hash function is calculated and returned.</param>
         /// <seealso cref="Util.GetHashFunctionString"/>
         public static string GetHashFunctionString(IMatrix mat)
         {
@@ -5099,7 +5101,6 @@ namespace IG.Num
         }
 
         /// <summary>Returns a readable an easily string form of a matrix, accuracy and padding can be set.</summary>
-        /// <param name="mat">Matrix to be changed to a string.</param>
         /// <param name="accuracy">Accuracy of matrix elments representations.</param>
         /// <param name="padding">Paddind of matrix elements.</param>
         /// <returns>A readable string representation in tabular form.</returns>
@@ -5268,13 +5269,13 @@ namespace IG.Num
         }
 
         /// <summary>Calculates and returns determinant of a real-valued square matrix.
-        /// <para>This function is efficient when auxiliary parameters <paramref name=""/> and <paramref name=""/>
+        /// <para>This function is efficient when auxiliary parameters <paramref name="auxPermutations"/> and <paramref name="auxLU"/>
         /// are provided that are already initialized with the same dimensions as the matrix whose determinant is calculated.</para></summary>
         /// <param name="A">Matrix whose determinant is to be calculated.</param>
+        /// <param name="auxPermutations">Auxiliary array where row permutations of LU decomposition of <paramref name="A"/> will be stored. 
+        /// For best performance, caller should pass an array that is alredy initialized with the same dimensions.</param>
         /// <param name="auxLU">Auxiliary matrix where LU decomposition of <paramref name="A"/> will be stored. For best performance,
         /// caller should pass a matrix that is alredy initialized with the same dimensions.</param>
-        /// <param name="auxLU">Auxiliary array where row permutations of LU decomposition of <paramref name="A"/> will be stored. 
-        /// For best performance, caller should pass an array that is alredy initialized with the same dimensions.</param>
         /// <returns>The calculated determinant of the specified matrix.</returns>
         public static double Determinant(IMatrix A, ref int[] auxPermutations, ref IMatrix auxLU)
         {
@@ -5313,7 +5314,7 @@ namespace IG.Num
                 perm = new int[dim];
             if (object.ReferenceEquals(A, result))
                 throw new ArgumentException("Result matrix is the same as inpuut matrix. Can not be done in place.");
-            MatrixBase.Copy(A, ref result);  /// prepare a copy to work on, resize performed if necessary
+            MatrixBase.Copy(A, ref result);  // prepare a copy to work on, resize performed if necessary
             for (int i = 0; i < dim; ++i) { perm[i] = i; } // prepare row permutation array (initialize to identity)
 
             toggle = 1; // toggle will tracks row swaps. +1 for even, -1 for odd, use by determinant calculation
@@ -5431,8 +5432,9 @@ namespace IG.Num
 
 
         /// <summary>Calculates inverse of the matrix from its specified LU decomposition.</summary>
-        /// <param name="ldltMatrix">Matrix containing the LU decomposition of the original matrix (with partial pivoting).</param>
+        /// <param name="luMatrix">Matrix containing the LU decomposition of the original matrix (with partial pivoting).</param>
         /// <param name="perm">Array containing information of row permutations from the LU decomposition procedure.</param>
+        /// <param name="B">Matrix whose columns are right-hand sides of equations to be solved.</param>
         /// <param name="auxVec">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.
         /// Reallocated if necessary.</param>
         /// <param name="auxRight">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.
@@ -6100,7 +6102,7 @@ namespace IG.Num
         }
 
         /// <summary>Solves a system of eauations with the specified LDLT decomposition of a real symmetric square matrix.
-        /// <para>Used in conjunction with the <see cref="DecomposeLDL"/> method for calculation of decomposition.</para>
+        /// <para>Used in conjunction with the <see cref="LdltDecompose"/> method for calculation of decomposition.</para>
         /// <para>Can be done in place (input and result vectors can reference the same object).</para></summary>
         /// <param name="decomposed">Decomposed original matrix (obtained by <see cref="LdltDecompose"/>).
         /// <para>Matrix is in form of 1D flat arrat with row-wise element arrangement.</para></param>
@@ -6143,6 +6145,7 @@ namespace IG.Num
 
         /// <summary>Calculates inverse of the matrix from its specified LDLT-decomposed matrix.</summary>
         /// <param name="ldltMatrix">Matrix containing the LDLT decomposition of the original matrix.</param>
+        /// <param name="B">Matrix whose columns are right-hand sides of equations to be solved.</param>
         /// <param name="auxX">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.
         /// Reallocated if necessary.</param>
         /// <param name="X">Matrix where result will be stored. Reallocated if necessary.</param>
@@ -6630,7 +6633,7 @@ namespace IG.Num
         }
 
         /// <summary>Solves a system of eauations with the specified Cholesky decomposition of a real symmetric square matrix.
-        /// <para>Used in conjunction with the <see cref="DecomposeLDL"/> method for calculation of decomposition.</para>
+        /// <para>Used in conjunction with the <see cref="CholeskyDecompose"/> method for calculation of decomposition.</para>
         /// <para>Can be done in place (input and result vectors can reference the same object).</para></summary>
         /// <param name="decomposed">Decomposed original matrix (obtained by <see cref="CholeskyDecompose"/>).
         /// <para>Matrix is in form of 1D flat arrat with row-wise element arrangement.</para></param>
@@ -6688,6 +6691,7 @@ namespace IG.Num
 
         /// <summary>Calculates inverse of the matrix from its specified Cholesky-decomposed matrix.</summary>
         /// <param name="CholeskyMatrix">Matrix containing the Cholesky decomposition of the original matrix.</param>
+        /// <param name="B">Matrix whose columns are right-hand sides of equations to be solved.</param>
         /// <param name="auxX">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.
         /// Reallocated if necessary.</param>
         /// <param name="X">Matrix where result will be stored. Reallocated if necessary.</param>
@@ -7077,7 +7081,6 @@ namespace IG.Num
             Console.WriteLine("System matrix = " + Environment.NewLine + m.ToStringReadable());
 
             int[] perm = new int[dim];
-            int toggle;
             IMatrix CholeskyMatrix = m.GetNew(dim, dim);
             CholeskyDecompose(m, ref CholeskyMatrix);
 
@@ -7091,7 +7094,6 @@ namespace IG.Num
             Console.WriteLine(Environment.NewLine + "The lower part of Cholesky is " + Environment.NewLine + lower.ToStringReadable());
             Console.WriteLine("The upper part of Cholesky is " + Environment.NewLine + upper.ToStringReadable());
 
-            IVector auxRight = null;
             IVector auxX = null;
 
             // Calculation of inverse:
@@ -7111,7 +7113,6 @@ namespace IG.Num
             //  sides defined by identity matrix:
 
             inverse = null;
-            IVector auxVec = null;
             IMatrix B = m.GetNew(dim, dim);
             MatrixBase.SetIdentity(B);
             CholeskySolve(CholeskyMatrix, B, ref auxX, ref inverse);

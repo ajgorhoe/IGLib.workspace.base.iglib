@@ -27,6 +27,8 @@ namespace IG.Num
 
         #region Construction
 
+        /// <summary>Creates a new matrix with dimensions 0.
+        /// <para>Such a matrix can serve for future reallocation.</para></summary>
         protected Matrix()
         {
             // Base = null;
@@ -59,30 +61,6 @@ namespace IG.Num
             }
         }
 
-        //$$
-        ///// <summary>Construct a matrix from MathNet.Numerics.LinearAlgebra.Matrix.
-        ///// Only a reference of A is copied.</summary>
-        ///// <param name="A">MathNet.Numerics.LinearAlgebra.Matrix from which a new matrix is created.</param>
-        //[Obsolete("Use MathNet.Numerics library instead of MathNet!")]
-        //protected Matrix(Matrix_MathNet A)
-        //{
-        //    if (A == null)
-        //        throw new ArgumentNullException("Matrix to copy new matrix components from is not specified (null reference).");
-        //    if (A.RowCount <= 0)
-        //        throw new ArgumentException("Matrix to create a new matrix from has 0 rows.");
-        //    if (A.ColumnCount <= 0)
-        //        throw new ArgumentException("Matrix to create a new matrix from has 0 columns.");
-        //    // Copy the array to a jagged array:
-        //    int numRows = _rowCount = A.RowCount;
-        //    int numColumns = _columnCount = A.ColumnCount;
-        //    _elements = new double[numRows][];
-        //    for (int i = 0; i < numRows; ++i)
-        //    {
-        //        _elements[i] = new double[numColumns];
-        //        for (int j = 0; j < numColumns; ++j)
-        //            _elements[i][j] = A[i, j];
-        //    }
-        //}
 
         /// <summary>Construct a matrix from MathNet.Numerics.LinearAlgebra.Matrix.
         /// Only a reference of A is copied.</summary>
@@ -109,7 +87,7 @@ namespace IG.Num
 
         /// <summary>Constructs an d1*d2 - dimensional matrix of zeros.</summary>
         /// <param name="d1">Number of rows.</param>
-        /// <param name="d1">Number of columns.</param>
+        /// <param name="d2">Number of columns.</param>
         public Matrix(int d1, int d2)
         {
             if (d1 <= 0)
@@ -132,7 +110,7 @@ namespace IG.Num
         /// <summary> Construct an numrows-by-d2 constant matrix with specified value for all elements.</summary>
         /// <param name="d1">Number of rows.</param>
         /// <param name="d2">Number of columns.</param>
-        /// <param name="value">Value of all components.</param>
+        /// <param name="val">Value of all components.</param>
         public Matrix(int d1, int d2, double val)
         {
             if (d1 <= 0)
@@ -150,9 +128,8 @@ namespace IG.Num
             }
         }
 
-        /// <summary>Constructs a square matrix with specified diagonal values.</summary>
-        /// <param name="d">Size of the square matrix.</param>
-        /// <param name="val">Vector of diagonal values.</param>
+        /// <summary>Constructs a square diagonal matrix with specified diagonal values.</summary>
+        /// <param name="diagonal">Vector containing diagonal elements of the created matrix.</param>
         public Matrix(IVector diagonal)
         {
             if (diagonal == null)
@@ -249,9 +226,54 @@ namespace IG.Num
         /// <summary>Construct a matrix from a one-dimensional packed array.</summary>
         /// <param name="_matrixElements">One-dimensional array of doubles, packed by columns (ala Fortran).</param>
         /// <param name="numRows">Number of rows.</param>
+        /// <param name="numColumns">Number of columns. If 0 lthen it is calculated from numberr of rows and length of
+        /// the element array.</param>
+        /// <exception cref="System.ArgumentException">Array length must be a multiple of numrows.</exception>
+        public Matrix(IList<double> _matrixElements, int numRows, int numColumns = 0)
+        {
+            if (_matrixElements == null)
+                throw new ArgumentNullException("Table of matrix elements not specified.");
+            else
+            {
+                int numEl = _matrixElements.Count;
+                if (numEl > 0)
+                {
+                    if (numEl % numRows != 0)
+                        throw new Exception("Inconsistent matrix data: number of elements is " + numEl
+                            + "while number of rows is " + numRows + "(non-zero remainder).");
+                    _elements = new double[numRows][];
+                    _rowCount = numRows;
+                    if (numColumns == 0)
+                        numColumns = _columnCount = (numEl / numRows);
+                    int whichElement = 0;
+                    for (int i = 0; i < numRows; ++i)
+                    {
+                        _elements[i] = new double[numColumns];
+                        for (int j = 0; j < numColumns; ++j)
+                        {
+                            _elements[i][j] = _matrixElements[whichElement];
+                            ++whichElement;
+                        }
+                    }
+                }
+                else if (numEl < 0)
+                    throw new ArgumentException("Number fo elements of a matrix can not be less than 0.");
+                else if (numEl == 0)
+                {
+                    _rowCount = _columnCount = 0;
+                    _elements = null;
+                }
+            }
+        }
+
+        /// <summary>Construct a matrix from a one-dimensional packed array.</summary>
+        /// <param name="_matrixElements">One-dimensional array of doubles, packed by columns (ala Fortran).</param>
+        /// <param name="numRows">Number of rows.</param>
+        /// <param name="numColumns">Number of columns. If 0 lthen it is calculated from numberr of rows and length of
+        /// the element array.</param>
         /// <exception cref="System.ArgumentException">Array length must be a multiple of numrows.</exception>
         [Obsolete("This method may be unsupported in future versions.")]
-        public Matrix(double[] _matrixElements, int numRows)
+        public Matrix(double[] _matrixElements, int numRows, int numColumns = 0)
         {
             if (_matrixElements == null)
                 throw new ArgumentNullException("Table of matrix elements not specified.");
@@ -265,7 +287,8 @@ namespace IG.Num
                             + "while number of rows is " + numRows + "(non-zero remainder).");
                     _elements = new double[numRows][];
                     _rowCount = numRows;
-                    int numColumns = _columnCount = (numEl / numRows);
+                    if (numColumns == 0)
+                        numColumns = _columnCount = (numEl / numRows);
                     int whichElement = 0;
                     for (int i = 0; i < numRows; ++i)
                     {
@@ -404,7 +427,7 @@ namespace IG.Num
         }
 
         /// <summary>Generates a square d*d matrix filled with 1.</summary>
-        /// <param name="d1">Number of rows and columns.</param>
+        /// <param name="d">Number of rows and columns.</param>
         public static Matrix Ones(int d)
         {
             return new Matrix(d, d, 1.0);
@@ -491,6 +514,7 @@ namespace IG.Num
         /// <summary>Creates and returns a d1*d2 matrix with uniformly distributed random elements.</summary>
         /// <param name="d1">Number of rows.</param>
         /// <param name="d2">Number of columns.</param>
+        /// <param name="rnd">Random number generator used for generation of element values.</param>
         /// <returns>A d1*d2 matrix with uniformly distributed random elements in <c>[0, 1)</c> interval.</returns>
         public static Matrix Random(int d1, int d2, IRandomGenerator rnd)
         {
@@ -516,9 +540,14 @@ namespace IG.Num
         #region Data
 
 
+        /// <summary>Matrix elements.</summary>
         protected double[][] _elements;
 
-        protected int _rowCount, _columnCount;
+        /// <summary>Number of rows.</summary>
+        protected int _rowCount;
+
+        /// <summary>Number of columns.</summary>
+        protected int _columnCount;
 
         /// <summary>Gets the first dimension (number of rows) of the matrix.</summary>
         public override int RowCount
@@ -660,8 +689,10 @@ namespace IG.Num
 
         #region MathNetNumerics
 
+        /// <summary>Copy of the current matrix as Math.Net numerics matrix.</summary>
         protected Matrix_MathNetNumerics _copyMathNetNumerics = null;
 
+        /// <summary>Whetherr the Math.Net Matrix copy is consistent.</summary>
         protected bool _mathNetNumericsConsistent = false;
 
         /// <summary>Tells whether the internal MathNet.Numerics matrix representation of the current matrix is 
@@ -1233,7 +1264,7 @@ namespace IG.Num
 
         /// <summary>Returns the hash code (hash function) of the current matrix.</summary>
         /// <remarks>
-        /// <para>This method calls the <see cref="MatrixBase.GetHashCode"/> to calculate the 
+        /// <para>This method calls the <see cref="MatrixBase.GetHashCode()"/> to calculate the 
         /// hash code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
         /// <para>Two matrices that have the same dimensions and equal elements will produce the same hash codes.</para>
         /// <para>Probability that two different matrices will produce the same hash code is small but it exists.</para>
@@ -1247,9 +1278,9 @@ namespace IG.Num
         /// <summary>Returns a value indicating whether the specified object is equal to the current matrix.
         /// <para>True is returned if the object is a non-null matrix (i.e. it implements the <see cref="IMatrix"/>
         /// interface), and has the same dimension and equal elements as the current matrix.</para></summary>
-        /// <remarks>This method calls the <see cref="MatrixBase.Equals"/> to obtain the returned value, which is
+        /// <remarks>This method calls the <see cref="MatrixBase.Equals(Object)"/> to obtain the returned value, which is
         /// standard for all implementations of the <see cref="IMatrix"/> interface.
-        /// <para>Overrides the <see cref="object.Equals"/> method.</para></remarks>
+        /// <para>Overrides the <see cref="object.Equals(Object)"/> method.</para></remarks>
         public override bool Equals(Object obj)
         {
             return MatrixBase.Equals(this, obj as IMatrix);

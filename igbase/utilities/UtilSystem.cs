@@ -476,7 +476,8 @@ namespace IG.Lib
             Process.Start("file:///" + filePath);
         }
 
-        /// <summary>Upens the specified URL (Unique Resource locator, e.g. a web address) in the default browser.</param>
+        /// <summary>Opens the specified URL (Unique Resource locator, e.g. a web address) in the default browser.</summary>
+        /// <url>Adress of page to be shown.</url>
         public static void OpenUrlInDefaultBrowser(string url)
         {
             Process.Start(url);
@@ -2641,7 +2642,7 @@ namespace IG.Lib
         /// wxception if a part of directory structure could not be copied, so the caller will not know that.
         /// Use of this variant could be beneficial when it is likely that copying of some special parts (such as hidden
         /// or system files) is likely to fail but this is not relefant for function of the copied directory.</para>
-        /// <para>If <see cref="UtilSystem.Util.OutputLevel"/>>0 then all errors are reporter on console.</para></remarks>
+        /// <para>If <see cref="Util.OutputLevel"/>>0 then all errors are reporter on console.</para></remarks>
         public static void CopyDirectorySafe(string sourceDirectoryPath, string targetDirectoryPath,
             out int numErrors, out string errorsString)
         {
@@ -2688,7 +2689,7 @@ namespace IG.Lib
         /// wxception if a part of directory structure could not be copied, so the caller will not know that.
         /// Use of this variant could be beneficial when it is likely that copying of some special parts (such as hidden
         /// or system files) is likely to fail but this is not relefant for function of the copied directory.</para>
-        /// <para>If <see cref="UtilSystem.Util.OutputLevel"/>>0 then all errors are reporter on console.</para></remarks>
+        /// <para>If <see cref="Util.OutputLevel"/>>0 then all errors are reporter on console.</para></remarks>
         public static void CopyRecursiveSafe(DirectoryInfo source, DirectoryInfo target,
             ref int numErrors, ref string errorsString)
         {
@@ -2983,7 +2984,7 @@ namespace IG.Lib
 
         /// <summary>Load network from specified file.</summary>
         /// <param name="stream">Stream to load network from.</param>
-        /// <returns>Returns instance of <see cref="Network"/> class with all properties initialized from file.</returns>
+        /// <returns>Returns instance of <see cref="ObjectType"/> class with all properties initialized from file.</returns>
         /// <typeparam name="ObjectType">Type of the object to be saved.</typeparam>
         /// <remarks><para>Neural network is loaded from file using .NET serialization (binary formater is used).</para></remarks>
         public static ObjectType LoadBinary<ObjectType>(Stream stream)

@@ -1295,8 +1295,8 @@ namespace IG.Num.Experimental
 
         /// <summary>Returns true if the specified object equals the current number, 
         /// and false otherwise.</summary>
-        /// <param name="a">Object that is compared.</param>
-        /// <returns>True if <paramref name="a"/> equals the current number, false otherwise.</returns>
+        /// <param name="obj">Object that is compared.</param>
+        /// <returns>True if <paramref name="obj"/> equals the current number, false otherwise.</returns>
         public override bool Equals(object obj)
         {
             if (obj is xdouble)
@@ -1435,9 +1435,9 @@ namespace IG.Num.Experimental
     /// <summary>Example class that derives from the <see cref="M"/> class.
     /// Implements a method that uses basic mathematical functions implemented in M.</summary>
     /// $A Igor xx Jul11;
-    /// <remarks
+    /// <remarks>
     /// TODO: Join the <see cref="FuncMath"/> class with this class (incorporate that class and abolish it)!!
-    /// </reremarks>
+    /// </remarks>
     [Obsolete("Experimental functionality, should not be used in produciton code!")]
     public class ExampleMathClassExperimental : MX
     {

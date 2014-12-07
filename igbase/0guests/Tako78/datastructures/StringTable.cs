@@ -1130,7 +1130,7 @@ namespace IG.Lib
 
 
         /// <summary>Converts the current string table to a string in CSV form and returns the string.</summary>
-        public string ToString()
+        public override string ToString()
         {
             string[][] data = this.Table;
             string str = UtilCsv.ToCsvString(data, _csvSeparator);

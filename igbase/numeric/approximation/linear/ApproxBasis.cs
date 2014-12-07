@@ -30,6 +30,11 @@ namespace IG.Num
             Description = "Linear basis in " + dimension + " dimensions.";
         }
 
+        /// <summary>Returns number of basis functions in linear polynomial basis of the specified dimenson. This is a helper method.</summary>
+        /// <param name="dimension">Dimension of the space in which linear polynomial basis functions are calculated.</param>
+        public static int NumLinearBasisFunctions(int dimension)
+        { return 1 + dimension; }
+
         #region Evaluation
 
         #region ComponentWise
@@ -318,6 +323,12 @@ namespace IG.Num
             if (which!=numFunc-1)
                 throw new InvalidOperationException("Quadratic basis functions: failed to initialize, wrong functions count.");
         }
+
+        /// <summary>Returns number of basis functions in quadratic polynomial basis of the specified dimenson. This is a helper method.</summary>
+        /// <param name="dimension">Dimension of the space in which linear polynomial basis functions are calculated.</param>
+        public static int NumQuadraticBasisFunctions(int dimension)
+        { return (dimension + 1) * (dimension + 2) / 2; }
+
 
         /// <summary>Definitions of basis functions. Each definition is an array of at most 2 indices
         /// specifying the product of which variables (zero-base) is a specific function.

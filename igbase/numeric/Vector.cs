@@ -30,6 +30,8 @@ namespace IG.Num
 
         #region Construction
 
+        /// <summary>Creates a new vector with dimension 0.
+        /// <para>Such a vector can serve for future reallocation.</para></summary>
        protected internal Vector()
         {
             _elements = null;
@@ -57,7 +59,7 @@ namespace IG.Num
         public Vector(int n)
         {
             if (n <= 0)
-                throw new ArgumentException("Can not create a vector with dimensionality less thatn 1. Provided dimensionality: " 
+                throw new ArgumentException("Can not create a vector with dimension less thatn 1. Provided dimensionality: " 
                     + n.ToString() + ".");
             _length = n;
             _elements = new double[_length];
@@ -98,40 +100,59 @@ namespace IG.Num
         }
 
 
-        // TODO: check how constructor with array arguments copies vec! If it just copies the reference then 
-        // consider whethe this should be re-implemented!
+        /// <summary>Constructs a vector from a list of elements by copying its elements.</summary>
+        /// <param name="components">Object implementing IList interface that contains vector elements.</param>
+        public Vector(IList<double> components)
+        {
+            if (components == null)
+                throw new ArgumentNullException("Vector creation: list of components not specified (null argument).");
+            int length = components.Count;
+            if (length <= 0)
+                throw new ArgumentException("Vector creation: list of components contains no values; can not create a vector with dimensionality 0.");
+            _length = length;
+            for (int i = 0; i < length; ++i)
+                _elements[i] = components[i];
+        }
 
-        /// <summary>Constructs a vector from a 1-D array, directly using the provided array as internal data structure.</summary>
-        /// <param name="vec">One-dimensional array of doubles.</param>
-        /// <seealso cref="Create"/>
+        /// <summary>Constructs a vector from a 1-D array, either by directly using the array or by copying its elements.</summary>
+        /// <param name="components">One-dimensional array of vector elements.</param>
+        /// <param name="copyElements">If true then elements of the provided array are copied (default), otherwise the array
+        /// is directly used as internal structure containing elementts.</param>
+        public Vector (double [] components, bool copyElements = true)
+        {
+            if (components==null)
+                throw new ArgumentNullException("Vector creation: array of components not specified (null argument).");
+            int length=components.Length;
+            if (length <= 0)
+                throw new ArgumentException("Vector creation: array of components contains no values; can not create a vector with dimensionality 0.");
+            _length = length;
+            if (copyElements)
+            {
+                for (int i = 0; i < length; ++i)
+                    _elements[i] = components[i];
+            }
+            else
+            {
+                _elements = components;
+            }
+        }
+
+        /// <summary>Constructs a vector from a 1-D array or from listed variable number of components. 
+        /// <para>Elements of array are copied.</para></summary>
+        /// <param name="components">One-dimensional array of vector elements.</param>
+        /// <seealso cref="Create(double[])"/>
         public Vector(params double[] components) 
         {
             if (components==null)
                 throw new ArgumentNullException("Vector creation: array of components not specified (null argument).");
             int length=components.Length;
             if (length <= 0)
-                throw new ArgumentException("Vector creation: array of components contains no values, can not create a vector with dimensionality 0.");
-            _length = components.Length;
-            _elements = components;
+                throw new ArgumentException("Vector creation: array of components contains no values; can not create a vector with dimensionality 0.");
+            _length = length;
+            _elements = new double[length];
+            for (int i = 0; i < length; ++i)
+                _elements[i] = components[i];
         }
-
-        // $$
-        ///// <summary>Constructs a vector from a 1-D array, directly using the provided array as internal data structure.</summary>
-        ///// <param name="vec">One-dimensional array of doubles.</param>
-        ///// <seealso cref="Create"/>
-        //[Obsolete("Use MathNet.Numerics library instead of MathNet!")]
-        //public Vector(Vector_MathNet vec) 
-        //{
-        //    if (vec==null)
-        //        throw new ArgumentNullException("Vector creation: array of components not specified (null argument).");
-        //    int length=vec.Length;
-        //    if (length <= 0)
-        //        throw new ArgumentException("Vector creation: array of components contains no values, can not create a vector with dimensionality 0.");
-        //    _length = vec.Length;
-        //    _elements = new double[_length];
-        //    for (int i = 0; i < _length; ++i)
-        //        _elements[i] = vec[i];
-        //}
 
         /// <summary>Constructs a vector from a 1-D array, directly using the provided array as internal data structure.</summary>
         /// <param name="vec">One-dimensional array of doubles.</param>
@@ -155,32 +176,10 @@ namespace IG.Num
         /// <summary>Constructs a vector from a 1-D array.</summary>
         public static Vector Create(double[] components)
         {
-            Vector ret =  null;
-            if (components == null)
-                throw new ArgumentNullException("Array of components is not specified (null reference).");
-            if (components.Length <= 0)
-                throw new ArgumentNullException("Array length is 0.");
-            ret = new Vector(components.Length);
-            for (int i = 0; i < components.Length; ++i)
-                ret[i] = components[i];
-            return ret;
+            return new Vector(components);
         }
 
-        //$$
-        ///// <summary>Constructs a vector as a copy of a MathNetVector object.</summary>
-        //[Obsolete("Use MathNet.Numerics library instead of MathNet!")]
-        //public static Vector Create(Vector_MathNet vec)
-        //{
-        //    Vector ret = null;
-        //    if (vec == null)
-        //        throw new ArgumentNullException("Vector is not specified (null reference).");
-        //    if (vec.Length <= 0)
-        //        throw new ArgumentNullException("Vector length is 0.");
-        //    ret = new Vector(vec.Length);
-        //    for (int i = 0; i < vec.Length; ++i)
-        //        ret[i] = vec[i];
-        //    return ret;
-        //}
+
 
         /// <summary>Constructs a vector as a copy of a MathNetVector object.</summary>
         public static Vector Create(VectorBase_MathNetNumerics vec)
@@ -198,64 +197,39 @@ namespace IG.Num
 
 
         /// <summary>Constructs a vector as a copy of another Vector object.</summary>
-        public static Vector Create(Vector vec)
+        /// <param name="vec">Vector whose elements are used for the newly created vector.</param>
+        public static Vector Create(IVector vec)
         {
-            Vector ret = null;
-            if (vec == null)
-                throw new ArgumentNullException("Vector is not specified (null reference).");
-            if (vec.Length <= 0)
-                throw new ArgumentNullException("Vector length is 0.");
-            ret = new Vector(vec.Length);
-            for (int i = 0; i < vec.Length; ++i)
-                ret[i] = vec[i];
-            return ret;
+            return new Vector(vec);
         }
 
-        ///// <summary>Generates vector with random elements.</summary>
-        ///// <param name="d2">Dimensionality of vector.</param>
-        ///// <param name="randomDistribution">Continuous Random Distribution or Source</param>
-        ///// <returns>An d2-dimensional vector with random elements distributed according
-        ///// to the specified random distribution.</returns>
-        //public static Vector Random(int n,IContinuousGenerator randomDistribution)
-        //{
-        //    if (n <= 0)
-        //        throw new ArgumentException("Can not create a vector with dimensionality less thatn 1. Provided dimensionality: "
-        //            + n.ToString() + ".");
-        //    Vector ret = new Vector(n);
-        //    for (int i = 0; i < n; i++)
-        //    {
-        //        ret[i] = randomDistribution.NextDouble();
-        //    }
-        //    return ret;
-        //}
 
         /// <summary>Generates vector with random elements uniformly distributed on [0, 1).</summary>
-        /// <param name="d2">Dimensionality of vector.</param>
-        /// <returns>An d2-dimensional vector with uniformly distributedrandom elements in <c>[0, 1)</c> interval.</returns>
+        /// <param name="n">Dimensionality of vector.</param>
+        /// <returns>An n-dimensional vector with uniformly distributedrandom elements in <c>[0, 1)</c> interval.</returns>
         public static Vector Random(int n)
         {
             Vector ret = new Vector(n);
             ret.SetRandom();
             return ret;
-            // return Random(n, new SystemRandomSource());
         }
 
         /// <summary>Generates an d2-dimensional vector filled with 1.</summary>
-        /// <param name="d2">Dimensionality of vector.</param>
+        /// <param name="n">Dimensionality of vector.</param>
         public static Vector Ones(int n)
         {
             return new Vector(n, 1.0);
         }
 
         /// <summary>Generates an d2-dimensional vector filled with 0.</summary>
-        /// <param name="d2">Dimensionality of vector.</param>
+        /// <param name="n">Dimensionality of vector.</param>
         public static Vector Zeros(int n)
         {
             return new Vector(n, 0.0);
         }
 
         /// <summary>Generates an d2-dimensional unit vector for i-th coordinate.</summary>
-        /// <param name="d2">Dimensionality of vector.</param>
+        /// <param name="n">Dimensionality of vector.</param>
         /// <param name="i">Coordinate index.</param>
         public static Vector BasisVector(int n,int i)
         {
@@ -268,7 +242,7 @@ namespace IG.Num
 
 
         #region Data
-
+         
         protected double[] _elements;
 
         protected int _length;

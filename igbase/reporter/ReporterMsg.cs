@@ -4819,7 +4819,7 @@ namespace IG.Lib
 
 
         /// <summary>Creates a TextWriter upon the stream and sets it as the text writer to which reporting is also performed.</summary>
-        /// <param name="writer">Stream to which reporting will be performed.</param>
+        /// <param name="stream">Stream to which reporting will be performed.</param>
         /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
         public bool SetTextLogger(Stream stream)
         // $A Igor Dec08;
@@ -4832,7 +4832,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter upon the stream and sets it as the basic TextWriter to which reporting is 
         /// performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -4850,7 +4850,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter upon the stream and sets it as the basic TextWriter to which reporting is 
         /// performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -4988,7 +4988,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter from the stream and adds it to the list of TextWriters on which
         /// reporting is also performed.</summary>
-        /// <param name="writer">Stream to which reporting will be performed.</param>
+        /// <param name="stream">Stream to which reporting will be performed.</param>
         /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
         public bool AddTextLogger(Stream stream)
         // $A Igor Dec08;
@@ -5017,7 +5017,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter from the stream and adds it to the list of TextWriters on which
         /// reporting is also performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -5444,6 +5444,7 @@ namespace IG.Lib
 
         /// <summary>Formats a one-line message for tracing output.</summary>
         /// <param name="depth">Indentation level.</param>
+        /// <param name="initialindent">Initial indentation.</param>
         /// <param name="indentincrement">Indentation spacing.</param>
         /// <param name="indentchar">Indentation character.</param>
         /// <param name="type">Type of the message.</param>

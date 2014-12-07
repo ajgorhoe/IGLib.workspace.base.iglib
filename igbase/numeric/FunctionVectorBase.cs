@@ -11,8 +11,6 @@ namespace IG.Num
 {
 
 
-
-
     /// <summary>
     /// Base class for defining Vector functions whose evaluation is defined in bulk, and evaluation
     /// of individual components can not be performed directly.
