@@ -179,7 +179,7 @@ namespace IG.Lib
         /// <param name="programName">Full name of the program.</param>
         /// <param name="version">Version of the program.</param>
         /// <param name="subVersion">Sub-version of the program.</param>
-        /// <param name="subsubVersion">Sub-subversion of the program. 
+        /// <param name="subSubVersion">Sub-subversion of the program. 
         /// A negative number means that this messagelevel of versioning is not used.</param>
         /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
         /// 
@@ -203,7 +203,7 @@ namespace IG.Lib
         /// If not specified then it is automatically formed from the full name.</param>
         /// <param name="version">Version of the program.</param>
         /// <param name="subVersion">Sub-version of the program.</param>
-        /// <param name="subsubVersion">Sub-subversion of the program. 
+        /// <param name="subSubVersion">Sub-subversion of the program. 
         /// A negative number means that this messagelevel of versioning is not used.</param>
         /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
         public App(string programName, string codeName, int version, int subVersion,
@@ -219,7 +219,7 @@ namespace IG.Lib
         /// If not specified then it is automatically formed from the full name.</param>
         /// <param name="version">Version of the program.</param>
         /// <param name="subVersion">Sub-version of the program.</param>
-        /// <param name="subsubVersion">Sub-subversion of the program. 
+        /// <param name="subSubVersion">Sub-subversion of the program. 
         /// A negative number means that this messagelevel of versioning is not used.</param>
         /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
         protected virtual void InitProgram(string programName, string codeName, int version, int subVersion,
@@ -459,7 +459,7 @@ namespace IG.Lib
         /// <param name="moduleName">Full name of the program.</param>
         /// <param name="version">Version of the program.</param>
         /// <param name="subVersion">Sub-version of the program.</param>
-        /// <param name="subsubVersion">Sub-subversion of the program. 
+        /// <param name="subSubVersion">Sub-subversion of the program. 
         /// A negative number means that this messagelevel of versioning is not used.</param>
         /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
         /// 
@@ -480,7 +480,7 @@ namespace IG.Lib
         /// If not specified then it is automatically formed from the full name.</param>
         /// <param name="version">Version of the program.</param>
         /// <param name="subVersion">Sub-version of the program.</param>
-        /// <param name="subsubVersion">Sub-subversion of the program. 
+        /// <param name="subSubVersion">Sub-subversion of the program. 
         /// A negative number means that this messagelevel of versioning is not used.</param>
         /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
         public Module(string moduleName, string codeName, int version, int subVersion,
@@ -495,7 +495,7 @@ namespace IG.Lib
         /// If not specified then it is automatically formed from the full name.</param>
         /// <param name="version">Version of the program.</param>
         /// <param name="subVersion">Sub-version of the program.</param>
-        /// <param name="subsubVersion">Sub-subversion of the program. 
+        /// <param name="subSubVersion">Sub-subversion of the program. 
         /// A negative number means that this messagelevel of versioning is not used.</param>
         /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
         protected virtual void InitModule(string moduleName, string codeName, int version, int subVersion,

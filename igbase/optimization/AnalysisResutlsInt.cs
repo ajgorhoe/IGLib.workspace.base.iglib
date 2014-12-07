@@ -16,7 +16,7 @@ namespace IG.Num
     /// has actually been calculated).
     /// REMARKS:
     ///   Property CopyReferences specifies whether only references are copied when individial object
-    /// fields are assigned & set (when the property is true), or values are actually copied
+    /// fields are assigned and set (when the property is true), or values are actually copied
     /// (when false - deep copy). Each setter method also has the variant that always copies only
     /// the reference (function name appended by "Reference"). This makes possible to avoid duplication
     /// of allocated data and also to avoid having different data with the same references.
@@ -73,12 +73,12 @@ namespace IG.Num
 
         /// <summary>Sets the vector of optimization parameters.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetParametersReference(IVector reference);
 
         /// <summary>Returns specific optimization parameter.
         /// Throws exception if not defined or index out of bounds.</summary>
-        /// <param name="iindex">Index of parameter to be returned (counting from 0).</param>
+        /// <param name="index">Index of parameter to be returned (counting from 0).</param>
         double GetParameter(int index);
 
         /// <summary>Sets the specified optimization parameter.</summary>
@@ -97,7 +97,7 @@ namespace IG.Num
         /// <summary>Value of the objective function.</summary>
         double Objective { get; set; }
 
-        /// <summary>Returns the value of the objective function./summary>
+        /// <summary>Returns the value of the objective function.</summary>
         double GetObjective();
 
         /// <summary>Sets the value of the objective function.</summary>
@@ -121,7 +121,7 @@ namespace IG.Num
 
         /// <summary>Sets the objective function gradient.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetObjectiveGradientReference(IVector reference);
 
         /// <summary>Returns the specified component of the objective function gradient.</summary>
@@ -150,7 +150,7 @@ namespace IG.Num
 
         /// <summary>Sets the list of constraint function values.
         /// Only the list reference is copied.</summary>
-        /// <param name="values">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetConstraintsReference(List<double> reference);
 
         /// <summary>Returns the specified constraint function value.</summary>
@@ -179,7 +179,7 @@ namespace IG.Num
 
         /// <summary>Sets constraint function gradients.
         /// Only the list reference is copied.</summary>
-        /// <param name="values">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetConstraintGradientsReference(List<IVector> reference);
 
         /// <summary>Returns the gradient of the specified constraint function.</summary>
@@ -200,7 +200,7 @@ namespace IG.Num
         /// <summary>Sets the specified constraint function gradient.
         /// Only the reference is copied.</summary>
         /// <param name="which">Specifies which constraint function to take (couonted from 0).</param>
-        /// <param name="value">Gradient reference to be assigned.</param>
+        /// <param name="reference">Gradient reference to be assigned.</param>
         void SetConstraintGradientReference(int which, IVector reference);
 
         /// <summary>Sets the specified constraint fuction gradient component.</summary>
@@ -226,7 +226,7 @@ namespace IG.Num
 
         /// <summary>Sets the objective functions' Hessian.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetObjectiveHessianReference(IMatrix reference);
 
         /// <summary>Returns the specified component of the objective function Hessian.</summary>
@@ -257,7 +257,7 @@ namespace IG.Num
 
         /// <summary>Sets constraint functios' Hessians.
         /// Only the list reference is copied.</summary>
-        /// <param name="values">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetConstraintHessiansReference(List<IMatrix> reference);
 
         /// <summary>Returns Hessian of the specified constraint function.</summary>
@@ -279,13 +279,14 @@ namespace IG.Num
         /// <summary>Sets the specified constraint function's Hessian.
         /// Only the reference is copied.</summary>
         /// <param name="which">Specifies which constraint function it applies to (counting from 0).</param>
-        /// <param name="value">Hessian matrix reference to be assigned.</param>
+        /// <param name="reference">Hessian matrix reference to be assigned.</param>
         void SetConstraintHessianReference(int which, IMatrix reference);
 
         /// <summary>Sets the specified component of the specified constraint's Hessian.</summary>
         /// <param name="which">Specifies which constraint function it applies to (counting from 0).</param>
         /// <param name="rowIndex">Row index of the component (counting from 0).</param>
         /// <param name="columnIndex">Column index of the component (counting from 0).</param>
+        /// <param name="value">Value to be set.</param>
         void SetConstraintHessian(int which, int rowIndex, int columnIndex, double value);
 
         #endregion Results
@@ -466,7 +467,7 @@ namespace IG.Num
         void PrepareResultStorage(int numParameters, int numObjectives, int numConstraints, bool resetCalculatedFlags);
 
         /// <summary>Copies data from another analysis results.</summary>
-        /// <param name="res">Analysis results which data is copied from.</param>
+        /// <param name="results">Analysis results which data is copied from.</param>
         void Copy(IAnalysisResults results);
 
         /// <summary>Returns an exact deep copy of the current object.</summary>
@@ -673,16 +674,19 @@ namespace IG.Num
         /// <summary>Returns value of the penalty function for the specified constraint at the
         /// specified value of the corresponding constraint function.</summary>
         /// <param name="which">Specifies the constraint in question.</param>
+        /// <param name="constraintValue">Value of the constraint function for which penalty value is returned.</param>
         double PenaltyValue(int which, double constraintValue);
 
         /// <summary>Returns derivative of the penalty function for the specified constraint at the
         /// specified value of the corresponding constraint function, with respect to constraint value.</summary>
         /// <param name="which">Specifies the constraint in question.</param>
+        /// <param name="constraintValue">Value of the constraint function for which penalty derivative is returned.</param>
         double PenaltyDerivative(int which, double constraintValue);
 
         /// <summary>Returns second derivative of the penalty function for the specified constraint at the
         /// specified value of the corresponding constraint function, with respect to constraint value.</summary>
         /// <param name="which">Specifies the constraint in question.</param>
+        /// <param name="constraintValue">Value of the constraint function for which penalty second derivative is returned.</param>
         double PenaltySecondDerivative(int which, double constraintValue);
 
     }  // interface IPenaltyEvaluator

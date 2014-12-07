@@ -25,10 +25,10 @@ namespace IG.Lib
         #region Constructors
 
         /// <summary>Creates a new color with specified red, green and blue components and opacity.</summary>
-        /// <param name="R">Red component of the created color (range 0 to 1).</param>
-        /// <param name="G">Green component of the created color (range 0 to 1).</param>
-        /// <param name="B">Blue component of the created color (range 0 to 1).</param>
-        /// <param name="Opacity">Opacity of the created color (range 0 - completely transparent, 
+        /// <param name="r">Red component of the created color (range 0 to 1).</param>
+        /// <param name="g">Green component of the created color (range 0 to 1).</param>
+        /// <param name="b">Blue component of the created color (range 0 to 1).</param>
+        /// <param name="opacity">Opacity of the created color (range 0 - completely transparent, 
         /// 1 - completely opaque).</param>
         public color(double r, double g, double b, double opacity)
         {
@@ -40,9 +40,9 @@ namespace IG.Lib
 
         /// <summary>Creates a new color with specified red, green and blue components. 
         /// Opacity is set to 1.</summary>
-        /// <param name="R">Red component of the created color (range 0 to 1).</param>
-        /// <param name="G">Green component of the created color (range 0 to 1).</param>
-        /// <param name="B">Blue component of the created color (range 0 to 1).</param>
+        /// <param name="r">Red component of the created color (range 0 to 1).</param>
+        /// <param name="g">Green component of the created color (range 0 to 1).</param>
+        /// <param name="b">Blue component of the created color (range 0 to 1).</param>
         public color(double r, double g, double b)
         {
             _R = r;
@@ -51,8 +51,7 @@ namespace IG.Lib
             _opacity = 1.0;
         }
 
-        /// <summary>Creates a new color that corresponds (as closely as possible) to the specified
-        /// <see cref=""/>System.Drawing.Color.</summary>
+        /// <summary>Creates a new color that corresponds (as closely as possible) to the specified color.</summary>
         /// <param name="color">Color that is copied to the created color.</param>
         public color(System.Drawing.Color color)
         {
@@ -64,7 +63,7 @@ namespace IG.Lib
 
         /// <summary>Creates a new color that corresponds to the specified known (system) color enumerated by the 
         /// <see cref="System.Drawing.KnownColor"/> enumerator, such as <see cref="KnownColor.Menu"/> or <see cref="KnownColor.WindowFrame"/>.</summary>
-        /// <param name="name">Color name.</param>
+        /// <param name="knownColor">Color name.</param>
         public color(System.Drawing.KnownColor knownColor)
             : this(System.Drawing.Color.FromKnownColor(knownColor))
         { }
@@ -293,8 +292,9 @@ namespace IG.Lib
         }
 
         /// <summary>Converts the <see cref="System.Drawing.KnownColor"/> enumerator to 
-        /// extended representation <see cref="XColor"/>.</param>
-        /// <returns><see cref="XColor"/> value corresponding to the specified color.</returns>
+        /// extended representation <see cref="Color"/>.</summary>
+        /// <param name="knownColorEnum">Value that is converted.</param>
+        /// <returns><see cref="Color"/> value corresponding to the specified color.</returns>
         public static implicit operator color(System.Drawing.KnownColor knownColorEnum)
         {
             System.Drawing.Color col = System.Drawing.Color.FromKnownColor(knownColorEnum);
@@ -470,6 +470,8 @@ namespace IG.Lib
         /// dependent on whether value is smaller than the lower bound or larger than the upper bound.</para></summary>
         /// <param name="col1">Collor corresponding to the lowest value of the scale.</param>
         /// <param name="col2">Collor corresponding to the highest value of the scale.</param>
+        /// <param name="minValue">Lowest value for the color.</param>
+        /// <param name="maxValue">Highest value for the color.</param>
         /// <param name="value">Value for which the corresponding color is returned.</param>
         public static color Scale(color col1, color col2, double minValue, double maxValue, double value)
         {

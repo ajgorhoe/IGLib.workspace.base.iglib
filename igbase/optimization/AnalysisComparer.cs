@@ -44,7 +44,7 @@ namespace IG.Num
         /// <param name="barrierLength">Characteristic barrrier length. Within this length the created penalty 
         /// function grows approximately from 0 to characteristic height.</param>
         /// <param name="barrierHeight">Characteristic barrier height.</param>
-        /// <param name="zeroEnd">Maximal argument for which the created function is 0.</param>
+        /// <param name="maxZero">Maximal argument for which the created function is 0.</param>
         public AnalysisComparer(double barrierLength, 
             double barrierHeight, double maxZero) : this()
         { PenaltyEvaluator = new PenaltyEvaluator(barrierLength, barrierHeight, maxZero); }
@@ -161,7 +161,7 @@ namespace IG.Num
 
 
 
-        /// <summary>Compares two sets of analysis results points.</summary
+        /// <summary>Compares two sets of analysis results points.</summary>
         /// <param name="an1">First set of analysis results.</param>
         /// <param name="an2">Second set of analysis results.</param>
         /// <returns>0 if result sets are equal, -1 if the first set is smaller than the second, 

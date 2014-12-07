@@ -148,7 +148,7 @@ namespace IG.Num
         }
 
         /// <summary>Copies data from the current DTO to a vector object.</summary>
-        /// <param name="vec">Analysis results object that data is copied to.</param>
+        /// <param name="anres">Analysis results object that data is copied to.</param>
         protected override void CopyToPlain(ref AnalysisResults anres)
         {
             if (GetNull())

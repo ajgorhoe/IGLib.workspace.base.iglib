@@ -80,20 +80,20 @@ namespace IG.Num
         /// <remarks>After reset, bounds on the reset coordinates become undefined.</remarks>
         void Reset();
 
-        /// <summary>Resets the specified component of vector of minimal coordinates to <see cref="UndefinedMin"/>,
-        /// and the same component of vector of maximal coordinates to <see cref="UndefinedMax"/>.
+        /// <summary>Resets the specified component of vector of minimal coordinates to <see cref="BoundingBoxBase.UndefinedMin"/>,
+        /// and the same component of vector of maximal coordinates to <see cref="BoundingBoxBase.UndefinedMax"/>.
         /// <para>After this method is called, the first Update() called on this component  
         /// will set the bounds exactly to value that is passed as argument.</para></summary>
         /// <remarks>After reset, bounds on the reset coordinates become undefined.</remarks>
         void Reset(int componentIndex);
 
-        /// <summary>Resets the specified minimal coordinate value to <see cref="UndefinedMin"/>.
+        /// <summary>Resets the specified minimal coordinate value to <see cref="BoundingBoxBase.UndefinedMin"/>.
         /// <para>After this method is called, the first update called on this coordinate component  
         /// will set its lower bound exactly to the value that is passed as argument.</para></summary>
         /// <remarks>After reset, specific bounds on the reset coordinates become undefined.</remarks>
         void ResetMin(int componentIndex);
 
-        /// <summary>Resets the specified maximal coordinate value to <see cref="UndefinedMax"/>.
+        /// <summary>Resets the specified maximal coordinate value to <see cref="BoundingBoxBase.UndefinedMax"/>.
         /// <para>After this method is called, the first update called on this coordinate component  
         /// will set its upper bound exactly to the value that is passed as argument.</para></summary>
         /// <remarks>After reset, specific bounds on the reset coordinates become undefined.</remarks>
@@ -235,12 +235,12 @@ namespace IG.Num
 
         /// <summary>Returns the lower bound on the specified co-ordinate component of the bounding box.
         /// <para>If lower bound is not defined for this component then <see cref="double.MinValue"/> is returned.</para></summary>
-        /// <param name="componentIndex">Component index.</param>
+        /// <param name="which">Component index.</param>
         double GetMin(int which);
 
         /// <summary>Returns the upper bound on the specified co-ordinate component of the bounding box.
         /// <para>If upper bound is not defined for this component then <see cref="double.MaxValue"/> is returned.</para></summary>
-        /// <param name="componentIndex">Component index.</param>
+        /// <param name="which">Component index.</param>
         double GetMax(int which);
 
         /// <summary>Gets the vector of lower bounds on co-ordinates of the current bounding box and stores it in the 
@@ -1094,7 +1094,7 @@ namespace IG.Num
         /// <summary>Gets the interval lengths for co-ordinates of the current bounding box (i.e. differences) 
         /// and stores them in the specified vector object. 
         /// <para>Elements for which either upper or lower bounds are not defined are set to 0.</para></summary>
-        /// <param name="min">Reference to a vector object where interval lengths are stored.</param>
+        /// <param name="intervals">Reference to a vector object where interval lengths are stored.</param>
         public void GetIntervalLengths(ref IVector intervals)
         {
             bool resize = false;
@@ -1416,8 +1416,8 @@ namespace IG.Num
         #region Construction
 
         /// <summary>Creates a bounding box of the specified dimension and initializes it in such a way that
-        /// minimal co-ordinate components equal to <see cref="UndefinedMin"/> and maximal co-ordinate components 
-        /// equal do <see cref="UndefinedMax"/>.</summary>
+        /// minimal co-ordinate components equal to <see cref="BoundingBoxBase.UndefinedMin"/> and maximal co-ordinate components 
+        /// equal do <see cref="BoundingBoxBase.UndefinedMax"/>.</summary>
         /// <param name="dimension">Dimension of the space in which bounding box is defined.</param>
         public BoundingBox(int dimension): base(dimension)
         {  }
@@ -1490,8 +1490,8 @@ namespace IG.Num
 
         
         /// <summary>Creates a 3D bounding box with unspecified bounds;
-        /// minimal co-ordinate components equal to <see cref="UndefinedMin"/> and maximal co-ordinate components 
-        /// equal do <see cref="UndefinedMax"/>.</summary>
+        /// minimal co-ordinate components equal to <see cref="BoundingBoxBase.UndefinedMin"/> and maximal co-ordinate components 
+        /// equal do <see cref="BoundingBoxBase.UndefinedMax"/>.</summary>
         public BoundingBox3d()
             : base(3)
         { }
@@ -1654,8 +1654,8 @@ namespace IG.Num
         #region Construction
 
         /// <summary>Creates a 2D bounding box with unspecified bounds;
-        /// minimal co-ordinate components equal to <see cref="UndefinedMin"/> and maximal co-ordinate components 
-        /// equal do <see cref="UndefinedMax"/>.</summary>
+        /// minimal co-ordinate components equal to <see cref="BoundingBoxBase.UndefinedMin"/> and maximal co-ordinate components 
+        /// equal do <see cref="BoundingBoxBase.UndefinedMax"/>.</summary>
         public BoundingBox2d()
             : base(2)
         {  }
@@ -1804,8 +1804,8 @@ namespace IG.Num
         #region Construction
 
         /// <summary>Creates an 1D bounding box with unspecified bounds;
-        /// minimal co-ordinate components equal to <see cref="UndefinedMin"/> and maximal co-ordinate components 
-        /// equal do <see cref="UndefinedMax"/>.</summary>
+        /// minimal co-ordinate components equal to <see cref="BoundingBoxBase.UndefinedMin"/> and maximal co-ordinate components 
+        /// equal do <see cref="BoundingBoxBase.UndefinedMax"/>.</summary>
         public BoundingBox1d()
             : base(1)
         {  }

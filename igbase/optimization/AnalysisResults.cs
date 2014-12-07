@@ -103,7 +103,7 @@ namespace IG.Num
     /// has actually been calculated).
     /// REMARKS:
     /// Property CopyReferences specifies whether only references are copied when individial object
-    /// fields are assigned & set (when the property is true), or values are actually copied
+    /// fields are assigned and set (when the property is true), or values are actually copied
     /// (when false - deep copy). Each setter method also has the variant that always copies only
     /// the reference (function name appended by "Reference"). This makes possible to avoid duplication
     /// of allocated data and also to avoid having different data with the same references.
@@ -165,6 +165,7 @@ namespace IG.Num
         /// No gradients required.</summary>
         /// <param name="numParameters">Number of parameters.</param>
         /// <param name="numConstraints">Number of constraints.</param>
+        /// <param name="reqGradients">Whether calcullation of gradients is required.</param>
         public AnalysisResults(int numParameters, int numConstraints, bool reqGradients)
         {
             this.NumParameters = numParameters;
@@ -417,7 +418,7 @@ namespace IG.Num
 
         /// <summary>Sets the vector of optimization parameters.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         public virtual void SetParametersReference(IVector reference)
         {
             Calculated = false;
@@ -428,7 +429,7 @@ namespace IG.Num
 
         /// <summary>Returns specific optimization parameter.
         /// Throws exception if not defined or index out of bounds.</summary>
-        /// <param name="iindex">Index of parameter to be returned (counting from 0).</param>
+        /// <param name="index">Index of parameter to be returned (counting from 0).</param>
         public virtual double GetParameter(int index)
         { return Parameters[index]; }
 
@@ -454,7 +455,7 @@ namespace IG.Num
         public virtual double Objective
         { get { return _objective; } set { _objective = value; } }
 
-        /// <summary>Returns the value of the objective function./summary>
+        /// <summary>Returns the value of the objective function.</summary>
         public virtual double GetObjective()
         { return Objective; }
 
@@ -493,7 +494,7 @@ namespace IG.Num
 
         /// <summary>Sets the objective function gradient.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         public virtual void SetObjectiveGradientReference(IVector reference)
         {
             _objectiveGradient = reference;
@@ -546,7 +547,7 @@ namespace IG.Num
 
         /// <summary>Sets the list of constraint function values.
         /// Only the list reference is copied.</summary>
-        /// <param name="values">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         public virtual void SetConstraintsReference(List<double> reference)
         { _constraints = reference; }
 
@@ -603,7 +604,7 @@ namespace IG.Num
 
         /// <summary>Sets constraint function gradients.
         /// Only the list reference is copied.</summary>
-        /// <param name="values">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         public virtual void SetConstraintGradientsReference(List<IVector> reference)
         { _constraintGradients = reference; }
 
@@ -637,7 +638,7 @@ namespace IG.Num
         /// <summary>Sets the specified constraint function gradient.
         /// Only the reference is copied.</summary>
         /// <param name="which">Specifies which constraint function to take (couonted from 0).</param>
-        /// <param name="value">Gradient reference to be assigned.</param>
+        /// <param name="reference">Gradient reference to be assigned.</param>
         public virtual void SetConstraintGradientReference(int which, IVector reference)
         {
             AllocateConstraintGradientsList();
@@ -685,7 +686,7 @@ namespace IG.Num
 
         /// <summary>Sets the objective functions' Hessian.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         public virtual void SetObjectiveHessianReference(IMatrix reference)
         { _objectiveHessian = reference; }
 
@@ -743,7 +744,7 @@ namespace IG.Num
 
         /// <summary>Sets constraint functios' Hessians.
         /// Only the list reference is copied.</summary>
-        /// <param name="values">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         public virtual void SetConstraintHessiansReference(List<IMatrix> reference)
         { _constraintHessians = reference; }
 
@@ -777,7 +778,7 @@ namespace IG.Num
         /// <summary>Sets the specified constraint function's Hessian.
         /// Only the reference is copied.</summary>
         /// <param name="which">Specifies which constraint function it applies to (counting from 0).</param>
-        /// <param name="value">Hessian matrix reference to be assigned.</param>
+        /// <param name="reference">Hessian matrix reference to be assigned.</param>
         public virtual void SetConstraintHessianReference(int which, IMatrix reference)
         {
             AllocateConstraintHessiansList();
@@ -788,6 +789,7 @@ namespace IG.Num
         /// <param name="which">Specifies which constraint function it applies to (counting from 0).</param>
         /// <param name="rowIndex">Row index of the component (counting from 0).</param>
         /// <param name="columnIndex">Column index of the component (counting from 0).</param>
+        /// <value>Value to which Hessian element is set.</value>
         public virtual void SetConstraintHessian(int which, int rowIndex, int columnIndex, double value)
         {
             AllocateConstraintHessian(which);
@@ -1158,7 +1160,7 @@ namespace IG.Num
             {
                 CalculatedConstraints = false;
             }
-            if (ReqObjectiveGradient != null)
+            if (ReqObjectiveGradient)
             {
                 IVector gradobj = ObjectiveGradient;
                 VectorBase.Resize(ref gradobj, NumParameters);
@@ -1262,7 +1264,7 @@ namespace IG.Num
         }
 
         /// <summary>Copies data from another analysis results.</summary>
-        /// <param name="res">Analysis results which data is copied from.</param>
+        /// <param name="results">Analysis results which data is copied from.</param>
         public virtual void Copy(IAnalysisResults results)
         {
             this.CopyReferences = false;
@@ -2091,7 +2093,7 @@ namespace IG.Num
 
         /// <summary>Read the analysis result data from data file
         /// Format:  </summary>
-        /// <param name="resultString">String with result analysis data.</param>
+        /// <param name="requestString">String with result analysis data.</param>
         /// <param name="parameters">Input and output parameters: { p1, p2, … }.</param>
         /// <param name="calcobj">Flag for the objective function.</param>
         /// <param name="calcconstr">Flag for constraint functions.</param>
@@ -2368,7 +2370,7 @@ namespace IG.Num
         /// <param name="barrierLength">Characteristic barrrier length. Within this length the created penalty 
         /// function grows approximately from 0 to characteristic height.</param>
         /// <param name="barrierHeight">Characteristic barrier height.</param>
-        /// <param name="zeroEnd">Maximal argument for which the created function is 0.</param>
+        /// <param name="maxZero">Maximal argument for which the created function is 0.</param>
         public PenaltyEvaluator(double barrierLength, double barrierHeight, double maxZero)
         {
             SetPenaltyFunction(0, barrierLength, barrierHeight, maxZero);
@@ -2424,6 +2426,8 @@ namespace IG.Num
         /// function grows approximately from 0 to characteristic height.</param>
         /// <param name="barrierHeight">Characteristic height.</param>
         /// <param name="zeroEnd">Maximal argument for which the created function is 0.</param>
+        /// <param name="power">Power. Must be greater than 0. For 2 first derivative is continuous
+        /// in transition points, for 3 second derivative is also continuous, etc.</param>
         /// <returns>Created penalty function.</returns>
         protected virtual IRealFunctionPenalty CreatePenaltyFunction(double barrierLength, double barrierHeight,
             double zeroEnd, int power)
@@ -2647,6 +2651,7 @@ namespace IG.Num
         /// <summary>Returns value of the penalty function for the specified constraint at the
         /// specified value of the corresponding constraint function.</summary>
         /// <param name="which">Specifies the constraint in question.</param>
+        /// <param name="constraintFunctionValue">Value of constraint function.</param>
         public double PenaltyValue(int which, double constraintFunctionValue)
         {
             return GetPenaltyFunction(which).Value(constraintFunctionValue);
@@ -2655,6 +2660,7 @@ namespace IG.Num
         /// <summary>Returns derivative of the penalty function for the specified constraint at the
         /// specified value of the corresponding constraint function, with respect to constraint value.</summary>
         /// <param name="which">Specifies the constraint in question.</param>
+        /// <param name="constraintFunctionValue">Value of constraint function.</param>
         public double PenaltyDerivative(int which, double constraintFunctionValue)
         {
             return GetPenaltyFunction(which).Derivative(constraintFunctionValue);
@@ -2663,6 +2669,7 @@ namespace IG.Num
         /// <summary>Returns second derivative of the penalty function for the specified constraint at the
         /// specified value of the corresponding constraint function, with respect to constraint value.</summary>
         /// <param name="which">Specifies the constraint in question.</param>
+        /// <param name="constraintFunctionValue">Value of constraint function.</param>
         public double PenaltySecondDerivative(int which, double constraintFunctionValue)
         {
             return GetPenaltyFunction(which).SecondDerivative(constraintFunctionValue);

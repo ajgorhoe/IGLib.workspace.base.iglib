@@ -399,7 +399,7 @@ namespace IG.Num
             return varIndex + 1;
         }
 
-        /// <returns>Returns index of the specified quadratic function in this quadratic basis.
+        /// <summary>Returns index of the specified quadratic function in this quadratic basis.
         /// Order of indices specifying the term is not important.</summary>
         /// <param name="varIndex1">Index of the first variable in the product.</param>
         /// <param name="varIndex2">Index of the second variable of the product.</param>

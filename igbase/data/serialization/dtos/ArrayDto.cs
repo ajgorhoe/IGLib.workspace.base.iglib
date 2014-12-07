@@ -58,7 +58,7 @@ namespace IG.Lib
 
         /// <summary>Creates the array of objects and returns it.
         /// <para>The created array has the same dimension as the number of elements of the current
-        /// DTO, or is null as specified by the current DTO (i.e. <see cref="GetNull"/>() = true).</para></summary>
+        /// DTO, or is null as specified by the current DTO (i.e. <see cref="SerializationDtoBase{T,BT}.GetNull()"/> = true).</para></summary>
         /// <returns></returns>
         public override ElementType[] CreateObject()
         {
@@ -121,9 +121,9 @@ namespace IG.Lib
 
         #region Examples
 
-        /// <summary>An example of using the <see cref="ArrayDto"/> for storing an array of vecctors
+        /// <summary>An example of using the <see cref="ArrayDto{ElementType, ElementDtoType}"/> for storing an array of vecctors
         /// into a JSON file.</summary>
-        /// <param name="savePath">Path of the file to which vectors are saved. Must not be null or empty string.
+        /// <param name="filePath">Path of the file to which vectors are saved. Must not be null or empty string.
         /// If the file already exists then user is promped whether to store vectors or not.</param>
         public static void ExampleVectorArray(string filePath)
         {
@@ -207,7 +207,7 @@ namespace IG.Lib
 
         /// <summary>Creates the array of objects and returns it.
         /// <para>The created array has the same dimension as the number of elements of the current
-        /// DTO, or is null as specified by the current DTO (i.e. <see cref="GetNull"/>() = true).</para></summary>
+        /// DTO, or is null as specified by the current DTO (i.e. <see cref="SerializationDtoBase<T,BT>.GetNull()"/> = true).</para></summary>
         /// <returns></returns>
         public override List<ElementType> CreateObject()
         {
@@ -272,9 +272,9 @@ namespace IG.Lib
 
         #region Examples
 
-        /// <summary>An example of using the <see cref="ArrayDto"/> for storing an array of vecctors
+        /// <summary>An example of using the <see cref="ArrayDto{ElementType, ElementDtoType}"/> for storing an array of vecctors
         /// into a JSON file.</summary>
-        /// <param name="savePath">Path of the file to which vectors are saved. Must not be null or empty string.
+        /// <param name="filePath">Path of the file to which vectors are saved. Must not be null or empty string.
         /// If the file already exists then user is promped whether to store vectors or not.</param>
         public static void ExampleVectorArray(string filePath)
         {

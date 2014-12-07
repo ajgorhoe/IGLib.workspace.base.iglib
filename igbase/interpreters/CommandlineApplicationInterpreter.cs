@@ -101,9 +101,9 @@ namespace IG.Lib
 
         /// <summary>Runs the specified command with specified name, installed on the current application object, without any
         /// modifications of the command arguments.</summary>
-        /// <param name="appName">Command name.</param>
+        /// <param name="commandName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
-        /// <remarks>This method should not be overriden, but the <see cref="Run"/> method can be, e.g. in order to 
+        /// <remarks>This method should not be overriden, but the <see cref="Run(string, string[])"/> method can be, e.g. in order to 
         /// perform some argument or command name transformations.</remarks>
         string RunWithoutModifications(string commandName, params string[] commandArguments);
 
@@ -127,7 +127,7 @@ namespace IG.Lib
         string RunAsync(string[] args);
 
         /// <summary>Runs the command with specified name (installed on the current interpreter object) asynchronously.</summary>
-        /// <param name="appName">Command name.</param>
+        /// <param name="commandName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
         /// <returns>ID of asynchronous run used to query results and whether command has completed, or -1 if a call was not
         /// launched (actually, an exception would be thrown in this case).</returns>
@@ -150,7 +150,6 @@ namespace IG.Lib
         string AsyncWait(int callId);
 
         /// <summary>Adds command with the specified name.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="appName">Name of the commant.</param>
         /// <param name="appMain">Delegate that will be used to execute the command.</param>
         void AddCommand(string appName, CommandLineApplicationInterpreter.ApplicationCommandDelegate appMain);
@@ -200,7 +199,7 @@ namespace IG.Lib
         /// <summary>Dynamically loads (temporarily, just for execution of the current commad) a class 
         /// form the script contained in the specified file and executes its executable method.
         /// The file must contain the script that is dynamically loaded and executed, in form of 
-        /// definition of the appropriate class of type <typeparamref name="ILoadableScript"/>. 
+        /// definition of the appropriate class of type <see cref="ILoadableScript"/>. 
         /// The dynamically loadable script class is loaded from the file and instantiated by the
         /// <see cref="LoadableScriptInterpreter"/> interpreter that is based on loadable scripts.</summary>
         /// <param name="scriptFilePath">Path to the file containing loadable script must be the first argument to the method.</param>
@@ -241,7 +240,7 @@ namespace IG.Lib
     /// <remarks>
     /// <para>Objects of this type contain all data necessary for execution of the specified command by the specified
     /// interpreter. Interpreter to execute the command, command name and arguments, and results of the command
-    /// are all stored on the object. The <see cref="CommandLineContainer."/></para>
+    /// are all stored on the object. </para>
     /// </remarks>
     public class CommandLineJobContainer :
         ParallelJobContainerGen<CommandLineJobContainer, CommandLineJobContainer>,
@@ -286,6 +285,7 @@ namespace IG.Lib
 
 
         /// <summary>Constructs a new interpreter command data.</summary>
+        /// <param name="interpreter">Interpreter.</param>
         /// <param name="commandAndArguments">Array containing the command to be executed (first element)
         /// and its eventual arguments.
         /// <para>Must not be null and the first element must not be null.</para></param>
@@ -468,13 +468,13 @@ namespace IG.Lib
         /// <summary>Delegate for commands that are installed on interpreter.</summary>
         /// <param name="interpreter">Interpreter on which commad is run. 
         /// Enables access to interpreter internal data from command body.</param>
-        /// <param name="name">Command name.</param>
+        /// <param name="commandName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>Command return data.</returns>
         public delegate string ApplicationCommandDelegate(ICommandLineApplicationInterpreter interpreter, string commandName, string[] args);
 
         /// <summary>Delegate for installing a module on the interpreter.</summary>
-        /// <param name="name">Name of the module.</param>
+        /// <param name="modulename">Name of the module.</param>
         /// <param name="interpreter">Interperter where module is installed.</param>
         public delegate void ModuleDelegate(string modulename, ICommandLineApplicationInterpreter interpreter);
 
@@ -757,7 +757,6 @@ namespace IG.Lib
 
         /// <summary>Clears (removes) the specified variable.</summary>
         /// <param name="varName">Name of the variable to be cleared.</param>
-        /// <param name="value">Value that is assigned to the variable.</param>
         /// <returns>null.</returns>
         public virtual string ClearVariable(string varName)
         {
@@ -1070,7 +1069,7 @@ namespace IG.Lib
 
         /// <summary>Returns an array of installed commands.</summary>
         /// <remarks>The returned array is created anew and command names are copied to it from a collection of keys
-        /// of a sorted dictionary (type <see cref="SortedDictionary<string, string>"/>).</remarks>
+        /// of a sorted dictionary (type <see cref="SortedDictionary{T, T}"/>).</remarks>
         public string[] GetCommands()
         {
             lock (Lock)
@@ -1262,9 +1261,9 @@ namespace IG.Lib
 
         /// <summary>Runs the specified command with specified name, installed on the current application object, without any
         /// modifications of the command arguments.</summary>
-        /// <param name="appName">Command name.</param>
+        /// <param name="commandName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
-        /// <remarks>This method should not be overriden, but the <see cref="Run"/> method can be, e.g. in order to 
+        /// <remarks>This method should not be overriden, but the <see cref="Run(string, string[])"/> method can be, e.g. in order to 
         /// perform some argument or command name transformations.</remarks>
         public string RunWithoutModifications(string commandName, params string[] commandArguments)
         {
@@ -1312,7 +1311,7 @@ namespace IG.Lib
 
 
         /// <summary>Runs the specified command with specified name, installed on the current application object.</summary>
-        /// <param name="appName">Command name.</param>
+        /// <param name="commandName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
         public virtual string Run(string commandName, params string[] commandArguments)
         {
@@ -1697,7 +1696,7 @@ namespace IG.Lib
         /// <param name="commandArguments">Command arguments.</param>
         /// <returns>Identification number of the parallel job that take over execution of the command.
         /// Queries about job progress and results can be made by using this identification number.</returns>
-        /// <seealso cref="RunParallelRepeat(string command, string[] commandArguments)"/>
+        /// <seealso cref="RunParallelRepeat(string, string[])"/>
         public int RunParallel(string command, string[] commandArguments)
         {
             return RunParallelRepeat(1, command, commandArguments)[0];
@@ -1758,7 +1757,7 @@ namespace IG.Lib
 
 
         /// <summary>Runs the command with specified name (installed on the current interpreter object) asynchronously.</summary>
-        /// <param name="appName">Command name.</param>
+        /// <param name="commandName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
         /// <returns>ID of asynchronous run used to query results and whether command has completed, or -1 if a call was not
         /// launched (actually, an exception would be thrown in this case).</returns>
@@ -2141,7 +2140,7 @@ namespace IG.Lib
         /// <summary>Dynamically loads (temporarily, just for execution of the current commad) a class 
         /// form the script contained in the specified file and executes its executable method.
         /// The file must contain the script that is dynamically loaded and executed, in form of 
-        /// definition of the appropriate class of type <typeparamref name="ILoadableScript"/>. 
+        /// definition of the appropriate class of type <see cref="ILoadableScript"/>. 
         /// The dynamically loadable script class is loaded from the file and instantiated by the
         /// <see cref="LoadableScriptInterpreter"/> interpreter that is based on loadable scripts.</summary>
         /// <param name="scriptFilePath">Path to the file containing loadable script must be the first argument to the method.</param>
@@ -2734,12 +2733,7 @@ namespace IG.Lib
             return ret;
         }
 
-        /// <summary>Interpreter command. 
-        /// Sets and returns the applicat dispatcher, if initialized.</para>
-        /// <para>The optional first argument ion's thread priority. If the new priority is not specified then only the 
-        /// current priority is returned.
-        /// <para>The specified priority is set on application level, on the interpretr executing the command, 
-        /// and on the interpreter's parallel job dispatcher in the case it is initialized.</para></summary>
+        /// <summary>Interpreter command. Sets the priority of the current process.</summary>
         /// <param name="interpreter">Interpreter by which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments of this command.</param>
@@ -2945,7 +2939,7 @@ namespace IG.Lib
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name of this command.</param>
         /// <param name="args">Command arguments of this command.</param>
-        /// <returns>ID of the asynchronous command for querrying completion and ending invocation & picking results.</returns>
+        /// <returns>ID of the asynchronous command for querrying completion and ending invocation and picking results.</returns>
         protected virtual string CmdRunAsync(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
@@ -3277,18 +3271,18 @@ namespace IG.Lib
 
             #region Construction
 
-            /// <summary>Constructs a new named pipe client with the specified pipe name, default server address (<see cref="DefaultServerAddress"/>)
+            /// <summary>Constructs a new named pipe client with the specified pipe name, default server address (<see cref="NamedPipeClientBase.DefaultServerAddress"/>)
             /// and default values for other paramters.</summary>
             /// <param name="pipeName">Name of the pipe. Must not be null or empty string.</param>
             public InterpreterPipeClient(string pipeName)
                 : base(pipeName)
             { }
 
-            /// <summary>Constructs a new named pipe client with the specified pipe name, server address (<see cref="DefaultServerAddress"/>)
+            /// <summary>Constructs a new named pipe client with the specified pipe name, server address (<see cref="NamedPipeClientBase.DefaultServerAddress"/>)
             /// and default values for other paramters.</summary>
             /// <param name="pipeName">Name of the pipe. Must not be null or empty string.</param>
             /// <param name="serverAddress">Address of the server where named pipe server is run. If null or empty string then the
-            /// default server address is uesd (<see cref="DefaultServerAddress"/>), referring to the current computer.</param>
+            /// default server address is uesd (<see cref="NamedPipeClientBase.DefaultServerAddress"/>), referring to the current computer.</param>
             public InterpreterPipeClient(string pipeName, string serverAddress)
                 : base(pipeName, serverAddress)
             { }

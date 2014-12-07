@@ -149,7 +149,7 @@ namespace IG.Lib
         /// user logged in for subsequent operations.</para>
         /// <para>Warning: you should use this only exceptionally, e.g. for testing, and only in testing or
         /// demo sections of code.</para></summary>
-        /// <param name="username">Name of the user to be set. Null annihilates previous calls and causes
+        /// <param name="userName">Name of the user to be set. Null annihilates previous calls and causes
         /// that system provided user name is returned by subsequent queries.</param>
         protected virtual void SetUserName(string userName)
         {
@@ -415,7 +415,8 @@ namespace IG.Lib
         }
 
 
-        /// <summary>Runs the shell interpreter.</param>
+        /// <summary>Runs the shell interpreter.</summary>
+        /// <param name="args">Commandline arguments.</param>
         /// <remarks><para>Standard scheme for IGLib-based test applications.</para></remarks>
         /// $A Igor Dec12;
         public override void TestMain(string[] args)

@@ -31,7 +31,7 @@ namespace IG.Lib
         double FromReference(double referenceValue);
 
         /// <summary>Transforms the specified value from actual domain to reference domain (interval [0,1]).</summary>
-        /// <param name="referenceValue">Value in the actual domain.</param>
+        /// <param name="actualValue">Value in the actual domain.</param>
         /// <returns>Value in the reference domain corresponding to the specified value in the actual domain.</returns>
         double ToReference(double actualValue);
 
@@ -54,8 +54,8 @@ namespace IG.Lib
 
         /// <summary>Returns the color from the current color scale that corresponds to the specified value
         /// in the reference domain (interval [0,1]).
-        /// <para>Scale can be continuous or discrete (in the latter case <see cref="IsDiscrete"/> is true).</para>
-        /// <param name="value">Value from the interval [0, 1] (the reference domain) for which the corresponding 
+        /// <para>Scale can be continuous or discrete (in the latter case <see cref="IsDiscrete"/> is true).</para></summary>
+        /// <param name="referenceValue">Value from the interval [0, 1] (the reference domain) for which the corresponding 
         /// color is returned.</param>
         color GetReferenceColor(double referenceValue);
         
@@ -73,7 +73,7 @@ namespace IG.Lib
 
         /// <summary>Returns the CONTINUOUS color from the current color scale that corresponds to the specified value.
         /// <para>Scale can be continuous or discrete (in the latter case <see cref="IsDiscrete"/> is true).</para></summary>
-        /// <param name="referenceValue">Value  (in the actual domain) for which the corresponding color is returned.</param>
+        /// <param name="value">Value  (in the actual domain) for which the corresponding color is returned.</param>
         color GetContinuousColor(double value);
 
         #endregion ContinuousColors
@@ -122,7 +122,7 @@ namespace IG.Lib
 
         /// <summary>Retuns index of the cell of the discrete color scale that corresponds to the specified 
         /// value (in the actusl domain).</summary>
-        /// <param name="referenceValue">Value in the reference domain (interval [0, 1]) for wihich index 
+        /// <param name="value">Value in the reference domain (interval [0, 1]) for wihich index 
         /// of the discrete cell of the color scale is returned.</param>
         int GetCellIndex(double value);
 
@@ -134,7 +134,7 @@ namespace IG.Lib
 
         /// <summary>Returns a color from the DISCRETE color scale represented by the current object
         /// that corresponds to he specified value (in the actual domain).</summary>
-        /// <param name="referenceValue">Value (in the actual domain) for which the 
+        /// <param name="value">Value (in the actual domain) for which the 
         /// corresponding color from the discrete color scale is returned.</param>
         color GetDiscreteColor(double value);
 
@@ -164,8 +164,8 @@ namespace IG.Lib
     /// lower or upper bound of the range (dependent in which direction the range is exceeded).
     /// For discrete scale, either color of the lower or of the upper cell is produced.</para>
     /// <para>The same object provides methods for getting collors either from continuous or form discrete
-    /// color scale. There are methods such as <see cref="GetColor"/> or <see cref="GetReferenceColor"/> that
-    /// return colors form either scale, dependent on the current value of the <see cref="IsDiscrete"/> property.</para>
+    /// color scale. There are methods such as <see cref="ColorScaleBase.GetColor"/> or <see cref="ColorScaleBase.GetReferenceColor"/> that
+    /// return colors form either scale, dependent on the current value of the <see cref="ColorScaleBase.IsDiscrete"/> property.</para>
     /// <para>See also:</para>
     /// <para>http://www.sapdesignguild.org/resources/glossary_color/ </para>
     /// </remarks>
@@ -179,7 +179,6 @@ namespace IG.Lib
         /// <para>Discrete scale has 10 cells.</para></summary>
         /// <param name="minValue">Lower bound of the range of values for which color scale is defined.</param>
         /// <param name="maxValue">Upper bound of the range of values for which color scale is defined.</param>
-        /// provide colors of continuous or discrete scale.</param>
         /// <param name="definitionColors">A set of colors that define the color scale. Color of the continuous scale
         /// will smoothly transition through these values when parameter in the reference domain would run form 0 to 1.
         /// <para>There should be at least one definition color (In this case, the color scale will have a uniform color).</para></param>
@@ -202,7 +201,7 @@ namespace IG.Lib
         /// <param name="minValue">Lower bound of the range of values for which color scale is defined.</param>
         /// <param name="maxValue">Upper bound of the range of values for which color scale is defined.</param>
         /// <param name="numCells">Nuber of cells in the discrete scale.</param>
-        /// <param name="isDiscrete">Determinse whether the main method such as <see cref="GetColor"/> and <see cref="GetReferenceColor"> 
+        /// <param name="isDiscrete">Determinse whether the main method such as <see cref="ColorScaleBase.GetColor"/> and <see cref="ColorScaleBase.GetReferenceColor"/> 
         /// provide colors of continuous or discrete scale.</param>
         /// <param name="definitionColors">A set of colors that define the color scale. Color of the continuous scale
         /// will smoothly transition through these values when parameter in the reference domain would run form 0 to 1.
@@ -287,7 +286,7 @@ namespace IG.Lib
         }
 
         /// <summary>Transforms the specified value from actual domain to reference domain (interval [0,1]).</summary>
-        /// <param name="referenceValue">Value in the actual domain.</param>
+        /// <param name="actualValue">Value in the actual domain.</param>
         /// <returns>Value in the reference domain corresponding to the specified value in the actual domain.</returns>
         public override double ToReference(double actualValue)
         {
@@ -307,7 +306,7 @@ namespace IG.Lib
 
         /// <summary>Returns the CONTINUOUS color from the current color scale that corresponds to the specified
         /// value in the REFERENCE domain (interval [0, 1]).
-        /// <para>Scale can be continuous or discrete (in the latter case <see cref="IsDiscrete"/> is true).</para></summary>
+        /// <para>Scale can be continuous or discrete (in the latter case <see cref="ColorScaleBase.IsDiscrete"/> is true).</para></summary>
         /// <param name="referenceValue">Value in the reference domain (interval [0, 1]) for which the corresponding
         /// color is returned.</param>
         public override color GetContinuousReferenceColor(double referenceValue)
@@ -415,7 +414,7 @@ namespace IG.Lib
         public abstract double FromReference(double referenceValue);
 
         /// <summary>Transforms the specified value from actual domain to reference domain (interval [0,1]).</summary>
-        /// <param name="referenceValue">Value in the actual domain.</param>
+        /// <param name="actualValue">Value in the actual domain.</param>
         /// <returns>Value in the reference domain corresponding to the specified value in the actual domain.</returns>
         public abstract double ToReference(double actualValue);
 
@@ -449,9 +448,9 @@ namespace IG.Lib
 
 
         /// <summary>Returns the color from the current color scale that corresponds to the specified value
-        /// in the reference domain (interval [0,1]).
+        /// in the reference domain (interval [0,1]).</summary>
         /// <para>Scale can be continuous or discrete (in the latter case <see cref="IsDiscrete"/> is true).</para>
-        /// <param name="value">Value from the interval [0, 1] (the reference domain) for which the corresponding 
+        /// <param name="referenceValue">Value from the interval [0, 1] (the reference domain) for which the corresponding 
         /// color is returned.</param>
         public virtual color GetReferenceColor(double referenceValue)
         {
@@ -475,7 +474,7 @@ namespace IG.Lib
 
         /// <summary>Returns the CONTINUOUS color from the current color scale that corresponds to the specified value.
         /// <para>Scale can be continuous or discrete (in the latter case <see cref="IsDiscrete"/> is true).</para></summary>
-        /// <param name="referenceValue">Value  (in the actual domain) for which the corresponding color is returned.</param>
+        /// <param name="value">Value  (in the actual domain) for which the corresponding color is returned.</param>
         public virtual color GetContinuousColor(double value)
         {
             return GetContinuousReferenceColor(ToReference(value));
@@ -541,7 +540,7 @@ namespace IG.Lib
 
         /// <summary>Retuns index of the cell of the discrete color scale that corresponds to the specified 
         /// value (in the actusl domain).</summary>
-        /// <param name="referenceValue">Value in the reference domain (interval [0, 1]) for wihich index 
+        /// <param name="value">Value in the reference domain (interval [0, 1]) for wihich index 
         /// of the discrete cell of the color scale is returned.</param>
         public virtual int GetCellIndex(double value)
         {
@@ -560,7 +559,7 @@ namespace IG.Lib
 
         /// <summary>Returns a color from the DISCRETE color scale represented by the current object
         /// that corresponds to he specified value (in the actual domain).</summary>
-        /// <param name="referenceValue">Value (in the actual domain) for which the 
+        /// <param name="value">Value (in the actual domain) for which the 
         /// corresponding color from the discrete color scale is returned.</param>
         public virtual color GetDiscreteColor(double value)
         {
@@ -592,6 +591,7 @@ namespace IG.Lib
         /// the whole scale has the same color.</para></summary>
         /// <param name="minValue">Lower bound of the range of values for which color scale is defined.</param>
         /// <param name="maxValue">Upper bound of the range of values for which color scale is defined.</param>
+        /// <param name="numCells">Number of cells in the color scale.</param>
         /// <param name="scaleColors">Colors that determine the color scale.</param>
         public static ColorScale Create(double minValue, double maxValue, int numCells, 
             params color[] scaleColors)

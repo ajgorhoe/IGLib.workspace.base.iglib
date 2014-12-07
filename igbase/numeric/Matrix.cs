@@ -236,7 +236,7 @@ namespace IG.Num
             else
             {
                 int numEl = _matrixElements.Count;
-                if (numEl > 0)
+                if (numEl > 0) 
                 {
                     if (numEl % numRows != 0)
                         throw new Exception("Inconsistent matrix data: number of elements is " + numEl
