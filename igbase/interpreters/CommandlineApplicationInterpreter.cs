@@ -4367,6 +4367,8 @@ namespace IG.Lib
             bool includeIglib = true;
             int versionLevel = 0;   // default
             bool parsed = false;
+            List<Assembly> additionalAssemblies = null;
+            Assembly[] additionalAssembliesArray = null;
             if (args != null && args.Length > 0)
             {
                 if (!string.IsNullOrEmpty(args[0]))
@@ -4391,10 +4393,25 @@ namespace IG.Lib
                         parsed = int.TryParse(args[2], out res);
                         if (parsed)
                             versionLevel = res;
+                        if (args.Length > 3)
+                        {
+                            additionalAssemblies = new List<Assembly>();
+                            for (int i = 3; i < args.Length; ++i)
+                            {
+                                string arg = args[i];
+                                if (!string.IsNullOrEmpty(arg))
+                                {
+                                    Assembly assembly = UtilSystem.GetAssemblyByName(arg);
+                                    if (assembly != null)
+                                        additionalAssemblies.Add(assembly);
+                                }
+                            }
+                            additionalAssembliesArray = additionalAssemblies.ToArray();
+                        }
                     }
                 }
             }
-            string ret = Environment.NewLine + UtilSystem.GetApplicationInfo(infoLevel, includeIglib, versionLevel);
+            string ret = Environment.NewLine + UtilSystem.GetApplicationInfo(infoLevel, includeIglib, versionLevel, additionalAssembliesArray);
             return ret;
         }
 

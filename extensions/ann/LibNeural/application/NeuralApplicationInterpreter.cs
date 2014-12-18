@@ -35,16 +35,16 @@ namespace IG.Lib
         #region Commands
 
 
-        /// <summary>Execution method that prints some information about the application.</summary>
+        ///// <summary>Execution method that prints some information about the application.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
-        protected override string CmdAbout(ICommandLineApplicationInterpreter interpreter, 
+        protected override string CmdAbout(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
-                    if (args[0]=="?")
+                    if (args[0] == "?")
                     {
                         string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
                         Console.WriteLine();
