@@ -531,6 +531,8 @@ namespace IG.Lib
             this.AddCommand("?", CmdHelp);
             this.AddCommand("Help", CmdHelp);
             this.AddCommand("About", CmdAbout);
+            this.AddCommand("ApplicationInfo", CmdApplicationInfo);
+            this.AddCommand("AppInfo", CmdApplicationInfo);
             this.AddCommand("C", CmdComment);
             this.AddCommand("Comment", CmdComment);
             this.AddCommand("//", CmdComment);
@@ -1053,7 +1055,7 @@ namespace IG.Lib
         {
             ExpressionEvaluator.CommandLine();
             return null;
-        }
+        } 
 
         public string ExpressionEvaluatorEvaluate(string[] args)
         {
@@ -4298,14 +4300,102 @@ namespace IG.Lib
                     {
                         string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + " : prints some basic information about the current command interpreter.");
+                        Console.WriteLine(executableName + " " + cmdName + " [level [igLib [versionLevel]]] : " + Environment.NewLine  
+                            + "  prints some basic information about the current command interpreter.");
+                        Console.WriteLine("    level: level of information included (1 - only basic information, default: 3)");
+                        Console.WriteLine("    igLib: whether information on IGLib base library is also included.");
+                        Console.WriteLine("    versionLevel: number of levels of version included.");
                         Console.WriteLine();
                         return null;
                     }
-            Console.WriteLine();
-            Console.WriteLine("This is a command line application, written by Igor Grešovnik.");
-            Console.WriteLine();
-            return null;
+            int infoLevel = 3;
+            bool includeIglib = true;
+            int versionLevel = 0;   // default
+            bool parsed = false;
+            if (args != null && args.Length > 0)
+            {
+                if (!string.IsNullOrEmpty(args[0]))
+                {
+                    int res;
+                    parsed = int.TryParse(args[0], out res);
+                    if (parsed)
+                        infoLevel = res;
+                }
+                if (args.Length > 1)
+                {
+                    if (!string.IsNullOrEmpty(args[1]))
+                    {
+                        bool res = true;
+                        parsed = Util.TryParseBoolean(args[1], ref res);
+                        if (parsed)
+                            includeIglib = res;
+                    }
+                    if (args.Length > 2)
+                    {
+                        int res;
+                        parsed = int.TryParse(args[2], out res);
+                        if (parsed)
+                            versionLevel = res;
+                    }
+                }
+            }
+            string ret = Environment.NewLine + "Command line interpreter by Igor Grešovnik." + Environment.NewLine
+                + UtilSystem.GetApplicationInfo(infoLevel, includeIglib, versionLevel);
+            return ret;
+        }
+
+        /// <summary>Execution method that prints some information about the current application.</summary>
+        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdApplicationInfo(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
+        {
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " [level [igLib [versionLevel]]] : " + Environment.NewLine + "  prints some basic information about the current application.");
+                        Console.WriteLine("    level: level of information included (1 - only basic information, default: 3)");
+                        Console.WriteLine("    igLib: whether information on IGLib base library is also included.");
+                        Console.WriteLine("    versionLevel: number of levels of version included.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            int infoLevel = 3;
+            bool includeIglib = true;
+            int versionLevel = 0;   // default
+            bool parsed = false;
+            if (args != null && args.Length > 0)
+            {
+                if (!string.IsNullOrEmpty(args[0]))
+                {
+                    int res;
+                    parsed = int.TryParse(args[0], out res);
+                    if (parsed)
+                        infoLevel = res;
+                }
+                if (args.Length > 1)
+                {
+                    if (!string.IsNullOrEmpty(args[1]))
+                    {
+                        bool res = true;
+                        parsed = Util.TryParseBoolean(args[1], ref res);
+                        if (parsed)
+                            includeIglib = res;
+                    }
+                    if (args.Length > 2)
+                    {
+                        int res;
+                        parsed = int.TryParse(args[2], out res);
+                        if (parsed)
+                            versionLevel = res;
+                    }
+                }
+            }
+            string ret = Environment.NewLine + UtilSystem.GetApplicationInfo(infoLevel, includeIglib, versionLevel);
+            return ret;
         }
 
         /// <summary>Execution method that does nothing (for comments).</summary>

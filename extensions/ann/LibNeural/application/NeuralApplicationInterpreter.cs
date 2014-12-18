@@ -52,9 +52,14 @@ namespace IG.Lib
                         Console.WriteLine();
                         return null;
                     }
-            Console.WriteLine();
-            Console.WriteLine("This is a neural networks application, written by Igor Grešovnik, Tadej Kodelja, and others.");
-            Console.WriteLine();
+            if (args.Length > 0)
+            {
+                return base.CmdAbout(interpreter, cmdName, args);
+            }
+            {
+                Console.WriteLine(Environment.NewLine + "This is a prototypic shell application, written by Igor Grešovnik and others."
+                    + Environment.NewLine);
+            }
             return null;
         }
 

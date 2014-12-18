@@ -19,6 +19,7 @@ using System.Net.NetworkInformation;
 using System.Threading;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Reflection; 
 
 
 namespace IG.Lib
@@ -2189,11 +2190,20 @@ namespace IG.Lib
             {
                 if (IsUserIgor)
                 {
-                    string trial = "d:/users/workspace";
+                    string trial = "c:/users1/workspace";
                     RepairDirectoryPath(ref trial);
                     if (Directory.Exists(trial))
-                        ret = trial;
+                        return trial;
                 }
+            }
+            string[] trialstrings = { "c:/users/workspace", "d:/users/workspace", 
+                                          "c:/users1/workspace", "d:/users1/workspace" };
+            foreach (string str in trialstrings)
+            {
+                string trial = str;
+                RepairDirectoryPath(ref trial);
+                if (Directory.Exists(trial))
+                    return trial;
             }
             if (!string.IsNullOrEmpty(ret)) if (!Directory.Exists(ret))
                     ret = null;
@@ -2283,6 +2293,55 @@ namespace IG.Lib
             }
         }
 
+        private static volatile Assembly _executingAssembly = null;
+
+        private static volatile Assembly _iglibAssembly = null;
+
+        /// <summary>Returns assembly of the current executable, obtained by <see cref="Assembly.GetEntryAssembly()"/>.</summary>
+        public static Assembly ExecutableAssembly
+        { get {
+            if (_executingAssembly == null)
+            {
+                lock(Util.LockGlobal)
+                {
+                    if (_executingAssembly == null)
+                    { 
+                        _executingAssembly = Assembly.GetEntryAssembly();
+                }
+                }
+            }
+            return _executingAssembly;
+        } }
+
+
+        /// <summary>Returns assembly of the current executable, obtained by <see cref="Assembly.GetEntryAssembly()"/>.</summary>
+        public static Assembly IglibAssembly
+        {
+            get
+            {
+                if (_iglibAssembly == null)
+                {
+                    lock (Util.LockGlobal)
+                    {
+                        if (_iglibAssembly == null)
+                        {
+                            // _iglibAssembly = Assembly.GetExecutingAssembly();  // slower, not used
+                            _iglibAssembly = typeof(IG.Lib.UtilSystem).Assembly;  // since this type is defined in IGLib assembly
+                        }
+                    }
+                }
+                return _iglibAssembly;
+            }
+        }
+
+        /// <summary>Returns file name of the current executable.</summary>
+        public static string GetExecutableFileName()
+        {
+            string executableFilePath = Process.GetCurrentProcess().MainModule.FileName;
+            return Path.GetFileName(executableFilePath);
+            //return Assembly.GetExecutingAssembly().GetName().
+        }
+
         /// <summary>Returns the directory containing the executable that started the current
         /// application.</summary>
         public static string GetExecutableDirectory()
@@ -2291,6 +2350,268 @@ namespace IG.Lib
             // string executableFilePath = Assembly.GetEntryAssembly().Location;
             string executableFilePath = Process.GetCurrentProcess().MainModule.FileName;
             return Path.GetDirectoryName(executableFilePath);
+        }
+
+        /// <summary>Returns assembly name of the current executable.</summary>
+        public static string GetExecutableAssemblyName()
+        {
+            return ExecutableAssembly.GetName().Name;
+        }
+
+        /// <summary>Returns version (from the file info) of the current executable.</summary>
+        /// <param name="numLevels">Nmber of levels included in the returned version string.</param>
+        public static string GetExecutableVersion(int numLevels = 2)
+        {
+            // return ExecutableAssembly.GetName().Version.ToString();
+            if (numLevels >= 4)
+                return ExecutableAssembly.GetName().Version.ToString();
+            else
+            {
+                string ret = ExecutableAssembly.GetName().Version.Major.ToString();
+                if (numLevels >= 2)
+                {
+                    ret += "." + ExecutableAssembly.GetName().Version.Minor.ToString();
+                }
+                if (numLevels >= 3)
+                {
+                    ret += "." + ExecutableAssembly.GetName().Version.MajorRevision.ToString();
+                }
+                return ret;
+            }
+        }
+
+        /// <summary>Returns descriptive title of the current executable (from the AssemblyInfo file).</summary>
+        public static string GetExecutableTitle()
+        {
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(ExecutableAssembly.Location);
+            return versionInfo.FileDescription;
+        }
+
+        /// <summary>Returns description of the current executable (from the AssemblyInfo file).</summary>
+        public static string GetExecutableDescription()
+        {
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(ExecutableAssembly.Location);
+            return versionInfo.Comments;
+        }
+
+        /// <summary>Returns company attribute of the currentt executable.</summary>
+        public static string GetExecutableCompany()
+        {
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(ExecutableAssembly.Location);
+            return versionInfo.CompanyName;
+        }
+
+        /// <summary>Returns copyright information of the current executable.</summary>
+        public static string GetExecutableCopyrightInfo()
+        {
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(ExecutableAssembly.Location);
+            return versionInfo.LegalCopyright;
+        }
+
+        /// <summary>Returns a (possibly multiline) string containing basic information about the current executable, 
+        /// such as executable file name and directory.</summary>
+        /// <param name="infoLevel">Level of information put into the string:
+        /// <para>  1: assembly name and version, executable file.</para>
+        /// <para>  2: executable directory, title, description.</para>
+        /// <para>  3: creator, copyright info.</para></param>
+        /// <param name="versionLevel">Level version nformation included. By default (vlue 0), one level more than <paramref name="infoLevel"/>.</param>
+        public static string GetExecutableInfo(int infoLevel = 3, int versionLevel = 0)
+        {
+            if (versionLevel <= 0)
+                versionLevel = infoLevel + 1;
+            StringBuilder sb = new StringBuilder();
+            if (infoLevel >= 1)
+            {
+                sb.AppendLine("Main assembly: " + ExecutableAssembly.GetName().Name + ", version " + GetExecutableVersion(versionLevel));
+                sb.AppendLine("Executable: " + GetExecutableFileName());
+            }
+            if (infoLevel >= 2)
+            {
+                sb.AppendLine("Executable directory: " + GetExecutableDirectory());
+                string title = GetExecutableTitle();
+                string description = GetExecutableDescription();
+                if (!string.IsNullOrEmpty(title) || !string.IsNullOrEmpty(description))
+                {
+                    sb.Append("Description: ");
+                    if (!string.IsNullOrEmpty(title))
+                    {
+                        sb.Append(title);
+                    }
+                    if (!string.IsNullOrEmpty(description))
+                    {
+                        if (!string.IsNullOrEmpty(title))
+                        {
+                            sb.Append(" - ");
+                            sb.Append(description);
+                        }
+                    }
+                    sb.AppendLine();
+                }
+            }
+            if (infoLevel >= 3)
+            {
+                string companyName = GetExecutableCompany();
+                if (!string.IsNullOrEmpty(companyName))
+                {
+                    sb.AppendLine("Produced by: " + companyName);
+                }
+                string copyrightInfo = GetExecutableCopyrightInfo();
+                if (!string.IsNullOrEmpty(copyrightInfo))
+                {
+                    //sb.AppendLine("Copyright information: ");
+                    sb.AppendLine(copyrightInfo);
+                }
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>Returns file name of the IGLib assembly.</summary>
+        public static string GetIglibFileName()
+        {
+            //string path = IglibAssembly.CodeBase;
+            string path = IglibAssembly.Location;
+            return Path.GetFileName(path);
+        }
+
+        /// <summary>Returns the directory containing the IGLib assembly.</summary>
+        public static string GetIglibDirectory()
+        {
+            //string path = IglibAssembly.CodeBase;
+            string path = IglibAssembly.Location;
+            return Path.GetDirectoryName(path);
+        }
+
+        /// <summary>Returns assembly name of the IGLib assembly.</summary>
+        public static string GetIglibAssemblyName()
+        {
+            return IglibAssembly.GetName().Name;
+        }
+
+        /// <summary>Returns version (from the file info) of the IGLib assembly.</summary>
+        /// <param name="numLevels">Nmber of levels included in the returned version string.</param>
+        public static string GetIglibVersion(int numLevels = 2)
+        {
+            if (numLevels >= 4)
+                return IglibAssembly.GetName().Version.ToString();
+            else
+            {
+                string ret = IglibAssembly.GetName().Version.Major.ToString();
+                if (numLevels >= 2)
+                {
+                    ret += "." + IglibAssembly.GetName().Version.Minor.ToString();
+                }
+                if (numLevels >= 3)
+                {
+                    ret += "." + IglibAssembly.GetName().Version.MajorRevision.ToString();
+                }
+                return ret;
+            }
+        }
+
+        /// <summary>Returns descriptive title of the IGLib assembly (from the AssemblyInfo file).</summary>
+        public static string GetIglibTitle()
+        {
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(IglibAssembly.Location);
+            return versionInfo.FileDescription;
+        }
+
+        /// <summary>Returns description of the IGLib assembly (from assembly info).</summary>
+        public static string GetIglibDescription()
+        {
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(IglibAssembly.Location);
+            return versionInfo.Comments;
+        }
+
+        /// <summary>Returns company attribute of the IGLib assembly.</summary>
+        public static string GetIglibCompany()
+        {
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(IglibAssembly.Location);
+            return versionInfo.CompanyName;
+        }
+
+        /// <summary>Returns copyright information of the IGLib assembly.</summary>
+        public static string GetIglibCopyrightInfo()
+        {
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(IglibAssembly.Location);
+            return versionInfo.LegalCopyright;
+        }
+
+        /// <summary>Returns a (possibly multiline) string containing basic information about the IGLib base library, 
+        /// such as file name, directory, assembly name, and version.</summary>
+        /// <param name="infoLevel">Level of information put into the string:
+        /// <para>  1: assembly name and version, executable file.</para>
+        /// <para>  2: executable directory, title, description.</para>
+        /// <para>  3: creator, copyright info.</para></param>
+        /// <param name="versionLevel">Level version nformation included. By default (value 0), one level more than <paramref name="infoLevel"/>.</param>
+        public static string GetIglibInfo(int infoLevel = 3, int versionLevel = 0)
+        {
+            if (versionLevel <= 0)
+                versionLevel = infoLevel + 1;
+            StringBuilder sb = new StringBuilder();
+            if (infoLevel >= 1)
+            {
+                sb.AppendLine("Assembly: " + IglibAssembly.GetName().Name + ", version " + GetIglibVersion(versionLevel));
+                sb.AppendLine("File name: " + GetIglibFileName());
+            }
+            if (infoLevel >= 2)
+            {
+                sb.AppendLine("Executable directory: " + GetIglibDirectory());
+                string title = GetIglibTitle();
+                string description = GetIglibDescription();
+                if (!string.IsNullOrEmpty(title) || !string.IsNullOrEmpty(description))
+                {
+                    sb.Append("Description: ");
+                    if (!string.IsNullOrEmpty(title))
+                    {
+                        sb.Append(title);
+                    }
+                    if (!string.IsNullOrEmpty(description))
+                    {
+                        if (!string.IsNullOrEmpty(title))
+                        {
+                            sb.Append(" - ");
+                            sb.Append(description);
+                        }
+                    }
+                    sb.AppendLine();
+                }
+            }
+            if (infoLevel >=3)
+            {
+                string companyName = GetIglibCompany();
+                if (!string.IsNullOrEmpty(companyName))
+                {
+                    sb.AppendLine("Produced by: " + companyName);
+                }
+                string copyrightInfo = GetIglibCopyrightInfo();
+                if (!string.IsNullOrEmpty(copyrightInfo))
+                {
+                    // sb.AppendLine("Copyright information: ");
+                    sb.AppendLine(copyrightInfo);
+                }
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>Returns a (possibly multiline) string containing basic information about the current application, 
+        /// such as file name, directory, assembly name, and version. Information about IGLib can be included, too.</summary>
+        /// <param name="infoLevel">Level of information put into the string:
+        /// <para>  1: assembly name and version, executable file.</para>
+        /// <para>  2: executable directory.</para></param>
+        /// <param name="includeIglibInfo">Whether info about IGLib is included. If false then only application info is included.</param>
+        /// <param name="versionLevel">Level version nformation included. By default (value 0), one level more than <paramref name="infoLevel"/>.</param>
+        public static string GetApplicationInfo(int infoLevel = 3, bool includeIglibInfo = true, int versionLevel = 0)
+        {
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Application information:");
+            sb.AppendLine(GetExecutableInfo(infoLevel, versionLevel));
+            if (includeIglibInfo)
+            {
+                sb.AppendLine("Base library (IGLib):");
+                sb.AppendLine(GetIglibInfo(infoLevel, versionLevel));
+            }
+            return sb.ToString();
         }
 
 
