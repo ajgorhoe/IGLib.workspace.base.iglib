@@ -19,9 +19,12 @@ namespace IG.Lib
     public class NeuralApplicationInterpreter : CommandLineApplicationInterpreter
     {
 
+        /// <summary></summary>
         public NeuralApplicationInterpreter(): this(false)
         {  }
 
+        /// <summary></summary>
+        /// <param name="caseSensitive"></param>
         public NeuralApplicationInterpreter(bool caseSensitive)
             : base(caseSensitive)
         {
@@ -39,28 +42,17 @@ namespace IG.Lib
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
-        protected override string CmdAbout(ICommandLineApplicationInterpreter interpreter,
-            string cmdName, string[] args)
+        protected override string CmdAbout(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
                     if (args[0] == "?")
                     {
-                        string executableName = Path.GetFileName(System.Reflection.Assembly.GetEntryAssembly().Location);
-                        Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + " : prints some basic information about the current command interpreter.");
-                        Console.WriteLine();
-                        return null;
+                        return base.CmdAbout(interpreter, cmdName, args);
                     }
-            if (args.Length > 0)
-            {
-                return base.CmdAbout(interpreter, cmdName, args);
-            }
-            {
-                Console.WriteLine(Environment.NewLine + "This is a prototypic shell application, written by Igor Grešovnik and others."
-                    + Environment.NewLine);
-            }
-            return null;
+            string retBase = base.CmdAbout(interpreter, cmdName, args);
+            return "This is a prototypic shell application, written by Igor Grešovnik and others."
+                    + Environment.NewLine + retBase;
         }
 
 

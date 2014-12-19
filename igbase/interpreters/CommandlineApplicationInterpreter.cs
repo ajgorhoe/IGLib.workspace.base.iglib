@@ -4300,7 +4300,7 @@ namespace IG.Lib
                     {
                         string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + " level igLib versionLevel ass1, ass2... : " + Environment.NewLine  
+                        Console.WriteLine(executableName + " " + cmdName + " <level igLib versionLevel ass1, ass2...> : " + Environment.NewLine  
                             + "  prints some basic information about the current command interpreter.");
                         Console.WriteLine("    level: level of information included (1 - only basic information, default: 3)");
                         Console.WriteLine("    igLib: whether information on IGLib base library is also included.");
@@ -4374,7 +4374,7 @@ namespace IG.Lib
                     {
                         string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + " level igLib versionLevel ass1, ass2... : " + Environment.NewLine + "  prints some basic information about the current application.");
+                        Console.WriteLine(executableName + " " + cmdName + " <level igLib versionLevel ass1, ass2...> : " + Environment.NewLine + "  prints some basic information about the current application.");
                         Console.WriteLine("    level: level of information included (1 - only basic information, default: 3)");
                         Console.WriteLine("    igLib: whether information on IGLib base library is also included.");
                         Console.WriteLine("    versionLevel: number of levels of version included.");
