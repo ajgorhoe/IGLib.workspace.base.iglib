@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 
-    /********************************/
-    /*                              */
-    /*    I/O & System Utilities    */
-    /*                              */
-    /********************************/
+/********************************/
+/*                              */
+/*    I/O & System Utilities    */
+/*                              */
+/********************************/
 
 
 using System;
@@ -19,7 +19,7 @@ using System.Net.NetworkInformation;
 using System.Threading;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Reflection; 
+using System.Reflection;
 
 
 namespace IG.Lib
@@ -31,7 +31,7 @@ namespace IG.Lib
     public static class UtilSystem
     {
 
-        
+
         #region UserData
 
         private static string _userName = null;
@@ -40,8 +40,8 @@ namespace IG.Lib
 
         /// <summary>Whether user name has already been retrieved ans stored.</summary>
         private static bool UserNameNotRetrieved
-        { 
-            get { return (_userName == null || _userNameLowerCase == null); } 
+        {
+            get { return (_userName == null || _userNameLowerCase == null); }
         }
 
         /// <summary>Retrieves and stores information about current user name.</summary>
@@ -64,7 +64,8 @@ namespace IG.Lib
             if (string.IsNullOrEmpty(username) && username != null)
             {
                 throw new ArgumentException("Empty string provided for user name, only non-empty string or null is accepted.");
-            } else
+            }
+            else
             {
                 _userName = username;
                 _userNameLowerCase = username.ToLower();
@@ -149,13 +150,13 @@ namespace IG.Lib
             long maxSpeed = -1;
             foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (Util.OutputLevel>=minOutputLevel)
+                if (Util.OutputLevel >= minOutputLevel)
                     Console.WriteLine("Found MAC Address: " + nic.GetPhysicalAddress().ToString() + "; Type: " + nic.NetworkInterfaceType
                         + "; Speed: " + nic.Speed);
                 string tempMac = nic.GetPhysicalAddress().ToString();
                 if (nic.Speed > maxSpeed && !String.IsNullOrEmpty(tempMac) && tempMac.Length >= minMacAddressLength)
                 {
-                    if (Util.OutputLevel>=minOutputLevel)
+                    if (Util.OutputLevel >= minOutputLevel)
                         Console.WriteLine("New Max Speed = " + nic.Speed + ", MAC: " + tempMac);
                     maxSpeed = nic.Speed;
                     macAddress = tempMac;
@@ -195,7 +196,7 @@ namespace IG.Lib
         /// <returns></returns>
         public static string GetDomainName()
         {
-            Console.WriteLine(Environment.NewLine + Environment.NewLine 
+            Console.WriteLine(Environment.NewLine + Environment.NewLine
                 + "WARNING: " + Environment.NewLine
                 + "Domain name does not work correctly - it returns user domain."
                 + Environment.NewLine + Environment.NewLine);
@@ -295,7 +296,7 @@ namespace IG.Lib
         /// <summary>Gets the version of the runtime on which the current application executes.</summary>
         public static string GetRuntimeVersionString()
         {
-            return System.Environment.Version.ToString(); 
+            return System.Environment.Version.ToString();
         }
 
         #endregion Runtime
@@ -322,7 +323,7 @@ namespace IG.Lib
         {
             return ExecuteSystemCommand(null /* workingDirectory */, true /* asynchronous */, command, args);
         }
-        
+
         /// <summary>Executes system command with arguments.</summary>
         /// <param name="asynchronous">If true then the system command is executed asynchronously (the method returns immediately,
         /// and the caller can wait for the executed process by calling WaitForExit() on the returned object).
@@ -389,7 +390,7 @@ namespace IG.Lib
         /// <param name="args">Arguments to system command.</param>
         /// <returns><see cref="Process"/> object that can be used to access and manimulate the process that has
         /// been executed by this method.</returns>
-        public static Process ExecuteSystemCommand(string workingDirectory, bool asynchronous, bool useShell, 
+        public static Process ExecuteSystemCommand(string workingDirectory, bool asynchronous, bool useShell,
             bool createNoWindow, string redirectedOutputPath, bool redirectStandardOutput,
             string command, params string[] args)
         {
@@ -455,7 +456,7 @@ namespace IG.Lib
                 //// Set priority to that of the current process:
                 //ProcessPriorityClass priorityClass = Process.GetCurrentProcess().PriorityClass;
                 //process.PriorityClass = priorityClass;
-                
+
                 //Start the process:
 
                 process.Start();
@@ -513,7 +514,7 @@ namespace IG.Lib
             return System.Diagnostics.Process.GetCurrentProcess().ProcessName;
         }
 
-        
+
 
         #endregion CurrentProcess
 
@@ -538,7 +539,7 @@ namespace IG.Lib
             }
         }
 
-        
+
         /// <summary>Gets all processes with the specified name, and puts them to tehe specified list.</summary>
         /// <param name="processName">Name of the processes to be put on the list. Name is case sensitive.</param>
         /// <param name="processList">List on which the processes matching the name are put. If nul then it is
@@ -631,23 +632,23 @@ namespace IG.Lib
             }
         }
 
-        
+
         /// <summary>Returns true if at least one process with the specified name is running, false otherwise.</summary>
         /// <param name="processName">Name of the process for which we check whether it is running. Name is case sensitive.</param>
         /// <returns>True if at least one process with the specified name is running, false otherwise.</returns>
         public static bool IsProcessRunning(string processName)
         {
-             if (string.IsNullOrEmpty(processName))
+            if (string.IsNullOrEmpty(processName))
                 throw new ArgumentException("Process name is not specified (null or empty string).");
-             Process[] processes = Process.GetProcessesByName(processName);
-             foreach (Process proc in processes)
-             {
-                 if (proc != null)
-                     if (proc.ProcessName == processName)
+            Process[] processes = Process.GetProcessesByName(processName);
+            foreach (Process proc in processes)
+            {
+                if (proc != null)
+                    if (proc.ProcessName == processName)
                         return true;
-             }
-             return false;
-       }
+            }
+            return false;
+        }
 
         /// <summary>Returns true if at least one process with the specified name is running, false otherwise.</summary>
         /// <param name="processName">Name of the process for which we check whether it is running.</param>
@@ -946,7 +947,7 @@ namespace IG.Lib
                             {
                                 proc.Kill();
                             }
-                            catch(Exception ex) 
+                            catch (Exception ex)
                             {
                                 if (Util.OutputLevel >= 1)
                                 {
@@ -1007,7 +1008,7 @@ namespace IG.Lib
             foreach (Process proc in processes)
             {
                 if (proc != null)
-                    if (!string.IsNullOrEmpty(proc.MainWindowTitle) && proc.ProcessName==processName)
+                    if (!string.IsNullOrEmpty(proc.MainWindowTitle) && proc.ProcessName == processName)
                         processList.Add(proc);
             }
         }
@@ -1926,30 +1927,19 @@ namespace IG.Lib
             {
                 ret = AppDomain.CurrentDomain.GetAssemblies().
                     SingleOrDefault(assembly => assembly.GetName().Name == assemblyName);
-            } else
+            }
+            else
             {
                 ret = AppDomain.CurrentDomain.GetAssemblies().
                     SingleOrDefault(assembly => assembly.GetName().Name.ToLower() == assemblyName.ToLower());
             }
             if (ret == null)
             {
-                Assembly[] referencedAssemblies = GetReferencedAssemblies();
-                foreach (Assembly assembly in referencedAssemblies)
-                {
-                    if (assembly != null)
-                    {
-                        string name = assembly.GetName().Name;
-                        if (caseSensitive)
-                        {
-                            if (name == assemblyName)
-                                return assembly;
-                        } else
-                        {
-                            if (name.ToLower() == assemblyName.ToLower())
-                                return assembly;
-                        }
-                    }
-                }
+
+            }
+            if (ret == null)
+            {
+
                 Assembly[] loadedAssemblies = GetLoadedAssemblies();
                 foreach (Assembly assembly in loadedAssemblies)
                 {
@@ -1960,10 +1950,33 @@ namespace IG.Lib
                         {
                             if (name == assemblyName)
                                 return assembly;
-                        } else
+                        }
+                        else
                         {
                             if (name.ToLower() == assemblyName.ToLower())
                                 return assembly;
+                        }
+                    }
+                }
+
+                Assembly[] referencedAssemblies = GetReferencedAssembliesRecursive();
+                if (referencedAssemblies != null)
+                {
+                    foreach (Assembly assembly in referencedAssemblies)
+                    {
+                        if (assembly != null)
+                        {
+                            string name = assembly.GetName().Name;
+                            if (caseSensitive)
+                            {
+                                if (name == assemblyName)
+                                    return assembly;
+                            }
+                            else
+                            {
+                                if (name.ToLower() == assemblyName.ToLower())
+                                    return assembly;
+                            }
                         }
                     }
                 }
@@ -1978,30 +1991,276 @@ namespace IG.Lib
             return loadedAssemblies;
         }
 
-        /// <summary>Returns an array containing the executable assembly and all its referenced assemblies, 
-        /// which roughly coincides with all assemblies used by the current application.</summary>
-        public static Assembly[] GetReferencedAssemblies()
-        {
-            AssemblyName[] referencedAssemblies = ExecutableAssembly.GetReferencedAssemblies();
-            List<Assembly> assemblies = new List<Assembly>();
-            assemblies.Add(ExecutableAssembly);
-            if (referencedAssemblies != null)
-            {
-                foreach (AssemblyName an in referencedAssemblies)
-                {
-                    if (an != null)
-                    {
-                        Assembly assembly = GetAssemblyByName(an.Name);
-                        if (assembly != null)
-                            assemblies.Add(assembly);
-                        else
-                            Console.WriteLine("Could not find assembly named '" + an.Name + "'.");
 
+
+
+        #region Assembly.ReferencedAssemblies
+
+        /// <summary>Assemblies directly referenced by the current executale assembly.
+        /// Calculated only once, lazy evaluation.</summary>
+        private static volatile Assembly[] _referencedAssembliesDirectWithoutGac;
+
+        /// <summary>Assemblies directly or indirectly referenced by the current executale assembly.
+        /// Calculated only once, lazy evaluation.</summary>
+        private static volatile Assembly[] _referencedAssembliesRecursiveWithoutGac;
+
+        /// <summary>Assemblies directly referenced by the current executale assembly.
+        /// Assemblies from global assembly cache are also included.
+        /// Calculated only once, lazy evaluation.</summary>
+        private static volatile Assembly[] _referencedAssembliesDirect;
+
+        /// <summary>Assemblies directly or indirectly referenced by the current executale assembly.
+        /// Calculated only once, lazy evaluation.</summary>
+        private static volatile Assembly[] _referencedAssembliesRecursive;
+
+
+        /// <summary>Returns an array containing the executable assembly and all its DIRECTLY referenced assemblies.
+        /// Assemblies from the Global Assembly Cache (GAC) are NOT included.</summary>
+        /// <remarks>Array of assemblies is calculated only once (the first time it is needed) and is stored internally for 
+        /// to speed up further uses.
+        /// <para>See:</para>
+        /// <para>http://stackoverflow.com/questions/383686/how-do-you-loop-through-currently-loaded-assemblies </para>
+        /// <para>Assembly names, http://msdn.microsoft.com/en-us/library/k8xx4k69%28v=vs.110%29.aspx </para></remarks>
+        public static Assembly[] GetReferencedAssembliesWithoutGac()
+        {
+            if (_referencedAssembliesDirectWithoutGac == null)
+            {
+                lock (Util.LockGlobal)
+                {
+                    if (_referencedAssembliesDirectWithoutGac == null)
+                    {
+                        Dictionary<string, Assembly> assemblydict = GetReferencedAssemblies(ExecutableAssembly,
+                            ignoreGac: true, recursive: false);
+                        List<Assembly> assemblies = new List<Assembly>();
+                        assemblies.Add(ExecutableAssembly);
+                        foreach (Assembly assembly in assemblydict.Values)
+                        {
+                            if (assembly != null)
+                                assemblies.Add(assembly);
+                        }
+                        _referencedAssembliesDirectWithoutGac = assemblies.ToArray();
                     }
                 }
             }
-            return assemblies.ToArray();
+            return _referencedAssembliesDirectWithoutGac;
         }
+
+        /// <summary>Returns an array containing the executable assembly and all its referenced assemblies (directly or indirectly).
+        /// Assemblies from the Global Assembly Cache (GAC) are NOT included.</summary>
+        /// <remarks>Array of assemblies is calculated only once (the first time it is needed) and is stored internally for 
+        /// to speed up further uses.
+        /// <para>See:</para>
+        /// <para>http://stackoverflow.com/questions/383686/how-do-you-loop-through-currently-loaded-assemblies </para>
+        /// <para>Assembly names, http://msdn.microsoft.com/en-us/library/k8xx4k69%28v=vs.110%29.aspx </para></remarks>
+        public static Assembly[] GetReferencedAssembliesRecursiveWithoutGac()
+        {
+            if (_referencedAssembliesRecursiveWithoutGac == null)
+            {
+                lock (Util.LockGlobal)
+                {
+                    if (_referencedAssembliesRecursiveWithoutGac == null)
+                    {
+                        Dictionary<string, Assembly> assemblydict = GetReferencedAssemblies(ExecutableAssembly,
+                            ignoreGac: true, recursive: true);
+                        List<Assembly> assemblies = new List<Assembly>();
+                        assemblies.Add(ExecutableAssembly);
+                        foreach (Assembly assembly in assemblydict.Values)
+                        {
+                            if (assembly != null)
+                                assemblies.Add(assembly);
+                        }
+                        _referencedAssembliesRecursiveWithoutGac = assemblies.ToArray();
+                    }
+                }
+            }
+            return _referencedAssembliesRecursiveWithoutGac;
+        }
+
+        /// <summary>Returns an array containing the executable assembly and all its DIRECTLY referenced assemblies.
+        /// Assemblies from the Global Assembly Cache (GAC) are also included.</summary>
+        /// <remarks>Array of assemblies is calculated only once (the first time it is needed) and is stored internally 
+        /// to speed up further uses.
+        /// <para>See:</para>
+        /// <para>http://stackoverflow.com/questions/383686/how-do-you-loop-through-currently-loaded-assemblies </para>
+        /// <para>Assembly names, http://msdn.microsoft.com/en-us/library/k8xx4k69%28v=vs.110%29.aspx </para></remarks>
+        public static Assembly[] GetReferencedAssemblies()
+        {
+            if (_referencedAssembliesDirect == null)
+            {
+                lock (Util.LockGlobal)
+                {
+                    if (_referencedAssembliesDirect == null)
+                    {
+                        Dictionary<string, Assembly> assemblydict = GetReferencedAssemblies(ExecutableAssembly,
+                            ignoreGac: false, recursive: false);
+                        List<Assembly> assemblies = new List<Assembly>();
+                        assemblies.Add(ExecutableAssembly);
+                        foreach (Assembly assembly in assemblydict.Values)
+                        {
+                            if (assembly != null)
+                                assemblies.Add(assembly);
+                        }
+                        _referencedAssembliesDirect = assemblies.ToArray();
+                    }
+                }
+            }
+            return _referencedAssembliesDirect;
+        }
+
+        /// <summary>Returns an array containing the executable assembly and all its referenced assemblies (directly or indirectly), 
+        // which roughly coincides with all assemblies that can be potentially used by the current application.
+        /// Assemblies from the Global Assembly Cache (GAC) are also included.</summary>
+        /// <remarks>Array of assemblies is calculated only once (the first time it is needed) and is stored internally 
+        /// to speed up further uses.
+        /// <para>See:</para>
+        /// <para>http://stackoverflow.com/questions/383686/how-do-you-loop-through-currently-loaded-assemblies </para>
+        /// <para>Assembly names, http://msdn.microsoft.com/en-us/library/k8xx4k69%28v=vs.110%29.aspx </para></remarks>
+        public static Assembly[] GetReferencedAssembliesRecursive()
+        {
+            if (_referencedAssembliesRecursive == null)
+            {
+                lock (Util.LockGlobal)
+                {
+                    if (_referencedAssembliesRecursive == null)
+                    {
+                        Dictionary<string, Assembly> assemblydict = GetReferencedAssemblies(ExecutableAssembly,
+                            ignoreGac: false, recursive: true);
+                        List<Assembly> assemblies = new List<Assembly>();
+                        assemblies.Add(ExecutableAssembly);
+                        foreach (Assembly assembly in assemblydict.Values)
+                        {
+                            if (assembly != null)
+                                assemblies.Add(assembly);
+                        }
+                        _referencedAssembliesRecursive = assemblies.ToArray();
+                    }
+                }
+            }
+            return _referencedAssembliesRecursive;
+        }
+
+
+        public class MissingAssembly
+        {
+            public MissingAssembly(string missingAssemblyName, string missingAssemblyNameParent)
+            {
+                MissingAssemblyName = missingAssemblyName;
+                MissingAssemblyNameParent = missingAssemblyNameParent;
+            }
+            public string MissingAssemblyName { get; set; }
+            public string MissingAssemblyNameParent { get; set; }
+        }
+
+        private static Dictionary<string, Assembly> _dependentAssemblyList;
+        private static List<MissingAssembly> _missingAssemblyList;
+
+
+        /// <summary>Get assemblies referenced by the specified assembly. 
+        /// Not recursive.</summary>
+        /// <param name="assembly">Assembly whose referenced assemblies are obtained.</param>
+        public static List<string> GetReferencedAssembliesFlat(Assembly assembly)
+        {
+            lock (Util.LockGlobal)
+            {
+                var results = assembly.GetReferencedAssemblies();
+                return results.Select(o => o.FullName).OrderBy(o => o).ToList();
+            }
+        }
+
+        /// <summary>Creates and returns a dictionary containing all assemblies referenced (directly or indirectly)
+        /// by the specified assembly. Recursive.</summary>
+        /// <param name="assembly">Assembly whose referenced assemblies are obtained recursively.</param>
+        public static Dictionary<string, Assembly> GetReferencedAssemblies(Assembly assembly, 
+            bool ignoreGac = true, bool recursive = true)
+        {
+            lock (Util.LockGlobal)
+            {
+                _dependentAssemblyList = new Dictionary<string, Assembly>();
+                _missingAssemblyList = new List<MissingAssembly>();
+
+                InternalGetReferencedAssembliesRecursive(assembly, recursive);
+
+                if (ignoreGac)
+                {
+                    // Only include assemblies that we wrote ourselves (ignore ones from GAC).
+                    var keysToRemove = _dependentAssemblyList.Values.Where(
+                        o => o.GlobalAssemblyCache == true).ToList();
+                    foreach (var k in keysToRemove)
+                    {
+                        _dependentAssemblyList.Remove(SimpleAssemblyName(k.FullName));
+                    }
+                }
+
+                return _dependentAssemblyList;
+            }
+        }
+
+        /// <summary>Get missing assemblies.</summary>
+        public static List<MissingAssembly> GetMissingAssemblies(Assembly assembly, bool recursive = true)
+        {
+            lock (Util.LockGlobal)
+            {
+                _dependentAssemblyList = new Dictionary<string, Assembly>();
+                _missingAssemblyList = new List<MissingAssembly>();
+                InternalGetReferencedAssembliesRecursive(assembly, recursive);
+                return _missingAssemblyList;
+            }
+        }
+
+        /// <summary>Internal recursive method to get all referenced assemblies, and all dependent assemblies of dependent 
+        /// assemblies, etc.</summary>
+        private static void InternalGetReferencedAssembliesRecursive(Assembly assembly, bool recursive = true)
+        {
+            lock (Util.LockGlobal)
+            {
+                // Load assemblies with newest versions first. Omitting the ordering results in false positives on
+                // _missingAssemblyList.
+                var referencedAssemblies = assembly.GetReferencedAssemblies()
+                    .OrderByDescending(o => o.Version);
+
+                foreach (var r in referencedAssemblies)
+                {
+                    if (String.IsNullOrEmpty(assembly.FullName))
+                    {
+                        continue;
+                    }
+
+                    if (!_dependentAssemblyList.ContainsKey(SimpleAssemblyName(r.FullName)))
+                    {
+                        try
+                        {
+                            Assembly a = Assembly.ReflectionOnlyLoad(r.FullName); // loads the assemblies in a separate AppDomain, not interfering with the JIT process
+                            _dependentAssemblyList[SimpleAssemblyName(a.FullName)] = a;
+                            if (recursive)
+                            {
+                                InternalGetReferencedAssembliesRecursive(a, true);
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            _missingAssemblyList.Add(new MissingAssembly(r.FullName.Split(',')[0], SimpleAssemblyName(assembly.FullName)));
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>Returns a simple assembly name that corresponds to the specified full
+        /// name of the assembly.
+        /// <para>Simple name is only the assemblyname, not including assembly version, pulbic key token,
+        /// or culture.</para></summary>
+        /// <param name="fullName"></param>
+        /// <returns></returns>
+        public static string SimpleAssemblyName(string fullName)
+        {
+            return fullName.Split(',')[0];
+        }
+
+
+        #endregion Assembly.ReferencedAssemblies
+
+
+
 
         #region Assemblies.General
 
@@ -2336,6 +2595,17 @@ namespace IG.Lib
                             sb.AppendLine("  " + assembly.GetName().FullName);
                     }
                     sb.AppendLine();
+                    if (infoLevel >= 6)
+                    {
+                        referencedAssemblies = GetReferencedAssembliesRecursive();
+                        sb.AppendLine("All referenced assemblies (recursive): ");
+                        foreach (Assembly assembly in referencedAssemblies)
+                        {
+                            if (assembly != null)
+                                sb.AppendLine("  " + assembly.GetName().FullName);
+                        }
+                        sb.AppendLine();
+                    }
                 }
             }
             if (additionalAssemblies != null)
@@ -2418,7 +2688,7 @@ namespace IG.Lib
         /// <para>By setting the <see cref="ThreadPriority"/> property, this flag is automatically set to false.</para></summary>
         public static bool DynamicThreadPriority
         {
-            get { lock(Util.LockGlobal) { return _dynamicThreadPriority; } }
+            get { lock (Util.LockGlobal) { return _dynamicThreadPriority; } }
             set { lock (Util.LockGlobal) { _dynamicThreadPriority = value; } }
         }
 
@@ -2443,7 +2713,7 @@ namespace IG.Lib
                     if (_dynamicThreadPriority)
                     {
                         ThreadPriority priority = GetThreadPriorityFromProcess();
-                        if (priority!=_threadPriority)
+                        if (priority != _threadPriority)
                         {
                             priorityChanged = true;
                             _threadPriority = priority;
@@ -2460,7 +2730,7 @@ namespace IG.Lib
                 bool priorityChanged = false;
                 lock (Util.LockGlobal)
                 {
-                    if (value!=_threadPriority)
+                    if (value != _threadPriority)
                         priorityChanged = true;
                     _dynamicThreadPriority = false;
                     _threadPriority = value;
@@ -2487,9 +2757,9 @@ namespace IG.Lib
         {
             ThreadPriority priority = GetThreadPriorityFromProcess();
             bool priorityChanged = false;
-            lock(Util.LockGlobal)
+            lock (Util.LockGlobal)
             {
-                if (priority!=_threadPriority)
+                if (priority != _threadPriority)
                 {
                     priorityChanged = true;
                     _threadPriority = priority;
@@ -2507,11 +2777,11 @@ namespace IG.Lib
         public static void OnThreadPriorityChange()
         {
             ThreadStart onChange;
-            lock(Util.LockGlobal)
+            lock (Util.LockGlobal)
             {
                 onChange = _onThreadPriorityChange;
             }
-            if (onChange !=null)
+            if (onChange != null)
                 onChange();
         }
 
@@ -2519,7 +2789,7 @@ namespace IG.Lib
         /// <param name="onPriorityChangeMethod">Method that is added.</param>
         public static void AddOnThreadPriorityChange(ThreadStart onPriorityChangeMethod)
         {
-            lock(Util.LockGlobal)
+            lock (Util.LockGlobal)
             {
                 _onThreadPriorityChange += onPriorityChangeMethod;
             }
@@ -2529,13 +2799,13 @@ namespace IG.Lib
         /// <param name="onPriorityChangeMethod">Method that is removed.</param>
         public static void RemoveOnThreadPriorityChange(ThreadStart onPriorityChangeMethod)
         {
-            lock(Util.LockGlobal)
+            lock (Util.LockGlobal)
             {
                 try
                 {
-                _onThreadPriorityChange -= onPriorityChangeMethod;
+                    _onThreadPriorityChange -= onPriorityChangeMethod;
                 }
-                catch {  }
+                catch { }
             }
         }
 
@@ -2750,7 +3020,7 @@ namespace IG.Lib
                 }
             }
             if (!string.IsNullOrEmpty(ret)) if (!Directory.Exists(ret))
-                ret = null;
+                    ret = null;
             return ret;
         }
 
@@ -2805,7 +3075,7 @@ namespace IG.Lib
                     directoryPath = directoryPath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
                 // Take care that the last character is NOT path separator:
                 char lastChar = directoryPath[directoryPath.Length - 1];
-                while (directoryPath.Length>1 && 
+                while (directoryPath.Length > 1 &&
                     (lastChar == Path.DirectorySeparatorChar || lastChar == Path.AltDirectorySeparatorChar))
                 {
                     directoryPath = directoryPath.Substring(0, directoryPath.Length - 1);
@@ -2814,7 +3084,7 @@ namespace IG.Lib
             }
         }
 
-                
+
         /// <summary>Returns the specified directory path in standard form (absolute path, system's path separator, ended with path separator).
         /// <para>This method should always result in the same string for the same directory (regardles of the original form),
         /// therefore it is useful e.g. for naming a mutex used for locking access to a directory.</para></summary>
@@ -2868,7 +3138,7 @@ namespace IG.Lib
         {
             if (!string.IsNullOrEmpty(directoryPath))
             {
-                StandardizeDirectoryPath( ref directoryPath);
+                StandardizeDirectoryPath(ref directoryPath);
                 if (directoryPath.Length > 1)
                 {
                     char lastCharacter = directoryPath[directoryPath.Length - 1];
@@ -3188,7 +3458,7 @@ namespace IG.Lib
                 {
                     ++numErrors;
                     erStr = Environment.NewLine
-                        + "ERROR while copying directories. " 
+                        + "ERROR while copying directories. "
                             + Environment.NewLine + "  message: " + ex.Message
                             + Environment.NewLine + "  could not create directory: " + target.FullName
                         + Environment.NewLine;
@@ -3375,7 +3645,7 @@ namespace IG.Lib
             Util.OutputLevel = 3;
             try
             {
-                
+
                 string baseDirPath = @"c:/temp/";
                 if (!Directory.Exists(baseDirPath))
                 {

@@ -4300,11 +4300,12 @@ namespace IG.Lib
                     {
                         string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + " [level [igLib [versionLevel]]] : " + Environment.NewLine  
+                        Console.WriteLine(executableName + " " + cmdName + " level igLib versionLevel ass1, ass2... : " + Environment.NewLine  
                             + "  prints some basic information about the current command interpreter.");
                         Console.WriteLine("    level: level of information included (1 - only basic information, default: 3)");
                         Console.WriteLine("    igLib: whether information on IGLib base library is also included.");
                         Console.WriteLine("    versionLevel: number of levels of version included.");
+                        Console.WriteLine("    ass1, ass2...: simple names of eventual additional important assemblies whose names are included.");
                         Console.WriteLine();
                         return null;
                     }
@@ -4312,6 +4313,8 @@ namespace IG.Lib
             bool includeIglib = true;
             int versionLevel = 0;   // default
             bool parsed = false;
+            List<Assembly> additionalAssemblies = null;
+            Assembly[] additionalAssembliesArray = null;
             if (args != null && args.Length > 0)
             {
                 if (!string.IsNullOrEmpty(args[0]))
@@ -4336,11 +4339,26 @@ namespace IG.Lib
                         parsed = int.TryParse(args[2], out res);
                         if (parsed)
                             versionLevel = res;
+                        if (args.Length > 3)
+                        {
+                            additionalAssemblies = new List<Assembly>();
+                            for (int i = 3; i < args.Length; ++i)
+                            {
+                                string arg = args[i];
+                                if (!string.IsNullOrEmpty(arg))
+                                {
+                                    Assembly assembly = UtilSystem.GetAssemblyByName(arg);
+                                    if (assembly != null)
+                                        additionalAssemblies.Add(assembly);
+                                }
+                            }
+                            additionalAssembliesArray = additionalAssemblies.ToArray();
+                        }
                     }
                 }
             }
             string ret = Environment.NewLine + "Command line interpreter by Igor Grešovnik." + Environment.NewLine
-                + UtilSystem.GetApplicationInfo(infoLevel, includeIglib, versionLevel);
+                + UtilSystem.GetApplicationInfo(infoLevel, includeIglib, versionLevel, additionalAssembliesArray);
             return ret;
         }
 
@@ -4356,10 +4374,11 @@ namespace IG.Lib
                     {
                         string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + " [level [igLib [versionLevel]]] : " + Environment.NewLine + "  prints some basic information about the current application.");
+                        Console.WriteLine(executableName + " " + cmdName + " level igLib versionLevel ass1, ass2... : " + Environment.NewLine + "  prints some basic information about the current application.");
                         Console.WriteLine("    level: level of information included (1 - only basic information, default: 3)");
                         Console.WriteLine("    igLib: whether information on IGLib base library is also included.");
                         Console.WriteLine("    versionLevel: number of levels of version included.");
+                        Console.WriteLine("    ass1, ass2...: simple names of eventual additional important assemblies whose names are included.");
                         Console.WriteLine();
                         return null;
                     }
