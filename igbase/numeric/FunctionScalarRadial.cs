@@ -57,6 +57,14 @@ namespace IG.Num
             }
         }
 
+        /// <summary>Changes the 1D function that defines the current radial function.
+        /// <para>Warning: the function should be set only exceptionally. Do not do this when immutability is required.</para></summary>
+        /// <param name="function1d">Function to be set.</param>
+        public virtual void SetFunction(IRealFunction function1d)
+        {
+            Function = function1d;
+        }
+
         private double _epsilon;
 
         /// <summary>Gets or sets a small number used as criteria of where to calculate things (especially

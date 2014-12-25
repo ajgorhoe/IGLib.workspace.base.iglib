@@ -10,9 +10,140 @@ namespace IG.Num
 {
 
 
-    /// <summary>Quadratic scalar function of vector variable. Function is evaluated according to
-    /// q(x) = (1/2)*x^T*G*x + b^T*x + c
-    /// where x is vector of parameters, G is constant Hessian matrix, b is vector of linear coefficients
+
+    /// <summary>Constant scalar function of vector variable. Function is evaluated according to
+    /// f(x) =  c
+    /// where x is vector of parameters,  and c is the constant scalar term (function value at x=0).</summary>
+    /// <remarks>When quadratic function is created or its parameters set, the Matrix parameter 
+    /// of the function is interpreted as Hessian, i.e. twice the matrix of quadratic coefficients.</remarks>
+    /// $A Igor xx Dec10;
+    public class ScalarFunctionConstant : ScalarFunctionUntransformedBase, IScalarFunctionUntransformed
+    {
+
+        #region Construction
+
+        private ScalarFunctionConstant()
+            : base()
+        { }
+
+        /// <summary>Creation of a constant scalar function.
+        /// WARNING:
+        /// Matrix argument is interpreted as Hessian, i.e. twice the matrix of quadratic coefficients.</summary>
+        /// <param name="constantTerm">Constant term.</param>
+        public ScalarFunctionConstant(double constantTerm)
+            : this()
+        {
+            this.ScalarTerm = constantTerm;
+        }
+
+        #endregion Construction
+
+
+        #region Data
+
+
+        /// <summary>Returns the number of constants that specify the linear function of the 
+        /// specified dimension.</summary>
+        /// <param name="dim">Dimension of the space in which quadratic function is defined.</param>
+        public static int GetNumConstants(int dim)
+        {
+            return 1;
+        }
+
+        /// <summary>Gets the number of constants that define the current function. If e.g. the matrix coefficient or the
+        /// vector coefficient is not defined then the corresponding constants are not counted.</summary>
+        public int NumActualConstants
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
+        private double _c;
+
+        /// <summary>Scalar additive constant.</summary>
+        public double ScalarTerm
+        {
+            get { return _c; }
+            protected set { _c = value; }
+        }
+
+        #endregion Data
+
+
+        #region Evaluation
+
+
+        /// <summary>Returns the value of this function at the specified parameter.</summary>
+        public override double Value(IVector parameters)
+        {
+            return ScalarTerm;
+        }
+
+        /// <summary>Tells whether value of the function is defined by implementation. Always true for this case.</summary>
+        public override bool ValueDefined
+        {
+            get { return true; }
+            protected set { throw new InvalidOperationException("Can not set the flag for value defined."); }
+        }
+
+        /// <summary>Calculates first order derivatives (gradient) of this function at the specified parameters.
+        /// WARNING: Plain function, does not check consistency of arguments.</summary>
+        /// <param name="parameters">Vector of parameters where derivatives are evaluated.</param>
+        /// <param name="gradient">Vector where first order derivatives (the gradient) are stored.</param>
+        public override void GradientPlain(IVector parameters, IVector gradient)
+        {
+            gradient.SetZero();
+        }
+
+        /// <summary>Tells whether the first derivative is defined for this function (by implementation, not mathematically)</summary>
+        public override bool GradientDefined
+        {
+            get { return true; }
+            protected set { throw new InvalidOperationException("Can not set the flag for gradient defined."); }
+        }
+
+
+        /// <summary>Calculates the second derivative (Hessian matrix) of this function at the specified parameters.
+        /// WARNING: Plain function, does not check consistency of arguments.</summary>
+        /// <param name="parameters">Vector of parameters where derivatives are evaluated.</param>
+        /// <param name="hessian">Matrix where second derivatives (Hessian matrix) are stored.</param>
+        public override void HessianPlain(IVector parameters, IMatrix hessian)
+        {
+            hessian.SetZero();
+        }
+
+
+        /// <summary>Tells whether the second derivative is defined for this function (by implementation, not mathematically)</summary>
+        public override bool HessianDefined
+        {
+            get { return true; }
+            protected set { throw new InvalidOperationException("Can not set the flag for Hessian defined."); }
+        }
+
+        #endregion Evaluation
+
+
+        #region Examples
+
+        /// <summary>Creates and returns quadratic scalar function in 2D.</summary>
+        public static ScalarFunctionConstant ExampleFunction2d()
+        {
+            double scalTerm;
+            scalTerm = 2;
+            return new ScalarFunctionConstant(scalTerm);
+        }
+
+
+        #endregion Examples
+
+
+    }  // class ScalarFunctionConstant
+
+    /// <summary>Linear scalar function of vector variable. Function is evaluated according to
+    /// q(x) =  b^T*x + c
+    /// where x is vector of parameters, b is vector of linear coefficients
     /// (gradient at x=0) and c is the scalar term (function value at x=0).</summary>
     /// <remarks>When quadratic function is created or its parameters set, the Matrix parameter 
     /// of the function is interpreted as Hessian, i.e. twice the matrix of quadratic coefficients.</remarks>
@@ -26,10 +157,9 @@ namespace IG.Num
             : base()
         { }
 
-        /// <summary>Creation of a quadratic scalar function.
+        /// <summary>Creation of a linear scalar function.
         /// WARNING:
         /// Matrix argument is interpreted as Hessian, i.e. twice the matrix of quadratic coefficients.</summary>
-        /// <param name="hessian">Matrix of second derivatives (Hessian). Can be null (in this case function degrades to linear function).</param>
         /// <param name="gradient0">Vector of linear coefficients - gradient of quadratic function at x = 0. Can be null.</param>
         /// <param name="scalarTerm">Constant term.</param>
         public ScalarFunctionLinear(IVector gradient0, double scalarTerm)
@@ -99,7 +229,7 @@ namespace IG.Num
         public override double Value(IVector parameters)
         {
             double ret = 0.0;
-            ret *= 0.5;
+            // ret *= 0.5;
             if (Gradient0 != null)
                 ret += Vector.ScalarProduct(Gradient0, parameters);
             ret += ScalarTerm;
@@ -107,7 +237,6 @@ namespace IG.Num
         }
 
         /// <summary>Tells whether value of the function is defined by implementation. Always true for this case.</summary>
-        /// <param name="parameters">Vector of parameters at which derivatives are evaluated.</param>
         public override bool ValueDefined
         {
             get { return true; }
