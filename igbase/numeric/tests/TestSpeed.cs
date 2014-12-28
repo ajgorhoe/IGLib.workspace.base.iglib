@@ -398,7 +398,7 @@ namespace IG.Num
             }
             t.Start();
             // Form system of equations:
-            Matrix A = new Matrix(numEq, numEq);
+            IG.Num.Matrix A = new IG.Num.Matrix(numEq, numEq);
             // Matrix.SetRandomSymmetricPositiveDefinite(A);
             Matrix.SetRandomPositiveDiagonallyDominantSymmetric(A, null /* randomGenerator - take global */, 2.0);
             Vector b = Vector.Random(numEq);

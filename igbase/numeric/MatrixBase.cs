@@ -5745,7 +5745,7 @@ namespace IG.Num
             bool passed = true;
             if (tol <= 0)
                 tol = 1.0e-6;
-            double smallNumber = 1e-20;  // e.g. for guarging division by 0
+            double smallNumber = 1e-20;  // e.g. for guarding division by 0
             StopWatch t = new StopWatch();
             try
             {
@@ -6375,7 +6375,7 @@ namespace IG.Num
             bool passed = true;
             if (tol <= 0)
                 tol = 1.0e-6;
-            double smallNumber = 1e-20;  // e.g. for guarging division by 0
+            double smallNumber = 1e-20;  // e.g. for guarding division by 0
             StopWatch t = new StopWatch();
             try
             {
@@ -6524,7 +6524,7 @@ namespace IG.Num
                                 + relativeError + Environment.NewLine);
                         Console.WriteLine("Matrix inverse directly from decomposition: relative error = " + relativeError.ToString("G2"));
                     }
-                    // Check calculation of inverse matrix (through soLDLTtions of equations with identity right-hand side):
+                    // Check calculation of inverse matrix (through solutions of equations with identity right-hand side):
                     MatrixBase.SetZero(inverseMat);
                     t.Start();
                     LdltSolve(LDLT, identityMat, ref auxVec1, ref inverseMat);
@@ -6882,7 +6882,7 @@ namespace IG.Num
             bool passed = true;
             if (tol <= 0)
                 tol = 1.0e-6;
-            double smallNumber = 1e-20;  // e.g. for guarging division by 0
+            double smallNumber = 1e-20;  // e.g. for guarding division by 0
             StopWatch t = new StopWatch();
             try
             {
@@ -7022,7 +7022,7 @@ namespace IG.Num
                                 + relativeError + Environment.NewLine);
                         Console.WriteLine("Matrix inverse directly from decomposition: relative error = " + relativeError.ToString("G2"));
                     }
-                    // Check calculation of inverse matrix (through soCholeskytions of equations with identity right-hand side):
+                    // Check calculation of inverse matrix (through solutions of equations with identity right-hand side):
                     MatrixBase.SetZero(inverseMat);
                     t.Start();
                     CholeskySolve(Cholesky, identityMat, ref auxVec1, ref inverseMat);

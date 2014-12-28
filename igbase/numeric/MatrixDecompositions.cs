@@ -112,12 +112,12 @@ namespace IG.Num
 
         #endregion ThreadLocking
 
+
         #region Data
 
         protected internal int
             _rowCount = 0,  // number of rows of a decomposed matrix
             _columnCount = 0;  // number of columns of a decomposed matrix
-
 
         #endregion Data
 
@@ -169,7 +169,9 @@ namespace IG.Num
 
         #endregion ToOverride
 
+        protected IVector auxB = null;
 
+        protected IVector auxX = null;
 
         /// <summary>Solves A*X = B (a set of linear systems of equations), where B is the 
         /// matrix whose colums are right-hand sides of equations to be solved. Solutions 
@@ -181,9 +183,85 @@ namespace IG.Num
         /// <exception cref="System.SystemException">Matrix is singular.</exception>
         public virtual void Solve(IMatrix B, ref IMatrix X)
         {
-            MatrixBase_MathNetNumerics sol = SolveMathNetNumerics(X);
-            Matrix.Copy(sol, ref X);
+            //MatrixBase_MathNetNumerics sol = SolveMathNetNumerics(X);
+            //Matrix.Copy(sol, ref X);
+
+            int d1 = this._rowCount;
+            int d2 = this._columnCount;
+            if (d1 != d2)
+                throw new InvalidOperationException("Decomposed matrix is not a square matrix, solution with matrix right-hand sides not implemented.");
+            int dim = this._rowCount;
+            int numSystems = B.ColumnCount;
+            if (B.RowCount != dim)
+                throw new ArgumentException("Matrix of right-hand sides: number of rows "
+                    + B.RowCount + " different than dimension of system matrix - " + dim + ".");
+            if (X.RowCount != dim || X.ColumnCount != numSystems)
+                MatrixBase.Resize(ref X, dim, numSystems);
+            if (auxB == null)
+                auxB = new Vector(dim);
+            else if (auxB.Length != dim)
+                auxB = new Vector(dim);
+            if (auxX == null)
+                auxX = new Vector(dim);
+            else if (auxX.Length != dim)
+                auxX = new Vector(dim);
+            for (int whichSystem = 0; whichSystem < numSystems; ++whichSystem)
+            {
+                // Get column of B as right-hand sides:
+                for (int j = 0; j < dim; ++j)
+                    auxB[j] = B[j, whichSystem];
+                // Solve the system with this vector:
+                Solve(auxB, ref auxX);
+                for (int j = 0; j < dim; ++j)
+                    X[j, whichSystem] = auxX[j];
+            }
         }
+
+
+
+
+        ///// <summary>Calculates inverse of the matrix from its specified Cholesky-decomposed matrix.</summary>
+        ///// <param name="CholeskyMatrix">Matrix containing the Cholesky decomposition of the original matrix.</param>
+        ///// <param name="B">Matrix whose columns are right-hand sides of equations to be solved.</param>
+        ///// <param name="auxX">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        ///// Reallocated if necessary.</param>
+        ///// <param name="X">Matrix where result will be stored. Reallocated if necessary.</param>
+        ///// $A Igor Dec14;
+        //private static void CholeskySolve_to_delete(IMatrix CholeskyMatrix, IMatrix B, ref IVector auxX, ref IMatrix X)
+        //{
+        //    if (CholeskyMatrix == null)
+        //        throw new ArgumentException("Matrix containing Cholesky decomposition is not specified (null reference).");
+        //    int dim = CholeskyMatrix.RowCount;
+        //    if (B == null)
+        //        throw new ArgumentException("Matrix of right-hand sides is not specified (null reference).");
+        //    if (B.RowCount != dim)
+        //        throw new ArgumentException("Matrix of right-hand sides does not have as many rows as there are equations.");
+        //    int numSystems = B.ColumnCount;
+        //    if (CholeskyMatrix.ColumnCount != dim)
+        //        throw new ArgumentException("Matrix containing LU decomposition is not a square matrix.");
+        //    if (auxX == null)
+        //        auxX = CholeskyMatrix.GetNewVector(dim);
+        //    if (auxX.Length != dim)
+        //        auxX = CholeskyMatrix.GetNewVector(dim);
+        //    if (X == null)
+        //        X = CholeskyMatrix.GetNew(dim, numSystems);
+        //    if (X.RowCount != dim || X.ColumnCount != dim)
+        //        X = CholeskyMatrix.GetNew(dim, numSystems);
+        //    if (object.ReferenceEquals(CholeskyMatrix, X) || object.ReferenceEquals(CholeskyMatrix, B) || object.ReferenceEquals(B, X))
+        //        throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place to such extent.");
+        //    for (int whichSystem = 0; whichSystem < numSystems; ++whichSystem)
+        //    {
+        //        // Get column of B as right-hand sides:
+        //        for (int j = 0; j < dim; ++j)
+        //            auxX[j] = B[j, whichSystem];
+        //        // Solve the system with this vector:
+        //        CholeskySolve(CholeskyMatrix, auxX, ref auxX);
+        //        for (int j = 0; j < dim; ++j)
+        //            X[j, whichSystem] = auxX[j];
+        //    }
+        //}
+
+
 
         /// <summary>Solves A*X = B (a set of linear systems of equations), where B is the 
         /// matrix whose colums are right-hand sides of equations to be solved, and returns
@@ -797,7 +875,7 @@ namespace IG.Num
 
         /// <summary>Constructor.</summary>
         /// <param name="A">Matrix to be decomposed.</param>
-        public CholeskyDecomposition(Matrix A)
+        public CholeskyDecomposition(IG.Num.Matrix A)
             : this(A.CopyMathNetNumerics)
         { }
 
@@ -1015,7 +1093,6 @@ namespace IG.Num
         //}
 
     }  // class QRDecomposition
-
 
 
     /// <summary>Eigenvalue decomposition of a matrix.
