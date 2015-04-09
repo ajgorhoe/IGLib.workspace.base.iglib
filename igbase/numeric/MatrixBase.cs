@@ -5289,8 +5289,6 @@ namespace IG.Num
         }
 
 
-
-
         /// <summary>Calculates thr Doolittle LU decomposition with partial pivoting (LUP) of a square real matrix.
         /// <para>Throws <see cref="InvalidOperationException"/> if the matrix is singular.</para>
         /// <para>http://en.wikipedia.org/wiki/LU_decomposition#Doolittle_algorithm </para></summary>
@@ -5474,7 +5472,7 @@ namespace IG.Num
                 auxX = luMatrix.GetNewVector(dim);
             if (X == null)
                 X = luMatrix.GetNew(dim, numSystems);
-            if (X.RowCount != dim || X.ColumnCount != dim)
+            if (X.RowCount != dim || X.ColumnCount != numSystems)
                 X = luMatrix.GetNew(dim, numSystems);
             if (object.ReferenceEquals(luMatrix, X) || object.ReferenceEquals(luMatrix, B) || object.ReferenceEquals(B, X))
                 throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place.");
@@ -6036,7 +6034,7 @@ namespace IG.Num
         #endregion LuDecomposition
 
 
-        #region LDLTDecomposition
+        #region LdltDecomposition
 
 
         /// <summary>Calculates LDLT decomposition of a real symmetric square matrix.
@@ -6168,7 +6166,7 @@ namespace IG.Num
                 auxX = ldltMatrix.GetNewVector(dim);
             if (X == null)
                 X = ldltMatrix.GetNew(dim, numSystems);
-            if (X.RowCount != dim || X.ColumnCount != dim)
+            if (X.RowCount != dim || X.ColumnCount != numSystems)
                 X = ldltMatrix.GetNew(dim, numSystems);
             if (object.ReferenceEquals(ldltMatrix, X) || object.ReferenceEquals(ldltMatrix, B) || object.ReferenceEquals(B, X))
                 throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place to such extent.");
@@ -6348,7 +6346,7 @@ namespace IG.Num
         }
 
 
-        #region LDLTDecomposition.Tests
+        #region LdltDecomposition.Tests
 
 
         /// <summary>Performs a test of calculatons performed via LDLT decomposition of a matrix.
@@ -6566,10 +6564,10 @@ namespace IG.Num
             return passed;
         }
 
-        #endregion LDLTDecomposition.Tests
+        #endregion LdltDecomposition.Tests
 
 
-        #endregion LDLTDecomposition
+        #endregion LdltDecomposition
 
 
 
@@ -6714,7 +6712,7 @@ namespace IG.Num
                 auxX = CholeskyMatrix.GetNewVector(dim);
             if (X == null)
                 X = CholeskyMatrix.GetNew(dim, numSystems);
-            if (X.RowCount != dim || X.ColumnCount != dim)
+            if (X.RowCount != dim || X.ColumnCount != numSystems)
                 X = CholeskyMatrix.GetNew(dim, numSystems);
             if (object.ReferenceEquals(CholeskyMatrix, X) || object.ReferenceEquals(CholeskyMatrix, B) || object.ReferenceEquals(B, X))
                 throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place to such extent.");
@@ -7172,7 +7170,286 @@ namespace IG.Num
         #endregion CholeskyDecomposition
 
 
+        #region QrDecompositon
 
+
+        /// <summary>Calculates QR decomposition of a real invertible matrix by using Gramm-Schmidt orthogonalization.
+        /// <para>Q is orthogonal matrix (dot product of distinct columns is 0 and that of the same columns is 1), 
+        /// and R is upper triangular.</para>
+        /// <para>Decomposition can NOT be done in place.</para></summary>
+        /// <param name="A">Matrix whose decomposition is calculated.</param>
+        /// <param name="resQ">Matrix where the orthogonal factor Q is stored.</param>
+        /// <param name="resR">Matrix where the uppker triangular factor R is stored.</param>
+        /// <param name="tol">Tolerance for detection of singularity (must be a small positive number greater or equal to 0).</param>
+        /// <remarks>See also:
+        /// <para>http://en.wikipedia.org/wiki/QR_decomposition#Using_the_Gram.E2.80.93Schmidt_process</para></remarks>
+        /// $A Igor Mar15;
+        public static bool QrDecomposeGrammSchmidt(IMatrix A, ref IMatrix resQ, ref IMatrix resR, double tol = 1e-12)
+        {
+            if (tol <= 0)
+                tol = 1.0e-12;
+            if (A == null)
+                throw new ArgumentException("Matrix to be QR decomposed is not specified (null reference).");
+            int dim = A.RowCount;
+            if (A.ColumnCount != dim)
+                throw new ArgumentException("Matrix to be QR decomposed is not a square matrix.");
+            if (resQ == null)
+                resQ = A.GetNew(dim, dim);
+            if (resQ.RowCount != dim || resQ.ColumnCount != dim)
+                resQ = A.GetNew(dim, dim);
+            if (resR == null)
+                resR = A.GetNew(dim, dim);
+            if (resR.RowCount != dim || resR.ColumnCount != dim)
+                resR = A.GetNew(dim, dim);
+
+            for (int whichCol = 0; whichCol < dim; ++ whichCol)
+            {
+                // Copy column from A to Q:
+                for (int i = 0; i < dim; ++ i)
+                    resQ[i, whichCol] = A[i, whichCol];
+                for (int whichBasis = 0; whichBasis < whichCol; ++ whichBasis)
+                {
+                    double dotProd = 0;
+                    // Calculate inner product between orthonormed vector No. whichProj and the current column vector:
+                    for (int i = 0; i < dim; ++i)
+                        dotProd += resQ [i, whichBasis] * resQ[i, whichCol];
+                    // from the current column vector, subtract its projection on the orthonormed vector:
+                    for (int i = 0; i < dim; ++i)
+                    {
+                        resQ[i, whichCol] -= dotProd * resQ[i, whichBasis];
+                    }
+                }
+                // Finally, normalize the newly calculated column of Q:
+                double norm = 0.0;
+                for (int i = 0; i < dim; ++ i)
+                {
+                    double el = resQ[i, whichCol];
+                    norm += el * el;
+                }
+                norm = Math.Sqrt(norm);
+                if (norm < tol)
+                    throw new InvalidOperationException("Orthogonalization failed in QR decomposition, rank deficiency (tolerance: " + tol + ").");
+                double normReciprocal = 1.0 / norm;
+                for (int i = 0; i < dim; ++i)
+                {
+                    resQ[i, whichCol] *= normReciprocal;
+                }
+                // Now that we have Q, calculate R: 
+                for (int row = 0; row < dim; ++row)
+                {
+                    for (int col = 0; col < dim; ++col)
+                    {
+                        if (row > col)
+                            resR[row, col] = 0;
+                        else
+                        {
+                            double dotProd = 0;
+                            for (int i = 0; i < dim; ++i)
+                            {
+                                dotProd += resQ[i, row] * A[i, col];
+                            }
+                            resR[row, col] = dotProd;
+                        }
+                    }
+                }
+                
+            }
+
+                
+            return true;
+        }
+
+
+        /// <summary>Calculates QR decomposition of a real invertible matrix.
+        /// <para>Q is orthogonal matrix (dot product of distinct columns is 0 and that of the same columns is 1), 
+        /// and R is upper triangular.</para>
+        /// <para>Decomposition can NOT be done in place.</para></summary>
+        /// <param name="A">Matrix whose decomposition is calculated.</param>
+        /// <param name="resQ">Matrix where the orthogonal factor Q is stored.</param>
+        /// <param name="resR">Matrix where the uppker triangular factor R is stored.</param>
+        /// <param name="tol">Tolerance for detection of singularity (must be a small positive number greater or equal to 0).</param>
+        /// <remarks>See also:
+        /// <para>http://en.wikipedia.org/wiki/QR_decomposition</para></remarks>
+        /// $A Igor Mar15;
+        public static bool QrDecompose(IMatrix A, ref IMatrix resQ, ref IMatrix resR, double tol = 1e-12)
+        {
+            return QrDecomposeGrammSchmidt(A, ref resQ, ref resR, tol);
+        }
+
+        
+        /// <summary>Solves a system of eauations with the specified QR decomposition of a real symmetric square matrix.
+        /// <para>Used in conjunction with the <see cref="QrDecompose"/> method for calculation of decomposition.</para>
+        /// <para>Can NOT be done in place (input and result vectors can reference the same object).</para></summary>
+        /// <param name="factorQ">First factor of QR decomposition (orthogonal Q, obtained by <see cref="QrDecompose"/>).</param>
+        /// <param name="factorR">Second factor of QR decomposition (upper triangular R, obtained by <see cref="QrDecompose"/>).</param>
+        /// <param name="b">Vector of the right-hand sides of the system of equations.</param>
+        /// <param name="x">Vector where result is stored.</param>
+        /// $A Igor Mar15;
+        public static void QrSolve(IMatrix factorQ, IMatrix factorR, IVector b, ref IVector x)
+        {
+            if (factorQ == null)
+                throw new ArgumentException("Factor Q of the QR decomposed matrix not specified (null reference).");
+            int dim = factorQ.RowCount;
+            if (factorQ.ColumnCount != dim)
+                throw new ArgumentException("Factor Q of the QR decomposed matrix is not a square matrix.");
+            if (factorR == null)
+                throw new ArgumentException("Factor R of the QR decomposed matrix not specified (null reference).");
+            if (factorR.RowCount != dim)
+                throw new ArgumentException("Factor R of the QR decomposed matrix has wrong number of rows, " 
+                    + factorR.RowCount + " instead of " + dim + ".");
+            if (factorR.ColumnCount != dim)
+                throw new ArgumentException("Factor R of the QR decomposed matrix is not a square matrix.");
+            if (b == null)
+                throw new ArgumentException("Vector of right-hand sides is not specified (null reference).");
+            if (b.Length != dim)
+                throw new ArgumentException("Vector of right-hand sides is of inconsistent dimentions, " + b.Length + " instead of " + dim + ".");
+            if (x == null)
+                x = b.GetNew(dim);
+            else if (x.Length != dim)
+                x = b.GetNew(dim);
+            if (object.ReferenceEquals(b, x))
+                throw new ArgumentException("Vectors of right-hand sides and solution are the same (reference equality), QR solve can not be done in place.");
+
+            IVector auxVec = x;
+
+            //if (auxVec == null)
+            //    auxVec = b.GetNew(dim);
+            //else if (auxVec.Length != dim)
+            //    auxVec = b.GetNew(dim);
+            //if (object.ReferenceEquals(b, auxVec))
+            //    throw new ArgumentException("The auxiliary vector and vector of right-hand sides are the same vectors (reference equality).");
+
+            // Multiply by Q transposed form the left to obtain a new equation with system 
+            // matrix R and new rightphand sides auxVec:
+            MatrixBase.MultiplyTranspVecPlain(factorQ, b, auxVec);
+
+            // Solve the upper triangular system with system matrix R and right-hand sides auxVec:
+            for (int row = dim - 1; row >= 0; --row)
+            {
+                double xx = auxVec[row];
+                for (int col = row + 1; col < dim; ++ col)
+                {
+                    xx -= factorR[row, col] * x[col];
+                }
+                xx /= factorR[row, row];
+                x[row] = xx;
+            }
+
+        }
+
+
+        /// <summary>Calculates inverse of the matrix from its specified LDLT-decomposed matrix.</summary>
+        /// <param name="factorQ">First factor of QR decomposition (orthogonal Q, obtained by <see cref="QrDecompose"/>).</param>
+        /// <param name="factorR">Second factor of QR decomposition (upper triangular R, obtained by <see cref="QrDecompose"/>).</param>
+        /// <param name="B">Matrix whose columns are right-hand sides of equations to be solved.</param>
+        /// <param name="auxB">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary.</param>
+        /// <param name="auxX">Another auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary. May not be the same as <paramref name="auxB"/>.</param>
+        /// <param name="X">Matrix where result will be stored. Reallocated if necessary.</param>
+        /// $A Igor Dec14;
+        public static void QrSolve(IMatrix factorQ, IMatrix factorR, IMatrix B, ref IVector auxB, ref IVector auxX, ref IMatrix X)
+        {
+            if (factorQ == null)
+                throw new ArgumentException("Factor Q of the QR decomposed matrix not specified (null reference).");
+            int dim = factorQ.RowCount;
+            if (factorQ.ColumnCount != dim)
+                throw new ArgumentException("Factor Q of the QR decomposed matrix is not a square matrix.");
+            if (factorR == null)
+                throw new ArgumentException("Factor R of the QR decomposed matrix not specified (null reference).");
+            if (factorR.RowCount != dim)
+                throw new ArgumentException("Factor R of the QR decomposed matrix has wrong number of rows, "
+                    + factorR.RowCount + " instead of " + dim + ".");
+            if (factorR.ColumnCount != dim)
+                throw new ArgumentException("Factor R of the QR decomposed matrix is not a square matrix.");
+            if (B == null)
+                throw new ArgumentException("Matrix of right-hand sides is not specified (null reference).");
+            if (B.RowCount != dim)
+                throw new ArgumentException("Matrix of right-hand sides does not have as many rows as there are equations.");
+            int numSystems = B.ColumnCount;
+            if (auxB == null)
+                auxB = factorQ.GetNewVector(dim);
+            if (auxB.Length != dim)
+                auxB = factorQ.GetNewVector(dim);
+            if (X == null)
+                X = factorQ.GetNew(dim, numSystems);
+            if (X.RowCount != dim || X.ColumnCount != numSystems)
+                X = factorQ.GetNew(dim, numSystems);
+            if (object.ReferenceEquals(factorQ, X) || object.ReferenceEquals(factorQ, B) || object.ReferenceEquals(B, X)
+                || object.ReferenceEquals (factorR, X) || object.ReferenceEquals(factorR, B))
+                throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place to such extent.");
+            if (object.ReferenceEquals(auxB, auxX))
+                throw new ArgumentException("Auxiliary vectors for single right-hand sides and solutions are the same (reference equality).");
+            for (int whichSystem = 0; whichSystem < numSystems; ++whichSystem)
+            {
+                // Get column of B as right-hand sides:
+                for (int j = 0; j < dim; ++j)
+                    auxB[j] = B[j, whichSystem];
+                // Solve the system with this vector:
+                QrSolve(factorQ, factorR, auxB, ref auxX);
+                for (int j = 0; j < dim; ++j)
+                    X[j, whichSystem] = auxX[j];
+            }
+        }
+
+        /// <summary>Calculates inverse of the matrix from its specified LDLT decomposition.</summary>
+        /// <param name="ldltMatrix">Matrix containing the LDLT decomposition of the original matrix (with partial pivoting).</param>
+        /// <param name="auxX">Another auxiliary vector of the same dimension as dimensions of the decomposed matrix.
+        /// Reallocated if necessary.</param>
+        /// <param name="res">Matrix where result will be stored. Reallocated if necessary.</param>
+        /// $A Igor Dec14;
+        public static void QrInverse(IMatrix factorQ, IMatrix factorR, ref IVector auxB, ref IVector auxX, ref IMatrix res)
+        {
+            if (factorQ == null)
+                throw new ArgumentException("Factor Q of the QR decomposed matrix not specified (null reference).");
+            int dim = factorQ.RowCount;
+            if (factorQ.ColumnCount != dim)
+                throw new ArgumentException("Factor Q of the QR decomposed matrix is not a square matrix.");
+            if (factorR == null)
+                throw new ArgumentException("Factor R of the QR decomposed matrix not specified (null reference).");
+            if (factorR.RowCount != dim)
+                throw new ArgumentException("Factor R of the QR decomposed matrix has wrong number of rows, "
+                    + factorR.RowCount + " instead of " + dim + ".");
+            if (factorR.ColumnCount != dim)
+                throw new ArgumentException("Factor R of the QR decomposed matrix is not a square matrix.");
+            if (auxB == null)
+                auxB = factorQ.GetNewVector(dim);
+            if (auxB.Length != dim)
+                auxB = factorQ.GetNewVector(dim);
+            if (auxX == null)
+                auxX = factorQ.GetNewVector(dim);
+            if (auxX.Length != dim)
+                auxX = factorQ.GetNewVector(dim);
+            if (res == null)
+                res = factorQ.GetNew(dim, dim);
+            if (res.RowCount != dim || res.ColumnCount != dim)
+                res = factorQ.GetNew(dim, dim);
+            if (object.ReferenceEquals(factorQ, res) || object.ReferenceEquals(factorR, res) )
+                throw new ArgumentException("Input matrix the same as result matrix. Can not be done in place to such extent.");
+            if (object.ReferenceEquals(auxB, auxX))
+                throw new ArgumentException("Auxiliary vectors for single right-hand sides and solutions are the same (reference equality).");
+
+            for (int whichSystem = 0; whichSystem < dim; ++whichSystem)
+            {
+                // Get column of B as right-hand sides:
+                for (int j = 0; j < dim; ++j)
+                {
+                    // make right-hand vector contain a column of identity matrix:
+                    if (j != whichSystem)
+                        auxB[j] = 0.0;
+                    else
+                        auxB[j] = 1.0;
+                }
+                // Solve the system with this vector:
+                QrSolve(factorQ, factorR, auxB, ref auxX);
+                for (int j = 0; j < dim; ++j)
+                    res[j, whichSystem] = auxX[j];
+            }
+        }
+
+
+
+        #endregion QrDecomposition
 
         #region Testing
 

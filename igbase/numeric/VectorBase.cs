@@ -70,7 +70,7 @@ namespace IG.Num
 
 
         /// <summary>p-norm, p-th root of sum of absolute values of components raised to the power of p.</summary>
-        double NormP(int p);
+        double NormP(double p);
 
 
         /// <summary>Infinity-norm, maximum absolute value of any component.</summary>
@@ -457,12 +457,17 @@ namespace IG.Num
 
 
         /// <summary>p-norm, p-th root of sum of absolute values of components raised to the power of p.</summary>
-        public virtual double NormP(int p)
+        /// <param name="p">Power of the norm, must be greater or equal to 1.
+        /// <para>For <paramref name="p"/> = 1, we obtain taxicab norm, for <paramref name="p"/> = 2 we obtain Euclidean norm, 
+        /// and as <paramref name="p"/> approaches infinity, the result approaches the infinity norm 
+        /// (but beware of large numbers and numerical stability).</para></param>
+        /// <exception cref="ArgumentException">If p is less than 1.0.</exception>
+        public virtual double NormP(double p)
         {
             double ret = 0.0;
             for (int i = 0; i < Length; ++i)
                 ret += Math.Pow(Math.Abs(this[i]), p);
-            return Math.Pow(ret, 1/(double) p);
+            return Math.Pow(ret, 1.0 / p);
         }
 
 
@@ -481,6 +486,184 @@ namespace IG.Num
                 return ret;
             }
             
+        }
+
+
+        /// <summary>Returns Euclidean norm of the specified vector.
+        /// <para>Vector can NOT be null (inthis case, exception is thrown).</para></summary>
+        public static double NormPlain(IVector a)
+        {
+            double ret = 0;
+            int dim = a.Length;
+            for (int i = 0; i < dim; ++i)
+            {
+                double el = a[i];
+                ret += el * el;
+            }
+            ret = Math.Sqrt(ret);
+            return ret;
+        }
+
+
+        /// <summary>Returns Euclidean norm of the specified vector.
+        /// <para>Vector can be null (0 is returned in this case).</para></summary>
+        public static double NormStatic(IVector a)
+        {
+            double ret = 0;
+            if (a != null)
+            {
+                int dim = a.Length;
+                for (int i = 0; i < dim; ++i)
+                {
+                    double el = a[i];
+                    ret += el * el;
+                }
+                ret = Math.Sqrt(ret);
+            }
+            return ret;
+        }
+
+        /// <summary>Returns Euclidean norm of the specified vector.
+        /// <para>Vector can NOT be null (inthis case, exception is thrown).</para></summary>
+        public static double Norm2Plain(IVector a)
+        {
+            double ret = 0;
+            int dim = a.Length;
+            for (int i = 0; i < dim; ++i)
+            {
+                double el = a[i];
+                ret += el * el;
+            }
+            ret = Math.Sqrt(ret);
+            return ret;
+        }
+
+        /// <summary>Returns Euclidean norm of the specified vector.
+        /// <para>Vector can be null (0 is returned in this case).</para></summary>
+        public static double Norm2Static(IVector a)
+        {
+            double ret = 0;
+            if (a != null)
+            {
+                int dim = a.Length;
+                for (int i = 0; i < dim; ++i)
+                {
+                    double el = a[i];
+                    ret += el * el;
+                }
+                ret = Math.Sqrt(ret);
+            }
+            return ret;
+        }
+
+        /// <summary>Returns the 1-norm (Manhattan or Taxicab norm, sum of element absolute values) of the specified vector.
+        /// <para>Vector can NOT be null (inthis case, exception is thrown).</para></summary>
+        public static double Norm1Plain(Vector a)
+        {
+            double ret = 0;
+            int dim = a.Length;
+            for (int i = 0; i < dim; ++i)
+            {
+                ret += Math.Abs(a[i]);
+            }
+            return ret;
+        }
+
+        /// <summary>Returns the 1-norm (Manhattan or Taxicab norm, sum of element absolute values) of the specified vector.
+        /// <para>Vector can be null (0 is returned in this case).</para></summary>
+        public static double Norm1Static(IVector a)
+        {
+            double ret = 0;
+            if (a != null)
+            {
+                int dim = a.Length;
+                for (int i = 0; i < dim; ++i)
+                {
+                    ret += Math.Abs(a[i]);
+                }
+            }
+            return ret;
+        }
+
+        /// <summary>Returns the p-norm (p-th root of sum of absolute values of components raised to the power of p) of the specified vector.
+        /// <para>Vector can NOT be null (inthis case, exception is thrown).</para></summary>
+        /// <param name="a">Vector whose norm is calculated.</param>
+        /// <param name="p">Power of the norm, must be greater or equal to 1.
+        /// <para>For <paramref name="p"/> = 1, we obtain taxicab norm, for <paramref name="p"/> = 2 we obtain Euclidean norm, 
+        /// and as <paramref name="p"/> approaches infinity, the result approaches the infinity norm 
+        /// (but beware of large numbers and numerical stability).</para></param>
+        /// <exception cref="ArgumentException">If p is less than 1.0.</exception>
+        public static double NormPPlain(Vector a, double p)
+        {
+            if (p < 1.0)
+                throw new ArgumentException("For a p-norm, power must be greater or equal to 1. Actual: " + p + ".");
+            double ret = 0;
+            int dim = a.Length;
+            for (int i = 0; i < dim; ++i)
+            {
+                ret += Math.Pow(Math.Abs(a[i]), p);
+            }
+            ret = Math.Pow(ret, 1.0 / p);
+            return ret;
+        }
+
+        /// <summary>Returns the p-norm (p-th root of sum of absolute values of components raised to the power of p) of the specified vector.
+        /// <para>Vector can be null (0 is returned in this case).</para></summary>
+        /// <param name="a">Vector whose norm is calculated.</param>
+        /// <param name="p">Power of the norm, must be greater or equal to 1.
+        /// <para>For <paramref name="p"/> = 1, we obtain taxicab norm, for <paramref name="p"/> = 2 we obtain Euclidean norm, 
+        /// and as <paramref name="p"/> approaches infinity, the result approaches the infinity norm 
+        /// (but beware of large numbers and numerical stability).</para></param>
+        /// <exception cref="ArgumentException">If p is less than 1.0.</exception>
+        public static double NormPStatic(IVector a, double p)
+        {
+            if (p < 1.0)
+                throw new ArgumentException("For a p-norm, power must be greater or equal to 1. Actual: " + p + ".");
+            double ret = 0;
+            if (a != null)
+            {
+                int dim = a.Length;
+                for (int i = 0; i < dim; ++i)
+                {
+                    ret += Math.Pow(Math.Abs(a[i]), p);
+                }
+                ret = Math.Pow(ret, 1.0 / p);
+            }
+            return ret;
+        }
+
+
+        /// <summary>Returns the Infinity-norm (maximum absolute value of any element) of the specified vector.
+        /// <para>Vector can NOT be null (inthis case, exception is thrown).</para></summary>
+        public static double NormInfPlain(Vector a)
+        {
+            double ret = 0;
+            int dim = a.Length;
+            for (int i = 0; i < dim; ++i)
+            {
+                double absEl = Math.Abs(a[i]);
+                if (absEl > ret)
+                    ret = absEl;
+            }
+            return ret;
+        }
+
+        /// <summary>Returns the Infinity-norm (maximum absolute value of any element) of the specified vector.
+        /// <para>Vector can be null (0 is returned in this case).</para></summary>
+        public static double NormInfStatic(IVector a)
+        {
+            double ret = 0;
+            if (a != null)
+            {
+                int dim = a.Length;
+                for (int i = 0; i < dim; ++i)
+                {
+                    double absEl = Math.Abs(a[i]);
+                    if (absEl > ret)
+                        ret = absEl;
+                }
+            }
+            return ret;
         }
 
 
@@ -636,6 +819,13 @@ namespace IG.Num
             return Math.Sqrt(ret);
         }
 
+
+
+
+
+
+
+
         #endregion Norms
 
 
@@ -657,7 +847,7 @@ namespace IG.Num
         /// <returns></returns>
         public void Normalize()
         {
-            double norm = Norm;
+            double norm = this.Norm;
             if (!MathNet.Numerics.Precision.AlmostEqual(0.0, norm))
                 Divide(this, norm, this);
         }
@@ -1194,8 +1384,7 @@ namespace IG.Num
             for (i = 0; i < a.Length; ++i)
                 result[i] = a[i] + b[i];
         }
-
-
+        
 
         /// <summary>Sums two vectors and stores the result in the specified result vector.
         /// WARNING: dimensions of operands must match, otherwise an exception is thrown.
@@ -1278,8 +1467,143 @@ namespace IG.Num
                     result[i] = a[i] - b[i];
         }
 
+        #region Static.Projection
 
-        #region ArrayOperations
+        /// <summary>Calculates orthogonal projection of the original vector on the specified vector, and stores the 
+        /// projection in the specified result, where the inner project of the vector to which projection is performed
+        /// is specified.
+        /// <para>The dot product is used as inner product of the vector space.</para>
+        /// <para>No checks are performed (e.g. dimension checks or whether references are non-null).</para></summary>
+        /// <param name="original">The vector that is orthogonally projected to another vector.</param>
+        /// <param name="onWhich">Vector on which the original vector is projected. It must be allocated with the same 
+        /// dimension as <paramref name="original"/>.</param>
+        /// <param name="onWhichProductSelf">The specified inner product of <paramref name="onWhich"/> by itself.
+        /// <para>WARNING: this is square of the norm of vector corresponding to the specified dot product.</para></param>
+        /// <param name="result">Vector where result is storeb. It must be allocated with the same dimension as input vectors.</param>
+        /// <param name="tolerance">Tolerance for the projust of projection vector by itself. Shoulld be greater or equal to 0.</param>
+        public static void OrthogonalProjectionPlain(IVector original, IVector onWhich, double onWhichProductSelf,
+            IVector result, double tolerance = 0.0)
+        {
+            if (onWhichProductSelf <= tolerance)
+            {
+                if (tolerance < 0)
+                    throw new ArgumentException("Tolerance for inner product of projection vector by itself is less than 0(" + tolerance + ").");
+                throw new ArgumentException("Product of projection vector by itself is below tolerance (" + tolerance + ").");
+            }
+            int dim = original.Length;
+            double originalProductOnWhich = 0;
+            for (int i = 0; i < dim; ++i)
+            {
+                originalProductOnWhich += onWhich[i] * original[i];
+            }
+            for (int i = 0; i < dim; ++i)
+            {
+                result[i] = onWhich[i] * originalProductOnWhich / onWhichProductSelf;
+            }
+        }
+
+        /// <summary>Calculates orthogonal projection of the original vector on the specified vector, and stores the 
+        /// projection in the specified result.
+        /// <para>The dot product is used as inner product of the vector space.</para>
+        /// <para>No checks are performed (e.g. dimension checks or whether references are non-null).</para></summary>
+        /// <param name="original">The vector that is orthogonally projected to another vector.</param>
+        /// <param name="onWhich">Vector on which the original vector is projected. It must be allocated with the same 
+        /// dimension as <paramref name="original"/>.</param>
+        /// <param name="result">Vector where result is storeb. It must be allocated with the same dimension as input vectors.</param>
+        /// <param name="tolerance">Tolerance for the projust of projection vector by itself. Shoulld be greater or equal to 0.</param>
+        public static void OrthogonalProjectionPlain(IVector original, IVector onWhich, IVector result, double tolerance = 0.0)
+        {
+            int dim = original.Length;
+            double onWhichProductSelf = 0;
+            for (int i = 0; i < dim; ++i)
+            {
+                double el = onWhich[i];
+                onWhichProductSelf += el * el;
+            }
+            OrthogonalProjectionPlain(original, onWhich, onWhichProductSelf, result, tolerance);
+        }
+
+
+
+        /// <summary>Calculates orthogonal projection of the original vector on the specified vector, and stores the 
+        /// projection in the specified result, where the inner project of the vector to which projection is performed
+        /// is specified.
+        /// <para>The dot product is used as inner product of the vector space.</para>
+        /// <para>No checks are performed (e.g. dimension checks or whether references are non-null).</para></summary>
+        /// <param name="original">The vector that is orthogonally projected to another vector.</param>
+        /// <param name="onWhich">Vector on which the original vector is projected. It must be allocated with the same 
+        /// dimension as <paramref name="original"/>.</param>
+        /// <param name="onWhichProductSelf">The specified inner product of <paramref name="onWhich"/> by itself.</param>
+        /// <param name="result">Vector where result is storeb. It must be allocated with the same dimension as input vectors.</param>
+        /// <param name="tolerance">Tolerance for the projust of projection vector by itself. Shoulld be greater or equal to 0.</param>
+        public static void OrthogonalProjection(IVector original, IVector onWhich, double onWhichProductSelf,
+            ref IVector result, double tolerance = 0.0)
+        {
+            if (original == null)
+                throw new ArgumentException("Vector that is projected is not specified (null reference).");
+            if (onWhich != null)
+                throw new ArgumentException("Vector onto which the original vector is projected is not specified (null reference).");
+            int dim = original.Length;
+            if (onWhich.Length != dim)
+                throw new ArgumentException("Dimension of the vector on which original is projected does not match: " + onWhich.Length
+                    + " instead of " + dim + ".");
+            if (result == null)
+                result = original.GetNew();
+            else if (result.Length != dim)
+                Vector.Resize(ref result, dim);
+            if (onWhichProductSelf <= tolerance)
+            {
+                if (tolerance < 0)
+                    throw new ArgumentException("Tolerance for inner product of projection vector by itself is less than 0(" + tolerance + ").");
+                throw new ArgumentException("Product of projection vector by itself is below tolerance (" + tolerance + ").");
+            }
+            double originalProductOnWhich = 0;
+            for (int i = 0; i < dim; ++i)
+            {
+                originalProductOnWhich += onWhich[i] * original[i];
+            }
+            for (int i = 0; i < dim; ++i)
+            {
+                result[i] = onWhich[i] * originalProductOnWhich / onWhichProductSelf;
+            }
+        }
+
+        /// <summary>Calculates orthogonal projection of the original vector on the specified vector, and stores the 
+        /// projection in the specified result.
+        /// <para>The dot product is used as inner product of the vector space.</para>
+        /// <para>No checks are performed (e.g. dimension checks or whether references are non-null).</para></summary>
+        /// <param name="original">The vector that is orthogonally projected to another vector.</param>
+        /// <param name="onWhich">Vector on which the original vector is projected. It must be allocated with the same 
+        /// dimension as <paramref name="original"/>.</param>
+        /// <param name="result">Vector where result is storeb. It must be allocated with the same dimension as input vectors.</param>
+        /// <param name="tolerance">Tolerance for the projust of projection vector by itself. Shoulld be greater or equal to 0.</param>
+        public static void OrthogonalProjection(IVector original, IVector onWhich, ref IVector result, double tolerance = 0.0)
+        {
+            if (original == null)
+                throw new ArgumentException("Vector that is projected is not specified (null reference).");
+            if (onWhich != null)
+                throw new ArgumentException("Vector onto which the original vector is projected is not specified (null reference).");
+            int dim = original.Length;
+            if (onWhich.Length != dim)
+                throw new ArgumentException("Dimension of the vector on which original is projected does not match: " + onWhich.Length
+                    + " instead of " + dim + ".");
+            if (result == null)
+                result = original.GetNew();
+            else if (result.Length != dim)
+                Vector.Resize(ref result, dim);
+            double onWhichProductSelf = 0;
+            for (int i = 0; i < dim; ++i)
+            {
+                double el = onWhich[i];
+                onWhichProductSelf += el * el;
+            }
+            OrthogonalProjection(original, onWhich, onWhichProductSelf, ref result, tolerance);
+        }
+
+        #endregion Static.Projectioin
+
+
+        #region Static.ArrayOperations
 
         /// <summary>Addition of a scalar to all components of a vector.
         /// This is a plain version of the method that does not perform any consistency checks.
@@ -1537,10 +1861,10 @@ namespace IG.Num
         }
 
 
-        #endregion ArrayOperations
+        #endregion Static.ArrayOperations
 
 
-        #region Products
+        #region Static.Products
 
         /// <summary>Scalar product of teo vectors.
         /// This is a plain version of the method that does not perform any consistency checks.<summary>
@@ -1855,10 +2179,10 @@ namespace IG.Num
         }
 
 
-        #endregion Products
+        #endregion Static.Products
 
 
-        #region Auxiliary
+        #region Static.Auxiliary
 
         /// <summary>Returns hash code of the specified vector.</summary>
         /// <param name="vec">Vector whose hath code is returned.</param>
@@ -1934,10 +2258,570 @@ namespace IG.Num
         }
 
 
-        #endregion Auxiliary
+        #endregion Static.Auxiliary
+
+
+
+
+
+        #region Static.OrthogonalizationGramSchmidt
+
+
+
+
+        /// <summary>Performs the Gramm-Schmidt orthogonalization procedure in order to calculate a set of orthonormal 
+        /// vectors from the specified set of arbitrary independent vectors.
+        /// <para>This method is robust, it fails if input vectors are almost linearly dependent (limited by tolerance).</para></summary>
+        /// <param name="original">A set of original vectors, must be of the same dimensiions.</param>
+        /// <param name="resOrthogonal">Resulting list where a set of orthogonal vectors is stored.</param>
+        /// <param name="resNorms">A vector where norms of the resulting orthogonal vectors are stored. Its 
+        /// dimension must be at least equal to the number of original vectors, otherwise it is resized to the dimension
+        /// of the original vectors.</param>
+        /// <param name="auxProjection">Auxiliary vector used in computatioin.</param>
+        /// <param name="tolDependent">Tolerance on the size of the vector after subtracting all projections, divided by original size.</param>
+        /// <param name="normalize">If true then the resulting vectors are normalized, otherwise they are not.</param>
+        /// <param name="numRequestedVectors">Number of requested normal vectors. If 0 then the number is the same as vector dimension.</param>
+        /// <param name="rand">Random number generator used for generation of random original vectors when this is necessary (i.e., 
+        /// when the number of provided linnearly independent original vector is smaller than the requested number of calculated 
+        /// vectors). If not specified then the global random number generator is taken.</param>
+        /// <param name="maxExcessGenerated">Maximal number of excessive original vectors that are randomly generated, to compensate for
+        /// linearly dependent input vectors. This is the number of randomly generated input vectors above those eventually needed because 
+        /// of linear dependency or insufficient number of provided input vectors.
+        /// <para>If 0 then only the minimal number of generated vectors is allowed in order to compensate for insufficient number of 
+        /// procided input vectors (i.e. less than the number of requested v.) o for linear dependency upon them. If any generated input
+        /// vector is dependent on input and previously generated vectors then the operation will fail with exception thrown.</para>
+        /// <para>If -1 then generation of additional input vectors is not allowed at all, and in the case of insufficiency of input
+        /// vectors (too few linearly independent vectors) operation will fail with exception thrown.</para>
+        /// <para>If positive, this number tells how many additional input vectors can be generated because other generated vectors
+        /// (including the necessary ones - due to insufficiency of input vectors) suffered for linear dependency.</para></param>
+        /// <returns>The number of orthogonal vectors that were actually calculated from the specified original vectors. This coincides with 
+        /// the dimension of the space spanned by the provided original vectors.</returns>
+        public static void OrthoNormalizeGramSchmidt(IList<IVector> original, ref IList<IVector> resOrthogonal,
+            ref IVector resNorms, ref IVector auxProjection,
+            double tolDependent = 1e-10, bool normalize = false, int numRequestedVectors = 0,
+            IRandomGenerator rand = null, int maxExcessGenerated = 5)
+        {
+            OrthogonalizeGramSchmidt(original, ref resOrthogonal,
+                ref resNorms, ref auxProjection, tolDependent, true /* normalize */, numRequestedVectors, rand, maxExcessGenerated);
+        }
+
+        /// <summary>Performs the Gramm-Schmidt orthogonalization procedure in order to calculate a set of orthogonall 
+        /// vectors from the specified set of arbitrary independent vectors.
+        /// <para>This method is robust, if input vectors are almost linearly dependent (limited by tolerance) then random
+        /// iput vectors are generated and replace the original ones, until the orthogonal set is finally created..</para></summary>
+        /// <param name="original">A set of original vectors, must be of the same dimensiions.</param>
+        /// <param name="resOrthogonal">Resulting list where a set of orthogonal vectors is stored.</param>
+        /// <param name="resNorms">A vector where norms of the resulting orthogonal vectors are stored. Its 
+        /// dimension must be at least equal to the number of original vectors, otherwise it is resized to the dimension
+        /// of the original vectors.</param>
+        /// <param name="auxProjection">Auxiliary vector used in computatiioin.</param>
+        /// <param name="tolDependent">Tolerance on the size of the vector after subtracting all projections, divided by original size..</param>
+        /// <param name="normalize">If true then the resulting vectors are normalized, otherwise they are not.</param>
+        /// <param name="numRequestedVectors">Number of orthogonal vectors to be calculated. If 0 then the number is the same as vector dimension.
+        /// If larger than dimension then exception is thrown.</param>
+        /// <param name="rand">Random number generator used for generation of random original vectors when this is necessary (i.e., 
+        /// when the number of provided linnearly independent original vector is smaller than the requested number of calculated 
+        /// vectors). If not specified then the global random number generator is taken.</param>
+        /// <param name="maxExcessGenerated">Maximal number of excessive original vectors that are randomly generated, to compensate for
+        /// linearly dependent input vectors. This is the number of randomly generated input vectors above those eventually needed because 
+        /// of linear dependency or insufficient number of provided input vectors.
+        /// <para>If 0 then only the minimal number of generated vectors is allowed in order to compensate for insufficient number of 
+        /// procided input vectors (i.e. less than the number of requested v.) o for linear dependency upon them. If any generated input
+        /// vector is dependent on input and previously generated vectors then the operation will fail with exception thrown.</para>
+        /// <para>If -1 then generation of additional input vectors is not allowed at all, and in the case of insufficiency of input
+        /// vectors (too few linearly independent vectors) operation will fail with exception thrown. This effectively means that
+        /// the we have nonrobust procedure.</para>
+        /// <para>If positive, this number tells how many additional input vectors can be generated because other generated vectors
+        /// (including the necessary ones - due to insufficiency of input vectors) suffered for linear dependency.</para></param>
+        /// <returns>The number of orthogonal vectors that were actually calculated from the specified original vectors. This coincides with 
+        /// the dimension of the space spanned by the provided original vectors.</returns>
+        public static int OrthogonalizeGramSchmidt(IList<IVector> original, ref IList<IVector> resOrthogonal,
+            ref IVector resNorms, ref IVector auxProjection, double tolDependent = 1e-10, bool normalize = false,
+            int numRequestedVectors = 0, IRandomGenerator rand = null, int maxExcessGenerated = 5)
+        {
+            int outputLevelInternal = 2;  // for generation fo test output - comment at some later time.
+            IVector vectorDimensionRef = null;
+            if (rand == null)
+                rand = RandomGenerator.Global;
+            // Check arguments (for null references, unmatched dimensions...):
+            if (tolDependent < 0)
+                throw new ArgumentException("Tolerance on the linear dependency is less than 0.");
+            if (original == null)
+                throw new ArgumentException("A set of original vectors is not specified (null reference).");
+            int numOriginal = 0;
+            if (original != null)
+                numOriginal = original.Count;
+            int dim = 0;
+            if (numOriginal > 0)
+            { 
+                IVector v1 = original[0];
+                if (v1 == null)
+                    throw new ArgumentException("The first original vector is not specified (null reference).");
+                if (v1.Length < 1)
+                    throw new ArgumentException("The first original vector has dimension 0.");
+                dim = v1.Length;
+                vectorDimensionRef = v1;
+            } else
+            {
+                if (resOrthogonal != null)
+                    if (resOrthogonal.Count > 0)
+                    {
+                        IVector v1 = resOrthogonal[0];
+                        if (resOrthogonal != null)
+                        {
+                            dim = v1.Length;
+                            if (dim > 0)
+                                vectorDimensionRef = v1;
+                        }
+                    }
+            }
+            if (dim == 0 || vectorDimensionRef == null)
+                throw new ArgumentException("Vector dimenssion could not be determined neither from the set of original nor from the set of result vectors. "
+                    + Environment.NewLine + "At least one vector of the appropriate dimension should be provided in the set of result vectors.");
+            if (numRequestedVectors <= 0)
+                numRequestedVectors = dim;
+            else if (numRequestedVectors > dim)
+                throw new ArgumentException("The number of orthogonal vectors to be calculated (" + numRequestedVectors 
+                    + " is larger than dimension of the containing vector space (" + dim + ").");
+            if (resNorms == null)
+                resNorms = new Vector(dim);
+            if (resNorms.Length < numRequestedVectors)
+                VectorBase.Resize(ref resNorms, dim);
+            if (auxProjection == null)
+                auxProjection = new Vector(dim);
+            else if (auxProjection.Length != dim)
+                VectorBase.Resize(ref auxProjection, dim);
+            // Check the original vectors:
+            for (int i = 0; i < numOriginal; ++i)
+            {
+                IVector v = original[i];
+                if (v == null)
+                    throw new ArgumentException("Original vector No. " + i + " is not specified (null reference).");
+                if (v.Length != dim)
+                    throw new ArgumentException("Original vector No. " + i + " is of incorrect dimension, " +
+                        v.Length + " instead of " + dim + ".");
+            }
+            // Correct dimensions if necessary:
+            if (resOrthogonal == null)
+                resOrthogonal = new List<IVector>();
+            int numRes = resOrthogonal.Count;
+            if (numRes >= numRequestedVectors)
+            {
+                for (int i = resOrthogonal.Count - 1; i >= numRequestedVectors; --i)
+                    resOrthogonal.RemoveAt(i);
+            }
+            numRes = resOrthogonal.Count;
+            // Calculate the orthogonalization:
+            int numCalculated = 0;
+            int numCalculatedFromOriginal = 0;
+            int numGenerated = 0;
+            int whichTrial = -1;
+            double maxNormOriginal = 0;
+            while (numCalculated < numRequestedVectors)
+            {
+                ++whichTrial;
+                if (outputLevelInternal >= 1)
+                {
+                    Console.WriteLine(Environment.NewLine + "whichTrial: " + whichTrial + ", numCalculated: " + numCalculated
+                        + "(from original: " + numCalculatedFromOriginal + "), numGenerated: " + numGenerated
+                        + Environment.NewLine + ", numRequested: " + numRequestedVectors + "  , maxExcessGenerated: " + maxExcessGenerated + ".");
+                    if (whichTrial < numOriginal)
+                        Console.WriteLine("    ORIGINAL vector taken. whichTrial: " + whichTrial + ", numOriginal: " + numOriginal);
+                }
+
+                // IVector vecOriginal = original[whichVec];
+                if (resOrthogonal.Count <= numCalculated)
+                    resOrthogonal.Add(null);
+                IVector vecResult = resOrthogonal[numCalculated];  // the first one not yet assigned
+                double normResult = 0.0;
+                double normOriginal = 0.0;
+                if (whichTrial < numOriginal)
+                {
+                    // We still have original vectors on stock, try with these:
+                    IVector vecOriginal = original[whichTrial];
+                    VectorBase.Copy(vecOriginal, ref vecResult);
+                    normOriginal = VectorBase.Norm2Plain(vecOriginal);
+                    if (normOriginal > maxNormOriginal)
+                        maxNormOriginal = normOriginal;
+                } else
+                {
+
+                    if (outputLevelInternal >= 2)
+                    {
+                        Console.WriteLine("    GENERATING... " + Environment.NewLine
+                                + "      All trial input vectors: " + whichTrial + ", provided: " + numOriginal + ", used (independent): " + numCalculatedFromOriginal + Environment.NewLine
+                                + "      Num. generaded: " + numGenerated + "(min. necessary: " + (numRequestedVectors - numCalculatedFromOriginal) + "), max. excess: " + maxExcessGenerated + ".");
+                    }
+
+                    // We run out of the provided original vectors, generate them randomly to the allowed extent:
+                    if (maxExcessGenerated <= -1)
+                    {
+                        throw new InvalidOperationException("The provided " + numOriginal + " vectors are not sufficient to generate "
+                            + numRequestedVectors + " orthogonal vectors. " + Environment.NewLine
+                            + "  Generation of additional vectors is not allowed (arg. maxExcessGenerated = " + maxExcessGenerated + ").");
+                    } 
+                    else if (numGenerated >= maxExcessGenerated + /* must-be-generated: */ numRequestedVectors - numCalculatedFromOriginal)
+                    {
+                        throw new InvalidOperationException("The maximal number of allowed randomly generated input vectors is exceeded. " + Environment.NewLine
+                            + "  All trial input vectors: " + whichTrial + ", provided: " + numOriginal + ", used (independent): " + numCalculatedFromOriginal + Environment.NewLine
+                            + "  Num. generaded: " + numGenerated + " (min. necessary: " + (numRequestedVectors - numCalculatedFromOriginal) + "), max. excess: " + maxExcessGenerated + ".");
+                    }
+                    if (vecResult == null)
+                        vecResult = vectorDimensionRef.GetNew();
+                    else if (vecResult.Length != dim)
+                        VectorBase.Resize(ref vecResult, dim);
+                    VectorBase.SetRandom(vecResult, rand);
+                    if (maxNormOriginal <= 0)
+                        maxNormOriginal = 1.0;
+                    VectorBase.MultiplyPlain(vecResult, maxNormOriginal, vecResult);  // scale the vector such that it is comparable to max. length original vector
+                    normOriginal = VectorBase.Norm2Plain(vecResult);
+                    ++numGenerated;
+                }
+                if ((normOriginal / maxNormOriginal) > tolDependent)
+                {
+                    for (int whichProjection = 0; whichProjection < numCalculated; ++whichProjection)
+                    {
+                        double normProj = resNorms[whichProjection]; 
+                        //if (modifiedGrammSchmidt)
+                        //{
+                            // Modified Gramm Schmidt, which is defaulllt:
+
+                        if (outputLevelInternal >= 2)
+                        {
+                            Console.WriteLine("Trial vector No. " + whichTrial + ", projection No. " + whichProjection
+                                + ": norm of projection vector is " + normProj + ".");
+                        }
+
+                        VectorBase.OrthogonalProjectionPlain(vecResult, resOrthogonal[whichProjection],
+                            normProj * normProj, auxProjection, tolDependent);
+
+                        //}
+                        //else
+                        //{
+                        //    VectorBase.OrthogonalProjectionPlain(vecOriginal, resOrthogonal[whichProjection],
+                        //        normProj * normProj, auxProjection, tolDependent);
+                        //}
+                        VectorBase.SubtractPlain(vecResult, auxProjection, vecResult);
+                    }
+                    normResult = VectorBase.Norm2Plain(vecResult);
+                    if ((normResult / normOriginal) > tolDependent)
+                    {
+                        // throw new ArgumentException("Norm of calculated vector No. " + whichTrial + " is less than the tolerance " + tolDependent + ".");
+                        if (normalize)
+                        {
+                            VectorBase.MultiplyPlain(vecResult, 1.0 / normResult, vecResult);
+                            resNorms[numCalculated] = VectorBase.Norm2Plain(vecResult);
+                        }
+                        else
+                        {
+                            resNorms[numCalculated] = normResult;
+                        }
+                        resOrthogonal[numCalculated] = vecResult;
+                        ++numCalculated;
+                        if (whichTrial < numOriginal)
+                            ++numCalculatedFromOriginal;
+                    }
+                }
+            }
+            return numCalculatedFromOriginal;
+        }
+
+
+
+
+        /// <summary>Performs the Gramm-Schmidt orthogonalization procedure in order to calculate a set of orthonormal 
+        /// vectors from the specified set of arbitrary independent vectors.
+        /// <para>This method is not robust, it fails if input vectors are almost linearly dependent (limited by tolerance).</para></summary>
+        /// <param name="original">A set of original vectors, must be of the same dimensiions.</param>
+        /// <param name="resOrthogonal">Resulting list where a set of orthogonal vectors is stored.</param>
+        /// <param name="resNorms">A vector where norms of the resulting orthogonal vectors are stored. Its 
+        /// dimension must be at least equal to the number of original vectors, otherwise it is resized to the dimension
+        /// of the original vectors.</param>
+        /// <param name="auxProjection">Auxiliary vector used in computatioin.</param>
+        /// <param name="tolSize">Tolerance on the size of the vector after subtracting all projections.</param>
+        /// <param name="normalize">If true then the resulting vectors are normalized, otherwise they are not.</param>
+        /// <param name="modifiedGrammSchmidt">If true (which is default) then a more stable modification is used.</param>
+        public static void OrthoNormalizeGramSchmidtNonRobust(IList<IVector> original, ref IList<IVector> resOrthogonal,
+            ref IVector resNorms, ref IVector auxProjection,
+            double tolSize = 0, bool normalize = false, bool modifiedGrammSchmidt = true)
+        {
+            OrthogonalizeGramSchmidtNonRobust(original, ref resOrthogonal,
+                ref resNorms, ref auxProjection, tolSize, true /* normalize */, modifiedGrammSchmidt);
+        }
+
+        /// <summary>Performs the Gramm-Schmidt orthogonalization procedure in order to calculate a set of orthogonall 
+        /// vectors from the specified set of arbitrary independent vectors.
+        /// <para>This method is not robust, it fails if input vectors are almost linearly dependent (limited by tolerance).</para></summary>
+        /// <param name="original">A set of original vectors, must be of the same dimensiions.</param>
+        /// <param name="resOrthogonal">Resulting list where a set of orthogonal vectors is stored.</param>
+        /// <param name="resNorms">A vector where norms of the resulting orthogonal vectors are stored. Its 
+        /// dimension must be at least equal to the number of original vectors, otherwise it is resized to the dimension
+        /// of the original vectors.</param>
+        /// <param name="auxProjection">Auxiliary vector used in computatiioin.</param>
+        /// <param name="tolSize">Tolerance on the size of the vector after subtracting all projections.</param>
+        /// <param name="normalize">If true then the resulting vectors are normalized, otherwise they are not.</param>
+        /// <param name="modifiedGrammSchmidt">If true (which is default) then a more stable modification is used.</param>
+        public static void OrthogonalizeGramSchmidtNonRobust(IList<IVector> original, ref IList<IVector> resOrthogonal,
+            ref IVector resNorms, ref IVector auxProjection,
+            double tolSize = 0, bool normalize = false, bool modifiedGrammSchmidt = true)
+        {
+            // Check arguments (for null references, unmatched dimensions...):
+            if (tolSize < 0)
+                throw new ArgumentException("Tolerance on the size of the vector is null.");
+            if (original == null)
+                throw new ArgumentException("A set of original vectors is not specified (null reference).");
+            int numVec = original.Count;
+            if (numVec < 1)
+                throw new ArgumentException("No original vectors specified (list size is 0).");
+            IVector v1 = original[0];
+            if (v1 == null)
+                throw new ArgumentException("The first original vector is not specified (null reference).");
+            int dim = v1.Length;
+            if (resNorms == null)
+                resNorms = new Vector(dim);
+            if (resNorms.Length < numVec)
+                VectorBase.Resize(ref resNorms, dim);
+            if (auxProjection == null)
+                auxProjection = new Vector(dim);
+            if (auxProjection.Length != dim)
+                VectorBase.Resize(ref auxProjection, dim);
+            for (int i = 0; i < numVec; ++i)
+            {
+                IVector v = original[i];
+                if (v == null)
+                    throw new ArgumentException("Original vector No. " + i + " is not specified (null reference).");
+                if (v.Length != dim)
+                    throw new ArgumentException("Original vector No. " + i + " is of incorrect dimension, " +
+                        v.Length + " instead of " + dim + ".");
+            }
+            // Correct dimensions if necessary:
+            if (resOrthogonal == null)
+                resOrthogonal = new List<IVector>();
+            int numRes = resOrthogonal.Count;
+            if (numRes >= numVec)
+            {
+                for (int i = resOrthogonal.Count - 1; i >= numVec; --i)
+                    resOrthogonal.RemoveAt(i);
+            }
+            for (int i = 0; i < numVec; ++i)
+            {
+                if (i >= resOrthogonal.Count)
+                    resOrthogonal.Add(null);
+                IVector v = resOrthogonal[i];
+                if (v == null)
+                {
+                    v = new Vector(dim);
+                    resOrthogonal[i] = v;
+                }
+                else if (v.Length != dim)
+                {
+                    VectorBase.Resize(ref v, dim);
+                    resOrthogonal[i] = v;
+                }
+            }
+            // Calculate the orthogonalization:
+            for (int whichVec = 0; whichVec < numVec; ++whichVec)
+            {
+                IVector vecOriginal = original[whichVec];
+                IVector vecResult = resOrthogonal[whichVec];
+                VectorBase.Copy(vecOriginal, vecResult);
+                for (int whichProjection = 0; whichProjection < whichVec; ++whichProjection)
+                {
+                    double normProj = resNorms[whichProjection];
+                    if (modifiedGrammSchmidt)
+                    {
+                        // Modified Gramm Schmidt, which is defaulllt:
+                        VectorBase.OrthogonalProjectionPlain(vecResult, resOrthogonal[whichProjection],
+                            normProj * normProj, auxProjection, tolSize);
+                    }
+                    else
+                    {
+                        VectorBase.OrthogonalProjectionPlain(vecOriginal, resOrthogonal[whichProjection],
+                            normProj * normProj, auxProjection, tolSize);
+                    }
+                    VectorBase.SubtractPlain(vecResult, auxProjection, vecResult);
+                }
+                double norm = VectorBase.Norm2Plain(vecResult);
+                if (norm <= tolSize)
+                    throw new ArgumentException("Norm of calculated vector No. " + whichVec + " is less than the tolerance " + tolSize + ".");
+                if (normalize)
+                {
+                    VectorBase.MultiplyPlain(vecResult, 1.0 / norm, vecResult);
+                    resNorms[whichVec] = VectorBase.Norm2Plain(vecResult);
+                }
+                else
+                {
+                    resNorms[whichVec] = norm;
+                }
+                resOrthogonal[whichVec] = vecResult;
+            }
+        }
+
+
+
+        #region Static.TestOrthogonalization
+
+
+        /// <summary>Performs a test of Gramm-Schmidt orthogonalization on a set of random vectors.</summary>
+        /// <param name="dim">dimension of vectors to be orthogonalized.</param>
+        /// <param name="numRepetitions">Nomber of repetitions (how many times the procedure is repeated).</param>
+        /// <param name="tol">Tolerance for zero length of resulting vectors.</param>
+        /// <param name="outputLevel">Level of output.</param>
+        /// <param name="randomGenerator">Random generator used.</param>
+        /// <param name="normalize">Whether resulting vectors are normalized.</param>
+        /// <param name="modifiedGrammSchmidt">Whether a modified gramm-schmidt algorithm is used.</param>
+        /// <param name="nonRobust">If true then non - robust algorithm is tested. Otherwise, the default robust algorithm 
+        /// is tested (which produces the required number of orthogonal vectors even if the dimension of the subspace
+        /// spanned by the original vectors is smaller than dimension of the original vector space).</param>
+        /// <returns>True if the test completes successfully, false otherwise.</returns>
+        public static bool TestGramSchmidtOrthogonalization(int dim, int numRepetitions = 1, double tol = 1e-8, int outputLevel = 0,
+            IRandomGenerator randomGenerator = null,  bool normalize = false, bool modifiedGrammSchmidt = true, bool nonRobust = false)
+        {
+            int numRequestedVectors = 0;
+            bool passed = true;
+            if (tol <= 0)
+                tol = 1.0e-6;
+            StopWatch t = new StopWatch();
+            try
+            {
+                if (randomGenerator == null)
+                    randomGenerator = RandomGenerator.Global;
+                if (numRepetitions < 1)
+                    numRepetitions = 1;
+
+                if (outputLevel >= 0)
+                {
+                    Console.WriteLine(Environment.NewLine + Environment.NewLine + 
+                        "Test of Gramm-Schmidt orthogonalization, dimension = " + dim + ", repetitions: " + numRepetitions + ".");
+                }
+
+                IList<IVector> original = null; 
+                IList<IVector> results = null;
+                IVector norms = null;
+                IVector aux = null;
+                for (int repetition = 0; repetition < numRepetitions; ++ repetition)
+                {
+                    if (outputLevel >= 0)
+                        Console.WriteLine(Environment.NewLine + Environment.NewLine + "Repetition No. " + repetition 
+                            + " (dimension = " + dim + "):");
+
+                    // Preparation of data - random input vectors:
+                    t.Start();
+                    original = new List<IVector>();
+                    results = original;
+                    for (int i = 0; i < dim; ++i)
+                    {
+                        Vector v = Vector.Random(dim);
+                        original.Add(v);
+                    }
+                    t.Stop();
+                    if (outputLevel >= 1)
+                    {
+                        Console.WriteLine(Environment.NewLine + "Random input data created in " + t.Time + " s (CPU: " + t.CpuTime + " s).");
+                    }
+                    if (outputLevel >= 2)
+                    {
+                        Console.WriteLine("Input vectors to be orthogonalized: ");
+                        for (int i = 0; i < dim; ++i)
+                            Console.WriteLine(VectorBase.ToStringMath(original[i]));
+                    }
+
+                    
+                    int numVec = original.Count;
+                    t.Start();
+                    if (nonRobust)
+                    {
+                        OrthogonalizeGramSchmidtNonRobust(original, ref results, ref norms, ref aux,
+                            tol, normalize, modifiedGrammSchmidt);
+                    } else
+                    {
+                        OrthogonalizeGramSchmidt(original, ref results, ref norms, ref aux,
+                            tol, normalize, numRequestedVectors  /* the same as dimension */, randomGenerator);
+                    }
+                    t.Stop();
+
+                    if (outputLevel >= 1)
+                        Console.WriteLine("Gramm-schmidt orthogonalization finished in " + t.Time + " s (CPU: " + t.CpuTime + " s).");
+
+                    for (int i = 0; i < numVec; ++i)
+                    {
+                        for (int j = 0; j <= i; ++j)
+                        {
+                            double dotProduct = VectorBase.ScalarProduct(results[i], results[j]);
+                            if (i != j)
+                            {
+                                if (Math.Abs(dotProduct) > tol)
+                                {
+                                    passed = false;
+                                    if (outputLevel >= 0)
+                                        Console.WriteLine(Environment.NewLine + "ERROR: dot product of vectors " + j + " and " + i 
+                                            + " is different than 0 ("  + dotProduct +  ", tolerance: " + tol + ").");
+                                }
+                            } else
+                            {
+                                // i == j:
+                                if (normalize)
+                                {
+                                    double diff = Math.Abs(dotProduct - 1);
+                                    if (diff > tol)
+                                    {
+                                        passed = false;
+                                        if (outputLevel >= 0)
+                                            Console.WriteLine(Environment.NewLine + "ERROR: dot product of vectors " + i + " and " + i + 
+                                                " is different than 1 ("  + diff +  ", tolerance: " + tol + ").");
+                                    }
+                                }
+                            }
+                            if (outputLevel >= 1)
+                            {
+                                if (i != j)
+                                {
+                                    Console.Write("r" + j + "*r" + i + ": " + dotProduct.ToString("F2").PadRight(2));
+                                    Console.Write(", ");
+                                } else
+                                {
+                                    Console.Write("r" + j + "*r" + i + ": " + dotProduct);
+                                    Console.WriteLine(" ");
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                passed = false;
+                if (outputLevel >= 0)
+                {
+                    Console.WriteLine(Environment.NewLine + "ERROR: Exception throwin in the GramSchmidt Orthogonalization test." +
+                        Environment.NewLine + "  Message: " + ex.Message);
+                }
+            }
+
+            if (outputLevel >= 0)
+            {
+                if (passed)
+                    Console.WriteLine(Environment.NewLine + "Gramm-Schmidt orthogonalization performed successfully." + Environment.NewLine);
+                else
+                    Console.WriteLine(Environment.NewLine + "Gramm-Schmidt orthogonalization FAILED." + Environment.NewLine);
+            }
+            return passed;
+        }
+
+
+        #endregion Static.TestOrthogonalization
+
+
+        #endregion Static.OrthogonalizationGramSchmidt
+
+
+
+
 
 
         #endregion StaticOperations
+
 
 
         #region Operators_Overloading

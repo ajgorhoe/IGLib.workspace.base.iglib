@@ -204,13 +204,17 @@ namespace IG.Num
         }
 
 
+
         /// <summary>Generates vector with random elements uniformly distributed on [0, 1).</summary>
         /// <param name="n">Dimensionality of vector.</param>
+        /// <param name="rand">Random number generator used to generate vector elements. If null then a global generator is taken.</param>
         /// <returns>An n-dimensional vector with uniformly distributedrandom elements in <c>[0, 1)</c> interval.</returns>
-        public static Vector Random(int n)
+        public static Vector Random(int n, IRandomGenerator rand = null)
         {
+            if (rand == null)
+                rand = RandomGenerator.Global;
             Vector ret = new Vector(n);
-            ret.SetRandom();
+            ret.SetRandom(rand);
             return ret;
         }
 
