@@ -159,7 +159,7 @@ namespace IG.Lib
     //    /// $A Igor Oct08;
     //    public static string[][] FromCsvString(string csvString, string separator)
     //    {
-    //        string[][] ret = null;
+    //        string[][] ReturnedString = null;
     //        if (string.IsNullOrEmpty(csvString))
     //            return null;
     //        if (string.IsNullOrEmpty(separator))
@@ -188,7 +188,7 @@ namespace IG.Lib
     //        //    }
     //        //}
     //        // From lines, extract individual table cells and store them:
-    //        ret = new string[lines.Length][];
+    //        ReturnedString = new string[lines.Length][];
     //        char[] separatorChar = separator.ToCharArray();
     //        char[] quoteTrimChars = new char[] { '\"' };
     //        List<string> strList = null;
@@ -198,7 +198,7 @@ namespace IG.Lib
     //            if (currentLine != null)
     //                currentLine = currentLine.TrimEnd('\r');
     //            if (string.IsNullOrEmpty(currentLine))
-    //                ret[i] = new string[0]; // an empty line;
+    //                ReturnedString[i] = new string[0]; // an empty line;
     //            else
     //            {
     //                string[] cells = currentLine.Split(separatorChar);
@@ -213,7 +213,7 @@ namespace IG.Lib
     //                        }
     //                    }
     //                if (!containsDoubleQuote)
-    //                    ret[i] = cells;
+    //                    ReturnedString[i] = cells;
     //                else
     //                {
     //                    // Split line contains strings that begin with double quotes.
@@ -260,11 +260,11 @@ namespace IG.Lib
     //                            strList.Add(cells[j]);
     //                        ++j;
     //                    }
-    //                    ret[i] = strList.ToArray();
+    //                    ReturnedString[i] = strList.ToArray();
     //                }
     //            }
     //        }
-    //        return ret;
+    //        return ReturnedString;
     //    }  // FromCsvStringcsvString, separator
 
 
@@ -350,88 +350,88 @@ namespace IG.Lib
 
 
     //    /// <summary>Reads contents of a CSV file and returns a 2D jagged array of strigg values contained in the file.</summary>
-    //    /// <param name="filePath">Path to the CSV file that is read and parsed.</param>
+    //    /// <param name="inputFilePath">Path to the CSV file that is read and parsed.</param>
     //    /// <param name="separator">Separator that is used in the CSV file. If not specified (null or empty string) then Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed.</param>
     //    /// <returns>A 2D jagged array that contains a table of string cell values of the CSV string that is parsed.
     //    /// Each Subarray contains a single row of cells values.</returns>
     //    /// $A Igor Oct08;
-    //    public static string[][] LoadCsv(string filePath, string separator)
+    //    public static string[][] LoadCsv(string inputFilePath, string separator)
     //    {
-    //        if (string.IsNullOrEmpty(filePath))
+    //        if (string.IsNullOrEmpty(inputFilePath))
     //        {
-    //            if (filePath == null)
+    //            if (inputFilePath == null)
     //                throw new ArgumentException("CSV file path not specified (null string).");
     //            else
     //                throw new ArgumentException("CSV File path not specified (empty string).");
     //        }
-    //        if (!File.Exists(filePath))
-    //            throw new ArgumentException("CSV file does not exist: " + filePath);
+    //        if (!File.Exists(inputFilePath))
+    //            throw new ArgumentException("CSV file does not exist: " + inputFilePath);
     //        string csvString = null;
-    //        UtilStr.Load(filePath, ref csvString);
+    //        UtilStr.Load(inputFilePath, ref csvString);
     //        return FromCsvString(csvString, separator);
     //    }
 
 
     //    /// <summary>Reads contents of a CSV file and returns a 2D jagged array of strigg values contained in the file.
     //    /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed as separator in the CSV file.</summary>
-    //    /// <param name="filePath">Path to the CSV file that is read and parsed.</param>
+    //    /// <param name="inputFilePath">Path to the CSV file that is read and parsed.</param>
     //    /// <returns>A 2D jagged array that contains a table of string cell values of the CSV string that is parsed.
     //    /// Each Subarray contains a single row of cells values.</returns>
     //    /// $A Igor Oct08;
-    //    public static string[][] LoadCsv(string filePath)
+    //    public static string[][] LoadCsv(string inputFilePath)
     //    {
-    //        return LoadCsv(filePath, DefaultCsvSeparator /* separator */ );
+    //        return LoadCsv(inputFilePath, DefaultCsvSeparator /* separator */ );
     //    }
 
 
     //    /// <summary>Saves a 2D jagged array of string cell values into a CSV file.</summary>
-    //    /// <param name="filePath">Path to the file into which contents is written.</param>
+    //    /// <param name="inputFilePath">Path to the file into which contents is written.</param>
     //    /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
     //    /// <param name="separator">Separator that is used in CSV format.</param>
     //    /// <param name="append">If true then the CSV string is appended to the existent file if 
     //    /// the file already exists. Otherwise, existend files are overwritten.</param>
-    //    public static void SaveCsv(string filePath, string[][] values, string separator, bool append)
+    //    public static void SaveCsv(string inputFilePath, string[][] values, string separator, bool append)
     //    {
-    //        if (string.IsNullOrEmpty(filePath))
+    //        if (string.IsNullOrEmpty(inputFilePath))
     //        {
-    //            if (filePath == null)
+    //            if (inputFilePath == null)
     //                throw new ArgumentException("CSV file path not specified (null string).");
     //            else
     //                throw new ArgumentException("CSV File path not specified (empty string).");
     //        }
     //        string csvString = ToCsvString(values, separator);
-    //        UtilStr.Save(csvString, filePath, append);
+    //        UtilStr.Save(csvString, inputFilePath, append);
     //    }
 
     //    /// <summary>Saves a 2D jagged array of string cell values into a CSV file.
     //    /// If the file already exists then its contents are overwritten.</summary>
-    //    /// <param name="filePath">Path to the file into which contents is written.</param>
+    //    /// <param name="inputFilePath">Path to the file into which contents is written.</param>
     //    /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
     //    /// <param name="separator">Separator that is used in CSV format.</param>
     //    /// $A Igor Oct08;
-    //    public static void SaveCsv(string filePath, string[][] values, string separator)
+    //    public static void SaveCsv(string inputFilePath, string[][] values, string separator)
     //    {
-    //        SaveCsv(filePath, values, separator, false /* append */);
+    //        SaveCsv(inputFilePath, values, separator, false /* append */);
     //    }
 
     //    /// <summary>Saves a 2D jagged array of string cell values into a CSV file.
     //    /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
-    //    /// <param name="filePath">Path to the file into which contents is written.</param>
+    //    /// <param name="inputFilePath">Path to the file into which contents is written.</param>
     //    /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
-    //    public static void SaveCsv(string filePath, string[][] values, bool append)
+    //    public static void SaveCsv(string inputFilePath, string[][] values, bool append)
     //    {
-    //        SaveCsv(filePath, values, DefaultCsvSeparator /* separator */, append);
+    //        SaveCsv(inputFilePath, values, DefaultCsvSeparator /* separator */, append);
     //    }
 
     //    /// <summary>Saves a 2D jagged array of string cell values into a CSV file.
     //    /// If the file already exists then its contents are overwritten.
     //    /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
-    //    /// <param name="filePath">Path to the file into which contents is written.</param>
+    //    /// <param name="inputFilePath">Path to the file into which contents is written.</param>
     //    /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
     //    /// $A Igor Oct08;
-    //    public static void SaveCsv(string filePath, string[][] values)
+    //    public static void SaveCsv(string inputFilePath, string[][] values)
     //    {
-    //        SaveCsv(filePath, values, DefaultCsvSeparator /* separator */, false /* append */);
+    //        SaveCsv(inputFilePath, values, DefaultCsvSeparator /* separator */, false /* append */);
     //    }
 
 
@@ -452,7 +452,7 @@ namespace IG.Lib
     //    public static bool TestCsvStringConversion(string[][] values, string separator,
     //        bool printResults)
     //    {
-    //        bool ret = true;
+    //        bool ReturnedString = true;
     //        if (printResults)
     //        {
     //            Console.WriteLine();
@@ -470,16 +470,16 @@ namespace IG.Lib
     //                bool thisOk = true;
     //                if (valuesRestored.Length > 1)
     //                {
-    //                    ret = thisOk = false;
+    //                    ReturnedString = thisOk = false;
     //                }
     //                else if (valuesRestored.Length == 1)
     //                {
     //                    if (valuesRestored[0].Length > 1)
-    //                        ret = thisOk = false;
+    //                        ReturnedString = thisOk = false;
     //                    else if (valuesRestored[0].Length == 1)
     //                        if (valuesRestored[0][0] != null)
     //                            if (valuesRestored[0][0].Length > 0)
-    //                                ret = thisOk = false;
+    //                                ReturnedString = thisOk = false;
     //                }
     //                if (printResults)
     //                {
@@ -497,15 +497,15 @@ namespace IG.Lib
     //            {
     //                bool thisOk = true;
     //                if (values.Length > 1)
-    //                    thisOk = ret = false;
+    //                    thisOk = ReturnedString = false;
     //                else if (values.Length == 1)
     //                {
     //                    if (values[0].Length > 1)
-    //                        thisOk = ret = false;
+    //                        thisOk = ReturnedString = false;
     //                    else if (values[0].Length == 1)
     //                        if (values[0][0] != null)
     //                            if (values[0][0].Length > 0)
-    //                                thisOk = ret = false;
+    //                                thisOk = ReturnedString = false;
     //                }
     //                if (printResults)
     //                {
@@ -523,7 +523,7 @@ namespace IG.Lib
     //                {
     //                    bool thisOk = true;
     //                    if (Math.Abs(values.Length - valuesRestored.Length) > 1)
-    //                        thisOk = ret = false;
+    //                        thisOk = ReturnedString = false;
     //                    if (printResults)
     //                    {
     //                        if (thisOk)
@@ -539,12 +539,12 @@ namespace IG.Lib
     //                    {
     //                        bool thisOk = true;
     //                        if (values[i].Length > 1)
-    //                            thisOk = ret = false;
+    //                            thisOk = ReturnedString = false;
     //                        else if (values[i].Length == 1)
     //                        {
     //                            if (values[i][0] != null)
     //                                if (values[i][0].Length > 0)
-    //                                    thisOk = ret = false;
+    //                                    thisOk = ReturnedString = false;
     //                        }
     //                        if (printResults)
     //                        {
@@ -560,11 +560,11 @@ namespace IG.Lib
     //                        {
     //                            bool thisOk = true;
     //                            if (valuesRestored[i].Length > 1)
-    //                                thisOk = ret = false;
+    //                                thisOk = ReturnedString = false;
     //                            else if (valuesRestored[i].Length == 1)
     //                                if (valuesRestored[i][0] != null)
     //                                    if (valuesRestored[i][0].Length > 0)
-    //                                        thisOk = ret = false;
+    //                                        thisOk = ReturnedString = false;
     //                            if (thisOk)
     //                                Console.WriteLine("WARNING: Original row No. " + i + " is null lbut restored is not.");
     //                            else
@@ -579,11 +579,11 @@ namespace IG.Lib
     //                        {
     //                            bool thisOk = true;
     //                            if (values[i].Length > 1)
-    //                                thisOk = ret = false;
+    //                                thisOk = ReturnedString = false;
     //                            else if (values[i].Length == 1)
     //                                if (values[i][0] != null)
     //                                    if (values[i][0].Length > 0)
-    //                                        thisOk = ret = false;
+    //                                        thisOk = ReturnedString = false;
     //                            if (printResults)
     //                            {
     //                                if (thisOk)
@@ -596,7 +596,7 @@ namespace IG.Lib
     //                        {
     //                            if (valuesRestored[i].Length != values[i].Length)
     //                            {
-    //                                ret = false;
+    //                                ReturnedString = false;
     //                                if (printResults)
     //                                {
     //                                    Console.WriteLine("ERROR: Restored line No. " + i + " has different length than original.");
@@ -608,7 +608,7 @@ namespace IG.Lib
     //                            {
     //                                if (j >= valuesRestored[i].Length)
     //                                {
-    //                                    ret = false;
+    //                                    ReturnedString = false;
     //                                    if (printResults)
     //                                    {
     //                                        Console.WriteLine("ERROR: restored value is missing.");
@@ -621,7 +621,7 @@ namespace IG.Lib
     //                                    string cellRestored = valuesRestored[i][j];
     //                                    if (cell != cellRestored)
     //                                    {
-    //                                        ret = false;
+    //                                        ReturnedString = false;
     //                                        if (printResults)
     //                                        {
     //                                            Console.WriteLine("ERROR: difference in original and restored cell.");
@@ -639,13 +639,13 @@ namespace IG.Lib
     //        }
     //        if (printResults)
     //        {
-    //            if (ret)
+    //            if (ReturnedString)
     //                Console.WriteLine("Test successful, restored values are equal than original.");
     //            else
     //                Console.WriteLine("Test NOT successful, ERRORS occurred.");
     //            Console.WriteLine();
     //        }
-    //        return ret;
+    //        return ReturnedString;
     //    }  // TestCsv(values, separator, printResults)
 
 

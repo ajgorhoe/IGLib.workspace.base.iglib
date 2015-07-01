@@ -1,4 +1,5 @@
-﻿
+﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace IG.Neural
         /// neural networks.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// Tako78 7.Jul
         public static string cmdTestSerializationNeuralCSV(ICommandLineApplicationInterpreter interpreter, 
             string cmdName, string[] args)
@@ -114,7 +115,7 @@ namespace IG.Neural
         /// neural networks.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// Tako78 7.Jul
         public static string cmdTestSerializationNeural(ICommandLineApplicationInterpreter interpreter, 
             string cmdName, string[] args)
@@ -162,7 +163,7 @@ namespace IG.Neural
 
             string dirPath = Path.GetFullPath(directory);
             string filePath;
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
 
             t.Start();
             filePath = Path.Combine(directory, "NeuralTrainingSet.json");
@@ -203,13 +204,13 @@ namespace IG.Neural
         /// <summary>Command.
         /// Tests speed of I/O in JSON format. A random matrix of specific size is randomly generated, read and written.
         /// Argumnets:
-        ///   filePath: file path
+        ///   inputFilePath: file path
         ///   numRows: number of rows of the matrix
         ///   numColumnt: number of columns of the matrix
         /// </summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Format of the file if test was performed, null otherwise.</returns>
         public static string CmdTestJson(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
         {
@@ -247,7 +248,7 @@ namespace IG.Neural
             }
             Console.WriteLine("Writing a random matrix of dimensions " + numRows + "x" + numColumns + " to JSON file");
             Console.WriteLine("and reading it back from the file...");
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             t.Start();
             Matrix testMat = new Matrix(numRows, numColumns);
             testMat.SetRandom();
@@ -291,11 +292,11 @@ namespace IG.Neural
         /// Argumnets:
         ///   format: file format specification. Not case sensitive.
         ///       NeuralDataDefinition
-        ///   filePath: file path
+        ///   inputFilePath: file path
         /// </summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Format of the file if test was performed, null otherwise.</returns>
         public static string CmdTestFormat(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
         {
@@ -387,7 +388,7 @@ namespace IG.Neural
         /// (some values are inferred from data ranges in training data).</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         public static string CmdSupplementNeuralDataDefinition(ICommandLineApplicationInterpreter interpreter, 
             string cmdName, string[] args)
         {
@@ -438,7 +439,7 @@ namespace IG.Neural
         /// Clears all messages for neural network approximation file client/server.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Null.</returns>
         public static string CmdNeuralClearMessages(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
         {
@@ -479,7 +480,7 @@ namespace IG.Neural
         /// The first argument is the neural network file, the second is file with input parameters, and the third is 
         /// file where approximated output values willl be written.</summary>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Null.</returns>
 
 
@@ -492,7 +493,7 @@ namespace IG.Neural
         /// file where approximated output values willl be written.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Null.</returns>
         public static string CmdNeuralCalculateApproximationPlain(ICommandLineApplicationInterpreter interpreter, 
             string cmdName, string[] args)
@@ -545,7 +546,7 @@ namespace IG.Neural
             Console.WriteLine();
             //ApproximationFileServerNeural approxServer = new ApproximationFileServerNeural(workingDirectory);
             //// Read input parameters from a file:
-            //approxServer.ClientTestCalculateApproximation(inputFile, outputFile);
+            //approxServer.ClientTestCalculateApproximation(inputFile, deletedFilePath);
             return null;
         }
 
@@ -556,7 +557,7 @@ namespace IG.Neural
         /// The only argument is the client/server working directory.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Null.</returns>
         public static string CmdNeuralCalculateApproximationServer(ICommandLineApplicationInterpreter interpreter, 
             string cmdName, string[] args)
@@ -604,7 +605,7 @@ namespace IG.Neural
         /// file where approximated output values willl be written</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Null.</returns>
         public static string CmdNeuralCalculateApproximationClient(ICommandLineApplicationInterpreter interpreter, 
             string cmdName, string[] args)
@@ -651,7 +652,7 @@ namespace IG.Neural
         /// The only argument is the client/server working directory.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Null.</returns>
         /// $A tako78 Jul.21
         public static string CmdNeuralCalculateMappingApproximationServer(ICommandLineApplicationInterpreter interpreter, 
@@ -704,7 +705,7 @@ namespace IG.Neural
         /// file where approximated reduced output values willl be written</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Null.</returns>
         /// $A tako78 Jul.21
         public static string CmdNeuralCalculateMappingApproximationClient(ICommandLineApplicationInterpreter interpreter, 
@@ -760,7 +761,7 @@ namespace IG.Neural
         /// Example command for Tadej.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Format of the file if test was performed, null otherwise.</returns>
         public static string CmdExampleNeural(ICommandLineApplicationInterpreter interpreter, 
             string cmdName, string[] args)

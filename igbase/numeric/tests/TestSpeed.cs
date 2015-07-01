@@ -127,9 +127,9 @@ namespace IG.Num
                 throw new ArgumentException("Number of equations must be greater than 0.");
             // Naredimo štoparico, s katero merimo čas. V konstruktorju z argumentom podamo ime, po katerem
             // lahko identificiramo narejeno štoparico. To pride prav, če jih imamo več.
-            StopWatch t = new StopWatch("Decomposition");
+            StopWatch1 t = new StopWatch1("Decomposition");
             // Naredimo še eno štoparico, ki meri čisti čas računanja brez preizkusov:
-            StopWatch tbare = new StopWatch("Decomposition, pure time");
+            StopWatch1 tbare = new StopWatch1("Decomposition, pure time");
 
             if (outLevel > 0)
             {
@@ -258,9 +258,9 @@ namespace IG.Num
             }
             if (numEq < 1)
                 throw new ArgumentException("Number of equations must be greater than 0.");
-            StopWatch t = new StopWatch("Decomposition");
+            StopWatch1 t = new StopWatch1("Decomposition");
             // Naredimo še eno štoparico, ki meri čisti čas računanja brez preizkusov:
-            StopWatch tbare = new StopWatch("Decomposition, pure time");
+            StopWatch1 tbare = new StopWatch1("Decomposition, pure time");
 
             if (outLevel > 0)
             {
@@ -386,9 +386,9 @@ namespace IG.Num
             }
             if (numEq < 1)
                 throw new ArgumentException("Number of equations must be greater than 0.");
-            StopWatch t = new StopWatch("Decomposition");
+            StopWatch1 t = new StopWatch1("Decomposition");
             // Naredimo še eno štoparico, ki meri čisti čas računanja brez preizkusov:
-            StopWatch tbare = new StopWatch("Decomposition, pure time");
+            StopWatch1 tbare = new StopWatch1("Decomposition, pure time");
 
             if (outLevel > 0)
             {
@@ -513,9 +513,9 @@ namespace IG.Num
                 throw new ArgumentException("Number of equations must be greater than 0.");
             // Naredimo štoparico, s katero merimo čas. V konstruktorju z argumentom podamo ime, po katerem
             // lahko identificiramo narejeno štoparico. To pride prav, če jih imamo več.
-            StopWatch t = new StopWatch("Decomposition");
+            StopWatch1 t = new StopWatch1("Decomposition");
             // Naredimo še eno štoparico, ki meri čisti čas računanja brez preizkusov:
-            StopWatch tbare = new StopWatch("Decomposition, pure time");
+            StopWatch1 tbare = new StopWatch1("Decomposition, pure time");
 
             if (outLevel > 0)
             {
@@ -653,9 +653,9 @@ namespace IG.Num
             }
             if (numEq < 1)
                 throw new ArgumentException("Number of equations must be greater than 0.");
-            StopWatch t = new StopWatch("Decomposition");
+            StopWatch1 t = new StopWatch1("Decomposition");
             // Naredimo še eno štoparico, ki meri čisti čas računanja brez preizkusov:
-            StopWatch tbare = new StopWatch("Decomposition, pure time");
+            StopWatch1 tbare = new StopWatch1("Decomposition, pure time");
 
             if (outLevel > 0)
             {
@@ -779,9 +779,9 @@ namespace IG.Num
             }
             if (numEq < 1)
                 throw new ArgumentException("Number of equations must be greater than 0.");
-            StopWatch t = new StopWatch("Decomposition");
+            StopWatch1 t = new StopWatch1("Decomposition");
             // Naredimo še eno štoparico, ki meri čisti čas računanja brez preizkusov:
-            StopWatch tbare = new StopWatch("Decomposition, pure time");
+            StopWatch1 tbare = new StopWatch1("Decomposition, pure time");
 
             if (outLevel > 0)
             {

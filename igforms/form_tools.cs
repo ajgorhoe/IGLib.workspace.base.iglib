@@ -779,7 +779,7 @@ namespace IG.Forms
         /// <summary>Saves the specified control to the specified file in the JPG format (common extension .jpg).
         /// <para>The file is overwritten if it already exists.</para></summary>
         /// <param name="frm">Control to be printed.</param>
-        /// <param name="filePath">Path of the file where image is saved.</param>
+        /// <param name="inputFilePath">Path of the file where image is saved.</param>
         public static void SaveControlJpeg(Control frm, string filePath)
         {
             SaveControl(frm, filePath, ImageFormat.Jpeg /* format */, true /* canOverwriteExistent */);
@@ -788,9 +788,9 @@ namespace IG.Forms
         /// <summary>Saves the specified control to the specified file in the JPG format (common extension .jpg).
         /// <para><paramref name="canOverwriteExistent"/> specifies whether existent files can be overritten.</para></summary>
         /// <param name="frm">Control to be printed.</param>
-        /// <param name="filePath">Path of the file where image is saved.</param>
+        /// <param name="inputFilePath">Path of the file where image is saved.</param>
         /// <param name="canOverwriteExistent">Whether the method can override existent files.
-        /// <para>If false and <paramref name="filePath"/> specifies an existent file then exception is thrown.</para></param>
+        /// <para>If false and <paramref name="inputFilePath"/> specifies an existent file then exception is thrown.</para></param>
         public static void SaveControlJpeg(Control frm, string filePath, bool canOverwriteExistent)
         {
             SaveControl(frm, filePath, ImageFormat.Jpeg /* format */, canOverwriteExistent);
@@ -799,7 +799,7 @@ namespace IG.Forms
         /// <summary>Saves the specified control to the specified file in the GIF format (common extension .gif).
         /// <para>The file is overwritten if it already exists.</para></summary>
         /// <param name="frm">Control to be printed.</param>
-        /// <param name="filePath">Path of the file where image is saved.</param>
+        /// <param name="inputFilePath">Path of the file where image is saved.</param>
         public static void SaveControlGif(Control frm, string filePath)
         {
             SaveControl(frm, filePath, ImageFormat.Gif /* format */, true /* canOverwriteExistent */);
@@ -808,9 +808,9 @@ namespace IG.Forms
         /// <summary>Saves the specified control to the specified file in the GIF format (common extension .gif).
         /// <para><paramref name="canOverwriteExistent"/> specifies whether existent files can be overritten.</para></summary>
         /// <param name="frm">Control to be printed.</param>
-        /// <param name="filePath">Path of the file where image is saved.</param>
+        /// <param name="inputFilePath">Path of the file where image is saved.</param>
         /// <param name="canOverwriteExistent">Whether the method can override existent files.
-        /// <para>If false and <paramref name="filePath"/> specifies an existent file then exception is thrown.</para></param>
+        /// <para>If false and <paramref name="inputFilePath"/> specifies an existent file then exception is thrown.</para></param>
         public static void SaveControlGif(Control frm, string filePath, bool canOverwriteExistent)
         {
             SaveControl(frm, filePath, ImageFormat.Gif /* format */, canOverwriteExistent);
@@ -820,7 +820,7 @@ namespace IG.Forms
         /// <summary>Saves the specified control to the specified file in the BMP format (common extension .bmp).
         /// <para>The file is overwritten if it already exists.</para></summary>
         /// <param name="frm">Control to be printed.</param>
-        /// <param name="filePath">Path of the file where image is saved.</param>
+        /// <param name="inputFilePath">Path of the file where image is saved.</param>
         public static void SaveControlBmp(Control frm, string filePath)
         {
             SaveControl(frm, filePath, ImageFormat.Bmp /* format */, true /* canOverwriteExistent */);
@@ -829,9 +829,9 @@ namespace IG.Forms
         /// <summary>Saves the specified control to the specified file in the BMP format (common extension .bmp).
         /// <para><paramref name="canOverwriteExistent"/> specifies whether existent files can be overritten.</para></summary>
         /// <param name="frm">Control to be printed.</param>
-        /// <param name="filePath">Path of the file where image is saved.</param>
+        /// <param name="inputFilePath">Path of the file where image is saved.</param>
         /// <param name="canOverwriteExistent">Whether the method can override existent files.
-        /// <para>If false and <paramref name="filePath"/> specifies an existent file then exception is thrown.</para></param>
+        /// <para>If false and <paramref name="inputFilePath"/> specifies an existent file then exception is thrown.</para></param>
         public static void SaveControlBmp(Control frm, string filePath, bool canOverwriteExistent)
         {
             SaveControl(frm, filePath, ImageFormat.Bmp /* format */, canOverwriteExistent);
@@ -840,7 +840,7 @@ namespace IG.Forms
         /// <summary>Saves the specified control to the specified file in a specified bitmap format.
         /// <para>The file is overwritten if it already exists.</para></summary>
         /// <param name="frm">Control to be printed.</param>
-        /// <param name="filePath">Path of the file where image is saved.</param>
+        /// <param name="inputFilePath">Path of the file where image is saved.</param>
         /// <param name="format">Image format.</param>
         public static void SaveControl(Control frm, string filePath, ImageFormat format)
         {
@@ -850,10 +850,10 @@ namespace IG.Forms
         /// <summary>Saves the specified control to the specified file in a specified bitmap format.
         /// <para><paramref name="canOverwriteExistent"/> specifies whether existent files can be overritten.</para></summary>
         /// <param name="frm">Control to be printed.</param>
-        /// <param name="filePath">Path of the file where image is saved.</param>
+        /// <param name="inputFilePath">Path of the file where image is saved.</param>
         /// <param name="format">Image format.</param>
         /// <param name="canOverwriteExistent">Whether the method can override existent files.
-        /// <para>If false and <paramref name="filePath"/> specifies an existent file then exception is thrown.</para></param>
+        /// <para>If false and <paramref name="inputFilePath"/> specifies an existent file then exception is thrown.</para></param>
         public static void SaveControl(Control frm, string filePath, ImageFormat format, bool canOverwriteExistent)
         {
             Bitmap bitmap = new Bitmap(frm.Width, frm.Height);
@@ -941,7 +941,7 @@ namespace IG.Forms
         /// <param name="frm">Control to be printed.</param>
         /// <param name="initialDirectoryPath">Initial directory opened in file dialog. Set to current directory if not specified.</param>
         /// <param name="canOverwriteExistent">Whether the method can override existent files.
-        /// <para>If false and <paramref name="filePath"/> specifies an existent file then exception is thrown.</para></param>
+        /// <para>If false and <paramref name="inputFilePath"/> specifies an existent file then exception is thrown.</para></param>
         /// <returns>Path to the file to which the control image was saved, or null if it was not saved.</returns>
         public static string SaveControlFileDialogBmp(Control frm, string initialDirectoryPath, bool canOverwriteExistent)
         {
@@ -966,10 +966,10 @@ namespace IG.Forms
         /// <param name="frm">Control to be printed.</param>
         /// <param name="initialDirectoryPath">Initial directory opened in file dialog. Set to current directory if not specified.</param>
         /// <param name="extension">File extension (e.g. ".bmp").</param>
-        /// <param name="filePath">Path of the file where image is saved.</param>
+        /// <param name="inputFilePath">Path of the file where image is saved.</param>
         /// <param name="format">Image format.</param>
         /// <param name="canOverwriteExistent">Whether the method can override existent files.
-        /// <para>If false and <paramref name="filePath"/> specifies an existent file then exception is thrown.</para></param>
+        /// <para>If false and <paramref name="inputFilePath"/> specifies an existent file then exception is thrown.</para></param>
         /// <returns>Path to the file to which the control image was saved, or null if it was not saved.</returns>
         public static string SaveControlFileDialog(Control frm, string initialDirectoryPath, string extension, ImageFormat format, bool canOverwriteExistent)
         {

@@ -1137,7 +1137,7 @@ namespace IG.Num
 
             DlgFunctionValue fdlg = new DlgFunctionValue(Math.Exp);
             RealFunction f = Func.GetExp();
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             int i, irep;
             long numit;
             double x=1.0, value,t0,t1,t2,t3;

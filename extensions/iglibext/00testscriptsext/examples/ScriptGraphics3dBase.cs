@@ -423,44 +423,44 @@ namespace IG.Script
             //IVtkFormContainer vtkFormContainer = null;
 
             //string formType = null;
-            //int numArgs = 0;
-            //if (args != null)
-            //    numArgs = args.Length;
-            //if (numArgs >= 1)
+            //int NumAppArguments = 0;
+            //if (AppArguments != null)
+            //    NumAppArguments = AppArguments.Length;
+            //if (NumAppArguments >= 1)
             //{
-            //    formType = args[0];
+            //    formType = AppArguments[0];
             //}
-            //if (numArgs >= 2)
+            //if (NumAppArguments >= 2)
             //{
             //    bool val = modal;
-            //    if (Util.TryParseBoolean(args[1], ref val))
+            //    if (Util.TryParseBoolean(AppArguments[1], ref val))
             //        modal = val;
             //    else
-            //        Console.WriteLine("Invalid form of boolean argument 3 - modal: " + args[1]);
+            //        Console.WriteLine("Invalid form of boolean argument 3 - modal: " + AppArguments[1]);
             //}
-            //if (numArgs >= 3)
+            //if (NumAppArguments >= 3)
             //{
             //    bool val = testPlotter;
-            //    if (Util.TryParseBoolean(args[2], ref val))
+            //    if (Util.TryParseBoolean(AppArguments[2], ref val))
             //        testPlotter = val;
             //    else
-            //        Console.WriteLine("Invalid form of boolean argument 3 - testPlotter: " + args[2]);
+            //        Console.WriteLine("Invalid form of boolean argument 3 - testPlotter: " + AppArguments[2]);
             //}
-            //if (numArgs >= 4)
+            //if (NumAppArguments >= 4)
             //{
             //    bool val = VtkControlBase.DefaultVtkAddTestActorsIGLib;
-            //    if (Util.TryParseBoolean(args[3], ref val))
+            //    if (Util.TryParseBoolean(AppArguments[3], ref val))
             //        VtkControlBase.DefaultVtkAddTestActorsIGLib = val;
             //    else
-            //        Console.WriteLine("Invalid form of boolean argument 4 - DefaultVtkAddTestActorsIGLib: " + args[3]);
+            //        Console.WriteLine("Invalid form of boolean argument 4 - DefaultVtkAddTestActorsIGLib: " + AppArguments[3]);
             //}
-            //if (numArgs >= 5)
+            //if (NumAppArguments >= 5)
             //{
             //    bool val = VtkControlBase.DefaultVtkAddTestActors;
-            //    if (Util.TryParseBoolean(args[4], ref val))
+            //    if (Util.TryParseBoolean(AppArguments[4], ref val))
             //        VtkControlBase.DefaultVtkAddTestActors = val;
             //    else
-            //        Console.WriteLine("Invalid form of boolean argument 5 - DefaultVtkAddTestActors: " + args[4]);
+            //        Console.WriteLine("Invalid form of boolean argument 5 - DefaultVtkAddTestActors: " + AppArguments[4]);
             //}
             //try
             //{

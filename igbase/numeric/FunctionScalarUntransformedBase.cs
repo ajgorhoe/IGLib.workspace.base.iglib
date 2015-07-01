@@ -696,7 +696,7 @@ namespace IG.Num
             double value = 11111111.11111111; // detection of errors made easier
             IVector gradient = null;
             IMatrix hessian = null; ;
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             t.Start();
             for (int i = 0; i < numEvaluations; ++i)
             {

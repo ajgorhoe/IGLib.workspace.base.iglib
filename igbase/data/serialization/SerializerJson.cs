@@ -151,30 +151,30 @@ namespace IG.Lib
         ///// If the specified file exists then it is overwritten.</summary>
         ///// <typeparam name="T">Type of the object to be serialized.</typeparam>
         ///// <param name="serializedObject">Object to be serialized.</param>
-        ///// <param name="filePath">Path to the file that serialized object is written to.</param>
-        //public void Serialize<T>(T serializedObject, string filePath)
+        ///// <param name="inputFilePath">Path to the file that serialized object is written to.</param>
+        //public void Serialize<T>(T serializedObject, string inputFilePath)
         //{
-        //    Serialize<T>(serializedObject, filePath, false /* append */);
+        //    Serialize<T>(serializedObject, inputFilePath, false /* append */);
         //}
 
         ///// <summary>Serializes the specified object and outputs it to a file.</summary>
         ///// <typeparam name="T">Type of the object to be serialized.</typeparam>
         ///// <param name="serializedObject">Object to be serialized.</param>
-        ///// <param name="filePath">Path to the file that serialized object is written to.</param>
+        ///// <param name="inputFilePath">Path to the file that serialized object is written to.</param>
         ///// <param name="append">If true then the generated contents is appended to a file.</param>
-        //public void Serialize<T>(T serializedObject, string filePath, bool append)
+        //public void Serialize<T>(T serializedObject, string inputFilePath, bool append)
         //{
-        //    string directory = Path.GetDirectoryName(filePath);
+        //    string directory = Path.GetDirectoryName(inputFilePath);
         //    if (!Directory.Exists(directory))
         //    {
-        //        throw new ArgumentException("Directory containing the specified file does not exist. Path: " + filePath);
+        //        throw new ArgumentException("Directory containing the specified file does not exist. Path: " + inputFilePath);
         //    }
         //    FileMode mode;
         //    if (append)
         //        mode=FileMode.Append;
         //    else
         //        mode = FileMode.Create;
-        //    using (FileStream fs = new FileStream(filePath, mode, FileAccess.Write))
+        //    using (FileStream fs = new FileStream(inputFilePath, mode, FileAccess.Write))
         //    {
         //        Serialize<T>(serializedObject, fs);
         //    }
@@ -186,14 +186,14 @@ namespace IG.Lib
         ///// <returns>String containing the serialized object.</returns>
         //public string Serialize<T>(T obj)
         //{
-        //    string ret;
+        //    string ReturnedString;
         //    using (MemoryStream ms = new MemoryStream())
         //    {
         //        Serialize(obj, ms);
-        //        ret = Encoding.Default.GetString(ms.ToArray());
+        //        ReturnedString = Encoding.Default.GetString(ms.ToArray());
         //        // ms.Dispose();  - using instead.
         //    }
-        //    return ret;
+        //    return ReturnedString;
         //}
 
         #endregion Serialization
@@ -234,13 +234,13 @@ namespace IG.Lib
 
         ///// <summary>Deserializes an object from JSON - serialized file and returns it.</summary>
         ///// <typeparam name="T">Type of the deserialized object.</typeparam>
-        ///// <param name="filePath">Path to thefile. File must contain the appropriately serialized 
+        ///// <param name="inputFilePath">Path to thefile. File must contain the appropriately serialized 
         ///// object of the correct type.</param>
         ///// <returns>Object deserialized from the file.</returns>
-        //public T DeserialzeFile<T>(string filePath)
+        //public T DeserialzeFile<T>(string inputFilePath)
         //{
         //    T obj;
-        //    using (FileStream ms = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+        //    using (FileStream ms = new FileStream(inputFilePath, FileMode.Open, FileAccess.Read))
         //    {
         //        obj = Deserialize<T>(ms);
         //    }
@@ -274,20 +274,20 @@ namespace IG.Lib
         ///// If the specified file exists then it is overwritten.</summary>
         ///// <typeparam name="T">Type of the object to be serialized.</typeparam>
         ///// <param name="serializedObject">Object to be serialized.</param>
-        ///// <param name="filePath">Path to the file that serialized object is written to.</param>
-        //public void SSerialize<T>(T serializedObject, string filePath)
+        ///// <param name="inputFilePath">Path to the file that serialized object is written to.</param>
+        //public void SSerialize<T>(T serializedObject, string inputFilePath)
         //{
-        //    Global.Serialize<T>(serializedObject, filePath);
+        //    Global.Serialize<T>(serializedObject, inputFilePath);
         //}
 
         ///// <summary>Serializes the specified object and outputs it to a file.</summary>
         ///// <typeparam name="T">Type of the object to be serialized.</typeparam>
         ///// <param name="serializedObject">Object to be serialized.</param>
-        ///// <param name="filePath">Path to the file that serialized object is written to.</param>
+        ///// <param name="inputFilePath">Path to the file that serialized object is written to.</param>
         ///// <param name="append">If true then the generated contents is appended to a file.</param>
-        //public void SSerialize<T>(T serializedObject, string filePath, bool append)
+        //public void SSerialize<T>(T serializedObject, string inputFilePath, bool append)
         //{
-        //    Global.Serialize<T>(serializedObject, filePath, append);
+        //    Global.Serialize<T>(serializedObject, inputFilePath, append);
         //}
 
         ///// <summary>Serializes the specified object to a string and returns it.</summary>
@@ -325,12 +325,12 @@ namespace IG.Lib
 
         ///// <summary>Deserializes an object from JSON - serialized file and returns it.</summary>
         ///// <typeparam name="T">Type of the deserialized object.</typeparam>
-        ///// <param name="filePath">Path to thefile. File must contain the appropriately serialized 
+        ///// <param name="inputFilePath">Path to thefile. File must contain the appropriately serialized 
         ///// object of the correct type.</param>
         ///// <returns>Object deserialized from the file.</returns>
-        //public static T SDeserialzeFile<T>(string filePath)
+        //public static T SDeserialzeFile<T>(string inputFilePath)
         //{
-        //    return Global.DeserialzeFile<T>(filePath);
+        //    return Global.DeserialzeFile<T>(inputFilePath);
         //}
 
 

@@ -284,12 +284,12 @@ namespace IG.Num
         ///// to the specified random distribution.</returns>
         //public static Vector3d Random(IContinuousGenerator randomDistribution)
         //{
-        //    Vector3d ret = new Vector3d(0.0);
+        //    Vector3d ReturnedString = new Vector3d(0.0);
         //    for (int i = 0; i < 3; i++)
         //    {
-        //        ret[i] = randomDistribution.NextDouble();
+        //        ReturnedString[i] = randomDistribution.NextDouble();
         //    }
-        //    return ret;
+        //    return ReturnedString;
         //}
 
         /// <summary>Generates vector with random elements uniformly distributed on [0, 1).</summary>
@@ -375,12 +375,12 @@ namespace IG.Num
 
         #region Auxiliary
 
-        /// <summary>Returns the hash code (hash function) of the current vector.</summary>
+        /// <summary>Returns the hashRet code (hashRet function) of the current vector.</summary>
         /// <remarks>
         /// <para>This method calls the <see cref="VectorBase.GetHashCode"/> to calculate the 
-        /// hash code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
-        /// <para>Two vectors that have the same dimensions and equal elements will produce the same hash codes.</para>
-        /// <para>Probability that two different vectors will produce the same hash code is small but it exists.</para>
+        /// hashRet code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
+        /// <para>Two vectors that have the same dimensions and equal elements will produce the same hashRet codes.</para>
+        /// <para>Probability that two different vectors will produce the same hashRet code is small but it exists.</para>
         /// <para>Overrides the <see cref="object.GetHashCode"/> method.</para>
         /// </remarks>
         public override int GetHashCode()

@@ -123,7 +123,7 @@ namespace IG.Lib
 
         /// <summary>An example of using the <see cref="ArrayDto{ElementType, ElementDtoType}"/> for storing an array of vecctors
         /// into a JSON file.</summary>
-        /// <param name="filePath">Path of the file to which vectors are saved. Must not be null or empty string.
+        /// <param name="inputFilePath">Path of the file to which vectors are saved. Must not be null or empty string.
         /// If the file already exists then user is promped whether to store vectors or not.</param>
         public static void ExampleVectorArray(string filePath)
         {
@@ -274,7 +274,7 @@ namespace IG.Lib
 
         /// <summary>An example of using the <see cref="ArrayDto{ElementType, ElementDtoType}"/> for storing an array of vecctors
         /// into a JSON file.</summary>
-        /// <param name="filePath">Path of the file to which vectors are saved. Must not be null or empty string.
+        /// <param name="inputFilePath">Path of the file to which vectors are saved. Must not be null or empty string.
         /// If the file already exists then user is promped whether to store vectors or not.</param>
         public static void ExampleVectorArray(string filePath)
         {

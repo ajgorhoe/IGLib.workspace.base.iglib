@@ -4,9 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using System.Threading;
 using System.Security.Principal;
 using System.Security.AccessControl;
+using System.Runtime.InteropServices;
+using System.Reflection.Emit;
+using System.Collections.Concurrent;
 
 namespace IG.Lib
 {
@@ -19,7 +23,7 @@ namespace IG.Lib
     }
 
     /// <summary>General utilities.</summary>
-    /// $A Igor Apr10;
+    /// $A Igor Apr10 Jun15;
     public class Util
     {
 
@@ -122,9 +126,10 @@ namespace IG.Lib
             const int largeNumberOfMilliseconds = 100000;
             if (sleepTimeInSeconds >= 0)
             {
-                int timeMs = (int) Math.Ceiling(sleepTimeInSeconds*1000.0);
+                int timeMs = (int)Math.Ceiling(sleepTimeInSeconds * 1000.0);
                 Thread.Sleep(timeMs);
-            } else
+            }
+            else
             {
                 if (OutputLevel >= 0)
                 {
@@ -179,7 +184,8 @@ namespace IG.Lib
         /// <summary>Returns maximal length of string representation of integer value of type <see cref="int"/></summary>
         protected internal static int MaxLengthIntToString
         {
-            get {
+            get
+            {
                 if (_maxLengthIntToString == 0)
                 {
                     lock (LockGlobal)
@@ -192,13 +198,13 @@ namespace IG.Lib
             }
         }
 
-        /// <summary>Returns an integer hash function of the specified object.
+        /// <summary>Returns an integer hashRet function of the specified object.
         /// <para>Returned integer is always positive.</para>
-        /// <para>This hash function is bound to the <see cref="object.ToString"/> method of the specified object,
+        /// <para>This hashRet function is bound to the <see cref="object.ToString"/> method of the specified object,
         /// which means that it returns the same value for any two objects that have the same string
         /// representation.</para></summary>
-        /// <param name="obj">Object whose hash function is returned.</param>
-        /// <remarks><para>This hash function is calculated in such a way that <see cref="object.ToString"/>() is
+        /// <param name="obj">Object whose hashRet function is returned.</param>
+        /// <remarks><para>This hashRet function is calculated in such a way that <see cref="object.ToString"/>() is
         /// called first on <paramref name="obj"/> in order to obtain object's string representation (or, if the object is
         /// null, the <see cref="Util.NullRepresentationString"/> is taken), and then the <see cref="string.GetHashCode"/> 
         /// is called on the obtained string and its value returned.</para></remarks>
@@ -221,22 +227,22 @@ namespace IG.Lib
         }
 
 
-        /// <summary>Returns a string-valued hash function of the specified object.
-        /// <para>This hash function is bound to the <see cref="object.ToString"/> method of the specified object,
+        /// <summary>Returns a string-valued hashRet function of the specified object.
+        /// <para>This hashRet function is bound to the <see cref="object.ToString"/> method of the specified object,
         /// which means that it returns the same value for any two objects that have the same string
         /// representation.</para></summary>
-        /// <param name="obj">Object whose string-valued hash function is returned.</param>
-        /// <remarks><para>This hash function is calculated in such a way that <see cref="object.ToString"/>() is
+        /// <param name="obj">Object whose string-valued hashRet function is returned.</param>
+        /// <remarks><para>This hashRet function is calculated in such a way that <see cref="object.ToString"/>() is
         /// called first on <paramref name="obj"/> in order to obtain object's string representation (or, if the object is
         /// null, the <see cref="Util.NullRepresentationString"/> is taken), and then the <see cref="string.GetHashCode"/> 
         /// is called on the obtained string and its value returned.</para></remarks>
-        /// <seealso cref="Util."/>
+        /// <seealso cref="Util"/>
         public static string GetHashFunctionString(Object obj)
         {
             int maxLength = MaxLengthIntToString;
             char[] generatedCode = GetHashFunctionInt(obj).ToString().ToCharArray();
             int length = 0;
-            if (generatedCode!=null)
+            if (generatedCode != null)
                 length = generatedCode.Length;
             if (length > maxLength)
             {
@@ -251,7 +257,7 @@ namespace IG.Lib
             char[] returnedCode = new char[maxLength];
             for (int i = 1; i <= maxLength; i++)
             {
-                // Copy character representations of digits of generated hash code 
+                // Copy character representations of digits of generated hashRet code 
                 // to the (equilength) returned code, starting form the last one:
                 if (i <= length)
                 {
@@ -270,6 +276,134 @@ namespace IG.Lib
 
 
         #endregion HashFunctions
+
+
+        #region EnumManipulation
+
+        /// <summary>Returns IEnumerable containing all values of the enumeration whose type is specified as type parameter.</summary>
+        /// <typeparam name="enumType">Type of enumeration whose all possible values are returned.</typeparam>
+        public static List<enumType> GetEnumValues<enumType>()
+        {
+            IEnumerable<enumType> values = Enum.GetValues(typeof(enumType)).Cast<enumType>();
+            List<enumType> ret = new List<enumType>();
+            foreach (enumType val in values)
+            {
+                if (!ret.Contains(val))
+                    ret.Add(val); 
+            }
+            return ret;
+        }
+
+        /// <summary>Returns a stirng that contains information about the specified enumeration type.
+        /// <para>Enumeration name and its symbolic values, together with the corresponding integer values, are 
+        /// contained in the returned string.</para>
+        /// <para>Warning: thic function is slow because a number of exceptions are caught until the right
+        /// integer type is picked, because conversion is performed through boxing, therefore exact match must be
+        /// obtained.</para></summary>
+        /// <typeparam name="enumType">Enumeration type whose information in string form is returned.</typeparam>
+        public static string EnumValuesToString<enumType>()
+            where enumType:struct
+        {
+            StringBuilder sb = new StringBuilder();
+            enumType a = default(enumType);
+            sb.AppendLine("Enumeration " + a.GetType().ToString() + ": ");
+            object o;
+            foreach (enumType val in GetEnumValues<enumType>())
+            {
+                o = val;  // box val in order to convert it to long
+                long longVal = 0;
+                bool converted = false;
+                if (!converted)
+                {
+                    try
+                    {
+                        longVal = (long)o;
+                        converted = true;
+                    } catch(Exception) { }
+                }
+                if (!converted)
+                {
+                    try
+                    {
+                        longVal = (int)o;
+                        converted = true;
+                    }
+                    catch (Exception) { }
+                }
+                if (!converted)
+                {
+                    try
+                    {
+                        longVal = (uint)o;
+                        converted = true;
+                    }
+                    catch (Exception) { }
+                }
+                if (!converted)
+                {
+                    try
+                    {
+                        longVal = (short)o;
+                        converted = true;
+                    }
+                    catch (Exception) { }
+                }
+                if (!converted)
+                {
+                    try
+                    {
+                        longVal = (ushort)o;
+                        converted = true;
+                    }
+                    catch (Exception) { }
+                }
+                if (!converted)
+                {
+                    try
+                    {
+                        longVal = (byte)o;
+                        converted = true;
+                    }
+                    catch (Exception) { }
+                }
+                if (!converted)
+                {
+                    try
+                    {
+                        longVal = (sbyte)o;
+                        converted = true;
+                    }
+                    catch (Exception) { }
+                }
+                if (converted)
+                    sb.AppendLine("  " + val.ToString() + " = " +  longVal);
+                else
+                { 
+                    //  ! converted
+                    ulong ulongVal = 0;
+                    if (!converted)
+                    {
+                        try
+                        {
+                            ulongVal = (ulong)o;
+                            converted = true;
+                        }
+                        catch (Exception) { }
+                    }
+                    if (converted)
+                    {
+                        sb.AppendLine("  " + val.ToString() + " = " + ulongVal);
+                    }
+                }
+                if (!converted)
+                {
+                    sb.AppendLine("  " + val.ToString() + ": could not convert to integer.");
+                }
+            }
+            return sb.ToString();
+        }
+
+        #endregion EnumManipulation
 
 
         #region MultiDimensionalTables
@@ -311,7 +445,7 @@ namespace IG.Lib
                 if (tableDimensions.Length != numIndices)
                     throw new ArgumentException("Number of indices " + numIndices + " is different than number of dimensions " + tableDimensions.Length + ".");
                 int index = 0;
-                int numElementsPerIndex = 1;  
+                int numElementsPerIndex = 1;
                 for (int whichIndex = numIndices - 1; whichIndex >= 0; --whichIndex)
                 {
                     index += numElementsPerIndex * indices[whichIndex];
@@ -373,7 +507,7 @@ namespace IG.Lib
                 return GetIndex((int[])null, indices);
             return GetIndex(tableDimensions.ToArray(), indices);
         }
-        
+
         /// <summary>Calculates and stores the multidimensional indices of an element of the
         /// multidimensional table of the specified dimensions, which correspond to the specified 
         /// onedimensional index (index in the 1D table containing all elements of the multidimensional 
@@ -558,7 +692,7 @@ namespace IG.Lib
         public static bool IsListSorted<T>(List<T> list, IComparer<T> comparer)
         {
             if (list == null)
-                throw new ArgumentNullException("list","List to be checked for sorting is not specified (null reference).");
+                throw new ArgumentNullException("list", "List to be checked for sorting is not specified (null reference).");
             if (comparer == null)
                 throw new ArgumentNullException("comparer", "Comparer is not specified (null reference).");
             for (int i = 0; i < list.Count - 1; ++i)
@@ -590,7 +724,8 @@ namespace IG.Lib
                 {
                     // Element not yet in the list
                     sortedList.Insert(~index, insertedElement);
-                } else
+                }
+                else
                 {
                     // Element already in the list:
                     sortedList.Insert(index, insertedElement);
@@ -677,22 +812,22 @@ namespace IG.Lib
             int comparisonResult = comparison(searchedElement, sortedList[from]);
             if (comparisonResult == 0)
                 return from;
-            else if (comparisonResult<0)
+            else if (comparisonResult < 0)
                 return ~from;
             comparisonResult = comparison(searchedElement, sortedList[to]);
             if (comparisonResult == 0)
                 return to;
             else if (comparisonResult > 0)
-                return ~(to+1);
+                return ~(to + 1);
             else
             {
                 while (to - from > 1)
                 {
                     int trial = (from + to) / 2;
                     comparisonResult = comparison(searchedElement, sortedList[trial]);
-                    if (comparisonResult==0)
+                    if (comparisonResult == 0)
                         return trial;
-                    else if (comparisonResult<0)
+                    else if (comparisonResult < 0)
                         to = trial;
                     else
                         from = trial;
@@ -793,6 +928,1611 @@ namespace IG.Lib
         #endregion ListSorted
 
 
+        #region Arrays_Collections
+
+
+        
+        /// <summary>Creates and returns a stirng representation of a list of items.
+        /// <para>Each item in the list is represented by calling its own ToString() method.</para></summary>
+        /// <typeparam name="T">Type of elements of the listt.</typeparam>
+        /// <param name="elementList">List whose string representation is returned.</param>
+        public static string ToString<T>(IList<T> elementList)
+        {
+            return ToString(elementList, false /* newLines */, 0 /* numIndent */);
+        }
+
+
+        /// <summary>Creates and returns a stirng representation of a list of items.
+        /// <para>Each item in the list is represented by calling its own ToString() method.</para></summary>
+        /// <typeparam name="T">Type of elements of the listt.</typeparam>
+        /// <param name="elementList">List whose string representation is returned.</param>
+        /// <param name="newLines">If true then representation of each element is positioned in its ownl line.</param>
+        /// <param name="numIndent">Indentation. If greater than 0 then this number of spaces is inserted before each 
+        /// line of the returned string (including in the beginning of the returned string, which also applies
+        /// if <paramref name="newLines"/> is false).</param>
+        /// <returns></returns>
+        public static string ToString<T>(IList<T> elementList, bool newLines, int numIndent = 0)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (numIndent < 0)
+                throw new ArgumentException("Indentation can not be negative.");
+            //else if (numIndent > 0)
+            //{
+            //    for (int i = 0; i < numIndent; ++i)
+            //        sb.Append(" ");
+            //    sb.Append(' ', numIndent);
+            //    indent = sb.ToString();
+            //    sb.Clear();
+            //}
+            if (elementList == null)
+            {
+                if (numIndent > 0 )
+                    sb.Append(' ', numIndent); 
+                sb.Append("null");
+            }
+            else
+            {
+                int length = elementList.Count;
+                if (numIndent > 0)
+                    sb.Append(' ', numIndent); 
+                sb.Append('{');
+                if (newLines)
+                {
+                    sb.AppendLine();
+                    if (numIndent > 0)
+                        sb.Append(' ', numIndent); 
+                }
+                for (int i = 0; i < length; ++i)
+                {
+                    if (newLines)
+                        sb.Append("  ");
+                    sb.Append(elementList[i].ToString());
+                    if (i < length - 1)
+                    {
+                        if (newLines)
+                            sb.Append(",");
+                        else
+                            sb.Append(", ");
+                    }
+                    if (newLines)
+                    {
+                        sb.AppendLine();
+                        if (numIndent > 0)
+                            sb.Append(' ', numIndent); 
+                    }
+                }
+            }
+            sb.Append('}');
+            if (newLines)
+                sb.Append(Environment.NewLine);
+            return sb.ToString();
+        }
+
+        /// <summary>Returns true if the specified enumerables (collections) are equal, false otherwise.
+        /// <para>Enumerables are considered equal if they are both null, or they are of the same size and all
+        /// elements are equal.</para></summary>
+        /// <typeparam name="T">Type of elements of the enumerables.</typeparam>
+        /// <param name="a">First enumerable to be compared.</param>
+        /// <param name="b">Second enumerable to be compared.</param>
+        /// <returns>True if the two enumerables are of equal lengths and have equal adjacent elements or are both null; false otherwise.</returns>
+        public static bool AreEqual<T>(IEnumerable<T> a, IEnumerable<T> b)
+            where T : IComparable<T>
+        {
+            if (a == null)
+                return (b == null);
+            else if (b == null)
+                return false;
+            else
+            {
+                IEnumerator<T> enuma = a.GetEnumerator();
+                IEnumerator<T> enumb = b.GetEnumerator();
+                while (true)
+                {
+                    bool isNexta = enuma.MoveNext();
+                    bool isNextb = enumb.MoveNext();
+                    if (!isNexta)
+                    {
+                        if (isNextb)
+                            return false;  // incompatible element count
+                        else
+                            return true; // all elements were checked and there were no disagreements
+                    }
+                    else if (!isNextb)
+                        return false;  // incompatible element count
+                    else
+                    {
+                        if (!enuma.Current.Equals(enumb.Current))
+                            return false;  // unequal elements detected
+                    }
+                }
+            }
+        }
+
+        /// <summary>Returns true if the specified collections are equal, false otherwise.
+        /// <para>Collection are considered equal if they are both null, or they are of the same size and all
+        /// elements are equal.</para></summary>
+        /// <remarks>There is also a method for comparing variables of <see cref="IEnumerable{T}"/> interface which can be used
+        /// in all places where this method is used. A special method for collections was created for efficiency reasons,
+        /// because the <see cref="IList{T}"/> interface implements the Count property, thus collections of unequal sizes
+        /// can be immediately detected as unequal by comparing their size, and one does not need to iterate over elements.</remarks>
+        /// <typeparam name="T">Type of elements of the collections.</typeparam>
+        /// <param name="a">First collection to be compared.</param>
+        /// <param name="b">Second collection to be compared.</param>
+        /// <returns>True if the two collection are of equal lengths and have equal adjacent elements or are both null; false otherwise.</returns>
+        public static bool AreEqual<T>(IList<T> a, IList<T> b)
+            where T : IComparable<T>
+        {
+            if (a == null)
+                return (b == null);
+            else if (b == null)
+                return false;
+            else if (a.Count != b.Count)  // unequal size. This is the difference with comparing IEnumerable<T>.
+                return false;
+            else
+            {
+                if (a == null)
+                    return (b == null);
+                else if (b == null)
+                    return false;
+                else
+                {
+                    int la = a.Count, lb = b.Count;
+                    if (la != lb)
+                        return false;
+                    else
+                    {
+                        for (int i = 0; i < la; ++i)
+                            if (!a[i].Equals(b[i]))
+                                return false;
+                        return true;
+                    }
+                }
+            }
+        }
+
+
+
+
+        /// <summary>Concatenates an arbitrary number of arrays or lists of the specified type, and returns the result.</summary>
+        /// <typeparam name="T">Type of array elements.</typeparam>
+        /// <param name="arrays">An arbitrary-length list of array or list parameters to be concatenated.</param>
+        /// <returns>An array that contains, in order of appearance of the listed list/array parameters, all elements of
+        /// those lists/arrays.</returns>
+        public static T[] Concatenate<T>(params IList<T>[] arrays)
+        {
+            var result = new T[arrays.Sum(a => a.Count)];
+            int offset = 0;
+            for (int whichArray = 0; whichArray < arrays.Length; whichArray++)
+            {
+                arrays[whichArray].CopyTo(result, offset);
+                offset += arrays[whichArray].Count;
+            }
+            return result;
+        }
+
+
+
+
+        #endregion Arrays_Collections
+
+
+
+        #region ByteArrays.ConversionAndSize
+
+        /// <summary>Returns size of a value of some specific value type, in bytes.</summary> 
+        /// <remarks>See also: http://stackoverflow.com/questions/16519200/size-of-struct-with-generic-type-fields </remarks>
+        /// <param name="val">Value whose size is returned.</param>
+        public static int SizeOf<T>(T? val) where T : struct
+        {
+            if (val == null) throw new ArgumentNullException("obj");
+            return SizeOf(typeof(T?));
+        }
+
+        /// <summary>Returns size of a value of some specific value type, in bytes.</summary> 
+        /// <remarks>See also: http://stackoverflow.com/questions/16519200/size-of-struct-with-generic-type-fields </remarks>
+        /// <param name="val">Value whose size is returned.</param>
+        public static int SizeOf<T>(T val)
+        {
+            if (val == null) throw new ArgumentNullException("obj");
+            return SizeOf(val.GetType());
+        }
+
+        private static readonly ConcurrentDictionary<Type, int>
+        _cache = new ConcurrentDictionary<Type, int>();
+
+        /// <summary>Returns size of a value of some specific value type, in bytes.</summary> 
+        /// <remarks>See also: http://stackoverflow.com/questions/16519200/size-of-struct-with-generic-type-fields </remarks>
+        /// <param name="obj">Value whose size is returned.</param>
+        public static int SizeOf(Type t)
+        {
+            if (t == null) throw new ArgumentNullException("t");
+
+            return _cache.GetOrAdd(t, t2 =>
+            {
+                var dm = new DynamicMethod("$", typeof(int), Type.EmptyTypes);
+                ILGenerator il = dm.GetILGenerator();
+                il.Emit(OpCodes.Sizeof, t2);
+                il.Emit(OpCodes.Ret);
+
+                var func = (Func<int>)dm.CreateDelegate(typeof(Func<int>));
+                return func();
+            });
+        }
+
+        /// <summary>Returns size of a value of type bool, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(bool val) { return sizeof(bool); }
+
+        /// <summary>Returns size of a value of type char, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(char val) { return sizeof(char); }
+
+        /// <summary>Returns size of a value of type sbyte, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(sbyte val) { return sizeof(sbyte); }
+
+        /// <summary>Returns size of a value of type byte, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(byte val) { return sizeof(byte); }
+
+        /// <summary>Returns size of a value of type short, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(short val) { return sizeof(short); }
+
+        /// <summary>Returns size of a value of type ushort, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(ushort val) { return sizeof(ushort); }
+
+        /// <summary>Returns size of a value of type int, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(int val) { return sizeof(int); }
+
+        /// <summary>Returns size of a value of type uint, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(uint val) { return sizeof(uint); }
+
+        /// <summary>Returns size of a value of type long, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(long val) { return sizeof(long); }
+
+        /// <summary>Returns size of a value of type ulong, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(ulong val) { return sizeof(ulong); }
+
+        /// <summary>Returns size of a value of type float, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(float val) { return sizeof(float); }
+
+        /// <summary>Returns size of a value of type double, in bytes.</summary> <param name="val">Value whose size is returned.</param>
+        public static int SizeOf(double val) { return sizeof(double); }
+
+        ///// <summary>Returns size of a value of some value type, in bytes.</summary> 
+        ///// <remarks>This works only for simlmple value types (char, byte, int, long, uint, ulong, float, double...).</remarks>
+        ///// <param name="val">Value whose size is returned.</param>
+        //public static int SizeOf<T>(T val)
+        //{
+        //    Type type = typeof(T);
+        //    if (type.IsEnum)
+        //    {
+        //        return Marshal.SizeOf(Enum.GetUnderlyingType(type));
+        //    }
+        //    if (type.IsValueType)
+        //    {
+        //        return Marshal.SizeOf(val);
+        //    }
+        //    if (type == typeof(string))
+        //    {
+        //        return Encoding.Default.GetByteCount(val.ToString());
+        //    }
+        //    throw new InvalidOperationException("Can not determine the size of object of type " + type.ToString() + ".");
+        //}
+
+
+
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(bool val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also 
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(bool val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            if (val == false)
+                bytes[startIndex] = 0;
+            else
+                bytes[startIndex] = 1;
+            //if (!BitConverter.IsLittleEndian)
+            //{
+            //    for (int i = 0; i < size; ++i)
+            //        bytes[startIndex + i] = (byte)(val >> (8 * i));
+            //}
+            //else
+            //{
+            //    for (int i = 0; i < size; ++i)
+            //        bytes[startIndex + size - i - 1] = (byte)(val >> (8 * i));
+            //}
+        }
+
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(char val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(char val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            if (!BitConverter.IsLittleEndian)
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + i] = (byte)(val >> (8 * i));
+            }
+            else
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + size - i - 1] = (byte)(val >> (8 * i));
+            }
+        }
+
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(byte val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(byte val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            if (!BitConverter.IsLittleEndian)
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + i] = (byte)(val >> (8 * i));
+            }
+            else
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + size - i - 1] = (byte)(val >> (8 * i));
+            }
+        }
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(sbyte val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(sbyte val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            if (!BitConverter.IsLittleEndian)
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + i] = (byte)(val >> (8 * i));
+            }
+            else
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + size - i - 1] = (byte)(val >> (8 * i));
+            }
+        }
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(Int16 val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(Int16 val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            if (!BitConverter.IsLittleEndian)
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + i] = (byte)(val >> (8 * i));
+            }
+            else
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + size - i - 1] = (byte)(val >> (8 * i));
+            }
+        }
+
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(UInt16 val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(UInt16 val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            if (!BitConverter.IsLittleEndian)
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + i] = (byte)(val >> (8 * i));
+            }
+            else
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + size - i - 1] = (byte)(val >> (8 * i));
+            }
+        }
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(Int32 val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(Int32 val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            if (!BitConverter.IsLittleEndian)
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + i] = (byte)(val >> (8 * i));
+            }
+            else
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + size - i - 1] = (byte)(val >> (8 * i));
+            }
+        }
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(UInt32 val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(UInt32 val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            if (!BitConverter.IsLittleEndian)
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + i] = (byte)(val >> (8 * i));
+            }
+            else
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + size - i - 1] = (byte)(val >> (8 * i));
+            }
+        }
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(Int64 val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[string])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(Int64 val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            if (!BitConverter.IsLittleEndian)
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + i] = (byte)(val >> (8 * i));
+            }
+            else
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + size - i - 1] = (byte)(val >> (8 * i));
+            }
+        }
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(UInt64 val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(UInt64 val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            if (!BitConverter.IsLittleEndian)
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + i] = (byte)(val >> (8 * i));
+            }
+            else
+            {
+                for (int i = 0; i < size; ++i)
+                    bytes[startIndex + size - i - 1] = (byte)(val >> (8 * i));
+            }
+        }
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(float val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(float val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            byte[] ret = BitConverter.GetBytes(val);
+            if (!BitConverter.IsLittleEndian)
+                Array.Reverse(ret);
+            for (int i = 0; i < size; ++i)
+                bytes[startIndex + i] = ret[i];
+        }
+
+
+        /// <summary>Converts a value to byte array.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
+        /// precisely match the required size.</param>
+        public static void ToByteArray(double val, ref byte[] bytes)
+        {
+            int size = SizeOf(val);
+            if (bytes == null || bytes.Length != size)
+                bytes = new byte[size];
+            ToByteArray(val, bytes, 0 /* startIndex */);
+        }
+
+        /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
+        /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
+        /// <param name="val">Value to be converted to byte array.</param>
+        /// <param name="bytes">Byte array where converted vlaue is stored.</param>
+        /// <param name="startIndex">Index where bytes are stored in the provided byte array.</param>
+        public static void ToByteArray(double val, byte[] bytes, int startIndex = 0)
+        {
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null)
+                throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
+            if (bytes.Length < startIndex + size)
+            {
+                throw new ArgumentException("Array of bytes to store the value is too small (" + bytes.Length +
+                    ", should be at least " + (startIndex + size) + "); starting index: " + startIndex + ".");
+            }
+            byte[] ret = BitConverter.GetBytes(val);
+            if (!BitConverter.IsLittleEndian)
+                Array.Reverse(ret);
+            for (int i = 0; i < size; ++i)
+                bytes[startIndex + i] = ret[i];
+        }
+
+
+
+        private static byte[] _auxBytes = null;
+
+
+        /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        /// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out bool val, bool preciseLength, int startIndex = 0)
+        {
+            val = false;
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null || bytes.Length < size + startIndex)
+                throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+            if (preciseLength && bytes.Length != size + startIndex)
+                throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+
+            lock (LockGlobal)
+            {
+                if (_auxBytes == null || _auxBytes.Length < size + startIndex)
+                    _auxBytes = new byte[size + startIndex];
+                if (!BitConverter.IsLittleEndian)
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + i];
+                } else
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + size - i - 1];
+                }
+                val = BitConverter.ToBoolean(_auxBytes, 0);
+            }
+        }
+
+        /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.
+        /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        /// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out bool val, int startIndex = 0)
+        {
+            FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        }
+
+        /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        /// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out char val, bool preciseLength, int startIndex = 0)
+        {
+            val = (char) 0;
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null || bytes.Length < size + startIndex)
+                throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+            if (preciseLength && bytes.Length != size + startIndex)
+                throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+
+            lock (LockGlobal)
+            {
+                if (_auxBytes == null || _auxBytes.Length < size)
+                    _auxBytes = new byte[size];
+                if (!BitConverter.IsLittleEndian)
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + i];
+                } else
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + size - i - 1];
+                }
+                val = BitConverter.ToChar(_auxBytes, 0);
+            }
+        }
+
+        /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.
+        /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        /// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out char val, int startIndex = 0)
+        {
+            FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        }
+
+
+        /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        /// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out byte val, bool preciseLength, int startIndex = 0)
+        {
+            val = (byte)0;
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null || bytes.Length < size + startIndex)
+                throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+            if (preciseLength && bytes.Length != size + startIndex)
+                throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+
+            lock (LockGlobal)
+            {
+                if (_auxBytes == null || _auxBytes.Length < size)
+                    _auxBytes = new byte[size];
+                if (!BitConverter.IsLittleEndian)
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + i];
+                } else
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + size - i - 1];
+                }
+                val = (_auxBytes[0]);
+            }
+        }
+
+        /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.
+        /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        /// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out byte val, int startIndex = 0)
+        {
+            FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        }
+
+
+        ///// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        ///// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        ///// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        ///// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        ///// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        ///// <param name="val">Variable where the extracted value is stored.</param>
+        ///// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        ///// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        ///// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        //public static void FromByteArray(byte[] bytes, out sbyte val, bool preciseLength, int startIndex = 0)
+        //{
+        //    val = (sbyte)0;
+        //    int size = SizeOf(val);
+        //    if (startIndex < 0)
+        //        throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+        //    if (bytes == null || bytes.Length < size + startIndex)
+        //        throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+        //    if (preciseLength && bytes.Length != size + startIndex)
+        //        throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+
+        //    lock (LockGlobal)
+        //    {
+        //        if (_auxBytes == null || _auxBytes.Length < size)
+        //            _auxBytes = new byte[size];
+        //        if (!BitConverter.IsLittleEndian)
+        //        {
+        //            for (int i = 0; i < size; ++i)
+        //                _auxBytes[i] = bytes[startIndex + i];
+        //        }
+        //        else
+        //        {
+        //            for (int i = 0; i < size; ++i)
+        //                _auxBytes[i] = bytes[startIndex + size - i - 1];
+        //        }
+        //        throw new NotImplementedException("This method is not yet implemennted.");
+        //        val = (sbyte) BitConverter.ToInt16(_auxBytes[0]); // BitConverter.ToUInt16 (_auxBytes, 0); ;
+        //    }
+        //}
+
+        ///// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        ///// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        ///// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        ///// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        ///// <param name="bytes">Bytes array where value to be extracted is stored.
+        ///// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        ///// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        ///// <param name="val">Variable where the extracted value is stored.</param>
+        ///// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        //public static void FromByteArray(byte[] bytes, out sbyte val, int startIndex = 0)
+        //{
+        //    FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        //}
+
+
+
+        /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        /// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out Int16 val, bool preciseLength, int startIndex = 0)
+        {
+            val = 0;
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null || bytes.Length < size + startIndex)
+                throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+            if (preciseLength && bytes.Length != size + startIndex)
+                throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+
+            lock (LockGlobal)
+            {
+                if (_auxBytes == null || _auxBytes.Length < size)
+                    _auxBytes = new byte[size];
+                if (!BitConverter.IsLittleEndian)
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + i];
+                } else
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + size - i - 1];
+                }
+                val = BitConverter.ToInt16(_auxBytes, 0);
+            }
+        }
+
+        /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.
+        /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        /// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out Int16 val, int startIndex = 0)
+        {
+            FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        }
+
+        /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        /// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out UInt16 val, bool preciseLength, int startIndex = 0)
+        {
+            val = 0;
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null || bytes.Length < size + startIndex)
+                throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+            if (preciseLength && bytes.Length != size + startIndex)
+                throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+
+            lock (LockGlobal)
+            {
+                if (_auxBytes == null || _auxBytes.Length < size)
+                    _auxBytes = new byte[size];
+                if (!BitConverter.IsLittleEndian)
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + i];
+                } else
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + size - i - 1];
+                }
+                val = BitConverter.ToUInt16(_auxBytes, 0);
+            }
+        }
+
+        /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.
+        /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        /// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out UInt16 val, int startIndex = 0)
+        {
+            FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        }
+
+        /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        /// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out Int32 val, bool preciseLength, int startIndex = 0)
+        {
+            val = 0;
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null || bytes.Length < size + startIndex)
+                throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+            if (preciseLength && bytes.Length != size + startIndex)
+                throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+            
+            lock(LockGlobal)
+            {
+                if (_auxBytes == null || _auxBytes.Length < size)
+                    _auxBytes = new byte[size];
+                if (!BitConverter.IsLittleEndian)
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + i];
+                } else
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + size - i - 1];
+                }
+                val = BitConverter.ToInt32(_auxBytes, 0);
+            }
+        }
+
+        /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.
+        /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        /// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out Int32 val, int startIndex = 0)
+        {
+            FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        }
+
+        /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        /// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out UInt32 val, bool preciseLength, int startIndex = 0)
+        {
+            val = 0;
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null || bytes.Length < size + startIndex)
+                throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+            if (preciseLength && bytes.Length != size + startIndex)
+                throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+            
+            lock(LockGlobal)
+            {
+                if (_auxBytes == null || _auxBytes.Length < size)
+                    _auxBytes = new byte[size];
+                if (!BitConverter.IsLittleEndian)
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + i];
+                } else
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + size - i - 1];
+                }
+                val = BitConverter.ToUInt32(_auxBytes, 0);
+            }
+        }
+
+        /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.
+        /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        /// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out UInt32 val, int startIndex = 0)
+        {
+            FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        }
+
+        /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        /// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out Int64 val, bool preciseLength, int startIndex = 0)
+        {
+            val = 0;
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null || bytes.Length < size + startIndex)
+                throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+            if (preciseLength && bytes.Length != size + startIndex)
+                throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+
+            lock (LockGlobal)
+            {
+                if (_auxBytes == null || _auxBytes.Length < size)
+                    _auxBytes = new byte[size];
+                if (!BitConverter.IsLittleEndian)
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + i];
+                } else
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + size - i - 1];
+                }
+                val = BitConverter.ToInt64(_auxBytes, 0);
+            }
+        }
+
+        /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.
+        /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        /// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out Int64 val, int startIndex = 0)
+        {
+            FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        }
+
+        /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        /// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out UInt64 val, bool preciseLength, int startIndex = 0)
+        {
+            val = 0;
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null || bytes.Length < size + startIndex)
+                throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+            if (preciseLength && bytes.Length != size + startIndex)
+                throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+
+            lock (LockGlobal)
+            {
+                if (_auxBytes == null || _auxBytes.Length < size)
+                    _auxBytes = new byte[size];
+                if (!BitConverter.IsLittleEndian)
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + i];
+                } else
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + size - i - 1];
+                }
+                val = BitConverter.ToUInt64(_auxBytes, 0);
+            }
+        }
+
+        /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.
+        /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        /// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out UInt64 val, int startIndex = 0)
+        {
+            FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        }
+
+        /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        /// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out float val, bool preciseLength, int startIndex = 0)
+        {
+            val = 0;
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null || bytes.Length < size + startIndex)
+                throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+            if (preciseLength && bytes.Length != size + startIndex)
+                throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+
+            lock (LockGlobal)
+            {
+                if (_auxBytes == null || _auxBytes.Length < size)
+                    _auxBytes = new byte[size];
+                if (BitConverter.IsLittleEndian)
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + i];
+                }
+                else
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + size - i - 1];
+                }
+                val = BitConverter.ToSingle(_auxBytes, 0);
+            }
+        }
+
+        /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.
+        /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        /// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out float val, int startIndex = 0)
+        {
+            FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        }
+
+        /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="preciseLength">If true then the <paramref name="bytes"/> array must have precisely the right length to
+        /// store the value at the specified index (<paramref name="startIndex"/>), otherwise the array can also be larger.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out double val, bool preciseLength, int startIndex = 0)
+        {
+            val = 0;
+            int size = SizeOf(val);
+            if (startIndex < 0)
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+            if (bytes == null || bytes.Length < size + startIndex)
+                throw new ArgumentException("Byte array is too short (" + bytes.Length + " bytes, should be at least " + (startIndex + size) + ").");
+            if (preciseLength && bytes.Length != size + startIndex)
+                throw new ArgumentException("Byte array is of incorrect size (" + bytes.Length + " bytes, should be " + (startIndex + size) + ").");
+
+            lock (LockGlobal)
+            {
+                if (_auxBytes == null || _auxBytes.Length < size)
+                    _auxBytes = new byte[size];
+                if (BitConverter.IsLittleEndian)
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + i];
+                } else
+                {
+                    for (int i = 0; i < size; ++i)
+                        _auxBytes[i] = bytes[startIndex + size - i - 1];
+                }
+                val = BitConverter.ToDouble(_auxBytes, 0);
+            }
+        }
+
+        /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
+        /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
+        /// <param name="bytes">Bytes array where value to be extracted is stored.
+        /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
+        /// value size). If precise length is required, use the method with 2 arguments when starting index is 0, or with 4 arguments otherwise.</para></param>
+        /// <param name="val">Variable where the extracted value is stored.</param>
+        /// <param name="startIndex">Index of the byte array where the stored value begins (this allows to store other values).</param>
+        public static void FromByteArray(byte[] bytes, out double val, int startIndex = 0)
+        {
+            FromByteArray(bytes, out val, false /* preciseLength */, startIndex);
+        }
+
+
+        #endregion ByteArrays.ConversionAndSize
+
+
+
+        #region HexadecimalStrings
+
+        /// <summary>Returns a byte array that is represented by a hexadecimal string.</summary>
+        /// <param name="hex"></param>
+        /// <returns></returns>
+        public static byte[] FromHexString(string hex)
+        {
+            if (string.IsNullOrEmpty(hex))
+                return null;
+            int length = hex.Length;
+            int numBytes = 0;
+            bool withSeparator = false;  // whether a separator is used in the string
+            char separator = '0';
+            if (length >= 3)
+            {
+                separator = hex[2];
+                if (!char.IsLetterOrDigit(separator))
+                    withSeparator = true;
+            }
+            if (withSeparator)
+            {
+                numBytes = (length + 1) / 3;
+                if ((length + 1) % 3 != 0)
+                    throw new ArgumentException("Hexadecimal string with separators is of invalid length " + length + ".");
+            } else
+            { 
+                numBytes = length / 2;
+                if ((length) % 2 != 0)
+                    throw new ArgumentException("Hexadecimal string (without separators) is of invalid length " + length + ".");
+            }
+            byte[] bytes = new byte[numBytes];
+            int whichHex = 0;
+            for (int i = 0; i < numBytes; ++i)
+            {
+                char c1 = hex[whichHex];
+                char c2 = hex[whichHex + 1];
+                bytes[i] = (byte) (16 * HexCharToInt(c1) + HexCharToInt(c2));
+                if (withSeparator)
+                    whichHex += 3;
+                else
+                    whichHex += 2;
+                // arr[i] = (byte)((HexCharToInt(hex[i << 1]) << 4) + (HexCharToInt(hex[(i << 1) + 1])));
+            }
+
+            return bytes;
+        }
+
+        /// <summary>Returns value of the specified hexadecimal character (e.g. 9 for '9', 10 for 'a' or 'A', 15 for 'f' or 'F').</summary>
+        /// <param name="hex">Hexadecimal character whose integer value is returned.</param>
+        /// <returns></returns>
+        public static int HexCharToInt(char hex)
+        {
+            int val = (int)hex;
+            //For uppercase A-F letters:
+            //return val - (val < 58 ? 48 : 55);
+            //For lowercase a-f letters:
+            //return val - (val < 58 ? 48 : 87);
+            //Or the two combined, but a bit slower:
+            return val - (val < 58 ? 48 : (val < 97 ? 55 : 87));
+        }
+
+        
+        /// <summary>Returns a hexadecimal string representation of the specified byte array using lower case letters for digits above 9.</summary>
+        /// <param name="bytes">Array of bytes whose hexadecial representation is to be returned.</param>
+        /// <param name="separator">If not null or empty string then this string is inserted between hexadecimal digits.
+        /// <para>If specified then it must be a single character string, and may not be a digit or a letter.</para></param>
+        public static string ToHexString(byte[] bytes, string separator = null)
+        {
+            return ToHexString(bytes, false /* upperCase */, separator);
+        }
+
+        /// <summary>Returns a hexadecimal string representation of the specified byte array.</summary>
+        /// <param name="bytes">Array of bytes whose hexadecial representation is to be returned.</param>
+        /// <param name="upperCase">Whether digits greater than 9 should be represented by upper case letters (default is false).</param>
+        /// <param name="separator">If not null or empty string then this string is inserted between hexadecimal digits.
+        /// <para>If specified then it must be a single character string, and may not be a digit or a letter.</para></param>
+        public static string ToHexString(byte[] bytes, bool upperCase, string separator = null)
+        {
+            int numBytes = 0;
+            if (bytes != null)
+                numBytes = bytes.Length;
+            bool withSeparator = (!string.IsNullOrEmpty(separator));
+            if (withSeparator)
+            {
+                if (separator.Length > 1)
+                    throw new ArgumentException("Separator length must be 1 for generating hexadecimal representations of byte arrays.");
+                char first = separator[0];
+                if (char.IsLetterOrDigit(first))
+                    throw new ArgumentException("Invalid separator " + separator + ", may not be a digit or a letter.");
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < numBytes; ++i)
+            {
+                if (upperCase)
+                    sb.Append(bytes[i].ToString("X2"));
+                else
+                    sb.Append(bytes[i].ToString("x2"));
+                if (withSeparator && i < numBytes - 1)
+                    sb.Append(separator);
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>Returns true if the two specified hexadecimal strings represent the same sequence of bytes (or the same number),
+        /// and false otherwise.
+        /// <para>If any string is null or its length is 0 then false is returned.</para></summary>
+        /// <param name="hexString1">The first hexadecimal sequence to be compared.</param>
+        /// <param name="hexString2">The second hexadecimal sequence to be compared.</param>
+        public static bool AreHexStringsEqual(string hexString1, string hexString2)
+        {
+            bool ret = false;
+            byte[] b1 = FromHexString(hexString1);
+            byte[] b2 = FromHexString(hexString2);
+            if (b1 != null && b2 != null)
+                if (b1.Length == b2.Length)
+                {
+                    int length = b1.Length;
+                    for (int i = 0; i < length; ++i)
+                        if (b1[i] != b2[i])
+                            return false;
+                    ret = true;
+                }
+            return ret;
+
+            //if (hexString1 != null)
+            //    hexString1 = hexString1.ToUpper();
+            //if (hexString2 != null)
+            //    hexString2 = hexString2.ToUpper();
+            //return hexString1 == hexString2;
+        }
+
+        #endregion HexadecimalStrings
+
+
+
         #region CollectionToString
 
         /// <summary>Returns a string representing the specified collection of objects.
@@ -880,7 +2620,8 @@ namespace IG.Lib
         public static string ListToString<T>(List<T> list, bool addNewlines,
             int numIndent)
         {
-            return ListToString(list, addNewlines, numIndent);
+            // return ListToString(list, addNewlines, numIndent);
+            return ToString(list, addNewlines, numIndent);
         }
 
         /// <summary>Returns a string representing the specified generic list in long form.
@@ -936,9 +2677,9 @@ namespace IG.Lib
         /// transfering numerical values through text files.</para></summary>
         /// <typeparam name="ObjectType">Type of the object to be converted to string.</typeparam>
         /// <param name="obj">Object to be converted.</param>
-        public static string ToString<ObjectType>(ObjectType obj)
+        public static string ObjectToString<ObjectType>(ObjectType obj)
         {
-            return ToString<ObjectType>(obj, System.Globalization.CultureInfo.InvariantCulture);
+            return ObjectToString<ObjectType>(obj, System.Globalization.CultureInfo.InvariantCulture);
         }
 
         /// <summary>Converts obect of the specified type to its string representation, where
@@ -948,7 +2689,7 @@ namespace IG.Lib
         /// <typeparam name="ObjectType">Type of the object to be converted to string.</typeparam>
         /// <param name="obj">Object to be converted.</param>
         /// <param name="cultureInfo">Culture info used in conversion.</param>
-        public static string ToString<ObjectType>(ObjectType obj,System.Globalization.CultureInfo cultureInfo)
+        public static string ObjectToString<ObjectType>(ObjectType obj, System.Globalization.CultureInfo cultureInfo)
         {
             if (IsNumeric(obj))
             {
@@ -985,7 +2726,7 @@ namespace IG.Lib
             return false;
         }
 
-        
+
         /// <summary>Returns true if the specified expression or object is of numeric type (such as int, float, double, etc.),
         /// and false otherwise.</summary>
         /// <param name="expression">Expression that is checked for being of numeric type.</param>
@@ -996,8 +2737,8 @@ namespace IG.Lib
                 return false;
             double number;
             return Double.TryParse(
-                Convert.ToString(expression, System.Globalization.CultureInfo.InvariantCulture), 
-                System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo, 
+                Convert.ToString(expression, System.Globalization.CultureInfo.InvariantCulture),
+                System.Globalization.NumberStyles.Any, System.Globalization.NumberFormatInfo.InvariantInfo,
                 out number);
         }
 
@@ -1012,14 +2753,14 @@ namespace IG.Lib
             Console.WriteLine("Through Console.WriteLine: " + d);
             Console.WriteLine("Through ToString(): " + d.ToString());
             Console.WriteLine("Through generic Util.ToString(): " +
-                Util.ToString<double>(d));
+                Util.ObjectToString<double>(d));
             Console.WriteLine("Through ToString() with NonGeneric Util.ToString(): " +
-                Util.ToString(d));
+                Util.ObjectToString(d));
             object o = d;
             Console.WriteLine("Through NonGeneric Util.ToString(), cast to object: " +
-                Util.ToString(o));
+                Util.ObjectToString(o));
             Console.WriteLine("Through NonGeneric Util.ToString(), cast to object and back to double: " +
-                Util.ToString((double)o));
+                Util.ObjectToString((double)o));
             Console.WriteLine("Test of number to string conversion finished.");
         }
 
@@ -1029,7 +2770,7 @@ namespace IG.Lib
 
         #region StringParse
 
-        
+
 
         /// <summary>Tries to parse a string representation of an object of the specified type and return 
         /// it through output argument. Invariant culture is used in parsing.</summary>
@@ -1040,7 +2781,7 @@ namespace IG.Lib
         /// (in this case <paramref name="parsedValue"/> retains its previous value).</returns>
         public static bool TryParse<ReturnType>(string strValue, ref ReturnType parsedValue)
         {
-            return TryParse<ReturnType> (strValue, ref parsedValue, System.Globalization.CultureInfo.InvariantCulture);
+            return TryParse<ReturnType>(strValue, ref parsedValue, System.Globalization.CultureInfo.InvariantCulture);
         }
 
 
@@ -1137,7 +2878,7 @@ namespace IG.Lib
             { }
             return parsed;
         }
-        
+
 
         /// <summary>Converts the specified string to a boolean value, if possible, and returns it.
         /// If conversion is not possible then exception is thrown.
@@ -1220,7 +2961,7 @@ namespace IG.Lib
             ThreadPriority value;
             try
             {
-                value = (ThreadPriority) Enum.Parse(typeof(ThreadPriority), str, true /* ignoreCase */);
+                value = (ThreadPriority)Enum.Parse(typeof(ThreadPriority), str, true /* ignoreCase */);
             }
             catch (Exception ex)
             {
@@ -1251,13 +2992,62 @@ namespace IG.Lib
                     value = ThreadPriority.AboveNormal;
                 else if (str == "highest" || str == "realtime")
                     value = ThreadPriority.Highest;
-               else throw;
+                else throw;
             }
             return value;
         }
 
 
         #endregion StringParse
+
+
+        #region XML
+
+
+        /// <summary>Returns a reformatted XML string, eventually in a more human readable form.</summary>
+        /// <param name="xmlString">String containing the XML to be returned in a reformatted form.</param>
+        /// <param name="indentCahrs">String used for indentation (default is string containing two space characters). 
+        /// Default is two space characters. If null or empty srting then no indentation id used.</param>
+        /// <param name="newlineChars">Character used for newlines. If null then <see cref="Environment.NewLine"/> is used.</param>
+        public static string XmlToString(string xmlString, string indentCahrs = "  ", string newlineChars = null)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xmlString);
+            return XmlToString(doc, indentCahrs, newlineChars);
+        }
+
+
+        /// <summary>Converts the specified XML document to string, eventually with human readable indentation
+        /// and newlines added. The stirng representation is returned.</summary>
+        /// <param name="doc">XML documennt to be converted to a string.</param>
+        /// <param name="indent">"</param>
+        /// <param name="indentCahrs">String used for indentation (default is string containing two space characters). 
+        /// Default is two space characters. If null or empty srting then no indentation id used.</param>
+        /// <param name="newlineChars">Character used for newlines. If null then <see cref="Environment.NewLine"/> is used.</param>
+        public static string XmlToString(XmlDocument doc, string indentCahrs = "  ", string newlineChars = null)
+        {
+            if (newlineChars == null)
+                newlineChars = Environment.NewLine;
+            NewLineHandling newLineHandling = NewLineHandling.Replace;
+            StringBuilder sb = new StringBuilder();
+            bool indent = false;
+            if (!string.IsNullOrEmpty(indentCahrs))
+                indent = true;
+            XmlWriterSettings settings = new XmlWriterSettings
+            {
+                Indent = indent,
+                IndentChars = "  ",
+                NewLineChars = newlineChars,
+                NewLineHandling = newLineHandling
+            };
+            using (XmlWriter writer = XmlWriter.Create(sb, settings))
+            {
+                doc.Save(writer);
+            }
+            return sb.ToString();
+        }
+
+        #endregion XML
 
 
         #region Examples

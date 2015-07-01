@@ -229,7 +229,7 @@ namespace IG.Num
         public override double Value(IVector parameters)
         {
             double ret = 0.0;
-            // ret *= 0.5;
+            // ReturnedString *= 0.5;
             if (Gradient0 != null)
                 ret += Vector.ScalarProduct(Gradient0, parameters);
             ret += ScalarTerm;

@@ -632,19 +632,19 @@ namespace IG.Lib
         ///// <summary>Serializes the current DTO (Data Transfer Object) and outputs it to a file.
         ///// If the specified file exists then it is overwritten.</summary>
         ///// <param name="serializer">Serializer used for serialization.</param>
-        ///// <param name="filePath">Path to the file that serialized object is written to.</param>
-        //void Serialize(ISerializer serializer, string filePath)
+        ///// <param name="inputFilePath">Path to the file that serialized object is written to.</param>
+        //void Serialize(ISerializer serializer, string inputFilePath)
         //{
-        //    serializer.Serialize<SerializationDtoBase<Type, BaseType>>(this, filePath);
+        //    serializer.Serialize<SerializationDtoBase<Type, BaseType>>(this, inputFilePath);
         //}
 
         ///// <summary>Serializes the current DTO (Data Transfer Object) and outputs it to a file.</summary>
         ///// <param name="serializer">Serializer used for serialization.</param>
-        ///// <param name="filePath">Path to the file that serialized object is written to.</param>
+        ///// <param name="inputFilePath">Path to the file that serialized object is written to.</param>
         ///// <param name="append">If true then the generated contents is appended to a file.</param>
-        //void Serialize<T>(ISerializer serializer, string filePath, bool append)
+        //void Serialize<T>(ISerializer serializer, string inputFilePath, bool append)
         //{
-        //    serializer.Serialize<SerializationDtoBase<Type, BaseType>>(this, filePath, append);
+        //    serializer.Serialize<SerializationDtoBase<Type, BaseType>>(this, inputFilePath, append);
         //}
 
         ///// <summary>Serializes the current DTO (Data Transfer Object) to a string and returns it.</summary>
@@ -684,10 +684,10 @@ namespace IG.Lib
 
         ///// <summary>Deserializes an object from JSON - serialized file and returns it.</summary>
         ///// <typeparam name="T">Type of the deserialized object.</typeparam>
-        ///// <param name="filePath">Path to thefile. File must contain the appropriately serialized 
+        ///// <param name="inputFilePath">Path to thefile. File must contain the appropriately serialized 
         ///// object of the correct type.</param>
         ///// <returns>Object deserialized from the file.</returns>
-        //T DeserializeFile<T>(string filePath);
+        //T DeserializeFile<T>(string inputFilePath);
 
         #endregion Deserialization
 

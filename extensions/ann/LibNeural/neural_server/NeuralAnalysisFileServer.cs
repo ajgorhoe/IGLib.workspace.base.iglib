@@ -1,4 +1,6 @@
-﻿
+﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+
+
 // NEURAL NETWORKS APPROXIMATOR'S FILE SERVER
 
 using System.IO;
@@ -250,7 +252,7 @@ namespace IG.Neural
         /// <param name="reqConstraints">Flag indicating whether constraint functions must be calculated.</param>
         /// <param name="reqGradObjective">Flag indicating whether objective function gradientmust be calculated.</param>
         /// <param name="reqGradOConstraints">Fleg indicating whether constraint function gradients must be calculated.</param>
-        /// <param name="outputFilePath">Path of a file where the calculated analysis response in JSON is written to.
+        /// <param name="deletedFilePath">Path of a file where the calculated analysis response in JSON is written to.
         /// It can be null or empty string, in this case response is not written to a file (but it is 
         /// output on console).</param>
         public virtual void ClientTestCalculateAnalysisResults(string inputFilePath,

@@ -230,7 +230,7 @@ namespace IG.Forms
             // load the file upon init
             try
             {
-                // Doc.Load(filePath);
+                // Doc.Load(inputFilePath);
                 string title = "Testing XPath";
                 this.Text = title;
             }

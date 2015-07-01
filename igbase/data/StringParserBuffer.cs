@@ -47,7 +47,7 @@ namespace IG.Lib
         string ToString();
 
         /// <summary>Saves buffer contents to a text file.</summary>
-        /// <param name="filePath">Path of the file where buffer is stored.</param>
+        /// <param name="inputFilePath">Path of the file where buffer is stored.</param>
         /// <param name="append">Whether the file is appended. 
         /// If true and if the file already exists then buffer contents are appended at the end of the file.</param>
         void Save(string filePath, bool append);
@@ -55,7 +55,7 @@ namespace IG.Lib
 
         /// <summary>Saves buffer contents to a text file.
         /// If the file already exists then it is overwritten.</summary>
-        /// <param name="filePath">Path of the file where buffer is stored.</param>
+        /// <param name="inputFilePath">Path of the file where buffer is stored.</param>
         void Save(string filePath);
 
 
@@ -232,7 +232,7 @@ namespace IG.Lib
         }
 
         /// <summary>Saves buffer contents to a text file.</summary>
-        /// <param name="filePath">Path of the file where buffer is stored.</param>
+        /// <param name="inputFilePath">Path of the file where buffer is stored.</param>
         /// <param name="append">Whether the file is appended. 
         /// If true and if the file already exists then buffer contents are appended at the end of the file.</param>
         public void Save(string filePath, bool append)
@@ -247,7 +247,7 @@ namespace IG.Lib
 
         /// <summary>Saves buffer contents to a text file.
         /// If the file already exists then it is overwritten.</summary>
-        /// <param name="filePath">Path of the file where buffer is stored.</param>
+        /// <param name="inputFilePath">Path of the file where buffer is stored.</param>
         public void Save(string filePath)
         {
             Save(filePath, false /* append */);
@@ -269,7 +269,7 @@ namespace IG.Lib
             int WarmUpCount = 1000;
             int FinalCount = 1000000;
 
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
 
             StringBuilder sb = new StringBuilder();
             CharacterBuffer buffer = new CharacterBuffer(sb);

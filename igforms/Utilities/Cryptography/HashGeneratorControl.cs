@@ -62,7 +62,7 @@ namespace IG.Forms
 
         protected string _filePath;
 
-        /// <summary>Path to the file whose hash values are calculated.</summary>
+        /// <summary>Path to the file whose hashRet values are calculated.</summary>
         public string FilePath
         {
             get
@@ -133,7 +133,7 @@ namespace IG.Forms
             DialogResult result = MessageBox.Show(text, caption, button, icon);
         }
 
-        /// <summary>Clears all text fields with calculated hash values.</summary>
+        /// <summary>Clears all text fields with calculated hashRet values.</summary>
         protected void ClearHashes()
         {
             txtMd5.Clear();
@@ -164,9 +164,9 @@ namespace IG.Forms
             if (chkMd5.Checked)
             {
                 if (rbFile.Checked)
-                    txtMd5.Text = UtilCrypto.GetFileHashMd5(FilePath);
+                    txtMd5.Text = UtilCrypto.GetFileHashMd5Hex(FilePath);
                 else
-                    txtMd5.Text = UtilCrypto.GetStringHashMd5(txtContents.Text);
+                    txtMd5.Text = UtilCrypto.GetStringHashMd5Hex(txtContents.Text);
                 if (txtMd5.Text != null && chkUpperCase.Checked)
                 {
                     txtMd5.Text = txtMd5.Text.ToUpper();
@@ -175,9 +175,9 @@ namespace IG.Forms
             if (chkSha1.Checked)
             {
                 if (rbFile.Checked)
-                    txtSha1.Text = UtilCrypto.GetFileHashSha1(FilePath);
+                    txtSha1.Text = UtilCrypto.GetFileHashSha1Hex(FilePath);
                 else
-                    txtSha1.Text = UtilCrypto.GetStringHashSha1(txtContents.Text);
+                    txtSha1.Text = UtilCrypto.GetStringHashSha1Hex(txtContents.Text);
                 if (txtSha1.Text != null && chkUpperCase.Checked)
                 {
                     txtSha1.Text = txtSha1.Text.ToUpper();
@@ -186,9 +186,9 @@ namespace IG.Forms
             if (chkSha256.Checked)
             {
                 if (rbFile.Checked)
-                    txtSha256.Text = UtilCrypto.GetFileHashSha256(FilePath);
+                    txtSha256.Text = UtilCrypto.GetFileHashSha256Hex(FilePath);
                 else
-                    txtSha256.Text = UtilCrypto.GetStringHashSha256(txtContents.Text);
+                    txtSha256.Text = UtilCrypto.GetStringHashSha256Hex(txtContents.Text);
                 if (txtSha256.Text != null && chkUpperCase.Checked)
                 {
                     txtSha256.Text = txtSha256.Text.ToUpper();
@@ -197,9 +197,9 @@ namespace IG.Forms
             if (chkSha512.Checked)
             {
                 if (rbFile.Checked)
-                    txtSha512.Text = UtilCrypto.GetFileHashSha512(FilePath);
+                    txtSha512.Text = UtilCrypto.GetFileHashSha512Hex(FilePath);
                 else
-                    txtSha512.Text = UtilCrypto.GetStringHashSha512(txtContents.Text);
+                    txtSha512.Text = UtilCrypto.GetStringHashSha512Hex(txtContents.Text);
                 if (txtSha512.Text != null && chkUpperCase.Checked)
                 {
                     txtSha512.Text = txtSha512.Text.ToUpper();
@@ -215,7 +215,7 @@ namespace IG.Forms
         {
             if (rbFile.Checked)
             {
-                string hashFilePath = FilePath + UtilCrypto.ConstCrypto.HashFileExtension;
+                string hashFilePath = FilePath + ConstCrypto.HashFileExtension;
                 bool doSave = true;
                 if (File.Exists(hashFilePath))
                 {
@@ -361,7 +361,7 @@ namespace IG.Forms
                     return;
                 } else
                 {
-                    HashType type = UtilCrypto.CheckFileHashSupportedTypes(FilePath, txtVerify.Text);
+                    HashType type = UtilCrypto.CheckFileHashSupportedTypesHex(FilePath, txtVerify.Text);
                     if (type == HashType.None)
                     {
                         ReportError("The verified hash is NOT a VALID HASH of any supported type for the specified file. " + Environment.NewLine
@@ -376,7 +376,7 @@ namespace IG.Forms
                 }
             } else if (rbText.Checked)
             {
-                HashType type = UtilCrypto.CheckStringHashSupportedTypes(txtContents.Text, txtVerify.Text);
+                HashType type = UtilCrypto.CheckStringHashSupportedTypesHex(txtContents.Text, txtVerify.Text);
                 if (type == HashType.None)
                 {
                     ReportError("The verified hash is NOT a VALID HASH of any supported type for the specified text. " 
@@ -446,7 +446,7 @@ namespace IG.Forms
 
 
 
-        /// <summary>Browses for the file whose hash values will be calculated.</summary>
+        /// <summary>Browses for the file whose hashRet values will be calculated.</summary>
         private void btnFileBrowse_Click(object sender, EventArgs e)
         {
             string oldFilePath = FilePath;
@@ -458,7 +458,7 @@ namespace IG.Forms
             }
         }
 
-        // When the hash algorithm type changes:
+        // When the hashRet algorithm type changes:
         
         private void chkMd5_CheckedChanged(object sender, EventArgs e)
         {
@@ -514,7 +514,7 @@ namespace IG.Forms
             Clipboard.SetText(txtSha512.Text);
         }
 
-        // Pasting verified hash value from the clipboard:
+        // Pasting verified hashRet value from the clipboard:
 
         private void btnVerifyPaste_Click(object sender, EventArgs e)
         {
@@ -566,7 +566,7 @@ namespace IG.Forms
         }
 
 
-        /// <summary>Handles situation when one changes the setting whether to store file's hash values
+        /// <summary>Handles situation when one changes the setting whether to store file's hashRet values
         /// to a file. If the check box gets checked then hashes are immediately saved to a file.</summary>
         private void chkGenerateFile_CheckedChanged(object sender, EventArgs e)
         {

@@ -1555,7 +1555,7 @@ namespace IG.Num
                         throw new ArgumentException("Dimension of input parameters (" + inputParameters.Length +
                             ") does not match number of input parameters for the current case (" + NumInputParameters + ").");
                 }
-                StopWatch t = new StopWatch();
+                StopWatch1 t = new StopWatch1();
                 double tWriteParam = 0, tExecute = 0, tReadResponse = 0, tAll = 0;
                 t.Start();
                 DeleteOutputFiles();

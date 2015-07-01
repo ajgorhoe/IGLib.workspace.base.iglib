@@ -1621,7 +1621,7 @@ namespace IG.Lib
                 args = new object[1];
                 args[0] = message;
             }
-            // ret = Activator.CreateInstance(extype,args) as Exception;  // $$ Verjetno Nejčeva koda, to je treba preveriti 
+            // ReturnedString = Activator.CreateInstance(extype,AppArguments) as Exception;  // $$ Verjetno Nejčeva koda, to je treba preveriti 
             ret = (Exception)Activator.CreateInstance(extype,args);   // Verjetno moja originalna koda - preveriti, kaj ostane not.    
    
             return (ret);
@@ -6546,7 +6546,7 @@ namespace IG.Lib
 
         //public static string ErrorLocationString(string location, Exception ex)
         //{
-        //    string ret="<< Unknown >>",
+        //    string ReturnedString="<< Unknown >>",
         //        exstr=null;
         //    try
         //    {
@@ -6555,17 +6555,17 @@ namespace IG.Lib
         //        if (string.IsNullOrEmpty(exstr))
         //        {
         //            if (!string.IsNullOrEmpty(location))
-        //                ret = location;
+        //                ReturnedString = location;
         //        } else
         //        {
         //            if (string.IsNullOrEmpty(location))
-        //                ret = exstr;
+        //                ReturnedString = exstr;
         //            else
-        //                ret = location + "." + exstr;
+        //                ReturnedString = location + "." + exstr;
         //        }
         //    }
         //    catch { }
-        //    return ret;
+        //    return ReturnedString;
         //}
 
         //public static string ErrorLocationString(string location)

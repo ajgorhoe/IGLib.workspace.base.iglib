@@ -217,12 +217,12 @@ namespace IG.Num
         /// <param name="elementFormat">Format specification for printing individual element.</param>
         string ToStringMath(string elementFormat);
         
-        /// <summary>Returns an integer valued hash function of the current matrix object.
+        /// <summary>Returns an integer valued hashRet function of the current matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         int GetHashFunctionInt();
         
-        /// <summary>Returns a string valued hash function of the current matrix object.
+        /// <summary>Returns a string valued hashRet function of the current matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
         /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString()"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific matrix.</remarks>
@@ -744,12 +744,12 @@ namespace IG.Num
         #region Operations.Auxiliary
 
 
-        /// <summary>Returns the hash code (hash function) of the current matrix.</summary>
+        /// <summary>Returns the hashRet code (hashRet function) of the current matrix.</summary>
         /// <remarks>
         /// <para>This method calls the <see cref="MatrixBase.GetHashCode(IMatrix)"/> to calculate the 
-        /// hash code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
-        /// <para>Two matrices that have the same dimensions and equal elements will produce the same hash codes.</para>
-        /// <para>Probability that two different matrices will produce the same hash code is small but it exists.</para>
+        /// hashRet code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
+        /// <para>Two matrices that have the same dimensions and equal elements will produce the same hashRet codes.</para>
+        /// <para>Probability that two different matrices will produce the same hashRet code is small but it exists.</para>
         /// <para>Overrides the <see cref="object.GetHashCode"/> method.</para>
         /// </remarks>
         public override int GetHashCode()
@@ -768,7 +768,7 @@ namespace IG.Num
             return MatrixBase.Equals(this, obj as IMatrix);
         }
 
-        /// <summary>Returns an integer valued hash function of the current matrix object.
+        /// <summary>Returns an integer valued hashRet function of the current matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         public int GetHashFunctionInt()
@@ -776,7 +776,7 @@ namespace IG.Num
             return Util.GetHashFunctionInt(this);
         }
 
-        /// <summary>Returns a string valued hash function of the current matrix object.
+        /// <summary>Returns a string valued hashRet function of the current matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
         /// <remarks>The returned string is always of the same length, and is based on the <see cref="ToString()"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific matrix.</remarks>
@@ -4748,10 +4748,10 @@ namespace IG.Num
 
         #region Auxiliary
 
-        /// <summary>Returns hash code of the specified matrix.</summary>
+        /// <summary>Returns hashRet code of the specified matrix.</summary>
         /// <param name="mat">Matrix whose hath code is returned.</param>
         /// <remarks>This method should be used when overriding the GetHashCode() in  vector classes, 
-        /// in order to unify calculation of hash code over different vector classes.</remarks>
+        /// in order to unify calculation of hashRet code over different vector classes.</remarks>
         public static int GetHashCode(IMatrix mat)
         {
             if (mat == null)
@@ -4812,18 +4812,18 @@ namespace IG.Num
             }
         }
 
-        /// <summary>Returns an integer valued hash function of the specified matrix object.
+        /// <summary>Returns an integer valued hashRet function of the specified matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
-        /// <param name="mat">Matrix object whose hash function is calculated and returned.</param>
+        /// <param name="mat">Matrix object whose hashRet function is calculated and returned.</param>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         public static int GetHashFunctionInt(IMatrix mat)
         {
             return Util.GetHashFunctionInt(mat);
         }
 
-        /// <summary>Returns a string valued hash function of the specified matrix object.
+        /// <summary>Returns a string valued hashRet function of the specified matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
-        /// <param name="mat">Matrix object whose hash function is calculated and returned.</param>
+        /// <param name="mat">Matrix object whose hashRet function is calculated and returned.</param>
         /// <seealso cref="Util.GetHashFunctionString"/>
         public static string GetHashFunctionString(IMatrix mat)
         {
@@ -5058,7 +5058,7 @@ namespace IG.Num
         /// <summary>Saves (serializes) the specified matrix to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="mat">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file in which object is is saved.</param>
+        /// <param name="inputFilePath">Path to the file in which object is is saved.</param>
         public static void SaveJson(IMatrix mat, string filePath)
         {
             SaveJson(mat, filePath, false /* append */ );
@@ -5066,7 +5066,7 @@ namespace IG.Num
 
         /// <summary>Saves (serializes) the specified matrix to the specified JSON file.</summary>
         /// <param name="mat">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file in which object is is saved.</param>
+        /// <param name="inputFilePath">Path to the file in which object is is saved.</param>
         /// <param name="append">Specifies whether serialized data is appended at the end of the file
         /// in the case that the file already exists.</param>
         public static void SaveJson(IMatrix mat, string filePath, bool append)
@@ -5078,7 +5078,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores (deserializes) a matrix object from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which object data is restored.</param>
+        /// <param name="inputFilePath">File from which object data is restored.</param>
         /// <param name="matRestored">Object that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref IMatrix matRestored)
         {
@@ -5723,7 +5723,7 @@ namespace IG.Num
         /// Calculation times and error extents are measured and reported (if specified).
         /// <para>If relative errors are below the specified tolerance, true is returned, otherwise false is returned.</para></summary>
         /// <param name="dim">Dimension of the problems generated for tests.</param>
-        /// <param name="numRepetitions">Number of repetitions of the tests. If greater than 1 then tests are repeated
+        /// <param name="numGenerations">Number of repetitions of the tests. If greater than 1 then tests are repeated
         /// with inputs generated anew each time.</param>
         /// <param name="tol">Tolerance on relative errors of test results.</param>
         /// <param name="outputLevel">Level of output. If 0 then no reports are launched to the console.</param>
@@ -5731,7 +5731,7 @@ namespace IG.Num
         /// <param name="A">System matrix used in the test. If specified (i.e., not null) then this matrix is LU decomposed and
         /// used in the first repetition of tests instead of a randomly generated matrix. In this case, its dimension
         /// overrides (when not the same) the specified dimension <paramref name="dim"/> of test matrices and vectors.
-        /// If there are more than one repetitions (parameter <paramref name="numRepetitions"/>) then subsequent repetitions
+        /// If there are more than one repetitions (parameter <paramref name="numGenerations"/>) then subsequent repetitions
         /// still use randomly generated inputs. If specified (i.e., not null) then this vector is  used in the first repetition 
         /// of tests instead of a a randomly generated vector. Similar rules apply as for <paramref name="A"/>.</param>
         /// <param name="b">Vector of right-hand sides used in the test.</param>
@@ -5744,7 +5744,7 @@ namespace IG.Num
             if (tol <= 0)
                 tol = 1.0e-6;
             double smallNumber = 1e-20;  // e.g. for guarding division by 0
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             try
             {
                 double determinant = 0;
@@ -6353,7 +6353,7 @@ namespace IG.Num
         /// Calculation times and error extents are measured and reported (if specified).
         /// <para>If relative errors are below the specified tolerance, true is returned, otherwise false is returned.</para></summary>
         /// <param name="dim">Dimension of the problems generated for tests.</param>
-        /// <param name="numRepetitions">Number of repetitions of the tests. If greater than 1 then tests are repeated
+        /// <param name="numGenerations">Number of repetitions of the tests. If greater than 1 then tests are repeated
         /// with inputs generated anew each time.</param>
         /// <param name="tol">Tolerance on relative errors of test results.</param>
         /// <param name="outputLevel">Level of output. If 0 then no reports are launched to the console.</param>
@@ -6361,7 +6361,7 @@ namespace IG.Num
         /// <param name="A">System matrix used in the test. If specified (i.e., not null) then this matrix is LDLT decomposed and
         /// used in the first repetition of tests instead of a randomly generated matrix. In this case, its dimension
         /// overrides (when not the same) the specified dimension <paramref name="dim"/> of test matrices and vectors.
-        /// If there are more than one repetitions (parameter <paramref name="numRepetitions"/>) then subsequent repetitions
+        /// If there are more than one repetitions (parameter <paramref name="numGenerations"/>) then subsequent repetitions
         /// still use randomly generated inputs. If specified (i.e., not null) then this vector is  used in the first repetition 
         /// of tests instead of a a randomly generated vector. Similar rules apply as for <paramref name="A"/>.</param>
         /// <param name="b">Vector of right-hand sides used in the test.</param>
@@ -6374,7 +6374,7 @@ namespace IG.Num
             if (tol <= 0)
                 tol = 1.0e-6;
             double smallNumber = 1e-20;  // e.g. for guarding division by 0
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             try
             {
                 double determinant = 0;
@@ -6860,7 +6860,7 @@ namespace IG.Num
         /// Calculation times and error extents are measured and reported (if specified so).
         /// <para>If relative errors are below the specified tolerance, true is returned, otherwise false is returned.</para></summary>
         /// <param name="dim">Dimension of the problems generated for tests.</param>
-        /// <param name="numRepetitions">Number of repetitions of the tests. If greater than 1 then tests are repeated
+        /// <param name="numGenerations">Number of repetitions of the tests. If greater than 1 then tests are repeated
         /// with inputs generated anew each time.</param>
         /// <param name="tol">Tolerance on relative errors of test results.</param>
         /// <param name="outputLevel">Level of output. If 0 then no reports are launched to the console.</param>
@@ -6868,7 +6868,7 @@ namespace IG.Num
         /// <param name="A">System matrix used in the test. If specified (i.e., not null) then this matrix is Cholesky decomposed and
         /// used in the first repetition of tests instead of a randomly generated matrix. In this case, its dimension
         /// overrides (when not the same) the specified dimension <paramref name="dim"/> of test matrices and vectors.
-        /// If there are more than one repetitions (parameter <paramref name="numRepetitions"/>) then subsequent repetitions
+        /// If there are more than one repetitions (parameter <paramref name="numGenerations"/>) then subsequent repetitions
         /// still use randomly generated inputs. If specified (i.e., not null) then this vector is  used in the first repetition 
         /// of tests instead of a a randomly generated vector. Similar rules apply as for <paramref name="A"/>.</param>
         /// <param name="b">Vector of right-hand sides used in the test.</param>
@@ -6881,7 +6881,7 @@ namespace IG.Num
             if (tol <= 0)
                 tol = 1.0e-6;
             double smallNumber = 1e-20;  // e.g. for guarding division by 0
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             try
             {
                 double determinant = 0;

@@ -988,7 +988,7 @@ namespace IG.Num
         /// <summary>Stores analysis input data to the specified file in the standard format
         /// (Mathematica-like, but with C style numbers).
         /// Does not perform any locking.</summary>
-        /// <param name="filePath">Full path of the file that data is written to.</param>
+        /// <param name="inputFilePath">Full path of the file that data is written to.</param>
         /// <param name="anpt">Analysis input data.</param>
         protected virtual void WriteAnalysisInputMath(string filePath, AnalysisResults anpt)
         {
@@ -997,7 +997,7 @@ namespace IG.Num
 
         /// <summary>Stores analysis input data to the specified file in the JSON format. 
         /// Does not perform any locking.</summary>
-        /// <param name="filePath">Full path of the file that data is written to.</param>
+        /// <param name="inputFilePath">Full path of the file that data is written to.</param>
         /// <param name="anpt">Analysis input data.</param>
         protected virtual void WriteAnalysisInputJson(string filePath, AnalysisResults anpt)
         {
@@ -1011,7 +1011,7 @@ namespace IG.Num
 
         /// <summary>Stores analysis input data to the specified file in the XML format 
         /// Does not perform any locking.</summary>
-        /// <param name="filePath">Full path of the file that data is written to.</param>
+        /// <param name="inputFilePath">Full path of the file that data is written to.</param>
         /// <param name="anpt">Analysis results.</param>
         protected virtual void WriteAnalysisInputXml(string filePath, AnalysisResults anpt)
         {
@@ -1021,7 +1021,7 @@ namespace IG.Num
 
         /// <summary>Reads analysis input data (request) from the specified file in the standard IGLib format,
         /// and stores the data in the specified object.</summary>
-        /// <param name="filePath">Path to the file that data is read from.</param>
+        /// <param name="inputFilePath">Path to the file that data is read from.</param>
         /// <param name="anpt">Analysis results object where the data is stored.</param>
         protected virtual void ReadAnalysisInputMath(string filePath, ref AnalysisResults anpt)
         {
@@ -1031,7 +1031,7 @@ namespace IG.Num
 
         /// <summary>Reads analysis input data (request) from the specified file in the JSON format,
         /// and stores the data in the specified object.</summary>
-        /// <param name="filePath">Path to the file that data is read from.</param>
+        /// <param name="inputFilePath">Path to the file that data is read from.</param>
         /// <param name="anpt">Analysis results object where the data is stored.</param>
         protected virtual void ReadAnalysisInputJson(string filePath, ref AnalysisResults anpt)
         {
@@ -1041,7 +1041,7 @@ namespace IG.Num
 
         /// <summary>Reads analysis input data (request) from the specified file in the XML format,
         /// and stores the data in the specified object.</summary>
-        /// <param name="filePath">Path to the file that data is read from.</param>
+        /// <param name="inputFilePath">Path to the file that data is read from.</param>
         /// <param name="anpt">Analysis results object where the data is stored.</param>
         protected virtual void ReadAnalysisInputXml(string filePath, ref AnalysisResults anpt)
         {
@@ -1052,7 +1052,7 @@ namespace IG.Num
         /// <summary>Stores analysis results to the specified file in the standard format 
         /// (Mathematica-like, but with C style numbers).
         /// Does not perform any locking.</summary>
-        /// <param name="filePath">Full path of the file that data is written to.</param>
+        /// <param name="inputFilePath">Full path of the file that data is written to.</param>
         /// <param name="anpt">Analysis output data.</param>
         protected virtual void WriteAnalysisOutputMath(string filePath, AnalysisResults anpt)
         {
@@ -1061,7 +1061,7 @@ namespace IG.Num
 
         /// <summary>Stores analysis output data to the specified file in the JSON format 
         /// Does not perform any locking.</summary>
-        /// <param name="filePath">Full path of the file that data is written to.</param>
+        /// <param name="inputFilePath">Full path of the file that data is written to.</param>
         /// <param name="anpt">Analysis results.</param>
         protected virtual void WriteAnalysisOutputJson(string filePath, AnalysisResults anpt)
         {
@@ -1075,7 +1075,7 @@ namespace IG.Num
 
         /// <summary>Stores analysis output data to the specified file in the XML format .
         /// Does not perform any locking.</summary>
-        /// <param name="filePath">Full path of the file that data is written to.</param>
+        /// <param name="inputFilePath">Full path of the file that data is written to.</param>
         /// <param name="anpt">Analysis results.</param>
         protected virtual void WriteAnalysisOutputXml(string filePath, AnalysisResults anpt)
         {
@@ -1085,7 +1085,7 @@ namespace IG.Num
 
         /// <summary>Reads analysis output data (request) from the specified file in the standard IGLib format,
         /// and stores the data in the specified object.</summary>
-        /// <param name="filePath">Path to the file that data is read from.</param>
+        /// <param name="inputFilePath">Path to the file that data is read from.</param>
         /// <param name="anpt">Analysis results object where the data is stored.</param>
         protected virtual void ReadAnalysisOutputMath(string filePath, ref AnalysisResults anpt)
         {
@@ -1094,7 +1094,7 @@ namespace IG.Num
 
         /// <summary>Reads analysis output data (request) from the specified file in the JSON format,
         /// and stores the data in the specified object.</summary>
-        /// <param name="filePath">Path to the file that data is read from.</param>
+        /// <param name="inputFilePath">Path to the file that data is read from.</param>
         /// <param name="anpt">Analysis results object where the data is stored.</param>
         protected virtual void ReadAnalysisOutputJson(string filePath, ref AnalysisResults anpt)
         {
@@ -1104,7 +1104,7 @@ namespace IG.Num
 
         /// <summary>Reads analysis output data (request) from the specified file in the XML format,
         /// and stores the data in the specified object.</summary>
-        /// <param name="filePath">Path to the file that data is read from.</param>
+        /// <param name="inputFilePath">Path to the file that data is read from.</param>
         /// <param name="anpt">Analysis results object where the data is stored.</param>
         protected virtual void ReadAnalysisOutputXml(string filePath, ref AnalysisResults anpt)
         {
@@ -1171,7 +1171,7 @@ namespace IG.Num
         /// <param name="reqConstraints">Flag indicating whether constraint functions must be calculated.</param>
         /// <param name="reqGradObjective">Flag indicating whether objective function gradientmust be calculated.</param>
         /// <param name="reqGradOConstraints">Fleg indicating whether constraint function gradients must be calculated.</param>
-        /// <param name="outputFilePath">Path of a file where the calculated analysis response in JSON is written to.
+        /// <param name="deletedFilePath">Path of a file where the calculated analysis response in JSON is written to.
         /// It can be null or empty string, in this case response is not written to a file (but it is 
         /// output on console).</param>
         public virtual void ClientTestCalculateAnalysisResults(string inputFilePath, 

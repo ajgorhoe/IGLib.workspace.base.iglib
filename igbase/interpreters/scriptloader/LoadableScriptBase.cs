@@ -18,7 +18,7 @@ namespace IG.Lib
     {
 
         /// <summary>Runs the specified command with specified name, installed on the current application object.</summary>
-        /// <param name="appName">Command name.</param>
+        /// <param name="AppName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
         /// <remarks>This command overrides the original Run commands in such a way that it treats script commands differently form 
         /// the original interpreter commands.
@@ -176,7 +176,7 @@ namespace IG.Lib
 
         /// <summary>Delegate for internal command methods.</summary>
         /// <param name="commandName">Name of the internal command.</param>
-        /// <param name="args">Arguments to the command.</param>
+        /// <param name="AppArguments">Arguments to the command.</param>
         /// <returns></returns>
         protected delegate string CommandMethod(string commandName, string[] args);
 
@@ -473,7 +473,7 @@ namespace IG.Lib
         /// <para>These methods only take command arguments as parameters, and the first argument is
         /// usually name under which command is installed.</para></summary>
         /// <param name="interpreter">Interpreter on which commad is run. 
-        /// <param name="args">Command arguments. The first argument is internal script's command name.</param>
+        /// <param name="AppArguments">Command arguments. The first argument is internal script's command name.</param>
         /// <returns>Command's return value.</returns>
         public delegate string Script_CommandDelegate(string[] args);
 
@@ -517,7 +517,7 @@ namespace IG.Lib
             /// <para>This method actually runs the script command enclosed in this adapter.</para></summary>
             /// <param name="interpreter">Dummy argument, only to match delegate signature.</param>
             /// <param name="commandName">Name of the command. This will be the same as the 0-th argument.</param>
-            /// <param name="args">Command arguments. 0-th arguments will usually be command name.</param>
+            /// <param name="AppArguments">Command arguments. 0-th arguments will usually be command name.</param>
             public string InterpreterCommand(ICommandLineApplicationInterpreter interpreter, string commandName, string[] args)
             {
                 string ret = _scriptCommand(args);

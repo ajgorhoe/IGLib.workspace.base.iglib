@@ -89,7 +89,7 @@ namespace IG.Lib
         {
             if (numCycles < MinCycles)
                 numCycles = MinCycles;
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             int i;
             t.Start();
             for (i = 0; i < numCycles; ++i)
@@ -167,7 +167,7 @@ namespace IG.Lib
             if (cyclesLeft < MinCycles)
                 cyclesLeft = MinCycles;
 
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             while (timePortion < 0.98)
             {
                 ++numIt;

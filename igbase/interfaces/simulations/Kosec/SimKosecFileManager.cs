@@ -328,7 +328,7 @@ namespace IG.Num
             throw new NotImplementedException("Not yet implemented for type " + this.GetType().Name);
             //SimKosecFileManagerConvBase sim = this;
             //int dim = 2;
-            //bool ret = false;
+            //bool ReturnedString = false;
             //if (parameters == null)
             //    throw new ArgumentException("Vector of parameters is null.");
             //if (parameters.Length != dim)
@@ -338,17 +338,17 @@ namespace IG.Num
             //p0 = sim.MinX + Math.Round((p0 - sim.MinX) / sim.DX) * sim.DX;
             //if (p0 != parameters[0])
             //{
-            //    ret = true;
+            //    ReturnedString = true;
             //    parameters[0] = p0;
             //}
             //double p1 = parameters[1];
             //p1 = sim.MinY + Math.Round((p1 - sim.MinY) / sim.DY) * sim.DY;
             //if (p1 != parameters[1])
             //{
-            //    ret = true;
+            //    ReturnedString = true;
             //    parameters[1] = p1;
             //}
-            //return ret;
+            //return ReturnedString;
         }
 
         /// <summary>Prepares current values of input parameters in the simulation input thet

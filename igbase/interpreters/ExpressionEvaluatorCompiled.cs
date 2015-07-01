@@ -403,7 +403,7 @@ The last expression does not need to (but it can) end with semicolon.
         }
 
         /// <summary>Prints the complete code inserter up to this moment.</summary>
-        /// <param name="filePath"></param>
+        /// <param name="inputFilePath"></param>
         /// <param name="append"></param>
         public virtual void SaveCompleteCode(string filePath, bool append)
         {
@@ -440,7 +440,7 @@ The last expression does not need to (but it can) end with semicolon.
 
         /// <summary>Saves or appends to the specified file all valid user definitions added 
         /// to the evaluator up to this point.</summary>
-        /// <param name="filePath">Path to the file that definitions saved to.</param>
+        /// <param name="inputFilePath">Path to the file that definitions saved to.</param>
         /// <param name="append">If true then definitions are appended to the file (old content is preserved).</param>
         public virtual void SaveUserDefinitions(string filePath, bool append)
         {

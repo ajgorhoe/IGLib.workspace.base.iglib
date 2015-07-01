@@ -675,13 +675,13 @@ namespace IG.Num
         //{
         //    int numRows = this.RowCount;
         //    int numColumns = this.ColumnCount;
-        //    Matrix_MathNet ret = new Matrix_MathNet(numRows, numColumns);
+        //    Matrix_MathNet ReturnedString = new Matrix_MathNet(numRows, numColumns);
         //    for (int i=0; i<numRows; ++i)
         //        for (int j = 0; j < numColumns; ++j)
         //        {
-        //            ret[i,j] = this[i, j];
+        //            ReturnedString[i,j] = this[i, j];
         //        }
-        //    return ret;
+        //    return ReturnedString;
         //}
 
         //#endregion MathNetSupport
@@ -1149,91 +1149,91 @@ namespace IG.Num
         ///// <summary>Unary negation, returns the negative operand.</summary>
         //public static Matrix operator -(Matrix v)
         //{
-        //    Matrix ret = v.GetCopyThis();
-        //    Matrix.Negate(v, ret);
-        //    return ret;
+        //    Matrix ReturnedString = v.GetCopyThis();
+        //    Matrix.Negate(v, ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Matrix addition.</summary>
         //public static Matrix operator +(Matrix a, Matrix b)
         //{
-        //    Matrix ret = a.GetCopyThis();
-        //    Matrix.Add(a, b, ret);
-        //    return ret;
+        //    Matrix ReturnedString = a.GetCopyThis();
+        //    Matrix.Add(a, b, ReturnedString);
+        //    return ReturnedString;
         //}
 
         /////// <summary>Addition of a scalar to each component of a matrix.</summary>
         ////public static Matrix operator +(Matrix a, double s)
         ////{
-        ////    Matrix ret = null;
-        ////    Matrix.Add(a, s, ref ret);
-        ////    return ret;
+        ////    Matrix ReturnedString = null;
+        ////    Matrix.Add(a, s, ref ReturnedString);
+        ////    return ReturnedString;
         ////}
 
         /////// <summary>Addition of a scalar to each component of a matrix.</summary>
         ////public static Matrix operator +(double a, Matrix s)
         ////{
-        ////    Matrix ret = null;
-        ////    Matrix.Add(s, a, ref ret);
-        ////    return ret;
+        ////    Matrix ReturnedString = null;
+        ////    Matrix.Add(s, a, ref ReturnedString);
+        ////    return ReturnedString;
         ////}
 
 
         ///// <summary>Matrix subtraction.</summary>
         //public static Matrix operator -(Matrix a, Matrix b)
         //{
-        //    Matrix ret = a.GetCopyThis();
-        //    Matrix.Subtract(a, b, ret);
-        //    return ret;
+        //    Matrix ReturnedString = a.GetCopyThis();
+        //    Matrix.Subtract(a, b, ReturnedString);
+        //    return ReturnedString;
         //}
 
         /////// <summary>Subtraction of scalar from each component of a matrix.</summary>
         ////public static Matrix operator -(Matrix a, double s)
         ////{
-        ////    Matrix ret = null;
-        ////    Matrix.Subtract(a, s, ref ret);
-        ////    return ret;
+        ////    Matrix ReturnedString = null;
+        ////    Matrix.Subtract(a, s, ref ReturnedString);
+        ////    return ReturnedString;
         ////}
 
 
         ///// <summary>Product of two matrices.</summary>
         //public static IMatrix operator *(Matrix a, Matrix b)
         //{
-        //    IMatrix ret = null;
-        //    Multiply(a, b, ref ret);
-        //    return ret;
+        //    IMatrix ReturnedString = null;
+        //    Multiply(a, b, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Product of a matrix and a vector.</summary>
         //public static IVector operator *(Matrix a, Vector b)
         //{
-        //    IVector ret = null;
-        //    Multiply(a, b, ref ret);
-        //    return ret;
+        //    IVector ReturnedString = null;
+        //    Multiply(a, b, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Product of a matrix by a scalar.</summary>
         //public static IMatrix operator *(Matrix a, double b)
         //{
-        //    Matrix ret = null;
-        //    Matrix.Multiply(a, b, ref ret);
-        //    return ret;
+        //    Matrix ReturnedString = null;
+        //    Matrix.Multiply(a, b, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Product of a matrix by a scalar.</summary>
         //public static IMatrix operator *(double a, Matrix b)
         //{
-        //    Matrix ret = null;
-        //    Matrix.Multiply(b, a, ref ret);
-        //    return ret;
+        //    Matrix ReturnedString = null;
+        //    Matrix.Multiply(b, a, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Matrix subtraction.</summary>
         //public static IMatrix operator /(Matrix a, double b)
         //{
-        //    IMatrix ret = null;
-        //    Matrix.Divide(a, b, ref ret);
-        //    return ret;
+        //    IMatrix ReturnedString = null;
+        //    Matrix.Divide(a, b, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
 
@@ -1262,12 +1262,12 @@ namespace IG.Num
 
         #region Auxiliary
 
-        /// <summary>Returns the hash code (hash function) of the current matrix.</summary>
+        /// <summary>Returns the hashRet code (hashRet function) of the current matrix.</summary>
         /// <remarks>
         /// <para>This method calls the <see cref="MatrixBase.GetHashCode()"/> to calculate the 
-        /// hash code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
-        /// <para>Two matrices that have the same dimensions and equal elements will produce the same hash codes.</para>
-        /// <para>Probability that two different matrices will produce the same hash code is small but it exists.</para>
+        /// hashRet code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
+        /// <para>Two matrices that have the same dimensions and equal elements will produce the same hashRet codes.</para>
+        /// <para>Probability that two different matrices will produce the same hashRet code is small but it exists.</para>
         /// <para>Overrides the <see cref="object.GetHashCode"/> method.</para>
         /// </remarks>
         public override int GetHashCode()

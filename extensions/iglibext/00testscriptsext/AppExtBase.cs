@@ -76,7 +76,7 @@ namespace IG.Script
 
         /// <summary>Adds a new form demonstration - related embedded application's command (added as 
         /// a sub-command of the base command named <see cref="ConstFormDemo"/>).</summary>
-        /// <param name="appName">Application name.</param>
+        /// <param name="AppName">Application name.</param>
         /// <param name="appMethod">Method used to perform the application.</param>
         /// <param name="appHelp">Eventual help string for the application.</param>
         protected void AddFormDemoCommand(string appName, CommandMethod appMethod, string appHelp)
@@ -97,8 +97,8 @@ namespace IG.Script
         protected const string FormDemoHelpFadingMessage = FileLogEvents + " : Runs the fading message demo.";
 
         /// <summary>Executes embedded application - demonstration of fading messages.</summary>
-        /// <param name="appName">Name of the embedded application.</param>
-        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <param name="AppName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
         protected virtual string FormDemoFunctionFadingMessage(string appName, string[] args)
         {
@@ -128,8 +128,8 @@ namespace IG.Script
         protected const string FormDemoHelpBrowserSimple = FileLogEvents + " : Runs the fading message demo.";
 
         /// <summary>Executes embedded application - demonstration of fading messages.</summary>
-        /// <param name="appName">Name of the embedded application.</param>
-        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <param name="AppName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
         protected virtual string FormDemoFunctionBrowserSimple(string appName, string[] args)
         {
@@ -163,8 +163,8 @@ namespace IG.Script
         protected const string FormDemoHelpWindowPositioning = FormDemoWindowPositioning + " : Runs the window positioning test.";
 
         /// <summary>Executes embedded application - window positioning test.</summary>
-        /// <param name="appName">Name of the embedded application.</param>
-        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <param name="AppName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
         protected virtual string FormDemoFunctionWindowPositioning(string appName, string[] args)
         {
@@ -201,8 +201,8 @@ namespace IG.Script
         protected const string FormDemoHelpMessageBoxLauncher = FormDemoMessageBoxLauncher + " : Runs the window positioning test.";
 
         /// <summary>Executes embedded application - messaxe box launcher demo.</summary>
-        /// <param name="appName">Name of the embedded application.</param>
-        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <param name="AppName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
         protected virtual string FormDemoFunctionMessageBoxLauncher(string appName, string[] args)
         {
@@ -252,7 +252,7 @@ namespace IG.Script
 
 
         /// <summary>Runs a form demo - related utility (embedded application) according to arguments.</summary>
-        /// <param name="args">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and the rest
+        /// <param name="AppArguments">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and the rest
         /// are arguments that are used by the embedded application.</param>
         protected virtual string RunAppFormDemo(string[] args)
         {
@@ -354,9 +354,9 @@ namespace IG.Script
         protected HashGeneratorForm hashForm;
 
         /// <summary>Executes embedded application - launches a windows form for calculation of 
-        /// various hash values of a file.</summary>
-        /// <param name="appName">Name of the embedded application.</param>
-        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// various hashRet values of a file.</summary>
+        /// <param name="AppName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionHashForm(string appName, string[] args)
         {
             Console.WriteLine(Environment.NewLine + "Launching a form for calculation of hash values..." + Environment.NewLine);

@@ -348,10 +348,10 @@ namespace IG.Num
         ///// <summary>Creates and returns a newly allocated MathNet representation of the current vector.</summary>
         //protected internal Vector_MathNet GetCopyMathNet()
         //{
-        //    Vector_MathNet ret = new Vector_MathNet(_length);
+        //    Vector_MathNet ReturnedString = new Vector_MathNet(_length);
         //    for (int i = 0; i < _length; ++i)
-        //        ret[i] = this[i];
-        //    return ret;
+        //        ReturnedString[i] = this[i];
+        //    return ReturnedString;
         //}
 
         //#endregion MathNetSupport
@@ -563,34 +563,34 @@ namespace IG.Num
         ///// <summary>Unary plus, returns the operand.</summary>
         //public static Vector operator + (Vector v) 
         //{
-        //    Vector ret = v.GetCopyThis();
-        //    Copy(v,ret);
-        //    return ret;
+        //    Vector ReturnedString = v.GetCopyThis();
+        //    Copy(v,ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Unary negation, returns the negative operand.</summary>
         //public static Vector operator -(Vector v) 
         //{ 
-        //    Vector ret = v.GetCopyThis();
-        //    Negate(v, ret);
-        //    return ret;
+        //    Vector ReturnedString = v.GetCopyThis();
+        //    Negate(v, ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Vector addition.</summary>
         //public static Vector operator + (Vector a, Vector b) 
         //{
-        //    Vector ret = a.GetCopyThis();
-        //    Add(a, b, ret);
-        //    return ret; 
+        //    Vector ReturnedString = a.GetCopyThis();
+        //    Add(a, b, ReturnedString);
+        //    return ReturnedString; 
         //}
 
 
         ///// <summary>Vector subtraction.</summary>
         //public static Vector operator - (Vector a, Vector b) 
         //{
-        //    Vector ret = a.GetCopyThis();
-        //    Subtract(a, b, ret);
-        //    return ret; 
+        //    Vector ReturnedString = a.GetCopyThis();
+        //    Subtract(a, b, ReturnedString);
+        //    return ReturnedString; 
         //}
 
 
@@ -603,25 +603,25 @@ namespace IG.Num
         ///// <summary>Product of a vector by a scalar.</summary>
         //public static Vector operator * (Vector a, double  b) 
         //{
-        //    Vector ret = a.GetCopyThis();
-        //    Multiply(a, b, ret);
-        //    return ret;
+        //    Vector ReturnedString = a.GetCopyThis();
+        //    Multiply(a, b, ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Product of a vector by a scalar.</summary>
         //public static Vector operator * (double a, Vector  b) 
         //{
-        //    Vector ret = b.GetCopyThis();
-        //    Multiply(b , a, ret); 
-        //    return ret;
+        //    Vector ReturnedString = b.GetCopyThis();
+        //    Multiply(b , a, ReturnedString); 
+        //    return ReturnedString;
         //}
 
         ///// <summary>Vector subtraction.</summary>
         //public static Vector operator / (Vector a, double b) 
         //{
-        //    Vector ret = a.GetCopyThis();
-        //    Divide(a, b, ret);
-        //    return ret;
+        //    Vector ReturnedString = a.GetCopyThis();
+        //    Divide(a, b, ReturnedString);
+        //    return ReturnedString;
         //}
 
 
@@ -631,12 +631,12 @@ namespace IG.Num
 
         #region Auxiliary
 
-        /// <summary>Returns the hash code (hash function) of the current vector.</summary>
+        /// <summary>Returns the hashRet code (hashRet function) of the current vector.</summary>
         /// <remarks>
         /// <para>This method calls the <see cref="VectorBase.GetHashCode"/> to calculate the 
-        /// hash code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
-        /// <para>Two vectors that have the same dimensions and equal elements will produce the same hash codes.</para>
-        /// <para>Probability that two different vectors will produce the same hash code is small but it exists.</para>
+        /// hashRet code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
+        /// <para>Two vectors that have the same dimensions and equal elements will produce the same hashRet codes.</para>
+        /// <para>Probability that two different vectors will produce the same hashRet code is small but it exists.</para>
         /// <para>Overrides the <see cref="object.GetHashCode"/> method.</para>
         /// </remarks>
         public override int GetHashCode()

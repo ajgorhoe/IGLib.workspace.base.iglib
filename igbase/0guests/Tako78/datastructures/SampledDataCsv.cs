@@ -1879,7 +1879,7 @@ namespace IG.Num
 
         /// <summary>Saves data definitions to the specified file.
         /// <para>The file is overridden if it already exists.</para></summary>
-        /// <param name="filePath">Path to the file where data definitions are stored.</param>
+        /// <param name="inputFilePath">Path to the file where data definitions are stored.</param>
         public void SaveDefinition(string filePath)
         {
             lock (Lock)
@@ -1892,7 +1892,7 @@ namespace IG.Num
 
         /// <summary>Saves sampled data to the specified file.
         /// <para>The file is overridden if it already exists.</para></summary>
-        /// <param name="filePath">Path to the file where data is stored.</param>
+        /// <param name="inputFilePath">Path to the file where data is stored.</param>
         public void SaveData(string filePath)
         {
             lock (Lock)
@@ -1905,7 +1905,7 @@ namespace IG.Num
 
         /// <summary>Saves data definitions AND sampled data to the specified file.
         /// <para>The file is overridden if it already exists.</para></summary>
-        /// <param name="filePath">Path to the file where data is stored.</param>
+        /// <param name="inputFilePath">Path to the file where data is stored.</param>
         public void SaveDefinitionAndData(string filePath)
         {
             lock (Lock)
@@ -3248,7 +3248,7 @@ namespace IG.Num
 
         /// <summary>Loads data definition form the specified CSV file.
         /// <para>Data definition is assigned to the <see cref="DataDefinition"/> property.</para></summary>
-        /// <param name="filePath">Path to the file where data definition is read from.</param>
+        /// <param name="inputFilePath">Path to the file where data definition is read from.</param>
         public void LoadDefinition(string filePath)
         {
             this.LoadCsv(filePath);
@@ -3258,7 +3258,7 @@ namespace IG.Num
 
         /// <summary>Loads sampled data form the specified CSV file.
         /// <para>Data is assigned to the <see cref="SampledData"/> property.</para></summary>
-        /// <param name="filePath">Path to the file where data definition is read from.</param>
+        /// <param name="inputFilePath">Path to the file where data definition is read from.</param>
         public void LoadData(string filePath)
         {
             this.LoadCsv(filePath);
@@ -3269,7 +3269,7 @@ namespace IG.Num
         /// <summary>Loads data definition AND sampled data form the specified CSV file.
         /// <para>Data definition is assigned to the <see cref="DataDefinition"/> property.</para></summary>
         /// <para>Data is assigned to the <see cref="SampledData"/> property.</para></summary>
-        /// <param name="filePath">Path to the file where data definition is read from.</param>
+        /// <param name="inputFilePath">Path to the file where data definition is read from.</param>
         public void LoadDefinitionAndData(string filePath)
         {
             this.LoadCsv(filePath);

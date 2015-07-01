@@ -289,15 +289,15 @@ namespace IG.Lib
 
         #region Blocking
 
-        protected StopWatch _timer = null;
+        protected StopWatch1 _timer = null;
 
         /// <summary>Timer that measures the total time elapsed when waiting for fulfillment of unblocking condition.
         /// Used to evaluate appropriate sleeping times that will not cause too much latency.</summary>
-        protected StopWatch Timer
+        protected StopWatch1 Timer
         {
             get {
                 if (_timer==null)
-                    _timer = new StopWatch();
+                    _timer = new StopWatch1();
                 return _timer;
             }
         }

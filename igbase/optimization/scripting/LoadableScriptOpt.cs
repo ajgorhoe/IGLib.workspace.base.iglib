@@ -50,14 +50,14 @@ namespace IG.Lib
 
         #region Auxiliary
 
-        protected StopWatch _timer = null;
+        protected StopWatch1 _timer = null;
 
-        protected StopWatch Timer
+        protected StopWatch1 Timer
         {
             get
             {
                 if (_timer == null)
-                    _timer = new StopWatch();
+                    _timer = new StopWatch1();
                 return _timer;
             }
         }

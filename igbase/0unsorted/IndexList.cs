@@ -134,20 +134,20 @@ namespace IG.Lib
             //if (length > 1 + upperBound - lowerBound)
             //    throw new ArgumentException("Requested number of indices (" + length + ") is too large for generation of indices between "
             //        + lowerBound.ToString() + " and " + upperBound.ToString() + ".");
-            //if (ret == null)
-            //    ret = new IndexList(length);
+            //if (ReturnedString == null)
+            //    ReturnedString = new IndexList(length);
             //else
-            //    ret.Clear();
-            //while (ret.Length < length)
+            //    ReturnedString.Clear();
+            //while (ReturnedString.Length < length)
             //{
             //    int newIndex = rand.NextInclusive(lowerBound, upperBound);
-            //    while (ret.Contains(newIndex))
+            //    while (ReturnedString.Contains(newIndex))
             //    {
             //        ++newIndex;
             //        if (newIndex > upperBound)
             //            newIndex = lowerBound;
             //    }
-            //    ret.Add(newIndex);
+            //    ReturnedString.Add(newIndex);
             //}
             return ret;
         }

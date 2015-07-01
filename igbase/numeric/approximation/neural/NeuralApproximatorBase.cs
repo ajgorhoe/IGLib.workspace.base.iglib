@@ -261,11 +261,11 @@ namespace IG.Num
 
         /// <summary>Saves the state of the neural network to the specified file.
         /// If the file already exists, its contents are overwritten.</summary>
-        /// <param name="filePath">Path to the file into which the network is saved.</param>
+        /// <param name="inputFilePath">Path to the file into which the network is saved.</param>
         void SaveNetwork(string filePath);
 
         /// <summary>Restores neural network from a file where it has been stored before.</summary>
-        /// <param name="filePath">Path to the file from which the neural network is read.</param>
+        /// <param name="inputFilePath">Path to the file from which the neural network is read.</param>
         void LoadNetwork(string filePath);
 
 
@@ -281,11 +281,11 @@ namespace IG.Num
 
         /// <summary>Saves network's training data to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
-        /// <param name="filePath">Path to the file where training data is saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data is saved.</param>
         void SaveTrainingDataJson(string filePath);
 
         /// <summary>Restores training data from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which training data is restored.</param>
+        /// <param name="inputFilePath">File from which training data is restored.</param>
         void LoadTrainingDataJson(string filePath);
 
         /// <summary>Gets or sets indices of training data elements that are used for verification of
@@ -1212,9 +1212,9 @@ namespace IG.Num
         //    Console.WriteLine();
         //    Console.WriteLine("Before creating a new object of the stored type, using FullName: ");
         //    NeuralApproximatorAforge approximatorAforge = new NeuralApproximatorAforge();
-        //    string typeString;
-        //    typeString = approximatorAforge.GetType().FullName;
-        //    Type approximatorType = Type.GetType(typeString);
+        //    string flagString;
+        //    flagString = approximatorAforge.GetType().FullName;
+        //    Type approximatorType = Type.GetType(flagString);
         //    INeuralApproximator approximator = null;
         //    try
         //    {
@@ -1230,14 +1230,14 @@ namespace IG.Num
         //    }
         //    else
         //    {
-        //        Console.WriteLine("O.K., approximator of correct type created. Type str.: " + typeString);
+        //        Console.WriteLine("O.K., approximator of correct type created. Type str.: " + flagString);
         //    }
         //    Console.WriteLine();
         //    Console.WriteLine();
         //    Console.WriteLine("Before creating a new object of the stored type, using AssemblyQualifiedName: ");
         //    approximatorAforge = new NeuralApproximatorAforge();
-        //    typeString = approximatorAforge.GetType().AssemblyQualifiedName;
-        //    approximatorType = Type.GetType(typeString);
+        //    flagString = approximatorAforge.GetType().AssemblyQualifiedName;
+        //    approximatorType = Type.GetType(flagString);
         //    approximator = null;
         //    try
         //    {
@@ -1253,7 +1253,7 @@ namespace IG.Num
         //    }
         //    else
         //    {
-        //        Console.WriteLine("O.K., approximator of correct type created. Type str.: " + typeString);
+        //        Console.WriteLine("O.K., approximator of correct type created. Type str.: " + flagString);
         //    }
         //    Console.WriteLine();
         //}
@@ -1292,7 +1292,7 @@ namespace IG.Num
 
         /// <summary>Saves the state of the neural network to the specified file.
         /// If the file already exists, its contents are overwritten.</summary>
-        /// <param name="filePath">Path to the file into which the network is saved.</param>
+        /// <param name="inputFilePath">Path to the file into which the network is saved.</param>
         public void SaveNetwork(string filePath)
         {
             filePath = Path.GetFullPath(filePath);
@@ -1304,7 +1304,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores neural network from a file where it has been stored before.</summary>
-        /// <param name="filePath">Path to the file from which the neural network is read.</param>
+        /// <param name="inputFilePath">Path to the file from which the neural network is read.</param>
         public void LoadNetwork(string filePath)
         {
             filePath = Path.GetFullPath(filePath);
@@ -1315,11 +1315,11 @@ namespace IG.Num
 
         /// <summary>Saves the state of the neural network to the specified file.
         /// If the file already exists, its contents are overwritten.</summary>
-        /// <param name="filePath">Path to the file into which the network is saved.</param>
+        /// <param name="inputFilePath">Path to the file into which the network is saved.</param>
         protected abstract void SaveNetworkSpecific(string filePath);
 
         /// <summary>Restores neural network from a file where it has been stored before.</summary>
-        /// <param name="filePath">Path to the file from which the neural network is read.</param>
+        /// <param name="inputFilePath">Path to the file from which the neural network is read.</param>
         protected abstract void LoadNetworkSpecific(string filePath);
 
 
@@ -1442,7 +1442,7 @@ namespace IG.Num
 
         /// <summary>Saves network's training data to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
-        /// <param name="filePath">Path to the file where training data is saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data is saved.</param>
         public void SaveTrainingDataJson(string filePath)
         {
             lock (Lock)
@@ -1455,7 +1455,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores training data from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which training data is restored.</param>
+        /// <param name="inputFilePath">File from which training data is restored.</param>
         public void LoadTrainingDataJson(string filePath)
         {
             lock (Lock)
@@ -2723,7 +2723,7 @@ namespace IG.Num
         /// <summary>Saves a neural network approximator to a file.
         /// If the neural netwoek is trained then internal state is also saved to a file.</summary>
         /// <param name="approximator">Neural network approximator to be saved.</param>
-        /// <param name="filePath">Path to the file where approximator is saved.</param>
+        /// <param name="inputFilePath">Path to the file where approximator is saved.</param>
         public static void SaveJson(INeuralApproximator approximator, string filePath)
         {
             SaveJson(approximator, filePath, true);
@@ -2731,7 +2731,7 @@ namespace IG.Num
 
         /// <summary>Saves a neural network approximator to a file.</summary>
         /// <param name="approximator">Neural network approximator to be saved.</param>
-        /// <param name="filePath">Path to the file where approximator is saved.</param>
+        /// <param name="inputFilePath">Path to the file where approximator is saved.</param>
         /// <param name="saveInternalState">Specifies whether internal state should be saved, too (only in the case that network is trained).</param>
         public static void SaveJson(INeuralApproximator approximator, string filePath, bool saveInternalState)
         {
@@ -2759,7 +2759,7 @@ namespace IG.Num
         }
 
         /// <summary>Loads network from a file.</summary>
-        /// <param name="filePath">Path to the file.</param>
+        /// <param name="inputFilePath">Path to the file.</param>
         /// <param name="approximatorRestored">Neural approximator that is produced by deserialization.</param>
         public static void LoadJson(string filePath, ref INeuralApproximator approximatorRestored)
         {
@@ -2792,7 +2792,7 @@ namespace IG.Num
 
         /// <summary>Saves network's training data to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
-        /// <param name="filePath">Path to the file where training data is saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data is saved.</param>
         public void SaveTrainingDataJson_To_delete(string filePath)
         {
             lock (Lock)
@@ -2805,7 +2805,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores training data from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which training data is restored.</param>
+        /// <param name="inputFilePath">File from which training data is restored.</param>
         public void LoadTrainingDataJson_To_Delete(string filePath)
         {
             lock (Lock)

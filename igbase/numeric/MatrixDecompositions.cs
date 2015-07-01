@@ -556,9 +556,9 @@ namespace IG.Num
         ///// <exception cref="System.SystemException">Matrix is singular.</exception>
         //public IMatrix Solve(Matrix B)
         //{
-        //    IMatrix ret = null;
-        //    Solve(B, ref ret);
-        //    return ret;
+        //    IMatrix ReturnedString = null;
+        //    Solve(B, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Solves a system of linear equations A*x=b, and stores the solution in the specified vector.
@@ -581,9 +581,9 @@ namespace IG.Num
         ///// <returns>Solution of the System such that L*U*x=s(piv,:).</returns>
         ////public IVector Solve(Vector b)
         //{
-        //    IVector ret = null;
-        //    Solve(b, ref ret);
-        //    return ret;
+        //    IVector ReturnedString = null;
+        //    Solve(b, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
     }  // class LUDecomposition
@@ -810,9 +810,9 @@ namespace IG.Num
         ///// <exception cref="System.SystemException">Matrix is singular.</exception>
         //public IMatrix Solve(Matrix B)
         //{
-        //    IMatrix ret = null;
-        //    Solve(B, ref ret);
-        //    return ret;
+        //    IMatrix ReturnedString = null;
+        //    Solve(B, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Solves a system of linear equations A*x=b, and stores the solution in the specified vector.
@@ -835,9 +835,9 @@ namespace IG.Num
         ///// <returns>Solution of the System such that L*U*x=s(piv,:).</returns>
         //public IVector Solve(Vector b)
         //{
-        //    IVector ret = null;
-        //    Solve(b, ref ret);
-        //    return ret;
+        //    IVector ReturnedString = null;
+        //    Solve(b, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
     }  // class QRDecomposition
@@ -1062,9 +1062,9 @@ namespace IG.Num
         ///// <exception cref="System.SystemException">Matrix is singular.</exception>
         //public IMatrix Solve(Matrix B)
         //{
-        //    IMatrix ret = null;
-        //    Solve(B, ref ret);
-        //    return ret;
+        //    IMatrix ReturnedString = null;
+        //    Solve(B, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Solves a system of linear equations A*x=b, and stores the solution in the specified vector.
@@ -1087,9 +1087,9 @@ namespace IG.Num
         ///// <returns>Solution of the System such that L*U*x=s(piv,:).</returns>
         //public IVector Solve(Vector b)
         //{
-        //    IVector ret = null;
-        //    Solve(b, ref ret);
-        //    return ret;
+        //    IVector ReturnedString = null;
+        //    Solve(b, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
     }  // class QRDecomposition
@@ -1353,9 +1353,9 @@ namespace IG.Num
         ///// <exception cref="System.SystemException">Matrix is singular.</exception>
         //public IMatrix Solve(Matrix B)
         //{
-        //    IMatrix ret = null;
-        //    Solve(B, ref ret);
-        //    return ret;
+        //    IMatrix ReturnedString = null;
+        //    Solve(B, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Solves a system of linear equations A*x=b, and stores the solution in the specified vector.
@@ -1378,9 +1378,9 @@ namespace IG.Num
         ///// <returns>Solution of the System such that L*U*x=s(piv,:).</returns>
         //public IVector Solve(Vector b)
         //{
-        //    IVector ret = null;
-        //    Solve(b, ref ret);
-        //    return ret;
+        //    IVector ReturnedString = null;
+        //    Solve(b, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
     }  // class EigenValueDecomposition
@@ -1649,9 +1649,9 @@ namespace IG.Num
         ///// <exception cref="System.SystemException">Matrix is singular.</exception>
         //public IMatrix Solve(Matrix B)
         //{
-        //    IMatrix ret = null;
-        //    Solve(B, ref ret);
-        //    return ret;
+        //    IMatrix ReturnedString = null;
+        //    Solve(B, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
         ///// <summary>Solves a system of linear equations A*x=b, and stores the solution in the specified vector.
@@ -1674,9 +1674,9 @@ namespace IG.Num
         ///// <returns>Solution of the System such that L*U*x=s(piv,:).</returns>
         //public IVector Solve(Vector b)
         //{
-        //    IVector ret = null;
-        //    Solve(b, ref ret);
-        //    return ret;
+        //    IVector ReturnedString = null;
+        //    Solve(b, ref ReturnedString);
+        //    return ReturnedString;
         //}
 
     }  // class SingularValueDecomposition

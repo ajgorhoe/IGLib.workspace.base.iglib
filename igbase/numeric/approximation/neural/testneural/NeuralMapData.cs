@@ -869,7 +869,7 @@ namespace IG.Neural
         /// <summary>Saves mapping data definition to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="mapDataDef">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file where data is saved.</param>
+        /// <param name="inputFilePath">Path to the file where data is saved.</param>
         /// $A Igor Jul 19; tako78 Jul 19
         public static void SaveJson(MappingDefinition mapDataDef, string filePath)
         {
@@ -880,7 +880,7 @@ namespace IG.Neural
         }
 
         /// <summary>Restores mapping data definition from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which training data is restored.</param>
+        /// <param name="inputFilePath">File from which training data is restored.</param>
         /// <param name="mapDataDefRestored">Mapping definition data that is restored by deserialization.</param>
         /// $A Igor Jul 19; tako78 Jul 19
         public static void LoadJson(string filePath, ref MappingDefinition mapDataDefRestored)

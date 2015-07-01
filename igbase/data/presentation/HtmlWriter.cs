@@ -60,13 +60,13 @@ namespace IG.Lib
         private HtmlWriter() { }
         
         /// <summary>Creates a new HTML generator and connests it with the specified file.</summary>
-        /// <param name="filePath">Path to the HTML file that is created.</param>
+        /// <param name="inputFilePath">Path to the HTML file that is created.</param>
         public HtmlWriter(string filePath): this(filePath, null)
         {  }
 
         
         /// <summary>Creates a new HTML generator and connests it with the specified file.</summary>
-        /// <param name="filePath">Path to the HTML file that is created.</param>
+        /// <param name="inputFilePath">Path to the HTML file that is created.</param>
         /// <param name="cssPath">Path (usually relative) to the CSS (Cascading Style Sheets) file.</param>
         public HtmlWriter(string filePath, string cssPath)
         {

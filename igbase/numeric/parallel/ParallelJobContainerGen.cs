@@ -442,7 +442,7 @@ namespace IG.Num
                 + Environment.NewLine + dispatcher.ToString());
             Console.WriteLine();
 
-            StopWatch watch = new StopWatch();
+            StopWatch1 watch = new StopWatch1();
             watch.Start();
 
             // Send jobs:

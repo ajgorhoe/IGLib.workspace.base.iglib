@@ -89,19 +89,19 @@ namespace IG.Lib
         ///// <returns>Boolean value corresponding to the setting.</returns>
         //protected bool ToBoolean(string strsetting)
         //{
-        //    bool ret = false;
+        //    bool ReturnedString = false;
         //    if (!string.IsNullOrEmpty(strsetting))
         //    {
         //        bool interpreted = false;
         //        strsetting = strsetting.ToLower();
         //        if (strsetting == "true" || strsetting == "yes" || strsetting == "on")
         //        {
-        //            ret = true;
+        //            ReturnedString = true;
         //            interpreted = true;
         //        }
         //        else if (strsetting == "false" || strsetting == "no" || strsetting == "off")
         //        {
-        //            ret = false;
+        //            ReturnedString = false;
         //            interpreted = true;
         //        }
         //        else
@@ -112,7 +112,7 @@ namespace IG.Lib
         //                i = int.Parse(strsetting);
         //                interpreted = true;
         //                if (i != 0)
-        //                    ret = true;
+        //                    ReturnedString = true;
         //            }
         //            catch { }
         //        }
@@ -120,7 +120,7 @@ namespace IG.Lib
         //            throw new Exception("Could not interpret the following boolean setting: "
         //                + strsetting + ".");
         //    }
-        //    return ret;
+        //    return ReturnedString;
         //}
 
 
@@ -140,10 +140,10 @@ namespace IG.Lib
         ///// <returns>Long integer value corresponding to the setting.</returns>
         //protected long ToInt(string strsetting, long defaultvalue)
         //{
-        //    long ret = defaultvalue;
+        //    long ReturnedString = defaultvalue;
         //    if (!string.IsNullOrEmpty(strsetting))
-        //        ret = long.Parse(strsetting);
-        //    return ret;
+        //        ReturnedString = long.Parse(strsetting);
+        //    return ReturnedString;
         //}
 
         //#endregion TypeConversions

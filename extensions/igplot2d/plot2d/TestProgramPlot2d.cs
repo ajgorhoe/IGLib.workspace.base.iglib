@@ -27,7 +27,7 @@ namespace IG.Gr
     {
 
         /// <summary>Performs some tests on 2d plotting</summary>
-        /// <param name="args"></param>
+        /// <param name="AppArguments"></param>
         [STAThread]
         public static void Main1(string[] args)
         {

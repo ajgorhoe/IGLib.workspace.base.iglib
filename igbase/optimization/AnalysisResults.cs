@@ -52,7 +52,7 @@ namespace IG.Num
         /// If the file already exists then it is overwritten.
         /// Extension method for IAnalysisResults.</summary>
         /// <param name="anres">Object from which analysis request is saved.</param>
-        /// <param name="filePath">Path to the file where analysis request is stored.</param>
+        /// <param name="inputFilePath">Path to the file where analysis request is stored.</param>
         public static void SaveRequestMath(this IAnalysisResults anres, string filePath)
         {
             AnalysisResults.SaveRequestMath(anres, filePath);
@@ -62,7 +62,7 @@ namespace IG.Num
         /// <summary>Saves the current analysis request to a file.
         /// Extension method for IAnalysisResults.</summary>
         /// <param name="anres">Object from which analysis request is saved.</param>
-        /// <param name="filePath">Path to the file where analysis request is stored.</param>
+        /// <param name="inputFilePath">Path to the file where analysis request is stored.</param>
         /// <param name="append">If true then contents are appended to the end of the file if the file already exists.</param>
         public static void SaveRequestMath(this IAnalysisResults anres, string filePath, bool append)
         {
@@ -74,7 +74,7 @@ namespace IG.Num
         /// If the file already exists then it is overwritten.
         /// Extension method for IAnalysisResults.</summary>
         /// <param name="anres">Object from which analysis results are saved.</param>
-        /// <param name="filePath">Path to the file where analysis results are stored.</param>
+        /// <param name="inputFilePath">Path to the file where analysis results are stored.</param>
         public static void SaveMath(this IAnalysisResults anres, string filePath)
         {
             AnalysisResults.SaveMath(anres, filePath);
@@ -84,7 +84,7 @@ namespace IG.Num
         /// <summary>Saves the current analysis results to a file.
         /// Extension method for IAnalysisResults.</summary>
         /// <param name="anres">Object from which analysis results are saved.</param>
-        /// <param name="filePath">Path to the file where analysis results are stored.</param>
+        /// <param name="inputFilePath">Path to the file where analysis results are stored.</param>
         /// <param name="append">If true then contents are appended to the end of the file if the file already exists.</param>
         public static void SaveMath(this IAnalysisResults anres, string filePath, bool append)
         {
@@ -1827,7 +1827,7 @@ namespace IG.Num
         /// <summary>Saves the specified analysis request to a file.
         /// If the file already exists then it is overwritten.</summary>
         /// <param name="anres">Object from which analysis request is saved.</param>
-        /// <param name="filePath">Path to the file where analysis request is stored.</param>
+        /// <param name="inputFilePath">Path to the file where analysis request is stored.</param>
         public static void SaveRequestMath(IAnalysisResults anres, string filePath)
         {
             SaveRequestMath(anres, filePath, false /* append */);
@@ -1836,7 +1836,7 @@ namespace IG.Num
 
         /// <summary>Saves the specified analysis request to a file.</summary>
         /// <param name="anres">Object from which analysis request is saved.</param>
-        /// <param name="filePath">Path to the file where analysis request is stored.</param>
+        /// <param name="inputFilePath">Path to the file where analysis request is stored.</param>
         /// <param name="append">If true then contents are appended to the end of the file if the file already exists.</param>
         public static void SaveRequestMath(IAnalysisResults anres, string filePath, bool append)
         {
@@ -1850,7 +1850,7 @@ namespace IG.Num
         /// <summary>Saves the specified analysis results to a file.
         /// If the file already exists then it is overwritten.</summary>
         /// <param name="anres">Object from which analysis results are saved.</param>
-        /// <param name="filePath">Path to the file where analysis results are stored.</param>
+        /// <param name="inputFilePath">Path to the file where analysis results are stored.</param>
         public static void SaveMath(IAnalysisResults anres, string filePath)
         {
             SaveMath(anres, filePath, false /* append */);
@@ -1859,7 +1859,7 @@ namespace IG.Num
 
         /// <summary>Saves the specified analysis results to a file.</summary>
         /// <param name="anres">Object from which analysis results are saved.</param>
-        /// <param name="filePath">Path to the file where analysis results are stored.</param>
+        /// <param name="inputFilePath">Path to the file where analysis results are stored.</param>
         /// <param name="append">If true then contents are appended to the end of the file if the file already exists.</param>
         public static void SaveMath(IAnalysisResults anres, string filePath, bool append)
         {
@@ -1871,7 +1871,7 @@ namespace IG.Num
 
         /// <summary>Loads analysis request data from a file in standard mathematical format and stores it in the specified 
         /// analysis results object.</summary>
-        /// <param name="filePath">Path to the file from which object is read.</param>
+        /// <param name="inputFilePath">Path to the file from which object is read.</param>
         /// <param name="anResults">Object where data is stored.</param>
         public static void LoadRequestMath(string filePath, ref AnalysisResults anResults)
         {
@@ -1885,7 +1885,7 @@ namespace IG.Num
 
         /// <summary>Loads analysis results from a file in standard mathematical format and stores it in the specified 
         /// analysis results object.</summary>
-        /// <param name="filePath">Path to the file from which object is read.</param>
+        /// <param name="inputFilePath">Path to the file from which object is read.</param>
         /// <param name="anResults">Object where data is stored.</param>
          public static void LoadMath(string filePath, ref AnalysisResults anResults)
         {
@@ -1900,7 +1900,7 @@ namespace IG.Num
         /// <summary>Saves (serializes) the specified analysis request to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="anResulsts">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file in which object is is saved.</param>
+        /// <param name="inputFilePath">Path to the file in which object is is saved.</param>
         public static void SaveRequestJson(AnalysisResults anResulsts, string filePath)
         {
             SaveJson(anResulsts, filePath, false /* append */ );
@@ -1910,7 +1910,7 @@ namespace IG.Num
         /// If the file already exists, contents either overwrites the file or is appended at the end, 
         /// dependent on the value of the append flag.</summary>
         /// <param name="anResults">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file in which object is is saved.</param>
+        /// <param name="inputFilePath">Path to the file in which object is is saved.</param>
         /// <param name="append">Specifies whether serialized data is appended at the end of the file
         /// in the case that the file already exists.</param>
         public static void SaveRequestJson(AnalysisResults anResults, string filePath, bool append)
@@ -1922,7 +1922,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores (deserializes) analysis request from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which object is restored.</param>
+        /// <param name="inputFilePath">File from which object is restored.</param>
         /// <param name="anResultsRestored">Object that is restored by deserialization.</param>
         public static void LoadRequestJson(string filePath, ref AnalysisResults anResultsRestored)
         {
@@ -1935,7 +1935,7 @@ namespace IG.Num
         /// <summary>Saves (serializes) the specified analysis results to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="anResulsts">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file in which object is is saved.</param>
+        /// <param name="inputFilePath">Path to the file in which object is is saved.</param>
         public static void SaveJson(AnalysisResults anResulsts, string filePath)
         {
             SaveJson(anResulsts, filePath, false /* append */ );
@@ -1945,7 +1945,7 @@ namespace IG.Num
         /// If the file already exists, contents either overwrites the file or is appended at the end, 
         /// dependent on the value of the append flag.</summary>
         /// <param name="anResults">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file in which object is is saved.</param>
+        /// <param name="inputFilePath">Path to the file in which object is is saved.</param>
         /// <param name="append">Specifies whether serialized data is appended at the end of the file
         /// in the case that the file already exists.</param>
         public static void SaveJson(AnalysisResults anResults, string filePath, bool append)
@@ -1957,7 +1957,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores (deserializes) analysis results from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which object is restored.</param>
+        /// <param name="inputFilePath">File from which object is restored.</param>
         /// <param name="anResultsRestored">Object that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref AnalysisResults anResultsRestored)
         {
@@ -1979,7 +1979,7 @@ namespace IG.Num
 
         /// <summary>Read the analysis data from data file
         /// Format: { { p1, p2, … }, { reqcalcobj, reqcalcconstr, reqcalcgradobj, reqcalcgradconstr }, cd } </summary>
-        /// <param name="filePath">Path to the file where training data are saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data are saved.</param>
         /// <param name="parameters">Input and output parameters: { p1, p2, … }.</param>
         /// <param name="reqcalcobj">Flag: reqcalcobj.</param>
         /// <param name="reqcalcconstr">Flag: reqcalcconstr.</param>
@@ -2061,7 +2061,7 @@ namespace IG.Num
 
         /// <summary>Read the analysis result data from data file
         /// Format:  </summary>
-        /// <param name="filePath">Path to the file where training data are saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data are saved.</param>
         /// <param name="parameters">Input and output parameters: { p1, p2, … }.</param>
         /// <param name="calcobj">Flag for the objective function.</param>
         /// <param name="calcconstr">Flag for constraint functions.</param>

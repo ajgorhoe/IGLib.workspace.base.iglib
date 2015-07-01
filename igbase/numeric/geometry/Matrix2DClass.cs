@@ -504,12 +504,12 @@ namespace IG.Num
         #region Auxiliary
 
 
-        /// <summary>Returns the hash code (hash function) of the current matrix.</summary>
+        /// <summary>Returns the hashRet code (hashRet function) of the current matrix.</summary>
         /// <remarks>
         /// <para>This method calls the <see cref="MatrixBase.GetHashCode"/> to calculate the 
-        /// hash code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
-        /// <para>Two matrices that have the same dimensions and equal elements will produce the same hash codes.</para>
-        /// <para>Probability that two different matrices will produce the same hash code is small but it exists.</para>
+        /// hashRet code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
+        /// <para>Two matrices that have the same dimensions and equal elements will produce the same hashRet codes.</para>
+        /// <para>Probability that two different matrices will produce the same hashRet code is small but it exists.</para>
         /// <para>Overrides the <see cref="object.GetHashCode"/> method.</para>
         /// </remarks>
         public override int GetHashCode()

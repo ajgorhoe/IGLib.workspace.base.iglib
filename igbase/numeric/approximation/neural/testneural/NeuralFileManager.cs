@@ -722,7 +722,7 @@ namespace IG.Neural
         /// to the specified file.</summary>
         /// <param name="inputFilePath">Path to the JSON file where input parameters are read from.
         /// The file pointed at must exist.</param>
-        /// <param name="outputFilePath">Path of a file where the calculated approximated values are written to.
+        /// <param name="deletedFilePath">Path of a file where the calculated approximated values are written to.
         /// It can be null or empty string, in this case parameters are not written to a file (but they are still 
         /// output on console).</param>
         public virtual void ClientTestCalculateApproximation(string inputFilePath, string outputFilePath)
@@ -1222,7 +1222,7 @@ namespace IG.Neural
         /// to the specified file.</summary>
         /// <param name="inputFilePath">Path to the JSON file where input parameters are read from.
         /// The file pointed at must exist.</param>
-        /// <param name="outputFilePath">Path of a file where the calculated approximated values are written to.
+        /// <param name="deletedFilePath">Path of a file where the calculated approximated values are written to.
         /// It can be null or empty string, in this case parameters are not written to a file (but they are still 
         /// output on console).</param>
         /// $A tako78 Jul;

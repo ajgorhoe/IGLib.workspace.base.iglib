@@ -25,6 +25,20 @@ using System.Reflection;
 namespace IG.Lib
 {
 
+    /// <summary>Temporary file stream. Based on a temporary file proveded by the system, which is automatically 
+    /// closed when the stream is closed.</summary>
+    public class TempFileStream : FileStream
+    {
+        public TempFileStream()
+            : base(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.Read, 4096, FileOptions.DeleteOnClose) { }
+        public TempFileStream(FileAccess access)
+            : base(Path.GetTempFileName(), FileMode.Create, access, FileShare.Read, 4096, FileOptions.DeleteOnClose) { }
+        public TempFileStream(FileAccess access, FileShare share)
+            : base(Path.GetTempFileName(), FileMode.Create, access, share, 4096, FileOptions.DeleteOnClose) { }
+        public TempFileStream(FileAccess access, FileShare share, int bufferSize)
+            : base(Path.GetTempFileName(), FileMode.Create, access, share, bufferSize, FileOptions.DeleteOnClose) { }
+    }
+
 
     /// <summary>General utilities.</summary>
     /// $A Igor Apr10;
@@ -308,7 +322,7 @@ namespace IG.Lib
         /// <summary>Executes system command with arguments synchronously (blocks until the 
         /// process that is created exits).</summary>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="args">Arguments to system command.</param>
+        /// <param name="AppArguments">Arguments to system command.</param>
         public static Process ExecuteSystemCommand(string command, params string[] args)
         {
             return ExecuteSystemCommand(null /* workingDirectory */, false /* asynchronous */, command, args);
@@ -318,7 +332,7 @@ namespace IG.Lib
         /// <summary>Executes system command with arguments asynchronously (returns immediately and does not
         /// wait for the process to complete).</summary>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="args">Arguments to system command.</param>
+        /// <param name="AppArguments">Arguments to system command.</param>
         public static Process ExecuteSystemCommandAsync(string command, params string[] args)
         {
             return ExecuteSystemCommand(null /* workingDirectory */, true /* asynchronous */, command, args);
@@ -329,7 +343,7 @@ namespace IG.Lib
         /// and the caller can wait for the executed process by calling WaitForExit() on the returned object).
         /// If false then method blocks until the process completes.</param>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="args">Arguments to system command.</param>
+        /// <param name="AppArguments">Arguments to system command.</param>
         /// <returns><see cref="Process"/> object that can be used to access and manimulate the process that has
         /// been executed by this method.</returns>
         public static Process ExecuteSystemCommand(bool asynchronous, string command, params string[] args)
@@ -344,7 +358,7 @@ namespace IG.Lib
         /// and the caller can wait for the executed process by calling WaitForExit() on the returned object).
         /// If false then method blocks until the process completes.</param>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="args">Arguments to system command.</param>
+        /// <param name="AppArguments">Arguments to system command.</param>
         /// <returns><see cref="Process"/> object that can be used to access and manimulate the process that has
         /// been executed by this method.</returns>
         public static Process ExecuteSystemCommand(string workingDirectory, bool asynchronous,
@@ -363,7 +377,7 @@ namespace IG.Lib
         /// If false then method blocks until the process completes.</param>
         /// <param name="useShell">Whether to use the command shell (open in a new window) for execution.</param>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="args">Arguments to system command.</param>
+        /// <param name="AppArguments">Arguments to system command.</param>
         /// <returns><see cref="Process"/> object that can be used to access and manimulate the process that has
         /// been executed by this method.</returns>
         public static Process ExecuteSystemCommand(string workingDirectory, bool asynchronous, bool useShell,
@@ -387,7 +401,7 @@ namespace IG.Lib
         /// <param name="redirectStandardOutput">Whether standard output is redirected (in this case, there will be no output
         /// to the console). Enables suppressing output to console without redirecting it to a specified file.</param>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="args">Arguments to system command.</param>
+        /// <param name="AppArguments">Arguments to system command.</param>
         /// <returns><see cref="Process"/> object that can be used to access and manimulate the process that has
         /// been executed by this method.</returns>
         public static Process ExecuteSystemCommand(string workingDirectory, bool asynchronous, bool useShell,
@@ -472,7 +486,7 @@ namespace IG.Lib
 
 
         /// <summary>Opens the specified file in the system's default browser.</summary>
-        /// <param name="filePath">Path of the file to be opened.</param>
+        /// <param name="inputFilePath">Path of the file to be opened.</param>
         public static void OpenFileInDefaultBrowser(string filePath)
         {
             Process.Start("file:///" + filePath);
@@ -1900,7 +1914,7 @@ namespace IG.Lib
             }
         }
 
-        /// <summary>Returns assembly of the current executable, obtained by <see cref="Assembly.GetEntryAssembly()"/>.</summary>
+        /// <summary>Returns assembly of the IGLib base assembly.</summary>
         public static Assembly IglibAssembly
         {
             get
@@ -1919,19 +1933,45 @@ namespace IG.Lib
                 return _iglibAssembly;
             }
         }
+        
+        
+        /// <summary>Finnds and returns assembly specified by file name.</summary>
+        /// <param name="assemblyName">Name of the assembly file.</param>
+        /// <param name="caseSensitive">Whether names are case sensitive.</param>
+        /// <param name="loadIfNecessary">Whether assembly can be loaded.</param>
+        public static Assembly GetAssemblyByName(string assemblyName, bool caseSensitive = false, bool loadIfNecessary = true, bool byFileName = false)
+        {
+            return GetAssemblyByNameOrFileName(assemblyName, caseSensitive, loadIfNecessary, true /* byName  */, false /* byFileName  */);
+        }
+        
+        /// <summary>Finnds and returns assembly specified by file name.</summary>
+        /// <param name="assemblyName">Name of the assembly file.</param>
+        /// <param name="caseSensitive">Whether names are case sensitive.</param>
+        /// <param name="loadIfNecessary">Whether assembly can be loaded.</param>
+        public static Assembly GetAssemblyByFileName(string assemblyName, bool caseSensitive = false, bool loadIfNecessary = true)
+        {
+            return GetAssemblyByNameOrFileName(assemblyName, caseSensitive, loadIfNecessary, false /* byName  */, true /* byFileName  */);
+        }
 
-        public static Assembly GetAssemblyByName(string assemblyName, bool caseSensitive = false, bool loadIfNecessary = true)
+        /// <summary>Finnds and returns assembly specified by name.</summary>
+        /// <param name="assemblyName">Name of the assembly.</param>
+        /// <param name="caseSensitive">Whether names are case sensitive.</param>
+        /// <param name="loadIfNecessary">Whether assembly can be loaded.</param>
+        /// <param name="byFileName">If true then assembly is searched for by file name instead by just the assembly.</param>
+        public static Assembly GetAssemblyByNameOrFileName(string assemblyName, bool caseSensitive = false, bool loadIfNecessary = true,
+            bool byName = true, bool byFileName = true)
         {
             Assembly ret = null;
             if (caseSensitive)
             {
                 ret = AppDomain.CurrentDomain.GetAssemblies().
-                    SingleOrDefault(assembly => assembly.GetName().Name == assemblyName);
+                    SingleOrDefault(assembly => (byName && assembly.GetName().Name == assemblyName) || (byFileName && UtilSystem.GetAssemblyFileName(assembly) == assemblyName) );
             }
             else
             {
                 ret = AppDomain.CurrentDomain.GetAssemblies().
-                    SingleOrDefault(assembly => assembly.GetName().Name.ToLower() == assemblyName.ToLower());
+                    SingleOrDefault(assembly => (byName && assembly.GetName().Name.ToLower() == assemblyName.ToLower()) 
+                        || (byFileName && UtilSystem.GetAssemblyFileName(assembly).ToLower() == assemblyName.ToLower()));
             }
             if (ret == null)
             {
@@ -1946,14 +1986,15 @@ namespace IG.Lib
                     if (assembly != null)
                     {
                         string name = assembly.GetName().Name;
+                        string fileName = UtilSystem.GetAssemblyFileName(assembly);
                         if (caseSensitive)
                         {
-                            if (name == assemblyName)
+                            if ( (byName && name == assemblyName ) || (byFileName && fileName == assemblyName) )
                                 return assembly;
                         }
                         else
                         {
-                            if (name.ToLower() == assemblyName.ToLower())
+                            if ((byName && name.ToLower() == assemblyName.ToLower()) || (byFileName && fileName.ToLower() == assemblyName.ToLower()) )
                                 return assembly;
                         }
                     }
@@ -1967,14 +2008,15 @@ namespace IG.Lib
                         if (assembly != null)
                         {
                             string name = assembly.GetName().Name;
+                            string fileName = UtilSystem.GetAssemblyFileName(assembly);
                             if (caseSensitive)
                             {
-                                if (name == assemblyName)
+                                if ((byName && name == assemblyName) || (byFileName && fileName == assemblyName) )
                                     return assembly;
                             }
                             else
                             {
-                                if (name.ToLower() == assemblyName.ToLower())
+                                if ((byName && name.ToLower() == assemblyName.ToLower()) || (byFileName && fileName.ToLower() == assemblyName.ToLower()) )
                                     return assembly;
                             }
                         }
@@ -2819,7 +2861,7 @@ namespace IG.Lib
         const int MinNumCheckedIsTextFile = 100;
 
         /// <summary>Detects if the specified file is a text file and detects the encoding.</summary>
-        /// <param name="filePath">The file name.</param>
+        /// <param name="inputFilePath">The file name.</param>
         /// <returns> true if the specified file is a text file text.</returns>
         public static bool IsTextFile(string filePath)
         {
@@ -2829,7 +2871,7 @@ namespace IG.Lib
 
 
         /// <summary>Detects if the specified file is a text file and detects the encoding.</summary>
-        /// <param name="filePath">The file name.</param>
+        /// <param name="inputFilePath">The file name.</param>
         /// <param name="numChecked">The max. number of bytes to use for testing (if 0 then complete file is used).</param>
         /// <returns> true if the specified file is a text file text.</returns>
         public static bool IsTextFile(string filePath, int numChecked)
@@ -2839,7 +2881,7 @@ namespace IG.Lib
         }
 
         /// <summary>Detects if the specified file is a text file and detects the encoding.</summary>
-        /// <param name="filePath">The file name.</param>
+        /// <param name="inputFilePath">The file name.</param>
         /// <param name="encoding">The detected encoding. </param>
         /// <returns> true if the specified file is a text file text.</returns>
         public static bool IsTextFile(string filePath, out Encoding encoding)
@@ -2848,7 +2890,7 @@ namespace IG.Lib
         }
 
         /// <summary>Detects if the specified file is a text file and detects the encoding.</summary>
-        /// <param name="filePath">The file name.</param>
+        /// <param name="inputFilePath">The file name.</param>
         /// <param name="numChecked">The max. number of bytes to use for testing (if 0 then complete file is used).</param>
         /// <param name="encoding">The detected encoding. </param>
         /// <returns> true if the specified file is a text file text.</returns>
@@ -3152,7 +3194,15 @@ namespace IG.Lib
         #endregion Paths
 
 
-        #region RelativePath
+        #region RelativePathAbsolutePath
+
+        /// <summary>Returns the absolute path of the specified path (which can be relative or absolute or
+        /// whatever legal form).</summary>
+        /// <param name="path">Path whose absolute path is returned.</param>
+        public static string GetAbsolutePath(string path)
+        {
+            return GetStandardizedDirectoryPath(path);
+        }
 
         /// <summary>Calculates and returns relativa path from one path to another.
         /// WARNING: 
@@ -3188,24 +3238,29 @@ namespace IG.Lib
             }
             if (!areRelative)
                 return toPath;
-            // Number of remaining fromParts is number of parent dirs
-            StringBuilder ret = new StringBuilder();
-            for (int i = 0; i < fromParts.Count; i++)
+            else
             {
-                if (ret.Length > 0)
-                    ret.Append(Path.DirectorySeparatorChar);
+                // Number of remaining fromParts is number of parent dirs
+                StringBuilder ret = new StringBuilder();
+                for (int i = 0; i < fromParts.Count; i++)
+                {
+                    if (ret.Length > 0)
+                        ret.Append(Path.DirectorySeparatorChar);
 
-                ret.Append("..");
-            }
-            // And the remainder of toParts
-            foreach (string part in toParts)
-            {
-                if (ret.Length > 0)
-                    ret.Append(Path.DirectorySeparatorChar);
+                    ret.Append("..");
+                }
+                // And the remainder of toParts
+                foreach (string part in toParts)
+                {
+                    if (ret.Length > 0)
+                        ret.Append(Path.DirectorySeparatorChar);
 
-                ret.Append(part);
+                    ret.Append(part);
+                }
+                if (ret.Length == 0)
+                    return "." + Path.DirectorySeparatorChar;
+                return ret.ToString();
             }
-            return ret.ToString();
         }
 
         /// <summary>Tests calculation</summary>
@@ -3323,8 +3378,329 @@ namespace IG.Lib
         //    return newPath;
         //}
 
-        #endregion RelativePath
+        #endregion RelativePathAbsolutePath
 
+
+        #region ListDirectory
+
+
+
+        /// <summary>Provides a convenient array of strings containing only null.
+        /// <para>WARNING: Do not change contents of this array!</para></summary>
+        private static readonly string[] _searcPatternsNone = { null };
+
+
+        /// <summary>Recursively lists files and directories within the specified directories, and stores their paths 
+        /// in the specified list, ordered in a tree-like fashion (any directory is processed to all depths before
+        /// another same level directory is processed).
+        /// <para>Files and directories can be listed in a single or in several root directories.</para>
+        /// <para>Only files or only directories can be listed, and a list of matching pattern such as {"*.txt", "*.dll"} 
+        /// can be specified.</para></summary>
+        /// <remarks><para>This function is not recursive.</para></remarks>
+        /// <param name="directoryPath">Path within which files and/or directories will be listed. 
+        /// <para>If not specified then it is ignored, and files/directories will not be searched for in this path (but they 
+        /// can still be searched for in directories contained in <paramref name="pathList"/>) if <paramref name="includeList"/> is true.</para></param>
+        /// <param name="pathList">List where matching paths are stored.<para>If null then it is created anew.</para>
+        /// <para>If already populated and <paramref name="includeList"/> is true then files/directories will also be listed in
+        /// the directories whose paths are included in the list before the call. This is regardless of the value of the 
+        /// <paramref name="clearOnBeginning"/> flag.</para>
+        /// <para>If already populated and <paramref name="clearOnBeginning"/> is false then discovered files will be added to existig ones.</para></param>
+        /// <param name="auxList">Auxiliary list provided for the method to store its working data. If null then the method allocates one.</param>
+        /// <param name="numLevels">Number of levels of subdirectories in which files/directories are listed.
+        /// <para>If less than 0 then unlimited number of levels will be searched for.</para>
+        /// <para>If 0 then no files/directories will be searched for.</para>
+        /// <para>If 1 then only those files/directories are listed that are contained directly in the <paramref name="directoryPath"/>
+        /// directory (and eventually in directories contained in the directories contained in <paramref name="pathList"/> prior to the
+        /// method call, if <paramref name="includeList"/></para> is true). If 2 then also files/directories in the first level 
+        /// directories are listed, if 3 then also files/directories in the second level directories will be listed, etc.</param>
+        /// <param name="includeList">If true then search for files/directories is also performed in directories that were contained
+        /// in teh <paramref name="pathList"/> just before the method was called (beside the <paramref name="directoryPath"/>).</param>
+        /// <param name="clearOnBeginning">If true then the list of files (parameter <paramref name="pathList"/>) is cleared before
+        /// any discovered files or directories are added to the list. If false then discovered files/directories are just added
+        /// to the existing paths.</param>
+        /// <param name="RelativePaths">If true then all paths that are put to the list are converted to relative path with respect
+        /// to the current directory. Relative paths with respect to any other directory are not implemented.</param>
+        /// <param name="listDirectories">If true then directory paths are also listed (which is default), otherwise directories are omitted.</param>
+        /// <param name="listFiles">If true then file paths are also listed (which is default), otherwise files are omitted.</param>
+        /// <param name="searchPatterns">Eventual list of search patterns according to which files are searched for.
+        /// <para>WARNING: search patterns do not apply to directories.</para></param>
+        /// <returns>The number of discovered matching paths that were added to the list.</returns>
+        public static int ListFilesRecursively(string directoryPath, ref List<string> pathList, List<string> auxList,
+            int numLevels = 0, bool includeList = false, bool clearOnBeginning = true,
+            bool RelativePaths = false, bool listDirectories = true, bool listFiles = true, IList<string> searchPatterns = null)
+        {
+            if (pathList == null)
+                pathList = new List<string>();
+            if (auxList == null)
+                auxList = new List<string>();
+            // Mark position on aux. list:
+            int currentIndex = auxList.Count;  // current index of file treated
+            bool searchByPatterns = false;  // whether files/directories are searched by a pattern
+            if (searchPatterns != null)
+                if (searchPatterns.Count > 0)
+                {
+                    if (searchPatterns != _searcPatternsNone)
+                        searchByPatterns = true;
+                }
+            if (!searchByPatterns)
+                searchPatterns = _searcPatternsNone;  // just in order to unify searching by pattens and without
+
+            int numAdded = 0;
+            // Number of added files and directories:
+            // Prepare a list of directories that will be listed at the initial level.
+            // This includes the specified directory (when specified), but can also includes directories
+            // that are already on the file list:
+            if (!string.IsNullOrEmpty(directoryPath))
+            {
+                if (Directory.Exists(directoryPath))
+                    auxList.Add(directoryPath);
+                else
+                    throw new ArgumentException("Directory does not exist: " + directoryPath + ".");
+                directoryPath = null;  // we will not search for this in further iterations
+            }
+            if (includeList)
+            {
+                // also the directories that are already on the list will be listed:
+                foreach (string path in pathList)
+                {
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        if (Directory.Exists(path))
+                            auxList.Add(path);
+                    }
+                }
+                includeList = false;  // prevent including file form the list in subsequent iterations
+            }
+            if (clearOnBeginning)
+            {
+                pathList.Clear();
+                clearOnBeginning = false;
+            }
+            int level = 0;
+            if (level < numLevels || numLevels < 0)
+            {
+                ++level;
+                // Go through unworked directories and list contents:
+                int current = currentIndex;
+                int next = auxList.Count;
+                for (int i = current; i < next; ++i)
+                {
+                    string workedDir = auxList[i];
+                    if (!string.IsNullOrEmpty(workedDir) && Directory.Exists(workedDir))
+                    {
+                        if (listFiles)
+                        {
+                            string[] filePaths = null;
+                            foreach (string searchPattern in searchPatterns)
+                            {
+                                if (searchByPatterns)
+                                    filePaths = Directory.GetFiles(workedDir, searchPattern);
+                                else
+                                    filePaths = Directory.GetFiles(workedDir);
+                                foreach (string path in filePaths)
+                                {
+                                    string added = path;
+                                    if (RelativePaths)
+                                        added = UtilSystem.GetRelativePath(".", path);
+                                    pathList.Add(added);
+                                    ++numAdded;
+                                }
+                            }
+                        }
+                        bool nextLevel = (level < numLevels || numLevels < 0); // whether we will go to next level
+                        if (nextLevel || (listDirectories)) // && !searchByPatterns))
+                        {
+                            // We also need a list of all directories contained in the worked dir (either for the 
+                            // next level or to add them to the list of paths discovered):
+                            string[] dirPaths = Directory.GetDirectories(workedDir);
+                            foreach (string path in dirPaths)
+                            {
+                                if (listDirectories) // && !searchByPatterns)  // we need to add the directory to the list
+                                {
+                                    string added = path;
+                                    if (RelativePaths)
+                                        added = UtilSystem.GetRelativePath(".", path);
+                                    pathList.Add(added);
+                                    ++numAdded;
+                                }
+                                // Recursively list contained dirextories and files:
+                                if (nextLevel)
+                                {
+
+                                    numAdded += ListFilesRecursively(path /* directory listed recursively */,
+                                        ref pathList, auxList, numLevels - 1 /* The remaining numver of levels */,
+                                        false /* includeList; only one directory is now searched for */ ,
+                                        false /* clearOnBeginning; recursive calls must preserve what has already been discovered */ ,
+                                        RelativePaths, listDirectories, listFiles, searchPatterns);
+                                }
+
+                            }
+                        }
+                    }
+                }
+                currentIndex = next;
+            }
+            // Auxliliary list will only be cleared after the operation:
+            if (clearOnBeginning)
+                auxList.Clear();
+            return numAdded;
+        }
+
+
+        /// <summary>Recursively (ordered by levels) lists files and directories within the specified directories, and 
+        /// stores their paths in the specified list.
+        /// <para>Listing is done in a level order, meaning that path at the first level are listed first, then paths at
+        /// the second level (contained in the first level directories), etc.</para>
+        /// <para>Files and directories can be listed in a single directory or in several directories.</para>
+        /// <para>Only files or only directories can be listed, and a list of matching pattern such as {"*.txt", "*.dll"} 
+        /// can be specified.</para></summary>
+        /// <remarks><para>This function is not recursive.</para></remarks>
+        /// <param name="directoryPath">Path within which files and/or directories will be listed. 
+        /// <para>If not specified then it is ignored, and files/directories will not be searched for in this path (but they 
+        /// can still be searched for in directories contained in <paramref name="pathList"/>) if <paramref name="includeList"/> is true.</para></param>
+        /// <param name="pathList">List where matching paths are stored.<para>If null then it is created anew.</para>
+        /// <para>If already populated and <paramref name="includeList"/> is true then files/directories will also be listed in
+        /// the directories whose paths are included in the list before the call. This is regardless of the value of the 
+        /// <paramref name="clearOnBeginning"/> flag.</para>
+        /// <para>If already populated and <paramref name="clearOnBeginning"/> is false then discovered files will be added to existig ones.</para></param>
+        /// <param name="auxList">Auxiliary list provided for the method to store its working data. If null then the method allocates one.</param>
+        /// <param name="numLevels">Number of levels of subdirectories in which files/directories are listed.
+        /// <para>If less than 0 then unlimited number of levels will be searched for.</para>
+        /// <para>If 0 then no files/directories will be searched for.</para>
+        /// <para>If 1 then only those files/directories are listed that are contained directly in the <paramref name="directoryPath"/>
+        /// directory (and eventually in directories contained in the directories contained in <paramref name="pathList"/> prior to the
+        /// method call, if <paramref name="includeList"/></para> is true). If 2 then also files/directories in the first level 
+        /// directories are listed, if 3 then also files/directories in the second level directories will be listed, etc.</param>
+        /// <param name="includeList">If true then search for files/directories is also performed in directories that were contained
+        /// in teh <paramref name="pathList"/> just before the method was called (beside the <paramref name="directoryPath"/>).</param>
+        /// <param name="clearOnBeginning">If true then the list of files (parameter <paramref name="pathList"/>) is cleared before
+        /// any discovered files or directories are added to the list. If false then discovered files/directories are just added
+        /// to the existing paths.</param>
+        /// <param name="RelativePaths">If true then all paths that are put to the list are converted to relative path with respect
+        /// to the current directory. Relative paths with respect to any other directory are not implemented.</param>
+        /// <param name="listDirectories">If true then directory paths are also listed (which is default), otherwise directories are omitted.</param>
+        /// <param name="listFiles">If true then file paths are also listed (which is default), otherwise files are omitted.</param>
+        /// <param name="searchPatterns">Eventual list of search patterns according to which files or directories are searched for.
+        /// <para>WARNING: search patterns do not apply to directories.</para></param>
+        /// <returns>The number of discovered matching paths that were added to the list.</returns>
+        public static int ListFilesByLevels(string directoryPath, ref List<string> pathList, List<string> auxList, 
+            int numLevels = 0, bool includeList = false, bool clearOnBeginning = true,
+            bool RelativePaths = false, bool listDirectories = true, bool listFiles = true, IList<string> searchPatterns = null)
+        {
+            if (pathList == null)
+                pathList = new List<string>();
+            if (auxList == null)
+                auxList = new List<string>();
+            // Mark position on aux. list:
+            int currentIndex = auxList.Count;  // current index of file treated
+            bool searchByPatterns = false;  // whether files/directories are searched by a pattern
+            if (searchPatterns != null)
+                if (searchPatterns.Count > 0)
+                {
+                    if (searchPatterns != _searcPatternsNone)
+                        searchByPatterns = true;
+                    searchByPatterns = true;
+                }
+            if (!searchByPatterns)
+                searchPatterns = _searcPatternsNone;  // just in order to unify searching by pattens and without
+
+            int numAdded = 0;
+            // Number of added files and directories:
+            // Prepare a list of directories that will be listed at the initial level.
+            // This includes the specified directory (when specified), but can also includes directories
+            // that are already on the file list:
+            if (! string.IsNullOrEmpty(directoryPath))
+            {
+                if (Directory.Exists(directoryPath))
+                    auxList.Add(directoryPath);
+                else
+                    throw new ArgumentException("Directory does not exist: " + directoryPath + ".");
+                directoryPath = null;  // we will not search for this in further iterations
+            }
+            if (includeList)
+            {
+                // also the directories that are already on the list will be listed:
+                foreach( string path in pathList)
+                {
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        if (Directory.Exists(path))
+                            auxList.Add(path);
+                    }
+                }
+                includeList = false;  // prevent including file form the list in subsequent iterations
+            }
+            if (clearOnBeginning)
+            {
+                pathList.Clear();
+                clearOnBeginning = false;
+            }
+            int level = 0;
+            while (level < numLevels || numLevels < 1)
+            {
+                ++level;
+                // Go through unworked directories and list contents:
+                int current = currentIndex;
+                int next = auxList.Count;
+                if (current == next)
+                    break;  // we have worked all the directories available, exit  the while loop
+                for (int i = current; i < next; ++i)
+                {
+                    string workedDir = auxList[i];
+                    if (!string.IsNullOrEmpty(workedDir) && Directory.Exists(workedDir))
+                    {
+                        if (listFiles)
+                        {
+                            string[] filePaths = null;
+                            foreach (string searchPattern in searchPatterns)
+                            {
+                                if (searchByPatterns)
+                                    filePaths = Directory.GetFiles(workedDir, searchPattern);
+                                else
+                                    filePaths = Directory.GetFiles(workedDir);
+                                foreach (string path in filePaths)
+                                {
+                                    string added = path;
+                                    if (RelativePaths)
+                                        added = UtilSystem.GetRelativePath(".", path);
+                                    pathList.Add(added);
+                                    ++numAdded;
+                                }
+                            }
+                        }
+                        bool nextLevel = (level < numLevels || numLevels < 0); // whether we will go to next level
+                        if (nextLevel || (listDirectories)) // && ! searchByPatterns))
+                        {
+                            // We also need a list of all directories contained in the worked dir (either for the 
+                            // next level or to add them to the list of paths discovered):
+                            string[] dirPaths = Directory.GetDirectories(workedDir);
+                            foreach (string path in dirPaths)
+                            {
+                                if (nextLevel)
+                                    auxList.Add(path);  // we will need the directory path for the next level
+                                if (listDirectories) //  && !searchByPatterns)  // we need to add the directory to the list
+                                {
+                                    string added = path;
+                                    if (RelativePaths)
+                                        added = UtilSystem.GetRelativePath(".", path);
+                                    pathList.Add(added);
+                                    ++numAdded;
+                                }
+                            }
+                        }
+                    }
+                }
+                currentIndex = next;
+            }
+            // Auxliliary list will only be cleared after the operation:
+            if (clearOnBeginning)
+                auxList.Clear();
+            return numAdded;
+        }
+
+
+
+        #endregion ListDirectory
 
         #region CopyDirectory
 
@@ -3677,7 +4053,7 @@ namespace IG.Lib
                     + Environment.NewLine + "to "
                     + Environment.NewLine + "  " + targetdirPath
                     + Environment.NewLine + "...");
-                StopWatch timer = new StopWatch();
+                StopWatch1 timer = new StopWatch1();
                 timer.Start();
                 CopyDirectory(sourceDirPath, targetdirPath);
                 timer.Stop();
@@ -3692,7 +4068,6 @@ namespace IG.Lib
         }
 
         #endregion CopyDirectory
-
 
 
         #region SerializationBinary
@@ -3788,7 +4163,6 @@ namespace IG.Lib
 
 
         #endregion SerializationBinary
-
 
 
 

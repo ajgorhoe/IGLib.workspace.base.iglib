@@ -10,14 +10,14 @@ using System.Threading;
 namespace IG.Lib
 {
 
-    //[Obsolete("Replaced by StopWatch.")]
-    //public class Timer : StopWatch { }
+    //[Obsolete("Replaced by StopWatch1.")]
+    //public class Timer : StopWatch1 { }
 
 
     /// <summary>Timer for measuring execution times 
     /// and other intervals of time elapsed between successive events.
-    /// $A Igor xx Apr10;</summary>
-    public class StopWatch: ILockable, IIdentifiable
+    /// $A Igor xx Apr10 Jun15;</summary>
+    public class StopWatch1: ILockable, IIdentifiable
     {
 
         #region Construction
@@ -43,10 +43,10 @@ namespace IG.Lib
             }
         }
 
-        public StopWatch()
+        public StopWatch1()
         { Init(); }
 
-        public StopWatch(string label)
+        public StopWatch1(string label)
         { Init(label); }
 
         protected void Init()
@@ -64,15 +64,15 @@ namespace IG.Lib
             SetLabel(label);
         }
 
-        public static StopWatch Create()
+        public static StopWatch1 Create()
         {
-            StopWatch ret = new StopWatch();
+            StopWatch1 ret = new StopWatch1();
             return ret;
         }
 
-        public static StopWatch Create(string label)
+        public static StopWatch1 Create(string label)
         {
-            StopWatch ret = new StopWatch(label);
+            StopWatch1 ret = new StopWatch1(label);
             return ret;
         }
 
@@ -430,7 +430,7 @@ namespace IG.Lib
         {
             Console.WriteLine("Stopwatch test...");
             double tSleep;
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             t.Start();
             Console.WriteLine("> Stopwatch created and started.");
             tSleep = 0.62;
@@ -466,7 +466,142 @@ namespace IG.Lib
 
         #endregion Examples
 
-    }  // StopWatch
+
+
+
+
+
+        #region Static.MeasureExecutionTimes
+
+        public delegate void VoidDelegate();
+
+
+        public static int TestExecutionTime(VoidDelegate work, out double averageExecutionTime, out double averageCpuTime, 
+            double targetedTime = 0.1,  int outpuLevel = 0, int numInitialExecutions = 1)
+        {
+            int batchSize = numInitialExecutions;
+            if (batchSize < 1)
+                batchSize = 1;
+            IG.Lib.StopWatch1 t = new IG.Lib.StopWatch1();
+            int numExecutions = 0;
+            double totalTime = 0.0, totalCpuTime = 0;
+            double timeRatio = 0.0;
+            bool stop = false;
+            if (outpuLevel >= 1)
+            {
+                Console.WriteLine("Starting the time performance test...");
+            }
+            while (!stop)
+            {
+                t.Start();
+                for (int i = 0; i < batchSize; ++i)
+                {
+                    work();
+                    ++ numExecutions;
+                }
+                t.Stop();
+                totalTime += t.Time;
+                totalCpuTime += t.CpuTime;
+                timeRatio = totalTime / targetedTime;
+                if (outpuLevel >= 2)
+                {
+                    Console.WriteLine("  " + batchSize + " executions performed in " + t.Time + " s (" + t.CpuTime + "CPU) " + Environment.NewLine
+                        + "    total time: " + totalTime + " s (CPU: " + totalCpuTime + "), time ratio: " + timeRatio );
+                }
+                if (timeRatio >= 1.0)
+                    stop = true;
+                else if (timeRatio < 0.4)
+                {
+                    if (timeRatio < 0.01)
+                    {
+                        if (numExecutions > 100)
+                            batchSize = (int)(batchSize * 10);
+                        else
+                            batchSize *= 4;
+                    } else if (timeRatio < 0.1)
+                    {
+                        if ((numExecutions > 20))
+                            batchSize *= 6;
+                        else
+                            batchSize *= 3;
+                    } else if (timeRatio < 0.1)
+                    {
+                        if (numExecutions > 5)
+                            batchSize *= 4;
+                        else
+                            batchSize *= 2;
+                    } else
+                    {
+                        if (numExecutions > 5)
+                        {
+                            batchSize = (int)(0.6 * (1.0 - timeRatio) * (double)numExecutions / (timeRatio));
+                            if (batchSize < 1)
+                                batchSize = 1;
+                        }
+                        else
+                        {
+                            batchSize = (int) (1.5 * (double) batchSize);
+                            if (batchSize < 1)
+                                batchSize = 1;
+                        }
+                    }
+                } else if (timeRatio < 0.8)
+                {
+                    if (numExecutions > 5)
+                    {
+                        batchSize = (int)(0.8 * (1.0 - timeRatio) * (double)numExecutions / (timeRatio));
+                        if (batchSize < 1)
+                            batchSize = 1;
+                    } else 
+                    {
+                        batchSize = (int)(0.6 * (1.0 - timeRatio) * (double)numExecutions / (timeRatio));
+                        if (batchSize < 1)
+                            batchSize = 1;
+                    }
+                } else if (timeRatio < 0.9)
+                {
+                    batchSize = (int)(0.9 * (1.0 - timeRatio) * (double)numExecutions / (timeRatio));
+                    if (batchSize < 1)
+                        batchSize = 1;
+                } else if (timeRatio < 0.99)
+                {
+                    batchSize = (int)(1.1 * (1.0 - timeRatio) * (double)numExecutions / (timeRatio));
+                    if (batchSize < 1)
+                        batchSize = 1;
+                } else
+                {
+                    batchSize = (int)(1.5 * (1.0 - timeRatio) * (double)numExecutions / (timeRatio));
+                    if (batchSize < 1)
+                        batchSize = 1;
+                }
+                if (batchSize < 1)
+                    batchSize = 1;
+            }
+            averageExecutionTime = totalTime / (double) numExecutions;
+            averageCpuTime = totalCpuTime / (double) numExecutions;
+            if (outpuLevel >=1)
+            {
+                Console.WriteLine("  ... test finished.");
+                Console.WriteLine(numExecutions + " executions performed in " + totalTime + " s (" + totalCpuTime + " s CPU).");
+                Console.WriteLine("Executions per second: " + ((double)numExecutions / totalTime) + " (per second of CPU time: "
+                    + ((double)numExecutions / totalCpuTime) + ").");
+                Console.WriteLine("Average execution time: " + averageExecutionTime + " s (CPU: " + averageCpuTime + " s).");
+            }
+            return numExecutions;
+        }
+
+
+
+
+
+        #endregion Static.MeasureExecutionTimes
+
+
+
+
+
+
+    }  // StopWatch1
 
 
 }

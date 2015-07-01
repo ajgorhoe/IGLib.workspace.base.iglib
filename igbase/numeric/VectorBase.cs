@@ -199,12 +199,12 @@ namespace IG.Num
         /// <param name="elementFormat">Format specification for printing individual element.</param>
         string ToStringMath(string elementFormat);
         
-        /// <summary>Returns an integer valued hash function of the current vector object.
+        /// <summary>Returns an integer valued hashRet function of the current vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         int GetHashFunctionInt();
 
-        /// <summary>Returns a string valued hash function of the current vector object.
+        /// <summary>Returns a string valued hashRet function of the current vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
         /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific vector.</remarks>
@@ -862,12 +862,12 @@ namespace IG.Num
 
         #region Operations.Auxiliary
 
-        /// <summary>Returns the hash code (hash function) of the current vector.</summary>
+        /// <summary>Returns the hashRet code (hashRet function) of the current vector.</summary>
         /// <remarks>
         /// <para>This method calls the <see cref="VectorBase.GetHashCode"/> to calculate the 
-        /// hash code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
-        /// <para>Two vectors that have the same dimensions and equal elements will produce the same hash codes.</para>
-        /// <para>Probability that two different vectors will produce the same hash code is small but it exists.</para>
+        /// hashRet code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
+        /// <para>Two vectors that have the same dimensions and equal elements will produce the same hashRet codes.</para>
+        /// <para>Probability that two different vectors will produce the same hashRet code is small but it exists.</para>
         /// <para>Overrides the <see cref="object.GetHashCode"/> method.</para>
         /// </remarks>
         public override int GetHashCode()
@@ -886,7 +886,7 @@ namespace IG.Num
             return VectorBase.Equals(this, obj as IVector);
         }
 
-        /// <summary>Returns an integer valued hash function of the current vector object.
+        /// <summary>Returns an integer valued hashRet function of the current vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         public int GetHashFunctionInt()
@@ -894,7 +894,7 @@ namespace IG.Num
             return Util.GetHashFunctionInt(this);
         }
 
-        /// <summary>Returns a string valued hash function of the current vector object.
+        /// <summary>Returns a string valued hashRet function of the current vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
         /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific vector.</remarks>
@@ -2184,7 +2184,7 @@ namespace IG.Num
 
         #region Static.Auxiliary
 
-        /// <summary>Returns hash code of the specified vector.</summary>
+        /// <summary>Returns hashRet code of the specified vector.</summary>
         /// <param name="vec">Vector whose hath code is returned.</param>
         /// <remarks>This method should be used when overriding the GetHashCode() in  vector classes, 
         /// in order to unify equality check over different vector classes.</remarks>
@@ -2208,7 +2208,7 @@ namespace IG.Num
         /// <param name="v2">The second of the two vectors that are checked for equality.</param>
         /// <remarks>
         /// <para>This method should be used when overriding the Equals() method in  vector classes, 
-        /// in order to unify calculation of hash code over different vector classes.</para>
+        /// in order to unify calculation of hashRet code over different vector classes.</para>
         /// <para>If both vectors are nulll or both have dimension less than 1 then vectors are considered equal.</para>
         /// <para>This method is consistent with the <see cref="VectorBase.Compare"/> method, i.e. it returns the 
         /// same value as the expression <see cref="VectorBase.Compare"/>(<paramref name="v1"/>, <paramref name="v2"/>==0).</para>
@@ -2239,18 +2239,18 @@ namespace IG.Num
             }
         }
 
-        /// <summary>Returns an integer valued hash function of the specified vector object.
+        /// <summary>Returns an integer valued hashRet function of the specified vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
-        /// <vec>Vector object whose hash function is calculated and returned.</vec>
+        /// <vec>Vector object whose hashRet function is calculated and returned.</vec>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         public static int GetHashFunctionInt(IVector vec)
         {
             return Util.GetHashFunctionInt(vec);
         }
 
-        /// <summary>Returns a string valued hash function of the specified vector object.
+        /// <summary>Returns a string valued hashRet function of the specified vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
-        /// <vec>Vector object whose hash function is calculated and returned.</vec>
+        /// <vec>Vector object whose hashRet function is calculated and returned.</vec>
         /// <seealso cref="Util.GetHashFunctionString"/>
         public static string GetHashFunctionString(IVector vec)
         {
@@ -2664,7 +2664,7 @@ namespace IG.Num
 
         /// <summary>Performs a test of Gramm-Schmidt orthogonalization on a set of random vectors.</summary>
         /// <param name="dim">dimension of vectors to be orthogonalized.</param>
-        /// <param name="numRepetitions">Nomber of repetitions (how many times the procedure is repeated).</param>
+        /// <param name="numGenerations">Nomber of repetitions (how many times the procedure is repeated).</param>
         /// <param name="tol">Tolerance for zero length of resulting vectors.</param>
         /// <param name="outputLevel">Level of output.</param>
         /// <param name="randomGenerator">Random generator used.</param>
@@ -2681,7 +2681,7 @@ namespace IG.Num
             bool passed = true;
             if (tol <= 0)
                 tol = 1.0e-6;
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             try
             {
                 if (randomGenerator == null)
@@ -2974,7 +2974,7 @@ namespace IG.Num
         /// <summary>Saves (serializes) the specified vector to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="vec">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file in which object is is saved.</param>
+        /// <param name="inputFilePath">Path to the file in which object is is saved.</param>
         public static void SaveJson(IVector vec, string filePath)
         {
             SaveJson(vec, filePath, false /* append */ );
@@ -2984,7 +2984,7 @@ namespace IG.Num
         /// If the file already exists, contents either overwrites the file or is appended at the end, 
         /// dependent on the value of the append flag.</summary>
         /// <param name="vec">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file in which object is saved.</param>
+        /// <param name="inputFilePath">Path to the file in which object is saved.</param>
         /// <param name="append">Specifies whether serialized data is appended at the end of the file
         /// in the case that the file already exists.</param>
         public static void SaveJson(IVector vec, string filePath, bool append)
@@ -2996,7 +2996,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores (deserializes) a vector from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which object is restored.</param>
+        /// <param name="inputFilePath">File from which object is restored.</param>
         /// <param name="vecRestored">Object that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref IVector vecRestored)
         {
@@ -3010,7 +3010,7 @@ namespace IG.Num
         /// It the specified file already exists then it is overwritten.
         /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is used as separator.</summary>
         /// <param name="vec">Vector to be stored to a file.</param>
-        /// <param name="filePath">Path of the file to which vector is stored.</param>
+        /// <param name="inputFilePath">Path of the file to which vector is stored.</param>
         /// <param name="separator">Separator used in the CSV file.</param>
         public static void SaveCsv(IVector vec, string filePath)
         {
@@ -3020,7 +3020,7 @@ namespace IG.Num
         /// <summary>Saves the specified vector to a CSV file.
         /// It the specified file already exists then it is overwritten.</summary>
         /// <param name="vec">Vector to be stored to a file.</param>
-        /// <param name="filePath">Path of the file to which vector is stored.</param>
+        /// <param name="inputFilePath">Path of the file to which vector is stored.</param>
         /// <param name="separator">Separator used in the CSV file.</param>
         public static void SaveCsv(IVector vec, string filePath, string separator)
         {
@@ -3030,7 +3030,7 @@ namespace IG.Num
         /// <summary>Saves the specified vector to a CSV file.
         /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is used as separator in CSV.</summary>
         /// <param name="vec">Vector to be stored to a file.</param>
-        /// <param name="filePath">Path of the file to which vector is stored.</param>
+        /// <param name="inputFilePath">Path of the file to which vector is stored.</param>
         /// <param name="append">Specifies whether the data is appended at the end of the file
         /// in the case that the ifle already exists.</param>
         public static void SaveCsv(IVector vec, string filePath, bool append)
@@ -3040,7 +3040,7 @@ namespace IG.Num
 
         /// <summary>Saves the specified vector to a CSV file.</summary>
         /// <param name="vec">Vector to be stored to a file.</param>
-        /// <param name="filePath">Path of the file to which vector is stored.</param>
+        /// <param name="inputFilePath">Path of the file to which vector is stored.</param>
         /// <param name="separator">Separator used in the CSV file.</param>
         /// <param name="append">Specifies whether the data is appended at the end of the file
         /// in the case that the ifle already exists.</param>
@@ -3062,8 +3062,8 @@ namespace IG.Num
         /// Constant <see cref="Str.DefaultCsvSeparator"/> is used as separator in CSV file.
         /// If there are no components then a null vector is returned by this method (no exceptions thrown).
         /// If there are more than one rows in the CSV file then vector is read from the first row.</summary>
-        /// <param name="filePath">Path to the file that contains a vector in CSV format.</summary>
-        /// <param name="filePath">Path to the file that vector is read form.</param>
+        /// <param name="inputFilePath">Path to the file that contains a vector in CSV format.</summary>
+        /// <param name="inputFilePath">Path to the file that vector is read form.</param>
         /// <param name="vecRestored">Vector object where the read-in vector is stored.</param>
         public static void LoadCsv(string filePath, ref IVector vecRestored)
         {
@@ -3073,7 +3073,7 @@ namespace IG.Num
         /// <summary>Reads a vector written in CSV format from a file.
         /// If there are no components then a null vector is returned by this method (no exceptions thrown).
         /// If there are more than one rows in the CSV file then vector is read from the first row.</summary>
-        /// <param name="filePath">Path to the file that contains a vector in CSV format.</param>
+        /// <param name="inputFilePath">Path to the file that contains a vector in CSV format.</param>
         /// <param name="separator">Separator that is used to separate values in a row in the CSV file.</param>
         /// <param name="vecRestored">Vector object where the read-in vector is stored.</param>
         public static void LoadCsv(string filePath, string separator, ref IVector vecRestored)
@@ -3107,7 +3107,7 @@ namespace IG.Num
         /// <summary>Reads a vector from the specified row of a CSV file.
         /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is used as CSV separator.
         /// If the specified row does not exisist in the file then exception is thrown.</summary>
-        /// <param name="filePath">Path to the file that contains a vector in CSV format.</param>
+        /// <param name="inputFilePath">Path to the file that contains a vector in CSV format.</param>
         /// <param name="rowNum">Number of the row from which the vector is read.</param>
         /// <param name="vecRestored">Vector object where the read-in vector is stored.</param>
         public static void LoadCsv(string filePath, int rowNum, ref IVector vecRestored)
@@ -3117,7 +3117,7 @@ namespace IG.Num
 
         /// <summary>Reads a vector from the specified row of a CSV file.
         /// If the specified row does not exisist in the file then exception is thrown.</summary>
-        /// <param name="filePath">Path to the file that contains a vector in CSV format.</param>
+        /// <param name="inputFilePath">Path to the file that contains a vector in CSV format.</param>
         /// <param name="rowNum">Number of the row from which the vector is read.</param>
         /// <param name="separator">Separator that is used to separate values in a row in the CSV file.</param>
         /// <param name="vecRestored">Vector object where the read-in vector is stored.</param>

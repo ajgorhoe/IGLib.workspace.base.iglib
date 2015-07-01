@@ -64,11 +64,11 @@ namespace IG.Gr3d
         public int OutputLevel
         { get { return _outputLevel; } set { _outputLevel = value; } }
 
-        private StopWatch _timer;
+        private StopWatch1 _timer;
 
         /// <summary>Stopwatch that can be used to measure the time efficiency of actions.</summary>
-        public StopWatch Timer
-        { get { if (_timer == null) _timer = new StopWatch(); return _timer; } }
+        public StopWatch1 Timer
+        { get { if (_timer == null) _timer = new StopWatch1(); return _timer; } }
 
 
         /// <summary>Sets background color of the plotter that is used by the current plot object.

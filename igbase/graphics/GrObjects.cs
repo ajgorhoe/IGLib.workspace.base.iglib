@@ -134,9 +134,9 @@ namespace IG.Gr
     //    {
     //        get
     //        {
-    //            GrPrimitiveSettings ret = Settings;
-    //            if (ret == null && Parent != null)
-    //                ret = Parent.EffectiveSettings;
+    //            GrPrimitiveSettings ReturnedString = Settings;
+    //            if (ReturnedString == null && Parent != null)
+    //                ReturnedString = Parent.EffectiveSettings;
     //        }
     //    }
 

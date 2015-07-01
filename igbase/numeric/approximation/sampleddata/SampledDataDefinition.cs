@@ -1358,7 +1358,7 @@ namespace IG.Num
         /// <summary>Saves input/output data definition to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="dataDef">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file where training data is saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data is saved.</param>
         public static void SaveJson(InputOutputDataDefiniton dataDef, string filePath)
         {
             InputOutputDataDefinitonDto dtoOriginal = new InputOutputDataDefinitonDto();
@@ -1368,7 +1368,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores input/output data definition from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which training data is restored.</param>
+        /// <param name="inputFilePath">File from which training data is restored.</param>
         /// <param name="dataDefRestored">Narual networ approximator's definition data that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref InputOutputDataDefiniton dataDefRestored)
         {

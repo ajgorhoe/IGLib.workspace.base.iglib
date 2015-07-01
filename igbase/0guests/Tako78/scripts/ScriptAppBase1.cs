@@ -59,8 +59,8 @@ namespace IG.Script
         protected const string DataStructuresHelpTestCsvApp = DataStructuresTestCsvApp + " : Runs the CSV simple demo application.";
 
         /// <summary>Executes embedded application - demo application for demonstration of work with CSVs.</summary>
-        /// <param name="appName">Name of the embedded application.</param>
-        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <param name="appName111tionName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
         protected virtual string DataStructuresFunctionTestCsvApp(string appName, string[] args)
         {
@@ -96,8 +96,8 @@ namespace IG.Script
     system variable!).";
 
         /// <summary>Executes embedded application - test of writing sampled data definition & data in CSV format.</summary>
-        /// <param name="appName">Name of the embedded application.</param>
-        /// <param name="args">Arguments fo the embedded application's command.
+        /// <param name="appName111tionName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.
         /// <para>1st argument: path to the data definition file in JSON.</para>
         /// <para>2nd argument: path to the data file in JSON.</para>
         /// <para>3rd argument: path to the output file where data in CSV is written.</para>
@@ -236,7 +236,7 @@ namespace IG.Script
                 throw new ArgumentException("Sampled data could not be read correctly.");
             Console.WriteLine(Environment.NewLine +
                 "Saving data definitions & sampled data to a CSV file... ");
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             t.Start();
             SampledDataCsv csv = new SampledDataCsv();
             csv.OutputLevel = 5;
@@ -276,8 +276,8 @@ namespace IG.Script
     system variable!).";
 
         /// <summary>Executes embedded application - test of writing sampled data definition & data in CSV format.</summary>
-        /// <param name="appName">Name of the embedded application.</param>
-        /// <param name="args">Arguments fo the embedded application's command.
+        /// <param name="appName111tionName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.
         /// <para>1st argument: path to CSV file that contains definitions and data to be read.</para>
         /// <para>2nd argument: path to the file where the read-in definitions and data will be written (in CSV).</para>
         /// <para>3rd argument: if true then key and data are in the same row when writing the data.</para>
@@ -377,7 +377,7 @@ namespace IG.Script
             InputOutputDataDefiniton dataDefinition = null;
             SampledDataSet sampledData = null;
             Console.Write("Loading definition and data from CSV file... ");
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             t.Start();
             SampledDataCsv csv = new SampledDataCsv();
             csv.OutputLevel = 5;

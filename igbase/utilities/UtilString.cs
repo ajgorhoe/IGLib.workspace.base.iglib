@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
+using IG.Num;
+
 namespace IG.Lib
 {
 
@@ -19,9 +21,7 @@ namespace IG.Lib
     /// $A Igor xx;
     public class UtilStr: UtilCsv
     {
-
-        // Internal random generator:
-        private static Random rndgen = null;
+        
 
         private static int _maxStringLength = 100;
 
@@ -241,7 +241,7 @@ namespace IG.Lib
         /// command can be obtained simply as the first string in the returned array.</summary>
         /// <param name="commandLine">Command line that is split to individual arguments.
         /// Command line can also contain a command, which is treated equally.</param>
-        /// <param name="ret">List in which the parsed arguments are stored.</param>
+        /// <param name="ReturnedString">List in which the parsed arguments are stored.</param>
         public static void GetArguments(string commandLine, ref List<string> ret)
         {
             List<string> aux = null;
@@ -256,7 +256,7 @@ namespace IG.Lib
         /// command can be obtained simply as the first string in the returned array.</summary>
         /// <param name="commandLine">Command line that is split to individual arguments.
         /// Command line can also contain a command, which is treated equally.</param>
-        /// <param name="ret">List in which the parsed arguments are stored.</param>
+        /// <param name="ReturnedString">List in which the parsed arguments are stored.</param>
         /// <param name="aux">Auxiliary list for storing intermediate results.</param>
         private static void GetArguments(string commandLine, ref List<string> ret, ref List<string> aux)
         {
@@ -302,28 +302,90 @@ namespace IG.Lib
 
 
         #region RandomString
+        
+        /// <summary>Creates and returns a valid random unicode string. All possible uncode characters may be 
+        /// contained in the generated string, EXCEPT the surogate characters in the range  0xD800-0xDFFF.</summary>
+        /// <remarks><para>Unicode surrogate characters in the range 0xD800-0xDFFF (55296-57343) are not valid 
+        /// on their own. They must appear as a pair (0xD800-0xDBFF first, 0xDC00-0xDFFF second) in order to be 
+        /// valid (in the UTF-16 encoding scheme). Alone, they will be treated as invalid characters and decoded 
+        /// to 0xFFFD (65533). C# uses UTF-16 to represent its strings.</para>
+        /// <para>See also: http://stackoverflow.com/questions/12127843/generating-a-random-string </para></remarks>
+        /// <param name="stringLength">Length of the returned string.</param>
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
+        public static string RandomUnicodeString(int stringLength, IRandomGenerator rndgen = null)
+        {
+            return RandomUnicodeString(stringLength, true /* excludeSurrogate */, rndgen);
+        }
 
-        /// <summary>Returns a random character that is a capital letter (A-Z)</summary>
-        public static char RandomCharCapitalLetter()
+        /// <summary>Creates and returns a valid random unicode string. All legal uncode characters may be 
+        /// contained in the generated string.
+        /// <para>If surrogates are not excluded then it is not guaranteed that the returned string is og prescribed length.</para></summary>
+        /// <remarks><para>Unicode surrogate characters in the range 0xD800-0xDFFF (55296-57343) are not valid 
+        /// on their own. They must appear as a pair (0xD800-0xDBFF first, 0xDC00-0xDFFF second) in order to be 
+        /// valid (in the UTF-16 encoding scheme). Alone, they will be treated as invalid characters and decoded 
+        /// to 0xFFFD (65533). C# uses UTF-16 to represent its strings.</para>
+        /// <para>See also: http://stackoverflow.com/questions/12127843/generating-a-random-string </para></remarks>
+        /// <param name="stringLength">Length of the returned string.</param>
+        /// <param name="excludeSurrogates">If true then surrogate characters will not be included in the generated string.</param>
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
+        public static string RandomUnicodeString(int stringLength, bool excludeSurrogates = true, IRandomGenerator rndgen = null)
         {
             if (rndgen == null)
-                rndgen = new Random();
+                rndgen = RandomGenerator.Global;
+            StringBuilder plainText = new StringBuilder();
+            for (int j = 0; j < stringLength; ++j)
+            {
+                char next = (char) rndgen.Next(char.MinValue, char.MaxValue + 1);
+                if (next >= 0xD800 && next <= 0xDFFF)
+                {
+                    // Surrogate character generated:
+                    if (excludeSurrogates)
+                    {
+                        // We don't include surrogate characters. Keep generating until non-surrogate is obtained.
+                        while(next >= 0xD800 && next <= 0xDFFF)
+                            next = (char) rndgen.Next(char.MinValue, char.MaxValue + 1);
+                        plainText.Append(next);
+                    } else
+                    {
+                        // We include surrogate characters. These are only valid in proper sequences of two characters:
+                        next = (char)rndgen.Next(0xD800, 0xDBFF + 1);
+                        plainText.Append(next);
+                        next = (char)rndgen.Next(0xDC00, 0xDFFF + 1);
+                        plainText.Append(next);
+                    }
+                } else
+                    plainText.Append(next);
+            }
+            byte[] x = Encoding.Unicode.GetBytes(plainText.ToString());
+            string result = Encoding.Unicode.GetString(x);
+            return result;
+        }
+
+
+        /// <summary>Returns a random character that is a capital letter (A-Z)</summary>
+        /// <param name="rndgen">Randomg generator used. If null or unspecified then global random generator is used.</param>
+        public static char RandomCharCapitalLetter(IRandomGenerator rndgen = null)
+        {
+            if (rndgen == null)
+                rndgen = RandomGenerator.Global;
             return Convert.ToChar(Convert.ToInt32(Math.Floor(26 * rndgen.NextDouble() + (int)'A')));
         }
 
         /// <summary>Returns a random character that is a small letter (a-z)</summary>
-        public static char RandomCharSmallLetter()
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
+        public static char RandomCharSmallLetter(IRandomGenerator rndgen = null)
         {
             if (rndgen == null)
-                rndgen = new Random();
+                rndgen = RandomGenerator.Global;
             return Convert.ToChar(Convert.ToInt32(Math.Floor(26 * rndgen.NextDouble() + (int)'a')));
         }
 
         /// <summary>Returns a random numeric character (0-9)</summary>
-        public static char RandomCharNumeric()
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
+        public static char RandomCharNumeric(IRandomGenerator rndgen = null)
         {
             if (rndgen == null)
-                rndgen = new Random();
+                rndgen = RandomGenerator.Global;
             return Convert.ToChar(Convert.ToInt32(Math.Floor(10 * rndgen.NextDouble() + (int)'0')));
         }
 
@@ -331,12 +393,13 @@ namespace IG.Lib
         /// <summary>Returns a random character whose type is specified by type flags.
         /// Type flags can be combined by bitwise operations.</summary>
         /// <param name="typeflags">Flags specifying the permitted types of the returned character.</param>
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
         /// <returns>The randomly generated character.</returns>
-        public static char RandomChar(CharType typeflags)
+        public static char RandomChar(CharType typeflags, IRandomGenerator rndgen = null)
         {
             char ret = ' ';
             if (rndgen == null)
-                rndgen = new Random();
+                rndgen = RandomGenerator.Global;
             // typeflags defining whether certain types of characters are included:
             bool
                 small = (typeflags & CharType.SmallLetter) != 0,
@@ -388,10 +451,13 @@ namespace IG.Lib
 
         /// <summary>Returns a random character that is either a capital letter (A-Y) or a small letter (a-z).
         /// Type flags can be combined by bitwise operations.</summary>
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
         /// <returns>The randomly generated character.</returns>
-        public static char RandomChar()
+        public static char RandomChar(IRandomGenerator rndgen = null)
         {
-            return RandomChar(CharType.CapitalLetter | CharType.SmallLetter);
+            if (rndgen == null)
+                rndgen = RandomGenerator.Global;
+            return RandomChar(CharType.CapitalLetter | CharType.SmallLetter, rndgen);
         }
 
         /// <summary>Returns a randomly generated string of a specified length whose characters are of specified type(result).
@@ -400,16 +466,17 @@ namespace IG.Lib
         /// <param name="flags">Flags that determine permitted types of characters contained in the string.</param>
         /// <param name="firstletter">If true then first character of the generated string will be a letter.
         /// Warning: when the value is true, make sure that either capital or small letters are permitted character type.</param>
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
         /// <returns>The generated random string.</returns>
-        public static string RandomString(int length, CharType flags, bool firstletter)
+        public static string RandomString(int length, CharType flags, bool firstletter, IRandomGenerator rndgen = null)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < length; ++i)
             {
                 if (i == 0 && firstletter)
-                    sb.Append(RandomChar(flags & (CharType.SmallLetter | CharType.CapitalLetter)));
+                    sb.Append(RandomChar(flags & (CharType.SmallLetter | CharType.CapitalLetter), rndgen));
                 else
-                    sb.Append(RandomChar(flags));
+                    sb.Append(RandomChar(flags, rndgen));
             }
             return sb.ToString();
         }
@@ -418,45 +485,74 @@ namespace IG.Lib
         /// <param name="length">Length of the string.
         /// It is not guaranteed that the first character is a letter.</param>
         /// <param name="flags">Flags that determine permitted types of characters contained in the string.</param>
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
         /// <returns>The generated random string.</returns>
-        public static string RandomString(int length, CharType flags)
+        public static string RandomString(int length, CharType flags, IRandomGenerator rndgen = null)
         {
-            return RandomString(length, flags, false  /* firstletter */);
+            return RandomString(length, flags, false  /* firstletter */, rndgen);
         }
 
         /// <summary>Returns a randomly generated string composed of alphanumeric characters.
         /// It can be specified that the first character is a letter.</summary>
         /// <param name="length">Length of the string.</param>
         /// <param name="firstletter">If true then first character of the generated string will be a letter.</param>
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
         /// <returns>The generated random string.</returns>
-        public static string RandomString(int length, bool firstletter)
+        public static string RandomString(int length, bool firstletter, IRandomGenerator rndgen = null)
         {
             return RandomString(length, CharType.CapitalLetter | CharType.SmallLetter | CharType.Numeric /* typeflags */,
-                firstletter);
+                firstletter, rndgen);
         }
 
         /// <summary>Returns a randomly generated string of a specified length containing alphanumeric characters.
         /// The first character is a letter.</summary>
         /// <param name="length">Length of the string.</param>
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
         /// <returns>The generated random string.</returns>
-        public static string RandomString(int length)
+        public static string RandomString(int length, IRandomGenerator rndgen = null)
         {
             return RandomString(length, CharType.CapitalLetter | CharType.SmallLetter | CharType.Numeric /* typeflags */,
-                true /* firstletter */);
+                true /* firstletter */, rndgen);
         }
 
 
         /// <summary>Returns a randomly generated string of a random length containing alphanumeric characters.
         /// The first character is a letter.
         /// Length is between 1 and the value specified by the MaxStringLength property.</summary>
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
         /// <returns>The generated random string.</returns>
-        public static string RandomString()
+        public static string RandomString(IRandomGenerator rndgen = null)
         {
             if (rndgen == null)
-                rndgen = new Random();
+                rndgen = RandomGenerator.Global;
             int length = 1 + rndgen.Next(MaxStringLength);
-            return RandomString(length);
+            return RandomString(length, rndgen);
         }
+
+
+        /// <summary>Creates and returns a random string consisting of only the letters contained in the specified string.</summary>
+        /// <remarks>Cryptographically secure random numbers are used to select characters for the password from 
+        /// the array of allowed characters.</remarks>
+        /// <param name="stringLength">Length of the generated password.</param>
+        /// <param name="allowedChars">String containing allowed characters of the returned string.
+        /// <para>By default (if parameter is null or empty string), these are digits and lower- and upper- case English letters.</para></param>
+        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
+        /// <returns>A random  password of specified length.</returns>
+        public static string RandomString(int stringLength, string allowedChars = null, IRandomGenerator rndgen = null)
+        {
+            if (string.IsNullOrEmpty(allowedChars))
+                allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ23456789";
+            Byte[] randomBytes = new Byte[stringLength];
+            char[] chars = new char[stringLength];
+            int allowedCharCount = allowedChars.Length;
+            for (int i = 0; i < stringLength; i++)
+            {
+                chars[i] = allowedChars[rndgen.Next(0, allowedCharCount)];
+            }
+            return new string(chars);
+        }
+
 
         #endregion RandomString
 
@@ -708,7 +804,7 @@ namespace IG.Lib
         #region FileOperations
 
         /// <summary>Loads complete file contents into a stiring and returnes that string.</summary>
-        /// <param name="filePath">Path to the file that is red into a string.</param>
+        /// <param name="inputFilePath">Path to the file that is red into a string.</param>
         public static string Load(string filePath)
         {
             string ret = null;
@@ -721,7 +817,7 @@ namespace IG.Lib
 
 
         /// <summary>Loads complete file contents into the specified stiring.</summary>
-        /// <param name="filePath">Path to the file that is red into a string.</param>
+        /// <param name="inputFilePath">Path to the file that is red into a string.</param>
         /// <param name="readString">String variable where file contents is stored.</param>
         public static void Load(string filePath, ref string readString)
         {
@@ -733,7 +829,7 @@ namespace IG.Lib
         /// If the specified file does not exists then it is created anew if possible. 
         /// A boolean argument specifis whether to overwrite existing files or to append the string at the end of the file.</summary>
         /// <param name="str">String to be saved to a file.</param>
-        /// <param name="filePath">Path to the file where string is to be saved.</param>
+        /// <param name="inputFilePath">Path to the file where string is to be saved.</param>
         /// <param name="append">If true then the string is appended at the end of the file in the case that the file already exists.
         /// If false then the file is overwritten in the case taht it already exists.</param>
         public static void Save(string str, string filePath, bool append)
@@ -748,7 +844,7 @@ namespace IG.Lib
         /// If the file already exists then is content is overwritten.
         /// If the file does not yet exist then it is created anew.</summary>
         /// <param name="str">String to be written to a file.</param>
-        /// <param name="filePath">Path to the file where string is written.</param>
+        /// <param name="inputFilePath">Path to the file where string is written.</param>
         public static void Save(string str, string filePath)
         { Save(str, filePath, false /* append */ ); }
 
@@ -756,7 +852,7 @@ namespace IG.Lib
         /// If the file already exists then string is appended at the end of the current file contents.
         /// If the file does not yet exist then it is created anew.</summary>
         /// <param name="str">String to be written to a file.</param>
-        /// <param name="filePath">Path to the file where string is written.</param>
+        /// <param name="inputFilePath">Path to the file where string is written.</param>
         public static void Append(string str, string filePath)
         { Save(str, filePath, true /* append */ ); }
 

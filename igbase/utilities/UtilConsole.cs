@@ -585,13 +585,35 @@ namespace IG.Lib
             return modified;
         }
 
+
         /// <summary>Reads a password from console, masking the input as specified.</summary>
         /// <param name="value">Output parameter where the inserted password is stored.</param>
         /// <param name="printchar">Character that is output to the concole with every character input by the user.</param>
         /// <param name="printrandom">If thrue then random characters are output to console when password characters are typed in.</param>
+        /// <param name="repeat">If true (which is default) then insertion is repeated for verification.</param>
         /// <returns>True if password has been read, false if not (i.e. empty string was inserted).</returns>
-        public static bool ReadPwd(ref string value, string printchar, bool printrandom)
+        public static bool ReadPwdBasic(ref string value, string printchar, bool printrandom, bool repeat = true)
         {
+            if (repeat)
+            {
+                string first = value;
+                bool retInternal = ReadPwdBasic(ref first, printchar, printrandom, false /* repeat */);
+                string repeated = first + " ";  // just make strings different
+                while(first != repeated)
+                {
+                    Console.Write(Environment.NewLine + "Repeat for verification: ");
+                    retInternal = ReadPwdBasic(ref repeated, printchar, printrandom, false /* repeat */);
+                    if (first != repeated)
+                    {
+                        Console.WriteLine(Environment.NewLine + "Inserted strings do not match!");
+                    }
+                    string aux = first;
+                    first = repeated;
+                    repeated = aux;
+                }
+                value = repeated;
+                return retInternal;
+            }
             bool ret = false;
             string password = "";
             ConsoleKeyInfo info = Console.ReadKey(true);
@@ -622,34 +644,164 @@ namespace IG.Lib
                 ret = true;
             }
             return ret;
-        }  //  ReadPwd(ref string, string, bool)
+        }  //  ReadPwdBasic(ref string, string, bool)
+
 
         /// <summary>Reads a password from console, masking the input as specified.</summary>
         /// <param name="value">Output parameter where the inserted password is stored.</param>
         /// <param name="printchar">Character that is output to the concole with every character input by the user.</param>
+        /// <param name="repeat">If true (which is default) then insertion is repeated for verification.</param>
         /// <returns>True if password has been read, false if not (i.e. empty string was inserted).</returns>
-        public static bool ReadPwd(ref string value, string printchar)
+        public static bool ReadPwd(ref string value, string printchar, bool repeat = true)
         {
-            return ReadPwd(ref value, printchar, false /* printrandom */ );
+            return ReadPwdBasic(ref value, printchar, false /* printrandom */ , repeat);
         }
+
 
         /// <summary>Reads a password from console, masking the input as specified.</summary>
         /// <param name="value">Output parameter where the inserted password is stored.</param>
         /// <param name="printrandom">If true then a random character (alphabitic or numeric) is prineted for 
         /// each character typed in. Otherwise, * is printed.</param>
+        /// <param name="repeat">If true (which is default) then insertion is repeated for verification.</param>
         /// <returns>True if password has been read, false if not (i.e. empty string was inserted).</returns>
-        public static bool ReadPwd(ref string value, bool printrandom)
+        public static bool ReadPwd(ref string value, bool printrandom, bool repeat = true)
         {
-            return ReadPwd(ref value, "*" /* printchar */ , printrandom);
+            return ReadPwdBasic(ref value, "*" /* printchar */ , printrandom, repeat);
         }
 
         /// <summary>Reads a password from console, masking the input by * characters.</summary>
         /// <param name="value">Output parameter where the inserted password is stored.</param>
+        /// <param name="repeat">If true (which is default) then insertion is repeated for verification.</param>
         /// <returns>True if password has been read, false if not (i.e. empty string was inserted).</returns>
-        public static bool ReadPwd(ref string value)
+        public static bool ReadPwd(ref string value, bool repeat = true)
         {
-            return ReadPwd(ref value, "*", false);
+            return ReadPwdBasic(ref value, "*", false, repeat);
         }
+
+
+        /// <summary>Reads a password, a key, or any other key - related string form the console.
+        /// <par>Password can be either a string, or a hexadecimal or base-64 encoded sequence of bytes.</par><
+        /// <para>If not clear from parameters, user is asked what form of password will be provided.</para>/summary>
+        /// <param name="PasswordBytes">Here password in byte form is written (in this case, <paramref name="PasswordBytes"/> is cleared).</param>
+        /// <param name="PasswordString">Here password in string form is written (in this case, <paramref name="PasswordString"/> is cleared).</param>
+        /// <param name="passwordName">Name of the inserted key item (such as "password", "salt", "key"). 
+        /// Used in user prompts.</param>
+        /// <param name="isStringForm">If true then a key in string form must be inserted.</param>
+        /// <param name="isByteform">If true then a key in binary form muustt be inserted.</param>
+        /// <param name="isHexForm">If true then a key in binary form must be inserted as hexadecimal string.
+        /// <para>Allowed forms are e.g. "a8b023" or "a8-b0-23", with any spearator that does not represent a hexadecimal
+        /// digit.</para></param>
+        /// <param name="isBase64Encoded">If true then a key in binary form must be inserted as a base-64 encoded string.</param>
+        /// <param name="verify">If true then user is required to insert the password twice (for verification).</param>
+        public static void ReadPwd(ref byte[] passwordBytes, ref string passwordString, string passwordName = "password",
+            bool isStringForm = false, bool isByteform = false, bool isHexForm = false, bool isBase64Encoded = false,
+            bool verify = true)
+        {
+            if (isStringForm)
+                isByteform = false;
+            if (isHexForm)
+            {
+                isBase64Encoded = false;
+            } else if (isBase64Encoded)
+            {
+                isHexForm = false;
+            }
+            Console.WriteLine(Environment.NewLine + Environment.NewLine + "Insert {0}!", passwordName);
+            if (!isStringForm && !isByteform)
+            {
+                Console.Write(Environment.NewLine + "Will you insert {0} in binary form (0/1, default " 
+                    + (isByteform?"1":"0") + ")? ", passwordName);
+                UtilConsole.Read(ref isByteform);
+                if (isByteform)
+                    isStringForm = false;
+                else
+                    isStringForm = true;
+            }
+            if (isByteform)
+            {
+                if (!isHexForm && !isBase64Encoded)
+                {
+                    Console.WriteLine(Environment.NewLine + Environment.NewLine +
+                        "Choose the form of byte array (hexadecimal or base-64)." + Environment.NewLine);
+                    isHexForm = true;
+                    Console.Write("Will you insert {0} in hexadecimal form (0/1)? ", passwordName);
+                    UtilConsole.Read(ref isHexForm);
+                    if (isHexForm)
+                    {
+                        isBase64Encoded = false;
+                    } else
+                    {
+                        isBase64Encoded = true;
+                    }
+                }
+            }
+            Console.Write(Environment.NewLine + "Form of {0}: ", passwordName);
+            if (isStringForm)
+                Console.WriteLine("  string.");
+            else if (isByteform)
+            {
+                Console.Write("  binary, ");
+                if (isHexForm)
+                    Console.WriteLine("hexadecimal.");
+                else if (isBase64Encoded)
+                    Console.WriteLine("base64 encoded.");
+                else
+                    Console.WriteLine("encoding not specified.");
+            } else
+            {
+                Console.WriteLine("  unspecified.");
+            }
+            // Read the value from user input:
+            Console.Write(Environment.NewLine + "Insert {0}: ", passwordName);
+            string insertedString = null;
+            if (isStringForm)
+                UtilConsole.ReadPwd(ref insertedString);
+            else
+                UtilConsole.Read(ref insertedString);
+            if (verify)
+            {
+                // Require to insert input again for verification:
+                string insertedStringVerified = null;
+                    Console.Write(Environment.NewLine + "Repeat {0} for verification: ", passwordName);
+                    if (isStringForm)
+                        UtilConsole.ReadPwd(ref insertedStringVerified);
+                    else
+                        UtilConsole.Read(ref insertedStringVerified);
+                while (insertedString != insertedStringVerified)
+                {
+                    Console.Write(Environment.NewLine + "Not equal, insert {0} again: ", passwordName);
+                    if (isStringForm)
+                        UtilConsole.ReadPwd(ref insertedString);
+                    else
+                        UtilConsole.Read(ref insertedString);
+                    insertedStringVerified = null;
+                    Console.Write(Environment.NewLine + "Repeat {0} for verification: ", passwordName);
+                    if (isStringForm)
+                        UtilConsole.ReadPwd(ref insertedStringVerified);
+                    else
+                        UtilConsole.Read(ref insertedStringVerified);
+                }
+            }
+            if (isStringForm)
+            {
+                passwordBytes = null;
+                passwordString = insertedString;
+            }
+            else if (isByteform)
+            {
+                passwordString = null;
+                if (isHexForm)
+                    passwordBytes = Util.FromHexString(insertedString);
+                else if (isBase64Encoded)
+                    passwordBytes = Convert.FromBase64String(insertedString);
+                else
+                    throw new InvalidOperationException("Don't know what binary encoding to use.");
+            }
+            else
+                throw new InvalidOperationException("Don't know what password form to use.");
+            Console.WriteLine();
+        }
+
 
         #endregion ReadingValues
 

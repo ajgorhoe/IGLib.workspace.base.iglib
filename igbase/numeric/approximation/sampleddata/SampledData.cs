@@ -1048,7 +1048,7 @@ namespace IG.Num
         /// <summary>Saves the specified sempled data to the specified file in binary format.
         /// The file is owerwritten if it exists.</summary>
         /// <param name="sampledData">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file where sampled data is saved.</param>
+        /// <param name="inputFilePath">Path to the file where sampled data is saved.</param>
         public static void SaveBinary(SampledDataSet sampledData, string filePath)
         {
             UtilSystem.SaveBinary<SampledDataSet>(sampledData, filePath);
@@ -1059,11 +1059,11 @@ namespace IG.Num
 
             //SampledDataSetDto dtoOriginal = new SampledDataSetDto();
             //dtoOriginal.CopyFrom(sampledData);
-            //UtilSystem.SaveBinary<SampledDataSetDto>(dtoOriginal, filePath);
+            //UtilSystem.SaveBinary<SampledDataSetDto>(dtoOriginal, inputFilePath);
         }
 
         /// <summary>Restores sampled data from the specified file in binary format.</summary>
-        /// <param name="filePath">File from which sampled data is restored.</param>
+        /// <param name="inputFilePath">File from which sampled data is restored.</param>
         /// <param name="dataDefRestored">Sampled data that is restored.</param>
         public static void LoadBinary(string filePath, ref SampledDataSet dataDefRestored)
         {
@@ -1074,7 +1074,7 @@ namespace IG.Num
             // woule be problematic).
 
             //ISerializer serializer = new SerializerJson();
-            //SampledDataSetDto dtoRestored = serializer.DeserializeFile<SampledDataSetDto>(filePath);
+            //SampledDataSetDto dtoRestored = serializer.DeserializeFile<SampledDataSetDto>(inputFilePath);
             //dataDefRestored = new SampledDataSet();
             //dtoRestored.CopyTo(ref dataDefRestored);
         }
@@ -1087,7 +1087,7 @@ namespace IG.Num
         /// <summary>Saves the specified sempled data to the specified JSON file.
         /// The file is owerwritten if it exists.</summary>
         /// <param name="sampledData">Object that is saved to a file.</param>
-        /// <param name="filePath">Path to the file where sampled data is saved.</param>
+        /// <param name="inputFilePath">Path to the file where sampled data is saved.</param>
         public static void SaveJson(SampledDataSet sampledData, string filePath)
         {
             SampledDataSetDto dtoOriginal = new SampledDataSetDto();
@@ -1097,7 +1097,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores sampled data from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which sampled data is restored.</param>
+        /// <param name="inputFilePath">File from which sampled data is restored.</param>
         /// <param name="dataDefRestored">Sampled data that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref SampledDataSet dataDefRestored)
         {
@@ -1156,7 +1156,7 @@ namespace IG.Num
 
         /// <summary>Saves network's sampled data to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
-        /// <param name="filePath">Path to the file where sampled data is saved.</param>
+        /// <param name="inputFilePath">Path to the file where sampled data is saved.</param>
         /// $A Tako78 Mar11;
         public static void SaveSampledDataJson(string filePath, SampledDataSet sampledData)
         {
@@ -1170,7 +1170,7 @@ namespace IG.Num
 
         /// <summary>Saves network's definition data to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
-        /// <param name="filePath">Path to the file where definition data is saved.</param>
+        /// <param name="inputFilePath">Path to the file where definition data is saved.</param>
         /// $A Tako78 Maj31;
         public static void SaveDefinitionDataJson(string filePath, InputOutputDataDefiniton sampledData)
         {
@@ -1183,7 +1183,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores sampled data from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which sampled data is restored.</param>
+        /// <param name="inputFilePath">File from which sampled data is restored.</param>
         /// $A Tako78 Mar11;
         public static void LoadSampledDataJson(string filePath, ref SampledDataSet sampledData)
         {
@@ -1199,7 +1199,7 @@ namespace IG.Num
         #region CSV
 
         /// <summary>Loads sampled data and definition data from single CSV file.
-        /// <param name="filePath">Path to the file where sampled data are saved.</param>
+        /// <param name="inputFilePath">Path to the file where sampled data are saved.</param>
         /// <param name="inputLenght">Lenght of input parameters.</param>
         /// <param name="outputLenght">Lenght of output parameters.</param>
         /// <param name="namesSpecified">Flag if names are specified in the file.</param>
@@ -1422,7 +1422,7 @@ namespace IG.Num
         }
 
         /// <summary>Loads sampled data and definition data from single CSV file.
-        /// <param name="filePath">Path to the file where sampled data are saved.</param>
+        /// <param name="inputFilePath">Path to the file where sampled data are saved.</param>
         /// <param name="inputLenght">Lenght of input parameters.</param>
         /// <param name="outputLenght">Lenght of output parameters.</param>
         /// <param name="namesSpecified">Flag if names are specified in the file.</param>
@@ -1591,7 +1591,7 @@ namespace IG.Num
         }
 
         /// <summary>Loads definition data from CSV file.</summary>
-        /// <param name="filePath">Path to the file where definition data are saved.</param>
+        /// <param name="inputFilePath">Path to the file where definition data are saved.</param>
         /// <param name="inputLenght">Lenght of input parameters.</param>
         /// <param name="outputLenght">Lenght of output parameters.</param>
         /// <param name="definitionData">Definition data set.</param>
@@ -1803,7 +1803,7 @@ namespace IG.Num
         }
 
         /// <summary>Saves sampled data and Definition data to single CSV file.</summary>
-        /// <param name="filePath">Path to the file where sampled data will be saved.</param>
+        /// <param name="inputFilePath">Path to the file where sampled data will be saved.</param>
         /// <param name="sampledData">Sampled data set.</param>
         /// <param name="namesSpecified">Flag if names will be written in the file.</param>
         /// <param name="descriptionSpecified">Flag if descriptions (descriptions, defaultValue, boundDefiner, minValue, maxValue) will be written in the file.</param>
@@ -1947,7 +1947,7 @@ namespace IG.Num
         }
 
         /// <summary>Saves sampled data and Definition data to single CSV file.</summary>
-        /// <param name="filePath">Path to the file where sampled data will be saved.</param>
+        /// <param name="inputFilePath">Path to the file where sampled data will be saved.</param>
         /// <param name="sampledData">Sampled data set.</param>
         /// <param name="namesSpecified">Flag if names will be written in the file.</param>
         /// <param name="descriptionSpecified">Flag if descriptions will be written in the file.</param>
@@ -2056,7 +2056,7 @@ namespace IG.Num
         }
 
         /// <summary>Saves definition data to CSV file.</summary>
-        /// <param name="filePath">Path to the file where definition data will be saved.</param>
+        /// <param name="inputFilePath">Path to the file where definition data will be saved.</param>
         /// <param name="definitionData">Definition data set.</param>
         /// $A Tako78 Mar11; June27;
         public static void SaveDefinitionDataCSV(string filePath, InputOutputDataDefiniton definitionData)

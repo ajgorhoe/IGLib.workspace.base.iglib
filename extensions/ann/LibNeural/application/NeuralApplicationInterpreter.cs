@@ -1,4 +1,5 @@
-﻿
+﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+
 // NEURAL NETWORKS TRAINING DATA
 
 using System.IO;
@@ -41,7 +42,7 @@ namespace IG.Lib
         ///// <summary>Execution method that prints some information about the application.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected override string CmdAbout(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
         {
             if (args != null)

@@ -491,7 +491,7 @@ namespace IG.Gr3d
         }
 
         /// <summary>StopWatch for measuring time.</summary>
-        static StopWatch timer = new StopWatch();
+        static StopWatch1 timer = new StopWatch1();
 
 
         /// <summary>Example of plotting parametric curves in 3D space.</summary>

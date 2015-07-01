@@ -353,7 +353,7 @@ namespace IG.Lib
 
         /// <summary>Saves the generated script code to the specified file.
         /// File is overwritten if it already exists.</summary>
-        /// <param name="filePath">Path to the file where script code is saved.</param>
+        /// <param name="inputFilePath">Path to the file where script code is saved.</param>
         public void SaveCode(string filePath)
         {
             File.WriteAllText(filePath, Code);
@@ -658,7 +658,7 @@ namespace IG.Script
             string valueDefinition = null, derivativeDefinition = null;
             RealFunctionLoader loader = new RealFunctionLoader(); // create a new function loader
             loader.IndependentVariableName = "x"; // name of independent variable used in expressions that define the function
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             while (continueExample)
             {
                 try

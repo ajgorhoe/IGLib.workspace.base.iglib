@@ -504,11 +504,11 @@ namespace IG.Old
     //    {
     //        int numRows = this.RowCount;
     //        int numColumns = this.ColumnCount;
-    //        Matrix ret = new Matrix(numRows, numColumns);
+    //        Matrix ReturnedString = new Matrix(numRows, numColumns);
     //        for (int i = 0; i < numRows; ++i)
     //            for (int j = 0; j < numColumns; ++j)
-    //                ret[i, j] = this[i, j];
-    //        return ret;
+    //                ReturnedString[i, j] = this[i, j];
+    //        return ReturnedString;
     //    }
 
     //    /// <summary>Creates and returns a copy of the current matrix.</summary>
@@ -653,9 +653,9 @@ namespace IG.Old
     //    {
     //        get
     //        {
-    //            Matrix ret = GetNewThis(ColumnCount, RowCount);
-    //            Transpose(this, ret);
-    //            return ret;
+    //            Matrix ReturnedString = GetNewThis(ColumnCount, RowCount);
+    //            Transpose(this, ReturnedString);
+    //            return ReturnedString;
     //        }
     //    }
 
@@ -847,91 +847,91 @@ namespace IG.Old
     //    ///// <summary>Unary negation, returns the negative operand.</summary>
     //    //public static Matrix operator -(Matrix v)
     //    //{
-    //    //    Matrix ret = v.GetCopyThis();
-    //    //    Matrix.Negate(v, ret);
-    //    //    return ret;
+    //    //    Matrix ReturnedString = v.GetCopyThis();
+    //    //    Matrix.Negate(v, ReturnedString);
+    //    //    return ReturnedString;
     //    //}
 
     //    ///// <summary>Matrix addition.</summary>
     //    //public static Matrix operator +(Matrix a, Matrix b)
     //    //{
-    //    //    Matrix ret = a.GetCopyThis();
-    //    //    Matrix.Add(a, b, ret);
-    //    //    return ret;
+    //    //    Matrix ReturnedString = a.GetCopyThis();
+    //    //    Matrix.Add(a, b, ReturnedString);
+    //    //    return ReturnedString;
     //    //}
 
     //    /////// <summary>Addition of a scalar to each component of a matrix.</summary>
     //    ////public static Matrix operator +(Matrix a, double s)
     //    ////{
-    //    ////    Matrix ret = null;
-    //    ////    Matrix.Add(a, s, ref ret);
-    //    ////    return ret;
+    //    ////    Matrix ReturnedString = null;
+    //    ////    Matrix.Add(a, s, ref ReturnedString);
+    //    ////    return ReturnedString;
     //    ////}
 
     //    /////// <summary>Addition of a scalar to each component of a matrix.</summary>
     //    ////public static Matrix operator +(double a, Matrix s)
     //    ////{
-    //    ////    Matrix ret = null;
-    //    ////    Matrix.Add(s, a, ref ret);
-    //    ////    return ret;
+    //    ////    Matrix ReturnedString = null;
+    //    ////    Matrix.Add(s, a, ref ReturnedString);
+    //    ////    return ReturnedString;
     //    ////}
 
 
     //    ///// <summary>Matrix subtraction.</summary>
     //    //public static Matrix operator -(Matrix a, Matrix b)
     //    //{
-    //    //    Matrix ret = a.GetCopyThis();
-    //    //    Matrix.Subtract(a, b, ret);
-    //    //    return ret;
+    //    //    Matrix ReturnedString = a.GetCopyThis();
+    //    //    Matrix.Subtract(a, b, ReturnedString);
+    //    //    return ReturnedString;
     //    //}
 
     //    /////// <summary>Subtraction of scalar from each component of a matrix.</summary>
     //    ////public static Matrix operator -(Matrix a, double s)
     //    ////{
-    //    ////    Matrix ret = null;
-    //    ////    Matrix.Subtract(a, s, ref ret);
-    //    ////    return ret;
+    //    ////    Matrix ReturnedString = null;
+    //    ////    Matrix.Subtract(a, s, ref ReturnedString);
+    //    ////    return ReturnedString;
     //    ////}
 
 
     //    ///// <summary>Product of two matrices.</summary>
     //    //public static IMatrix operator *(Matrix a, Matrix b)
     //    //{
-    //    //    IMatrix ret = null;
-    //    //    Multiply(a, b, ref ret);
-    //    //    return ret;
+    //    //    IMatrix ReturnedString = null;
+    //    //    Multiply(a, b, ref ReturnedString);
+    //    //    return ReturnedString;
     //    //}
 
     //    ///// <summary>Product of a matrix and a vector.</summary>
     //    //public static IVector operator *(Matrix a, Vector b)
     //    //{
-    //    //    IVector ret = null;
-    //    //    Multiply(a, b, ref ret);
-    //    //    return ret;
+    //    //    IVector ReturnedString = null;
+    //    //    Multiply(a, b, ref ReturnedString);
+    //    //    return ReturnedString;
     //    //}
 
     //    ///// <summary>Product of a matrix by a scalar.</summary>
     //    //public static IMatrix operator *(Matrix a, double b)
     //    //{
-    //    //    Matrix ret = null;
-    //    //    Matrix.Multiply(a, b, ref ret);
-    //    //    return ret;
+    //    //    Matrix ReturnedString = null;
+    //    //    Matrix.Multiply(a, b, ref ReturnedString);
+    //    //    return ReturnedString;
     //    //}
 
     //    ///// <summary>Product of a matrix by a scalar.</summary>
     //    //public static IMatrix operator *(double a, Matrix b)
     //    //{
-    //    //    Matrix ret = null;
-    //    //    Matrix.Multiply(b, a, ref ret);
-    //    //    return ret;
+    //    //    Matrix ReturnedString = null;
+    //    //    Matrix.Multiply(b, a, ref ReturnedString);
+    //    //    return ReturnedString;
     //    //}
 
     //    ///// <summary>Matrix subtraction.</summary>
     //    //public static IMatrix operator /(Matrix a, double b)
     //    //{
-    //    //    IMatrix ret = null;
-    //    //    Matrix.Divide(a, b, ref ret);
-    //    //    return ret;
+    //    //    IMatrix ReturnedString = null;
+    //    //    Matrix.Divide(a, b, ref ReturnedString);
+    //    //    return ReturnedString;
     //    //}
 
 
@@ -967,13 +967,13 @@ namespace IG.Old
     //            return RowCount.GetHashCode() ^ ColumnCount.GetHashCode();
     //        else
     //        {
-    //            int ret = 0;
+    //            int ReturnedString = 0;
     //            for (int i=0; i < RowCount; ++i)
     //                for (int j=0; j < ColumnCount; ++j)
     //                {
-    //                    ret ^= this[i, j].GetHashCode(); ;
+    //                    ReturnedString ^= this[i, j].GetHashCode(); ;
     //                }
-    //            return ret;
+    //            return ReturnedString;
     //        }
     //    }
 

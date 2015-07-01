@@ -1,4 +1,6 @@
-﻿
+﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +21,7 @@ namespace IG.Neural
 
         /// <summary>Read the analysis data from data file
         /// Format: { { p1, p2, … }, { reqcalcobj, reqcalcconstr, reqcalcgradobj, reqcalcgradconstr }, cd } </summary>
-        /// <param name="filePath">Path to the file where training data are saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data are saved.</param>
         /// <param name="parameters">Input and output parameters: { p1, p2, … }.</param>
         /// <param name="reqcalcobj">Flag: reqcalcobj.</param>
         /// <param name="reqcalcconstr">Flag: reqcalcconstr.</param>
@@ -102,7 +104,7 @@ namespace IG.Neural
 
         /// <summary>Read the analysis result data from data file
         /// Format:  </summary>
-        /// <param name="filePath">Path to the file where training data are saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data are saved.</param>
         /// <param name="parameters">Input and output parameters: { p1, p2, … }.</param>
         /// <param name="calcobj">Flag for the objective function.</param>
         /// <param name="calcconstr">Flag for constraint functions.</param>
@@ -260,7 +262,7 @@ namespace IG.Neural
 
 
         /// <summary>Loads training data and Definition data from single CSV file.
-        /// <param name="filePath">Path to the file where training data are saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data are saved.</param>
         /// <param name="inputLenght">Lenght of input parameters.</param>
         /// <param name="outputLenght">Lenght of output parameters.</param>
         /// <param name="namesSpecified">Flag if names are specified in the file.</param>
@@ -484,7 +486,7 @@ namespace IG.Neural
         }
 
         /// <summary>Loads training data and Definition data from single CSV file.
-        /// <param name="filePath">Path to the file where training data are saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data are saved.</param>
         /// <param name="inputLenght">Lenght of input parameters.</param>
         /// <param name="outputLenght">Lenght of output parameters.</param>
         /// <param name="namesSpecified">Flag if names are specified in the file.</param>
@@ -653,7 +655,7 @@ namespace IG.Neural
         }
 
         /// <summary>Loads definition data from CSV file.</summary>
-        /// <param name="filePath">Path to the file where definition data are saved.</param>
+        /// <param name="inputFilePath">Path to the file where definition data are saved.</param>
         /// <param name="inputLenght">Lenght of input parameters.</param>
         /// <param name="outputLenght">Lenght of output parameters.</param>
         /// <param name="definitionData">Definition data set.</param>
@@ -865,7 +867,7 @@ namespace IG.Neural
         }
 
         /// <summary>Saves training data and Definition data to single CSV file.</summary>
-        /// <param name="filePath">Path to the file where training data will be saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data will be saved.</param>
         /// <param name="trainingData">Training data set.</param>
         /// <param name="namesSpecified">Flag if names will be written in the file.</param>
         /// <param name="descriptionSpecified">Flag if descriptions (descriptions, defaultValue, boundDefiner, minValue, maxValue) will be written in the file.</param>
@@ -1009,7 +1011,7 @@ namespace IG.Neural
         }
 
         /// <summary>Saves training data and Definition data to single CSV file.</summary>
-        /// <param name="filePath">Path to the file where training data will be saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data will be saved.</param>
         /// <param name="trainingData">Training data set.</param>
         /// <param name="namesSpecified">Flag if names will be written in the file.</param>
         /// <param name="descriptionSpecified">Flag if descriptions will be written in the file.</param>
@@ -1118,7 +1120,7 @@ namespace IG.Neural
         }
 
         /// <summary>Saves definition data to CSV file.</summary>
-        /// <param name="filePath">Path to the file where definition data will be saved.</param>
+        /// <param name="inputFilePath">Path to the file where definition data will be saved.</param>
         /// <param name="definitionData">Definition data set.</param>
         /// $A Tako78 Mar11; June27;
         public static void SaveDefinitionDataCSV(string filePath, InputOutputDataDefiniton definitionData)
@@ -1433,7 +1435,7 @@ namespace IG.Neural
 
         /// <summary>Saves network's training data to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
-        /// <param name="filePath">Path to the file where training data is saved.</param>
+        /// <param name="inputFilePath">Path to the file where training data is saved.</param>
         /// $A Tako78 Mar11;
         public static void SaveTrainingDataJson(string filePath, SampledDataSet trainingData)
         {
@@ -1447,7 +1449,7 @@ namespace IG.Neural
         
         /// <summary>Saves network's definition data to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
-        /// <param name="filePath">Path to the file where definition data is saved.</param>
+        /// <param name="inputFilePath">Path to the file where definition data is saved.</param>
         /// $A Tako78 Maj31;
         public static void SaveDefinitionDataJson(string filePath, InputOutputDataDefiniton trainingData)
         {
@@ -1460,7 +1462,7 @@ namespace IG.Neural
         }
         
         /// <summary>Restores training data from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which training data is restored.</param>
+        /// <param name="inputFilePath">File from which training data is restored.</param>
         /// $A Tako78 Mar11;
         public static void LoadSampledDataJson(string filePath, ref SampledDataSet trainingData)
         {
@@ -1474,7 +1476,7 @@ namespace IG.Neural
         }
 
         /// <summary>Restores definition data from the specified file in JSON format.</summary>
-        /// <param name="filePath">File from which definition data is restored.</param>
+        /// <param name="inputFilePath">File from which definition data is restored.</param>
         /// $A Tako78 Nov11;
         public static void LoadDefinitionDataJson(string filePath, ref InputOutputDataDefiniton definitionData)
         {

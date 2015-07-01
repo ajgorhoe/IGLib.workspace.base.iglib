@@ -106,7 +106,7 @@ namespace IG.Forms
 		/// Handle the "Add New Beta Point" context menu item.  This finds the curve with
 		/// the CurveItem.Label = "Beta", and adds a new point to it.
 		/// </summary>
-        //private void AddBetaPoint( object sender, EventArgs args )
+        //private void AddBetaPoint( object sender, EventArgs AppArguments )
         //{
         //    // Get a reference to the "Beta" curve IPointListEdit
         //    IPointListEdit ip = _graphControl.GraphPane.CurveList["Beta"].Points as IPointListEdit;

@@ -353,7 +353,7 @@ namespace IG.Lib
         } // TableToString(values)
 
         /// <summary>Reads contents of a CSV file and returns a 2D jagged array of strigg values contained in the file.</summary>
-        /// <param name="filePath">Path to the CSV file that is read and parsed.</param>
+        /// <param name="inputFilePath">Path to the CSV file that is read and parsed.</param>
         /// <param name="separator">Separator that is used in the CSV file. If not specified (null or empty string) then Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed.</param>
         /// <returns>A 2D jagged array that contains a table of string cell values of the CSV string that is parsed.
         /// Each Subarray contains a single row of cells values.</returns>
@@ -376,7 +376,7 @@ namespace IG.Lib
 
         /// <summary>Reads contents of a CSV file and returns a 2D jagged array of strigg values contained in the file.
         /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed as separator in the CSV file.</summary>
-        /// <param name="filePath">Path to the CSV file that is read and parsed.</param>
+        /// <param name="inputFilePath">Path to the CSV file that is read and parsed.</param>
         /// <returns>A 2D jagged array that contains a table of string cell values of the CSV string that is parsed.
         /// Each Subarray contains a single row of cells values.</returns>
         /// $A Igor Oct08;
@@ -386,7 +386,7 @@ namespace IG.Lib
         }
 
         /// <summary>Saves a 2D jagged array of string cell values into a CSV file.</summary>
-        /// <param name="filePath">Path to the file into which contents is written.</param>
+        /// <param name="inputFilePath">Path to the file into which contents is written.</param>
         /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
         /// <param name="separator">Separator that is used in CSV format.</param>
         /// <param name="append">If true then the CSV string is appended to the existent file if 
@@ -406,7 +406,7 @@ namespace IG.Lib
 
         /// <summary>Saves a 2D jagged array of string cell values into a CSV file.
         /// If the file already exists then its contents are overwritten.</summary>
-        /// <param name="filePath">Path to the file into which contents is written.</param>
+        /// <param name="inputFilePath">Path to the file into which contents is written.</param>
         /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
         /// <param name="separator">Separator that is used in CSV format.</param>
         /// $A Igor Oct08;
@@ -417,7 +417,7 @@ namespace IG.Lib
 
         /// <summary>Saves a 2D jagged array of string cell values into a CSV file.
         /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
-        /// <param name="filePath">Path to the file into which contents is written.</param>
+        /// <param name="inputFilePath">Path to the file into which contents is written.</param>
         /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
         public static void SaveCsv(string filePath, string[][] values, bool append)
         {
@@ -427,7 +427,7 @@ namespace IG.Lib
         /// <summary>Saves a 2D jagged array of string cell values into a CSV file.
         /// If the file already exists then its contents are overwritten.
         /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
-        /// <param name="filePath">Path to the file into which contents is written.</param>
+        /// <param name="inputFilePath">Path to the file into which contents is written.</param>
         /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
         /// $A Igor Oct08;
         public static void SaveCsv(string filePath, string[][] values)

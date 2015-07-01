@@ -2566,7 +2566,7 @@ namespace IG.Lib.Old
 
         //public static string ErrorLocationString(string location, Exception ex)
         //{
-        //    string ret="<< Unknown >>",
+        //    string ReturnedString="<< Unknown >>",
         //        exstr=null;
         //    try
         //    {
@@ -2575,17 +2575,17 @@ namespace IG.Lib.Old
         //        if (string.IsNullOrEmpty(exstr))
         //        {
         //            if (!string.IsNullOrEmpty(location))
-        //                ret = location;
+        //                ReturnedString = location;
         //        } else
         //        {
         //            if (string.IsNullOrEmpty(location))
-        //                ret = exstr;
+        //                ReturnedString = exstr;
         //            else
-        //                ret = location + "." + exstr;
+        //                ReturnedString = location + "." + exstr;
         //        }
         //    }
         //    catch { }
-        //    return ret;
+        //    return ReturnedString;
         //}
 
         //public static string ErrorLocationString(string location)
@@ -3169,7 +3169,7 @@ namespace IG.Lib.Old
     //                string basicmessage, Exception ex)
     //    // $A Igor Oct08;
     //    {
-    //        string ret = "";
+    //        string ReturnedString = "";
     //        try
     //        {
     //            string exmessage = null;
@@ -3178,20 +3178,20 @@ namespace IG.Lib.Old
     //            if (string.IsNullOrEmpty(basicmessage))
     //            {
     //                if (string.IsNullOrEmpty(exmessage))
-    //                    ret = "<< Unknown error. >>";
+    //                    ReturnedString = "<< Unknown error. >>";
     //                else
-    //                    ret += exmessage;
+    //                    ReturnedString += exmessage;
     //            }
     //            else
     //            {
     //                if (string.IsNullOrEmpty(exmessage))
-    //                    ret += basicmessage;
+    //                    ReturnedString += basicmessage;
     //                else
-    //                    ret += basicmessage + Environment.NewLine + " Details: " + exmessage;
+    //                    ReturnedString += basicmessage + Environment.NewLine + " Details: " + exmessage;
     //            }
     //        }
     //        catch { }
-    //        return ret;
+    //        return ReturnedString;
     //    }
 
 
@@ -3382,7 +3382,7 @@ namespace IG.Lib.Old
     //    public static string ErrorLocationString0(string location, Exception ex)
     //    // $A Igor Oct08;
     //    {
-    //        string ret = "<< Unknown location >>",
+    //        string ReturnedString = "<< Unknown location >>",
     //            exstr = null;
     //        try
     //        {
@@ -3391,18 +3391,18 @@ namespace IG.Lib.Old
     //            if (string.IsNullOrEmpty(exstr))
     //            {
     //                if (!string.IsNullOrEmpty(location))
-    //                    ret = location;
+    //                    ReturnedString = location;
     //            }
     //            else
     //            {
     //                if (string.IsNullOrEmpty(location))
-    //                    ret = exstr;
+    //                    ReturnedString = exstr;
     //                else
-    //                    ret = location + "." + exstr;
+    //                    ReturnedString = location + "." + exstr;
     //            }
     //        }
     //        catch { }
-    //        return ret;
+    //        return ReturnedString;
     //    }
 
     //    #endregion Error_Auxiliary  // Auxiliary methods, default methods to assign to delegates, etc.
@@ -3734,7 +3734,7 @@ namespace IG.Lib.Old
 
     //    //public static string ErrorLocationString(string location, Exception ex)
     //    //{
-    //    //    string ret="<< Unknown >>",
+    //    //    string ReturnedString="<< Unknown >>",
     //    //        exstr=null;
     //    //    try
     //    //    {
@@ -3743,17 +3743,17 @@ namespace IG.Lib.Old
     //    //        if (string.IsNullOrEmpty(exstr))
     //    //        {
     //    //            if (!string.IsNullOrEmpty(location))
-    //    //                ret = location;
+    //    //                ReturnedString = location;
     //    //        } else
     //    //        {
     //    //            if (string.IsNullOrEmpty(location))
-    //    //                ret = exstr;
+    //    //                ReturnedString = exstr;
     //    //            else
-    //    //                ret = location + "." + exstr;
+    //    //                ReturnedString = location + "." + exstr;
     //    //        }
     //    //    }
     //    //    catch { }
-    //    //    return ret;
+    //    //    return ReturnedString;
     //    //}
 
     //    //public static string ErrorLocationString(string location)
@@ -4127,7 +4127,7 @@ namespace IG.Lib.Old
     //    /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
     //    bool SetWriter(TextWriter writer)
     //    {
-    //        bool ret=false;
+    //        bool ReturnedString=false;
     //        try
     //        {
     //            if (DisposeWriter)
@@ -4139,8 +4139,8 @@ namespace IG.Lib.Old
     //        DisposeWriter=false;
     //        Writer=writer;
     //        if (Writer!=null)
-    //            ret = true;
-    //        return ret;
+    //            ReturnedString = true;
+    //        return ReturnedString;
     //    }
 
 
@@ -4149,7 +4149,7 @@ namespace IG.Lib.Old
     //    /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
     //    bool SetWriter(Stream stream)
     //    {
-    //        bool ret=false;
+    //        bool ReturnedString=false;
     //         try
     //        {
     //            if (DisposeWriter)
@@ -4162,8 +4162,8 @@ namespace IG.Lib.Old
     //        TextWriter writer = new StreamWriter(stream);
     //        Writer=writer;
     //        if (Writer!=null)
-    //            ret = true;
-    //        return ret;
+    //            ReturnedString = true;
+    //        return ReturnedString;
     //    }
 
         
@@ -4173,7 +4173,7 @@ namespace IG.Lib.Old
     //    /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
     //    bool SetWriter(string filename)
     //    {
-    //        bool ret=false;
+    //        bool ReturnedString=false;
     //         try
     //        {
     //            if (DisposeWriter)
@@ -4186,8 +4186,8 @@ namespace IG.Lib.Old
     //        TextWriter writer = new StreamWriter(filename,true  /* append */ );
     //        Writer=writer;
     //        if (Writer!=null)
-    //            ret = true;
-    //        return ret;
+    //            ReturnedString = true;
+    //        return ReturnedString;
     //    }
         
     //    /// <summary>Creates a TextWriter upon a file and sets it as the text writer to which reporting is also performed.</summary>
@@ -4197,7 +4197,7 @@ namespace IG.Lib.Old
     //    /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
     //    bool SetWriter(string filename, bool overwrite)
     //    {
-    //        bool ret=false;
+    //        bool ReturnedString=false;
     //         try
     //        {
     //            if (DisposeWriter)
@@ -4210,8 +4210,8 @@ namespace IG.Lib.Old
     //        TextWriter writer = new StreamWriter(filename, !overwrite);
     //        Writer=writer;
     //        if (Writer!=null)
-    //            ret = true;
-    //        return ret;
+    //            ReturnedString = true;
+    //        return ReturnedString;
     //    }
 
 

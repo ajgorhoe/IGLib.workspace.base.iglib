@@ -42,7 +42,7 @@ namespace IG.Lib
 
         /// <summary>Gets the stopwatch used for measuring time of commands.
         /// <para>This property always returns an initialized stopwatch.</para></summary>
-        StopWatch Timer
+        StopWatch1 Timer
         { get; }
 
         /// <summary>Level of output for some of the interpreter's functionality (e.g. asynchronous command execution).</summary>
@@ -88,7 +88,7 @@ namespace IG.Lib
 
         /// <summary>Runs all commands that are written in a file.
         /// Each line of a file is interpreted as a single command, consisting of command name followed by arguments.</summary>
-        /// <param name="filePath">Path to the file containing commands.</param>
+        /// <param name="inputFilePath">Path to the file containing commands.</param>
         /// <returns>Return value of the last command.</returns>
         string RunFile(string filePath);
 
@@ -109,20 +109,20 @@ namespace IG.Lib
 
         /// <summary>Runs the command with specified name, installed on the current application object.</summary>
         /// <param name="commandName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         string Run(string commandName, string[] args);
 
         /// <summary>Runs command where the first argument is command name.
         /// Extracts application name and runs the corresponding application delegate.Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.</summary>
-        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         string Run(string[] args);
 
         /// <summary>Runs a command asynchronously where the first argument is command name.
         /// Extracts command name and runs the corresponding application delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.</summary>
-        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         string RunAsync(string[] args);
 
@@ -150,12 +150,12 @@ namespace IG.Lib
         string AsyncWait(int callId);
 
         /// <summary>Adds command with the specified name.</summary>
-        /// <param name="appName">Name of the commant.</param>
+        /// <param name="AppName">Name of the commant.</param>
         /// <param name="appMain">Delegate that will be used to execute the command.</param>
         void AddCommand(string appName, CommandLineApplicationInterpreter.ApplicationCommandDelegate appMain);
 
         /// <summary>Removes the command with the specified name.</summary>
-        /// <param name="appName">Name of the commad.</param>
+        /// <param name="AppName">Name of the commad.</param>
         void RemoveCommand(string appName);
 
         /// <summary>Removes all commands from the current interpreter.</summary>
@@ -469,7 +469,7 @@ namespace IG.Lib
         /// <param name="interpreter">Interpreter on which commad is run. 
         /// Enables access to interpreter internal data from command body.</param>
         /// <param name="commandName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Command return data.</returns>
         public delegate string ApplicationCommandDelegate(ICommandLineApplicationInterpreter interpreter, string commandName, string[] args);
 
@@ -663,13 +663,13 @@ namespace IG.Lib
             set { _description = value; }
         }
 
-        public StopWatch _timer;
+        public StopWatch1 _timer;
 
         /// <summary>Gets the stopwatch used for measuring time of commands.
         /// <para>This property always returns an initialized stopwatch.</para></summary>
-        public StopWatch Timer
+        public StopWatch1 Timer
         {
-            get { if (_timer == null) _timer = new StopWatch(); return _timer; }
+            get { if (_timer == null) _timer = new StopWatch1(); return _timer; }
         }
 
         public static int DefaultOutputLevel = 1;
@@ -798,7 +798,7 @@ namespace IG.Lib
 
         /// <summary>Runs all commands that are written in a file.
         /// Each line of a file is interpreted as a single command, consisting of command name followed by arguments.</summary>
-        /// <param name="filePath">Path to the file containing commands.</param>
+        /// <param name="inputFilePath">Path to the file containing commands.</param>
         /// <returns>Return value of the last command.</returns>
         public virtual string RunFile(string filePath)
         {
@@ -932,7 +932,7 @@ namespace IG.Lib
 
 
         /// <summary>Executes the specified system commmand and blocks until the execution completes.</summary>
-        /// <param name="args">Array of strings where the first element is command to be executed, and the subsequent
+        /// <param name="AppArguments">Array of strings where the first element is command to be executed, and the subsequent
         /// elements are command-line arguments.</param>
         public static void ExecuteSystemCommand(string[] args)
         {
@@ -949,7 +949,7 @@ namespace IG.Lib
 
         /// <summary>Executes system command with arguments.</summary>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="args">Arguments to system command.</param>
+        /// <param name="AppArguments">Arguments to system command.</param>
         public static void ExecuteSystemCommand(string command, params string[] args)
         {
             string workingDirectory = null;
@@ -961,7 +961,7 @@ namespace IG.Lib
             UtilSystem.ExecuteSystemCommand(workingDirectory, asynchronous, useShell,
                 createNoWindow, redirectedOutputPath, redirectStandardOutput,
                 command, args);
-            // UtilSystem.ExecuteSystemCommand(command, args);
+            // UtilSystem.ExecuteSystemCommand(command, AppArguments);
         }
 
         /// <summary>Reads commands with their arguments ont by one from the console and 
@@ -1008,9 +1008,9 @@ namespace IG.Lib
                     {
                         string[] commandLineSplit = GetArguments(line);
                         ExecuteSystemCommand(commandLineSplit);
-                        //if (!string.IsNullOrEmpty(ret))
+                        //if (!string.IsNullOrEmpty(ReturnedString))
                         //{
-                        //    Console.WriteLine("  = " + ret);
+                        //    Console.WriteLine("  = " + ReturnedString);
                         //}
                     }
                     catch (Exception ex)
@@ -1106,7 +1106,7 @@ namespace IG.Lib
         /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.
         /// <para>The interpreter's output level is used.</para></summary>
-        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         public virtual string RunRepeat(string[] args)
         {
@@ -1117,7 +1117,7 @@ namespace IG.Lib
         /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.
         /// <para>Output level 3 is used, such that all information is output to console.</para></summary>
-        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         public virtual string RunRepeatVerbose(string[] args)
         {
@@ -1128,7 +1128,7 @@ namespace IG.Lib
         /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.
         /// <para>Output level 0 is used, such that no information is output to console.</para></summary>
-        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         public virtual string RunRepeatSilent(string[] args)
         {
@@ -1140,7 +1140,7 @@ namespace IG.Lib
         /// for the application delegate are extracted and then passed to the delegate.
         /// <para>Output level is defined by the first argument. Level 0 means no output, level 1 means that summary is written to 
         /// the console, and level e means that a note is printed before and afterr each repetition starts.</para></summary>
-        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         public virtual string RunRepeatSpecificOutputLevel(string[] args)
         {
@@ -1161,7 +1161,7 @@ namespace IG.Lib
         /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.</summary>
         /// <param name="outputLevel">Level of output of the command.</param>
-        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         public virtual string RunRepeat(int outputLevel, string[] args)
         {
@@ -1181,7 +1181,7 @@ namespace IG.Lib
                         cmdArgs[i - 2] = args[i];
                     }
                     string ret = "";
-                    StopWatch t = new StopWatch();
+                    StopWatch1 t = new StopWatch1();
                     int threadId = Thread.CurrentThread.GetHashCode();
                     for (int i = 1; i <= numRepetitions; ++i)
                     {
@@ -1218,7 +1218,7 @@ namespace IG.Lib
         /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.</summary>
         /// <param name="outputLevel">Level of output of the command.</param>
-        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         public virtual string RunTryCatch(int outputLevel, string[] args)
         {
@@ -1323,7 +1323,7 @@ namespace IG.Lib
         /// <summary>Runs command where the first argument is command name.
         /// Extracts command name and runs the corresponding command delegate.Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.</summary>
-        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         public string Run(string[] args)
         {
@@ -1732,7 +1732,7 @@ namespace IG.Lib
         /// <summary>Runs a command asynchronously where the first argument is command name.
         /// Extracts command name and runs the corresponding application delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.</summary>
-        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
         public virtual string RunAsync(string[] args)
         {
@@ -2219,7 +2219,7 @@ namespace IG.Lib
         /// </summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Value of the variable after setting.</returns>
         protected virtual string CmdSetVariable(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2246,7 +2246,7 @@ namespace IG.Lib
                 if (args.Length == 2)
                     value = args[1];
                 else
-                {  // args.Length>2
+                {  // AppArguments.Length>2
                     string cmd = args[1];
                     string[] argsCmd = new string[args.Length - 2];
                     for (int i = 2; i < args.Length; ++i)
@@ -2263,7 +2263,7 @@ namespace IG.Lib
         /// Variable name must be the only argument of the command.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Value of the variable.</returns>
         protected virtual string CmdGetVariable(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2298,7 +2298,7 @@ namespace IG.Lib
         /// Variable name must be the only argument of the command.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>null.</returns>
         protected virtual string CmdClearVariable(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2333,7 +2333,7 @@ namespace IG.Lib
         /// Variable name must be the only argument of the command.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>null.</returns>
         protected virtual string CmdPrintVariable(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2365,7 +2365,7 @@ namespace IG.Lib
         /// Prints concatenated argument with spaces between them.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>null.</returns>
         protected virtual string CmdWriteLine(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2380,7 +2380,7 @@ namespace IG.Lib
         /// Prints concatenated argument with spaces between them.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>null.</returns>
         protected virtual string CmdWrite(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2419,7 +2419,7 @@ namespace IG.Lib
         /// File name must be the only argument of the command.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Result of the last command that is run.</returns>
         protected virtual string CmdRunFile(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2454,7 +2454,7 @@ namespace IG.Lib
         /// command as its arguments.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Concatenated results of all runs, separated by spaces.</returns>
         protected virtual string CmdRunRepeatVerbose(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2493,7 +2493,7 @@ namespace IG.Lib
         /// command as its arguments.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Concatenated results of all runs, separated by spaces.</returns>
         protected virtual string CmdRunRepeat(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2532,7 +2532,7 @@ namespace IG.Lib
         /// command as its arguments.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Concatenated results of all runs, separated by spaces.</returns>
         protected virtual string CmdTryRun(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2570,7 +2570,7 @@ namespace IG.Lib
         /// Optional boolean arguemnt, default is true.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Result of the last command that is run.</returns>
         protected virtual string CmdThtrowExceptions(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2613,7 +2613,7 @@ namespace IG.Lib
         /// Reads commands one by one from console and executes them, until only Enter is pressed..</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Result of the last command that is run.</returns>
         protected virtual string CmdRunInteractive(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2660,7 +2660,7 @@ namespace IG.Lib
         /// If there are no arguments then user is requested to insert commands interactively.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="args">Command arguments this command.</param>
+        /// <param name="AppArguments">Command arguments this command.</param>
         /// <returns>Result of the last command that is run.</returns>
         protected virtual string CmdRunSystem(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2700,7 +2700,7 @@ namespace IG.Lib
         /// Runs the built in expression evaluator.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="args">Command arguments this command.</param>
+        /// <param name="AppArguments">Command arguments this command.</param>
         /// <returns></returns>
         protected virtual string CmdExpressionEvaluatorInteractive(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2738,7 +2738,7 @@ namespace IG.Lib
         /// <summary>Interpreter command. Sets the priority of the current process.</summary>
         /// <param name="interpreter">Interpreter by which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments of this command.</param>
+        /// <param name="AppArguments">Command arguments of this command.</param>
         /// <returns>Null.</returns>
         protected virtual string CmdSetPriority(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2812,7 +2812,7 @@ namespace IG.Lib
         /// arguments to this command.</para></summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="args">Command arguments of this command.</param>
+        /// <param name="AppArguments">Command arguments of this command.</param>
         /// <returns>ID of the job container that contains all command data.</returns>
         protected virtual string CmdRunParallel(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2851,7 +2851,7 @@ namespace IG.Lib
         /// arguments to this command.</para></summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="args">Command arguments of this command.</param>
+        /// <param name="AppArguments">Command arguments of this command.</param>
         /// <returns>IDs of the job container that contains all command data separated by spaces.</returns>
         protected virtual string CmdRunParallelRepeat(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2902,7 +2902,7 @@ namespace IG.Lib
         /// the completed commands are also printed or not. Default is true.</para></summary>
         /// <param name="interpreter">Interpreter by which commad is run.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="args">Command arguments of this command.</param>
+        /// <param name="AppArguments">Command arguments of this command.</param>
         /// <returns>Null.</returns>
         protected virtual string CmdPrintParallelCommands(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2940,7 +2940,7 @@ namespace IG.Lib
         /// arguments to this command.</para></summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="args">Command arguments of this command.</param>
+        /// <param name="AppArguments">Command arguments of this command.</param>
         /// <returns>ID of the asynchronous command for querrying completion and ending invocation and picking results.</returns>
         protected virtual string CmdRunAsync(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -2972,7 +2972,7 @@ namespace IG.Lib
         /// <para>The first argument is the ID of asynchronous invocation whose results are waited.</para></summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="args">Command arguments of this command.</param>
+        /// <param name="AppArguments">Command arguments of this command.</param>
         /// <returns>Results of the async. command execution whose completion is waited for.</returns>
         protected virtual string CmdAsyncWaitResults(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -3006,7 +3006,7 @@ namespace IG.Lib
         /// <para>The first argument is the ID of asynchronous invocation whose completion is waited for.</para></summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="args">Command arguments of this command.</param>
+        /// <param name="AppArguments">Command arguments of this command.</param>
         /// <returns>Results of the async. command execution whose completion is waited for.</returns>
         protected virtual string CmdAsyncCompleted(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -3043,7 +3043,7 @@ namespace IG.Lib
         /// <para>The first argument is the number of seconds (must be string representing double) to sleep.</para></summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="args">Command arguments of this command.</param>
+        /// <param name="AppArguments">Command arguments of this command.</param>
         /// <returns>Returns the ID of the thread where sleep is performed.</returns>
         protected virtual string CmdSleepSeconds(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -3092,7 +3092,7 @@ namespace IG.Lib
         /// than 1) its arguments, and the specified command is also run.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>null.</returns>
         protected virtual string CmdLoadModule(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -3136,7 +3136,7 @@ namespace IG.Lib
         /// is loaded and "0" if not.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected virtual string CmdIsModuleLoaded(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
@@ -3180,7 +3180,7 @@ namespace IG.Lib
         /// This is a command that enables to verify that a module with the specified name has been installed.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected virtual string CmdModuleTestCommand(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
@@ -3221,7 +3221,7 @@ namespace IG.Lib
         /// <param name="interpreter">Interpreter on which commad is run. 
         /// Enables access to interpreter internal data from command body.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected virtual string CmdTestFromTestModules(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
@@ -3561,7 +3561,7 @@ namespace IG.Lib
         /// Command arguments are pipe name and server name (optional, if not specified then server name is the same as pipe name).</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>A string containing some basic data on the created pipe server.</returns>
         protected virtual string CmdPipeServerCreate(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -3798,7 +3798,7 @@ namespace IG.Lib
             else
             {
                 IpcStreamClientBase client = IpcClients[clientName];
-                // string commandLine = UtilStr.GetCommandLine(args);
+                // string commandLine = UtilStr.GetCommandLine(AppArguments);
                 ret = client.GetServerResponse(commandLineString);
             }
             return ret;
@@ -4221,7 +4221,7 @@ namespace IG.Lib
         /// <summary>Execution method that exits the interpreter.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected virtual string CmdExit(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
@@ -4243,7 +4243,7 @@ namespace IG.Lib
         /// <summary>Execution method for applications help.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected virtual string CmdHelp(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
@@ -4291,7 +4291,7 @@ namespace IG.Lib
         /// <summary>Execution method that prints some information about the application.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected virtual string CmdAbout(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
         {
             if (args != null)
@@ -4365,7 +4365,7 @@ namespace IG.Lib
         /// <summary>Execution method that prints some information about the current application.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected virtual string CmdApplicationInfo(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
         {
             if (args != null)
@@ -4437,7 +4437,7 @@ namespace IG.Lib
         /// <summary>Execution method that does nothing (for comments).</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected virtual string CmdComment(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
@@ -4457,7 +4457,7 @@ namespace IG.Lib
         /// <summary>Execution method for command that prints names of all installed applications.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected virtual string CmdPrintCommands(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
@@ -4494,7 +4494,7 @@ namespace IG.Lib
         /// <summary>Executinon method for test command, which just prints its name and arguments.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected virtual string CmdTestProduct(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
@@ -4528,7 +4528,7 @@ namespace IG.Lib
         /// <summary>Executinon method for test command, which just prints its name and arguments.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         protected virtual string CmdTest(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
         {
@@ -4582,7 +4582,7 @@ namespace IG.Lib
         /// on LU decomposition, and outputs the result and comparison with reference results (usually achieved on Igor's computer).</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Speed factor - Ratio between reference computation time and time spent for the same thing in current environment.</returns>
         protected virtual string CmdTestSpeed(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -4637,7 +4637,7 @@ namespace IG.Lib
         /// on QR decomposition, and outputs the result and comparison with reference results (usually achieved on Igor's computer).</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Speed factor - Ratio between reference computation time and time spent for the same thing in current environment.</returns>
         protected virtual string CmdTestSpeedLong(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -4698,7 +4698,7 @@ namespace IG.Lib
         /// decomposition test. In this tame, command returns average total execution time for each test.</para></summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Total wallclock time spent for computation.</returns>
         protected virtual string CmdTestQR(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)
@@ -4766,7 +4766,7 @@ namespace IG.Lib
         /// decomposition test. In this tame, command returns average total execution time for each test.</para></summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Total wallclock time spent for computation.</returns>
         protected virtual string CmdTestLU(ICommandLineApplicationInterpreter interpreter,
             string cmdName, string[] args)

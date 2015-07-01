@@ -501,7 +501,7 @@ namespace IG.Lib
 
         /// <summary>Saves the generated script code to the specified file.
         /// File is overwritten if it already exists.</summary>
-        /// <param name="filePath">Path to the file where script code is saved.</param>
+        /// <param name="inputFilePath">Path to the file where script code is saved.</param>
         public void SaveCode(string filePath)
         {
             File.WriteAllText(filePath, Code);
@@ -1085,7 +1085,7 @@ namespace IG.Script
             ScalarFunctionLoader loader = new ScalarFunctionLoader(); // create a new function loader
             loader.NumParameters = 2;
             loader.IndependentVariableNames = new string[] { "x", "y" }; // names of independent variables used in expressions that define the function
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             bool defineGradient = true;
             bool defineHessian = false;
             bool redefineParameterNames = false;

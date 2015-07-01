@@ -706,7 +706,7 @@ namespace IG.Num
         {
             if (distanceComparer == null)
                 throw new ArgumentException("Distance comparer is not specified (null argument).");
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             Console.WriteLine();
             Console.WriteLine("Calculating statistics for " + numClosestPoints + " closest neighbors...");
             t.Start();
@@ -827,7 +827,7 @@ namespace IG.Num
 
             if (trainingElements.Count < numClosestPoints)
                 numClosestPoints = trainingElements.Count;
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             IVector currentRelative = new Vector(NumNeuralParameters);       // current point in relative coordinates
             IVector closestRelative = new Vector(NumNeuralParameters);  // i-th closest point in relative coordinates
             IVector differenceRelative = new Vector(NumNeuralParameters);    // difference of the above
@@ -1030,7 +1030,7 @@ namespace IG.Num
 
             if (trainingElements.Count < numClosestPoints + 1)
                 numClosestPoints = trainingElements.Count - 1;
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
 
             IVector currentRelative = new Vector(NumNeuralParameters);       // current point in relative coordinates
             IVector closestRelative = new Vector(NumNeuralParameters);  // i-th closest point in relative coordinates
@@ -1389,7 +1389,7 @@ namespace IG.Num
             PointCloudVector pointCloud = new PointCloudVector();
             pointCloud.GenerateRandomCloud(numPoints, spaceDimension);
 
-            StopWatch t = new StopWatch();
+            StopWatch1 t = new StopWatch1();
             t.Start();
             //DistanceComparer<PointContainerVector, IVector> comparer = new DistanceComparer<PointContainerVector, IVector>(
             //    new PointContainerVector(new Vector(spaceDimension)), Vector.Distance);

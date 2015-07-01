@@ -747,20 +747,20 @@ namespace IG.Lib
         ////public static XmlNode GetFirstChildElementByName(XmlNode ParentNode, string Name)
         ////// Returns the first child element of ParentName with a specified Name.
         ////{
-        ////    XmlNode ret = null;
+        ////    XmlNode ReturnedString = null;
         ////    if (ParentNode != null)
         ////    {
         ////        int i = 0, numchildren = 0;
         ////        if (ParentNode.ChildNodes != null) numchildren = ParentNode.ChildNodes.Count;
-        ////        while (i < numchildren && ret == null)
+        ////        while (i < numchildren && ReturnedString == null)
         ////        {
         ////            XmlNode node = ParentNode.ChildNodes[i];
         ////            if (node.NodeType == XmlNodeType.Element && node.Name == Name)
-        ////                ret = node;
+        ////                ReturnedString = node;
         ////            ++i;
         ////        }
         ////    }
-        ////    return ret;
+        ////    return ReturnedString;
         ////}
 
         ////public static XmlNode TextNodeOfFirstChildElementByName(XmlNode ParentNode, string Name)
@@ -770,15 +770,15 @@ namespace IG.Lib
 
         ////    // TODO: Dopolni tako, da bo vrnil prvo voyli[;e, katerega tip je tekst!
         ////{
-        ////    XmlNode ret = null;
+        ////    XmlNode ReturnedString = null;
         ////    XmlNode element = GetFirstChildElementByName(ParentNode, Name);
         ////    if (element != null)
         ////    {
-        ////        ret = element.FirstChild;
-        ////        if (ret.NodeType != XmlNodeType.Text)
-        ////            ret = null;
+        ////        ReturnedString = element.FirstChild;
+        ////        if (ReturnedString.NodeType != XmlNodeType.Text)
+        ////            ReturnedString = null;
         ////    }
-        ////    return ret;
+        ////    return ReturnedString;
         ////}
 
 
@@ -789,7 +789,7 @@ namespace IG.Lib
         //// returns it (or null if it douen't find a match)
         //// Example of Path: "/root/
         //{
-        //    XmlNode ret = null, CurrentNode;
+        //    XmlNode ReturnedString = null, CurrentNode;
         //    try
         //    {
         //        // split the path to individual parts:
@@ -834,13 +834,13 @@ namespace IG.Lib
 
         //            }
         //        }
-        //        ret = CurrentNode;
+        //        ReturnedString = CurrentNode;
         //    }
         //    catch (Exception ex)
         //    {
         //        ProgramBase.ReportError(ex);
         //    }
-        //    return ret;
+        //    return ReturnedString;
         //}   // GetXmlElement
 
 
@@ -2093,7 +2093,7 @@ namespace IG.Lib
             catch { }
             return ret;
 
-            //XmlNode ret = null;
+            //XmlNode ReturnedString = null;
             //try
             //{
             //    if (Current != null)
@@ -2121,11 +2121,11 @@ namespace IG.Lib
             //            if (!stop)
             //                NextNode();
             //        }
-            //        ret = Current;
+            //        ReturnedString = Current;
             //    }
             //}
             //catch { }
-            //return ret;
+            //return ReturnedString;
         }
 
 
@@ -2482,7 +2482,7 @@ namespace IG.Lib
 
                 //{
                 //     Treated.Value = value;
-                //     ret = Current;
+                //     ReturnedString = Current;
                 //     // TODO:
                 //     // Check if this implementation is sufficient. Possibly there would be a need to 
                 //     // treat different node differently.
@@ -2808,15 +2808,15 @@ namespace IG.Lib
 
 
 //private void XMLValidationCallBack(object sender,
-//                                     System.Xml.Schema.ValidationEventArgs args)
+//                                     System.Xml.Schema.ValidationEventArgs AppArguments)
 //{
 //    try
 //    {
 //        if (PadoVariables.PadoTraceSwitch.TraceVerbose) Trace.WriteLine(PadoFunctions.FormatTraceMsg(
 //            EventLogEntryType.Information, "clsEfaServer.XMLValidationCallBack", "Started ...",
 //            PadoEnums.enTraceMsgSource.Server));
-//        ValidationErrorMessages += args.Message + "\r\d2";
-//        ValidationLastMessage = args.Message;
+//        ValidationErrorMessages += AppArguments.Message + "\r\d2";
+//        ValidationLastMessage = AppArguments.Message;
 //        ErrorsCount++;
 //        if (logInCallBack)
 //        {

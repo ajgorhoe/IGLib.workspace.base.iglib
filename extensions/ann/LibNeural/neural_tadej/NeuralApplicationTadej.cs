@@ -1,4 +1,6 @@
-﻿
+﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +39,7 @@ namespace IG.Neural
         /// Example command for Tadej.</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="args">Command arguments.</param>
+        /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Format of the file if test was performed, null otherwise.</returns>
         public static string CmdExampleTadej(ICommandLineApplicationInterpreter interpreter, 
             string cmdName, string[] args)
