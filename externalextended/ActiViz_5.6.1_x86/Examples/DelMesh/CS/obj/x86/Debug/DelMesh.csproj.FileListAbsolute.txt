@@ -1,0 +1,128 @@
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\DelMesh.exe
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\DelMesh.pdb
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.mummy.Runtime.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.xml
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkCharts.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkCommon.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkFiltering.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkGenericFiltering.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkGeovis.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkGraphics.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkHybrid.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkIO.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkImaging.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkInfovis.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkParallel.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkRendering.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkViews.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkVolumeRendering.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkWidgets.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkCharts.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkCommon.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkFiltering.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkGenericFiltering.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkGeovis.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkGraphics.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkHybrid.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkIO.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkImaging.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkInfovis.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkParallel.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkRendering.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkViews.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkVolumeRendering.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkWidgets.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Cosmo.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\VPIC.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkalglib.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkDICOMParser.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkexoIIc.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkftgl.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkmetaio.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkNetCDF.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkNetCDF_cxx.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtksys.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkverdict.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkexpat.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkfreetype.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkjpeg.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtklibxml2.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkpng.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkproj4.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtktiff.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\vtkzlib.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Microsoft.VC90.CRT.manifest
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\msvcm90.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\msvcp90.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\msvcr90.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\bin\Debug\Kitware.mummy.Runtime.Unmanaged.dll
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\obj\x86\Debug\DelMesh.Properties.Resources.resources
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\obj\x86\Debug\DelMesh.csproj.GenerateResource.Cache
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\obj\x86\Debug\DelMesh.exe
+C:\Program Files\ActiViz.NET 5.6.1 OpenSource Edition\Examples\DelMesh\CS\obj\x86\Debug\DelMesh.pdb
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\obj\x86\Debug\DelMesh.exe
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\obj\x86\Debug\DelMesh.pdb
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\DelMesh.exe
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\DelMesh.pdb
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.mummy.Runtime.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.xml
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.mummy.Runtime.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkCharts.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkCommon.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkFiltering.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkGenericFiltering.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkGeovis.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkGraphics.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkHybrid.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkIO.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkImaging.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkInfovis.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkParallel.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkRendering.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkViews.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkVolumeRendering.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Kitware.VTK.vtkWidgets.Unmanaged.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkCharts.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkCommon.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkFiltering.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkGenericFiltering.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkGeovis.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkGraphics.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkHybrid.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkIO.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkImaging.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkInfovis.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkParallel.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkRendering.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkViews.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkVolumeRendering.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkWidgets.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Cosmo.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\VPIC.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkalglib.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkDICOMParser.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkexoIIc.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkftgl.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkmetaio.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkNetCDF.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkNetCDF_cxx.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtksys.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkverdict.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkexpat.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkfreetype.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkjpeg.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtklibxml2.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkpng.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkproj4.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtktiff.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\vtkzlib.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\Microsoft.VC90.CRT.manifest
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\msvcm90.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\msvcp90.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\bin\Debug\msvcr90.dll
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\obj\x86\Debug\DelMesh.csprojResolveAssemblyReference.cache
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\obj\x86\Debug\DelMesh.Properties.Resources.resources
+c:\users1\workspace\base\iglib\externalextended\ActiViz_5.6.1_x86\Examples\DelMesh\CS\obj\x86\Debug\DelMesh.csproj.GenerateResource.Cache
