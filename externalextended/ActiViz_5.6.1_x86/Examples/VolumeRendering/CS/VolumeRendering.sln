@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolumeRendering", "VolumeRendering.csproj", "{0ABE36DA-BC25-4F8A-882B-8C41D838593F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0ABE36DA-BC25-4F8A-882B-8C41D838593F}.Debug|x86.ActiveCfg = Debug|x86
+		{0ABE36DA-BC25-4F8A-882B-8C41D838593F}.Debug|x86.Build.0 = Debug|x86
+		{0ABE36DA-BC25-4F8A-882B-8C41D838593F}.Release|x86.ActiveCfg = Release|x86
+		{0ABE36DA-BC25-4F8A-882B-8C41D838593F}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
