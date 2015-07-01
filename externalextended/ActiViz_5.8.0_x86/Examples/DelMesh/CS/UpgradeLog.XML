@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="DelMesh">
+</Property><Property Name="Solution File" Value="C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\DelMesh\CS\DelMesh.sln">
+</Property><Property Name="Date" Value="30. maj 2015">
+</Property><Property Name="Time" Value="10:44">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="DelMesh.sln" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\DelMesh\CS\Backup\DelMesh.sln">
+</Event><Event ErrorLevel="0" Project="DelMesh" Source="DelMesh.csproj" Description="Project file successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\DelMesh\CS\Backup\DelMesh.csproj">
+</Event><Event ErrorLevel="0" Project="DelMesh" Source="DelMesh.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\DelMesh\CS\Backup\DelMesh.cs">
+</Event><Event ErrorLevel="0" Project="DelMesh" Source="Properties\AssemblyInfo.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\DelMesh\CS\Backup\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="DelMesh" Source="Properties\Resources.Designer.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\DelMesh\CS\Backup\Properties\Resources.Designer.cs">
+</Event><Event ErrorLevel="0" Project="DelMesh" Source="Properties\Settings.Designer.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\DelMesh\CS\Backup\Properties\Settings.Designer.cs">
+</Event><Event ErrorLevel="0" Project="DelMesh" Source="Properties\Settings.settings" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\DelMesh\CS\Backup\Properties\Settings.settings">
+</Event><Event ErrorLevel="0" Project="DelMesh" Source="Properties\Resources.resx" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\DelMesh\CS\Backup\Properties\Resources.resx">
+</Event><Event ErrorLevel="0" Project="DelMesh" Source="DelMesh.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="DelMesh" Source="DelMesh.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="DelMesh.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="DelMesh.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="DelMesh" Source="DelMesh.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

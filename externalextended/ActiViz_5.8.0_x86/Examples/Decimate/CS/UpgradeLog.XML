@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Decimate">
+</Property><Property Name="Solution File" Value="C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Decimate.sln">
+</Property><Property Name="Date" Value="30. maj 2015">
+</Property><Property Name="Time" Value="10:43">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="Decimate.sln" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Decimate.sln">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Decimate.csproj" Description="Project file successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Decimate.csproj">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Form1.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Form1.cs">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Form1.Designer.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Form1.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Form2.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Form2.cs">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Form2.Designer.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Form2.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Program.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Program.cs">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Properties\AssemblyInfo.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Properties\Resources.Designer.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Properties\Resources.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Properties\Settings.Designer.cs" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Properties\Settings.Designer.cs">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Properties\Settings.settings" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Properties\Settings.settings">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Form1.resx" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Form1.resx">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Form2.resx" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Form2.resx">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Properties\Resources.resx" Description="File successfully backed up as C:\Program Files\ActiViz.NET 5.8.0 OpenSource Edition\Examples\Decimate\CS\Backup\Properties\Resources.resx">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Decimate.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Decimate" Source="Decimate.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Decimate.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Decimate.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Decimate" Source="Decimate.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
