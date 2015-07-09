@@ -56,7 +56,7 @@ namespace IG.Crypto
             {
                 if (_lockStatic == null)
                 {
-                    lock(Util.LockGlobal)
+                    lock (Util.LockGlobal)
                     {
                         if (_lockStatic == null)
                             _lockStatic = new object();
@@ -183,7 +183,7 @@ namespace IG.Crypto
         {
             if (_passwordAlgorithmNone == null)
             {
-                lock(Util.LockGlobal)
+                lock (Util.LockGlobal)
                 {
                     if (_passwordAlgorithmNone == null)
                         _passwordAlgorithmNone = new PasswordAlgorithmNone();
@@ -263,10 +263,11 @@ namespace IG.Crypto
         /// <remarks>Object is created on demand (layzy evaluation). Ony one object is used through appllication lifetime.</remarks></summary>
         private static RNGCryptoServiceProvider Rng
         {
-            get {
+            get
+            {
                 if (_rng == null)
                 {
-                    lock(LockStatic)
+                    lock (LockStatic)
                     {
                         if (_rng == null)
                             _rng = new RNGCryptoServiceProvider();
@@ -296,9 +297,10 @@ namespace IG.Crypto
             {
                 if (numBytes > 0)
                     byteArray = new byte[numBytes];
-            } else if (byteArray.Length != numBytes)
+            }
+            else if (byteArray.Length != numBytes)
                 byteArray = new byte[numBytes];
-            if (numBytes > 0) 
+            if (numBytes > 0)
                 Rng.GetBytes(byteArray);
         }
 
@@ -1375,7 +1377,7 @@ namespace IG.Crypto
         /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashMd5Hex(string filePath, string hashValue)
         {
-            return CheckFileHashHex(filePath, hashValue, HashType.MD5); 
+            return CheckFileHashHex(filePath, hashValue, HashType.MD5);
         }
 
         /// <summary>Checks whether the specified SHA-1 hashRet value matches the actual hashRet value
@@ -1387,7 +1389,7 @@ namespace IG.Crypto
         /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashSha1Hex(string filePath, string hashValue)
         {
-            return CheckFileHashHex(filePath, hashValue, HashType.SHA1); 
+            return CheckFileHashHex(filePath, hashValue, HashType.SHA1);
         }
 
         /// <summary>Checks whether the specified SHA-256 hashRet value matches the actual hashRet value
@@ -1399,7 +1401,7 @@ namespace IG.Crypto
         /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashSha256Hex(string filePath, string hashValue)
         {
-            return CheckFileHashHex(filePath, hashValue, HashType.SHA256); 
+            return CheckFileHashHex(filePath, hashValue, HashType.SHA256);
         }
 
         /// <summary>Checks whether the specified SHA-512 hashRet value matches the actual hashRet value
@@ -1411,7 +1413,7 @@ namespace IG.Crypto
         /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashSha512Hex(string filePath, string hashValue)
         {
-            return CheckFileHashHex(filePath, hashValue, HashType.SHA512); 
+            return CheckFileHashHex(filePath, hashValue, HashType.SHA512);
 
         }
 
@@ -1937,14 +1939,14 @@ namespace IG.Crypto
                 int pwdNumIterations = 1000, bool useLargestKey = false, bool useLargestBlock = false)
         {
             if (passwordBytes == null)
-                throw  new ArgumentNullException("Password not specified (null reference).");
+                throw new ArgumentNullException("Password not specified (null reference).");
             if (passwordBytes.Length < ConstCrypto.MinPasswordLength)
-                throw new ArgumentException("Password length is " + passwordBytes.Length + " bytes,  shoulld be at least " 
+                throw new ArgumentException("Password length is " + passwordBytes.Length + " bytes,  shoulld be at least "
                     + ConstCrypto.MinPasswordLength + ".");
             if (passwordSalt == null)
                 throw new ArgumentNullException("Password salt is not specified (null reference).");
             if (passwordSalt.Length < ConstCrypto.MinPasswordSaltLength)
-                throw new ArgumentException("Password salt length is " + passwordSalt.Length + " bytes,  shoulld be at least " 
+                throw new ArgumentException("Password salt length is " + passwordSalt.Length + " bytes,  shoulld be at least "
                     + ConstCrypto.MinPasswordSaltLength + ".");
             if (pwdType == PasswordAlgorithmType.None)
                 throw new ArgumentException("Password algorithm type " + UtilCrypto.PasswordAlgorithmTypeToString(pwdType) + " is not allowed in this context.");
@@ -1990,12 +1992,12 @@ namespace IG.Crypto
         /// <param name="useLargestBlock">If true then algorithm is eventually modified in such a way that it uses the largest
         /// possible block size.</param>
         /// <returns>Encrypted data as byte array.</returns>
-        public static byte[] EncryptBasic(byte[] data, byte[] passwordBytes, byte[] passwordSalt, 
-            SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.None, SymmetricAlgorithm algorithm = null, 
-            byte[] saltBytes = null, PasswordAlgorithmType pwdType = PasswordAlgorithmType.Default, 
+        public static byte[] EncryptBasic(byte[] data, byte[] passwordBytes, byte[] passwordSalt,
+            SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.None, SymmetricAlgorithm algorithm = null,
+            byte[] saltBytes = null, PasswordAlgorithmType pwdType = PasswordAlgorithmType.Default,
             int pwdNumIterations = 1000, bool useLargestKey = false, bool useLargestBlock = false)
         {
-                        
+
             if (saltBytes == null)
                 throw new ArgumentNullException("Salt is not specified (null reference).");
             if (saltBytes.Length < ConstCrypto.MinPasswordSaltLength)
@@ -2031,7 +2033,7 @@ namespace IG.Crypto
         /// <returns>Decrypted data as byte array.</returns>
         public static byte[] DecryptBasic(byte[] data, byte[] passwordBytes, byte[] passwordSalt,
             SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.None,
-            SymmetricAlgorithm algorithm = null, int numSaltBytes = 0, PasswordAlgorithmType pwdType = PasswordAlgorithmType.Default, 
+            SymmetricAlgorithm algorithm = null, int numSaltBytes = 0, PasswordAlgorithmType pwdType = PasswordAlgorithmType.Default,
             int pwdNumIterations = 1000, bool useLargestKey = false, bool useLargestBlock = false)
         {
             byte[] key = null, IV = null;
@@ -2090,7 +2092,7 @@ namespace IG.Crypto
         /// <returns>Original string, provided that input arguments are correct.</returns>
         public static string DecryptStringBasic(string cipherText, byte[] passwordBytes, byte[] passwordSalt,
             SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.Default, SymmetricAlgorithm algorithm = null,
-            int numSaltBytes = 0, PasswordAlgorithmType pwdType = PasswordAlgorithmType.Default, int pwdNumIterations = 1000, 
+            int numSaltBytes = 0, PasswordAlgorithmType pwdType = PasswordAlgorithmType.Default, int pwdNumIterations = 1000,
             bool useLargestKey = false, bool useLargestBlock = false)
         {
             byte[] key = null, IV = null;
@@ -2114,7 +2116,7 @@ namespace IG.Crypto
         /// and retrieved from the algorithm after the call.</para></summary>
         /// <param name="inputFilePath">Path to the input file from which data is encrypted. The file must be exist and  be readable.</param>
         /// <param name="deletedFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
-        /// overwritten if it already exists.</param>
+        /// wasOverwritten if it already exists.</param>
         /// <param name="key">Secret key used to encrypt the data.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
@@ -2134,7 +2136,7 @@ namespace IG.Crypto
         /// <returns>Encrypted data as byte array.</returns>
         public static void EncryptFileBasic(string inputFilePath, string outputFilePath, byte[] passwordBytes, byte[] passwordSalt,
             SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.Default, SymmetricAlgorithm algorithm = null,
-            byte[] saltBytes = null, int bufferSize = ConstCrypto.FileBufferSize, 
+            byte[] saltBytes = null, int bufferSize = ConstCrypto.FileBufferSize,
             PasswordAlgorithmType pwdType = PasswordAlgorithmType.Default, int pwdNumIterations = 1000,
             bool useLargestKey = false, bool useLargestBlock = false)
         {
@@ -2158,7 +2160,7 @@ namespace IG.Crypto
         /// and retrieved from the algorithm after the call.</para></summary>
         /// <param name="inputFilePath">Path to the input file from which data is encrypted. The file must be exist and  be readable.</param>
         /// <param name="deletedFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
-        /// overwritten if it already exists.</param>
+        /// wasOverwritten if it already exists.</param>
         /// <param name="key">Secret key used to encrypt the data.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
@@ -2178,14 +2180,14 @@ namespace IG.Crypto
         /// <returns>Encrypted data as byte array.</returns>
         public static void DecryptFileBasic(string inputFilePath, string outputFilePath, byte[] passwordBytes, byte[] passwordSalt,
             SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.Default, SymmetricAlgorithm algorithm = null,
-            int numSaltBytes = 0, int bufferSize = ConstCrypto.FileBufferSize, 
-            PasswordAlgorithmType pwdType = PasswordAlgorithmType.Default, int pwdNumIterations = 1000, 
+            int numSaltBytes = 0, int bufferSize = ConstCrypto.FileBufferSize,
+            PasswordAlgorithmType pwdType = PasswordAlgorithmType.Default, int pwdNumIterations = 1000,
             bool useLargestKey = false, bool useLargestBlock = false)
         {
             byte[] key = null, IV = null;
             PrepareSymmetricAllgorithmBasic(passwordBytes, passwordSalt, ref key, ref IV, algorithmType,
                 ref algorithm, pwdType, pwdNumIterations, useLargestKey, useLargestBlock);
-            
+
             DecryptFilePlain(inputFilePath, outputFilePath, key, IV, algorithmType, algorithm,
                 numSaltBytes, bufferSize, useLargestKey, useLargestBlock);
         }
@@ -2584,7 +2586,7 @@ namespace IG.Crypto
         /// possible block for this kind of algorithm.</param>
         /// <returns>Array of bytes containing encrypted string.</returns>
         public static byte[] EncryptStringToBytesPlain(string stringToEncrypt, byte[] key, byte[] initializationVector,
-            SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.Default, SymmetricAlgorithm algorithm = null, 
+            SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.Default, SymmetricAlgorithm algorithm = null,
             byte[] saltBytes = null, bool useLargestKey = false, bool useLargestBlock = false)
         {
 
@@ -2664,7 +2666,7 @@ namespace IG.Crypto
         /// possible block size.</param>
         /// <returns>Encrypted data as byte array.</returns>
         public static void EncryptPlain(Stream inputStream, Stream outputStream, byte[] key, byte[] IV,
-            SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.None, SymmetricAlgorithm algorithm = null, 
+            SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.None, SymmetricAlgorithm algorithm = null,
             byte[] saltBytes = null, int bufferSize = ConstCrypto.FileBufferSize, bool useLargestKey = false, bool useLargestBlock = false)
         {
             // Repair eventual mismatches in algorithm parameters, take into account function argumennts:
@@ -2776,7 +2778,8 @@ namespace IG.Crypto
                     }
                 }
 
-            } else
+            }
+            else
             {
                 using (TempFileStream tempStream = new TempFileStream(FileAccess.ReadWrite, FileShare.Read, bufferSize))
                 {
@@ -2827,7 +2830,7 @@ namespace IG.Crypto
                     }
                 }
             }
-            
+
         }
 
 
@@ -2840,7 +2843,7 @@ namespace IG.Crypto
         /// and retrieved from the algorithm after the call.</para></summary>
         /// <param name="inputFilePath">Path to the input file from which data is encrypted. The file must be exist and  be readable.</param>
         /// <param name="deletedFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
-        /// overwritten if it already exists.</param>
+        /// wasOverwritten if it already exists.</param>
         /// <param name="key">Secret key used to encrypt the data.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
@@ -2887,7 +2890,7 @@ namespace IG.Crypto
         /// and retrieved from the algorithm after the call.</para></summary>
         /// <param name="inputFilePath">Path to the input file from which data is encrypted. The file must be exist and  be readable.</param>
         /// <param name="deletedFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
-        /// overwritten if it already exists.</param>
+        /// wasOverwritten if it already exists.</param>
         /// <param name="key">Secret key used to encrypt the data.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
@@ -4062,16 +4065,27 @@ namespace IG.Crypto
             return sb.ToString();
         }
 
-                
+
         /// <summary>Returns a readable string representation of the specified certificate.</summary>
         /// <remarks>To obtain a detailed access to certificate data, the object is first used to create
         /// a more advanced <see cref="X509Certificate2"/> type of object (which has a contructor
         /// that takes its base class) and then string representation is created from thi object,
         /// which offers better access to internal data.</remarks>
-        /// <param name="cert">Certificate whose string representaion is returned.</param>
+        /// <param name="certificate">Certificate whose string representaion is returned.</param>
         public static string ToString(X509Certificate cert)
         {
             return ToString(new X509Certificate2(cert));
+        }
+
+
+        /// <summary>Returns simple name of the specified cerrtificate.</summary>
+        /// <param name="cert">Certificate whose simple name should be returned.</param>
+        public static string GetSimpleName(X509Certificate2 cert)
+        {
+            if (cert == null)
+                return null;
+            else
+                return cert.GetNameInfo(X509NameType.SimpleName, true);
         }
 
         /// <summary>Returns a readable string representation of the specified certificate.</summary>
@@ -4083,13 +4097,18 @@ namespace IG.Crypto
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine("X509 v.3 Certificate: ");
-
-            sb.AppendLine("  Has private key: " + cert.HasPrivateKey);
             sb.AppendLine("  Simple Name: " + cert.GetNameInfo(X509NameType.SimpleName, true));
+            sb.AppendLine("  Has private key: " + cert.HasPrivateKey);
             sb.AppendLine("  Valid: " + cert.NotBefore + " - " + cert.NotAfter);
             sb.AppendLine("  Content Type: " + X509Certificate2.GetCertContentType(cert.RawData));
             sb.AppendLine("  Version: " + cert.Version);
             sb.AppendLine("  Friendly Name: " + cert.FriendlyName);
+            sb.AppendLine("  DNS Name:      " + cert.GetNameInfo(X509NameType.DnsName, true));
+            sb.AppendLine("  DNS alt. Name: " + cert.GetNameInfo(X509NameType.DnsFromAlternativeName, true));
+            sb.AppendLine("  URL Name:      " + cert.GetNameInfo(X509NameType.UrlName, true));
+            sb.AppendLine("  Email Name:    " + cert.GetNameInfo(X509NameType.EmailName, true));
+            sb.AppendLine("  UPN Name:      " + cert.GetNameInfo(X509NameType.UpnName, true));
+
             sb.AppendLine("  Subject: " + cert.Subject);
             sb.AppendLine("  Subject Name: " + cert.SubjectName);
             sb.AppendLine("  Serial Number: " + cert.SerialNumber);
@@ -4105,12 +4124,428 @@ namespace IG.Crypto
             catch (Exception ex) { sb.AppendLine("  Could not access the private key: " + ex.Message); }
             sb.AppendLine("  Public Key: " + cert.PublicKey.Key.ToXmlString(false));
             sb.AppendLine("  Certificate Archived: " + cert.Archived);
-            sb.AppendLine("  Length of Raw Data: " + cert.RawData.Length);  // + Environment.NewLine + cert.ToString(true));
-            // X509Certificate2UI.DisplayCertificate(cert);
+            sb.AppendLine("  Length of Raw Data: " + cert.RawData.Length);  // + Environment.NewLine + certificate.ToString(true));
+            // X509Certificate2UI.DisplayCertificate(certificate);
 
 
             return sb.ToString();
         }
+
+
+        /// <summary>Returns a string that contains human readable description of certificate stores.</summary>
+        /// <remarks>See also: https://msdn.microsoft.com/en-us/library/System.Security.Cryptography.X509Certificates.X509Store%28v=vs.110%29.aspx </remarks>
+        /// <param name="outputLevel">Whether certificates contained in stores should also be listed (only by names).</param>
+        /// <param name="storeName">Name of the certificate store whose information is included in the string.</param>
+        /// <param name="storeLocation">Indicates the location of certificte store:
+        ///   1 - current user, 2 - local machine, 0 or 3 - both.
+        ///   <para>Enumeration <see cref="StoreLocation"/> can be conveniently used (eventually combined as flags with the OR 
+        ///   operator) to define the location.</para></param>
+        public static string GetCertificateStoreDescription(int outputLevel = 0, string storeName = null,
+            int storeLocation = (int) StoreLocation.CurrentUser | (int) StoreLocation.LocalMachine)
+        {
+            if (storeLocation == 0)
+                storeLocation = (int)StoreLocation.CurrentUser | (int)StoreLocation.LocalMachine;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(Environment.NewLine + "Exists No. Cts. Name and Location");
+            sb.AppendLine("------ -------- -------------------------");
+            foreach (StoreLocation storeLocation1 in (StoreLocation[])
+                Enum.GetValues(typeof(StoreLocation)))
+            {
+                if ((storeLocation & (int)storeLocation1) != 0)
+                {
+                    string[] storeNames = null;
+                    if (!string.IsNullOrEmpty(storeName))
+                        storeNames = new string[] { storeName };
+                    else
+                    {
+                        StoreName[] names = (StoreName[])Enum.GetValues(typeof(StoreName));
+                        int numNames = names.Length;
+                        storeNames = new string[numNames];
+                        for (int i = 0; i < numNames; ++i)
+                        {
+                            storeNames[i] = names[i].ToString();
+                        }
+                    }
+                    foreach (string storeName1 in storeNames)
+                    {
+                        if (outputLevel >= 1)
+                            sb.AppendLine("==== Next store:");
+                        X509Store store = new X509Store(storeName1, storeLocation1);
+                        try
+                        {
+                            store.Open(OpenFlags.OpenExistingOnly);
+                            sb.AppendLine(string.Format("Yes    {0,4}     {1}, {2}",
+                                store.Certificates.Count, store.Name, store.Location));
+                            //sb.AppendLine(string.Format(("Yes    {0,4}  {1}, {2}",
+                            //    store.Certificates.Count, store.Name, store.Location));
+                            if (outputLevel >= 1)
+                            {
+                                foreach (X509Certificate2 certificate in store.Certificates)
+                                {
+                                    sb.AppendLine(string.Format("    Cert.: {0}", UtilCrypto.GetSimpleName(certificate)));
+                                    // sb.AppendLine(string.Format("          Subject: {0}", certificate.Subject));
+                                    if (outputLevel >= 2)
+                                    {
+                                        sb.AppendLine("  Cert. details:");
+                                        sb.AppendLine(ToString(certificate));
+                                        sb.AppendLine("----");
+                                    }
+                                }
+                            }
+                        }
+                        catch (CryptographicException)
+                        {
+                            sb.AppendLine(string.Format("No              {0}, {1}", store.Name, store.Location));
+                        }
+                    }
+                }
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>Adds to the specified list all persistent certificate stores that match the criteria 
+        /// specified by parameters.</summary>
+        /// <param name="stores">A list to which the matching certificate stores are added.
+        /// <para>If it references a variable that is null, the list is created.</para>
+        /// <para>If the <paramref name="clearAtBeginning"/> parameter is true then the list is cleared before operation.</para></param>
+        /// <param name="storeName">Name of the certificate store whose information is included in the string.</param>
+        /// <param name="storeLocation">Indicates the location of certificte store:
+        ///   1 - current user, 2 - local machine, 0 or 3 - both.
+        ///   <para>Enumeration <see cref="StoreLocation"/> can be conveniently used (eventually combined as flags with the OR 
+        ///   operator) to define the location.</para></param>
+        ///   <param name="clearAtBeginning">If true (which is default value) then the list is cleared before the operation proceeds.</param>
+        public static void GetCertificateStores(ref IList<X509Store> stores, bool clearAtBeginning = true, string storeName = null,
+            int storeLocation = (int) StoreLocation.CurrentUser | (int) StoreLocation.LocalMachine)
+        {
+            if (stores == null)
+                stores = new List<X509Store>();
+            if (clearAtBeginning)
+                stores.Clear();
+            if (storeLocation == 0)
+                storeLocation = (int)StoreLocation.CurrentUser | (int)StoreLocation.LocalMachine;
+            foreach (StoreLocation storeLocation1 in (StoreLocation[])
+                Enum.GetValues(typeof(StoreLocation)))
+            {
+                if ((storeLocation & (int)storeLocation1) != 0)
+                {
+                    string[] storeNames = null;
+                    if (!string.IsNullOrEmpty(storeName))
+                        storeNames = new string[] { storeName };
+                    else
+                    {
+                        StoreName[] names = (StoreName[])Enum.GetValues(typeof(StoreName));
+                        int numNames = names.Length;
+                        storeNames = new string[numNames];
+                        for (int i = 0; i < numNames; ++i)
+                        {
+                            storeNames[i] = names[i].ToString();
+                        }
+                    }
+                    foreach (string storeName1 in storeNames)
+                    {
+                        X509Store store = new X509Store(storeName1, storeLocation1);
+                        try
+                        {
+                            store.Open(OpenFlags.OpenExistingOnly);
+                            stores.Add(store);
+                        }
+                        catch (CryptographicException)
+                        {
+                        }
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>Closes all certificate stores on the list.</summary>
+        /// <param name="stores">List of certificate stores that are closed.</param>
+        public static void CloseCertificateStores(IList<X509Store> stores)
+        {
+            if (stores != null)
+                foreach (X509Store store in stores)
+                {
+                    if (store != null)
+                        try
+                        {
+                            store.Close();
+                        }
+                        catch { }
+                }
+        }
+
+
+        /// <summary>Obtains and returns the certificate specifid by parameters.</summary>
+        /// <param name="privateKeyPassword">Password to access the certificate's private key.</param>
+        /// <param name="certificateFilePath">Name of the file containing the certificate.</param>
+        /// <param name="certificateName">Name of the certificate from certificate store.</param>
+        /// <param name="storeName">Certificate store frrom which certificate is to be obtained.</param>
+        /// <param name="storeLocation">Indicates location of the certificate store: 1 for current user,
+        /// 2 for local machine, 0 or 3 for any location, 4 for none.</param>
+        /// <returns>Returns the certificate that corresponds to parameters, or null if such a certificate can not be located.</returns>
+        public static X509Certificate2 GetCertificate(string privateKeyPassword = null, string certificateFilePath = null,
+            string certificateName = null, string storeName = null,
+            int storeLocation = (int) StoreLocation.CurrentUser | (int) StoreLocation.LocalMachine)
+        {
+            X509Certificate2 ret = null;
+            if (!string.IsNullOrEmpty(certificateFilePath))
+            {
+                if (!string.IsNullOrEmpty(certificateName))
+                {
+                    throw new ArgumentException("Certificate file is specified, buth certificate name in the store is also specified.");
+                }
+                ret = new X509Certificate2(certificateFilePath, privateKeyPassword);
+            }
+            else if (certificateName != null)
+            {
+                IList<X509Store> stores = new List<X509Store>();
+                GetCertificateStores(ref stores, true /* clearAtBeginning */, storeName, storeLocation);
+                foreach (X509Store store in stores)
+                {
+                    if (store != null)
+                    {
+                        foreach (X509Certificate2 cert in store.Certificates)
+                        {
+                            if (cert != null)
+                            {
+                                if (UtilCrypto.GetSimpleName(cert) == certificateName)
+                                {
+                                    ret = cert;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                CloseCertificateStores(stores);
+                return ret;
+            }
+            else
+            {
+                throw new ArgumentException("Could not find the certificate, not enough data.");
+            }
+            return ret;
+        }
+
+
+        /// <summary>Adds a certificate to the specified certificate store.</summary>
+        /// <param name="certificate">Certificate to be added to the store.</param>
+        /// <param name="skipped">Output flag informing whether addition has been wasSkipped (to prevent an overwrite).</param>
+        /// <param name="overwritten">Output flag informing whether existing certificate has been wasOverwritten (either due to 
+        /// automatic overwrites specified by parameter <paramref name="isForceOverwrites"/>, or upon user confirmation).</param>
+        /// <param name="certificateStoreName">Name of the certificate store to which the certificate is added.</param>
+        /// <param name="storeLocation">Location where certificate is added: 1 - current user, 2 - local machine.</param>
+        /// <param name="isForceOverwrites">If true then overwrites are forcced without asking for user confirmation.
+        /// In such a case, parameter <paramref name="overwritten"/> is set to true.</param>
+        /// <param name="isSkipOverwrites">If true then addition is automatically wasSkipped if it would overwrite an
+        /// existing certificate. In such a case, parameter <paramref name="skipped"/> is set to true.</param>
+        /// <returns>Hash value of the public key of the added certificate, or 0 if certificate has not been added.</returns>
+        public static string AddCertificateToStore(X509Certificate2 certificate, out bool skipped, out bool overwritten,
+            string certificateStoreName, int storeLocation = (int) StoreLocation.CurrentUser,
+            // string privateKeyPassword = null,
+            bool isForceOverwrites = false, bool isSkipOverwrites = false)
+        {
+            string ret = null;
+            if (certificate == null)
+                throw new ArgumentException("Certificate to be added to the store is not specified (null reference).");
+            skipped = false;
+            overwritten = false;
+            IList<X509Store> certStores = new List<X509Store>();
+            UtilCrypto.GetCertificateStores(ref certStores, true /* clearAtBeginning */, certificateStoreName,
+                storeLocation);
+            X509Store store = null;
+            if (certStores.Count > 0)
+                store = certStores[0];
+            if (store == null)
+            {
+                // The speified store does not exist, we try to create it: 
+                bool tryToCreateStore = true;
+                StoreLocation location = StoreLocation.CurrentUser;
+                if (storeLocation == (int)StoreLocation.CurrentUser)
+                    location = StoreLocation.CurrentUser;
+                else if (storeLocation == (int)StoreLocation.LocalMachine)
+                    location = StoreLocation.LocalMachine;
+                else
+                {
+                    tryToCreateStore = false;
+                    throw new ArgumentException("Can not create a new store, location is not specified unambiguously (" + storeLocation
+                        + ", should be 1 or 2).");
+                }
+                if (tryToCreateStore)
+                {
+                    store = new X509Store(certificateStoreName, location);
+                    store.Open(OpenFlags.ReadWrite);
+                }
+            }
+            if (store == null)
+            {
+                throw new InvalidOperationException("Can not locate the certificate store to add the certificate." + Environment.NewLine
+                        + "  Cert. store: " + certificateStoreName + Environment.NewLine
+                        + "  Cert. location descriptor: " + storeLocation);
+            }
+            else
+            {
+
+                bool doAdd = true;
+                // Check whether the specified certificate already exists in the store: 
+                bool certExists = false;
+                foreach (X509Certificate2 cert1 in store.Certificates)
+                {
+                    if (cert1 != null)
+                        if (UtilCrypto.GetSimpleName(cert1) == UtilCrypto.GetSimpleName(certificate))
+                        {
+                            certExists = true;
+                            break;
+                        }
+                }
+                if (certExists)
+                {
+                    if (isForceOverwrites)
+                    {
+                        doAdd = true;
+                        overwritten = true;
+                    }
+                    else if (isSkipOverwrites)
+                    {
+                        doAdd = false;
+                        skipped = true;
+                    }
+                    else
+                    {
+                        if (certExists)
+                        {
+                            doAdd = false;
+                            Console.WriteLine(Environment.NewLine + "Warning: The certificate to be added to the store already exists: " + Environment.NewLine
+                                + "  Cert. name: " + UtilCrypto.GetSimpleName(certificate) + Environment.NewLine
+                                + "  Cert. store: " + certificateStoreName + Environment.NewLine
+                                + "  Cert. location descriptor: " + storeLocation);
+                            Console.Write(Environment.NewLine + "Overwrite the certificate (0/1)? ");
+                            UtilConsole.Read(ref doAdd);
+                            if (doAdd)
+                            {
+                                overwritten = true;
+                                Console.WriteLine(Environment.NewLine + "Certificate in the store will be overwritten." + Environment.NewLine);
+                            }
+                            else
+                            {
+                                skipped = true;
+                                Console.WriteLine(Environment.NewLine + "Certificate will NOT be added." + Environment.NewLine);
+                            }
+                        }
+                    }
+                }
+                if (doAdd)
+                {
+                    ret = UtilCrypto.GetAsymmetricalgorithmHash(certificate.PublicKey.Key);
+                    store.Add(certificate);
+                }
+
+            }
+            if (certStores != null)
+                UtilCrypto.CloseCertificateStores(certStores);
+            return ret;
+        }
+
+
+
+        /// <summary>Deletes the specified certificate to the specified certificate store.</summary>
+        /// <param name="skipped">Output flag informing whether addition has been skipped (to prevent deletion).</param>
+        /// <param name="deleted">Output flag informing whether existing certificate has been deleeed (either due to 
+        /// automatic deletions specified by parameter <paramref name="isForceDeletes"/>, or upon user confirmation).</param>
+        /// <param name="certificateName">Name of the certificate to be deleted from the store.</param>
+        /// <param name="storeName">Name of the certificate store to which the certificate is added.</param>
+        /// <param name="storeLocation">Location where certificate is added: 1 - current user, 2 - local machine.</param>
+        /// <param name="isForceDeletes">If true then deletes are forcced without asking for user confirmation.
+        /// In such a case, parameter <paramref name="deleted"/> is set to true.</param>
+        /// <param name="isSkipDeletes">If true then addition is automatically wasSkipped if it would overwrite an
+        /// existing certificate. In such a case, parameter <paramref name="skipped"/> is set to true.</param>
+        /// <returns>Hash value of the public key of the added certificate, or 0 if certificate has not been added.</returns>
+        public static string DeleteCertificateFromStore(out bool skipped, out bool deleted, string certificateName,
+            string storeName, int storeLocation = (int) StoreLocation.CurrentUser,
+            // string privateKeyPassword = null,
+            bool isForceDeletes = false, bool isSkipDeletes = false)
+        {
+            string ret = null;
+            skipped = false;
+            deleted = false;
+            IList<X509Store> certStores = new List<X509Store>();
+            UtilCrypto.GetCertificateStores(ref certStores, true /* clearAtBeginning */, storeName,
+                storeLocation);
+            X509Store store = null;
+            if (certStores.Count > 0)
+                store = certStores[0];
+            if (store == null)
+            {
+                throw new InvalidOperationException("Can not locate the certificate store to delete the certificate from." + Environment.NewLine
+                        + "  Cert. store: " + storeName + Environment.NewLine
+                        + "  Cert. location descriptor: " + storeLocation);
+            }
+            else
+            {
+
+                bool doDelete = true;
+                // Check whether the specified certificate already exists in the store: 
+                bool certExists = false;
+                X509Certificate2 certToBeDeleted = null;
+                foreach (X509Certificate2 cert1 in store.Certificates)
+                {
+                    if (cert1 != null)
+                        if (UtilCrypto.GetSimpleName(cert1) == certificateName)
+                        {
+                            certExists = true;
+                            certToBeDeleted = cert1;
+                            break;
+                        }
+                }
+                if (certExists)
+                {
+                    if (isForceDeletes)
+                    {
+                        doDelete = true;
+                        deleted = true;
+                    }
+                    else if (isSkipDeletes)
+                    {
+                        doDelete = false;
+                        skipped = true;
+                    }
+                    else
+                    {
+                        if (certExists)
+                        {
+                            doDelete = false;
+                            Console.WriteLine(Environment.NewLine + "Warning: The certificate will be deleted from the store: " + Environment.NewLine
+                                + "  Cert. name: " + certificateName + Environment.NewLine
+                                + "  Cert. store: " + storeName + Environment.NewLine
+                                + "  Cert. location descriptor: " + storeLocation);
+                            Console.Write(Environment.NewLine + "Do you really want to delete the certificate (0/1)? ");
+                            UtilConsole.Read(ref doDelete);
+                            if (doDelete)
+                            {
+                                deleted = true;
+                                Console.WriteLine(Environment.NewLine + "Certificate in the store will be deleted." + Environment.NewLine);
+                            }
+                            else
+                            {
+                                skipped = true;
+                                Console.WriteLine(Environment.NewLine + "Certificate will NOT be deleted." + Environment.NewLine);
+                            }
+                        }
+                    }
+                }
+                if (doDelete)
+                {
+                    ret = UtilCrypto.GetAsymmetricalgorithmHash(certToBeDeleted.PublicKey.Key);
+                    store.Remove(certToBeDeleted);
+                }
+
+            }
+            if (certStores != null)
+                UtilCrypto.CloseCertificateStores(certStores);
+            return ret;
+        }
+
 
 
         /// <summary>Returns a hash value for the specified Asymmetric algorithm, which depends on algorithm keys.
@@ -4235,7 +4670,7 @@ namespace IG.Crypto
         /// only the public key and a different object contains the private key.</para></param>
         /// <returns>True if the secified asymmetric algorithms correctly encrypt/decrypt the specified string, 
         /// false otherwise.</returns>
-        public static bool AsymEncryptionDecryptionTest(string testString, out string errorString, AsymmetricAlgorithm algEnc, 
+        public static bool AsymEncryptionDecryptionTest(string testString, out string errorString, AsymmetricAlgorithm algEnc,
             AsymmetricAlgorithm algDec = null)
         {
             errorString = null;
@@ -4283,7 +4718,7 @@ namespace IG.Crypto
         /// only the public key and a different object contains the private key.</para></param>
         /// <returns>True if the secified asymmetric algorithms correctly encrypt/decrypt a random byte array
         /// of the specified length, false otherwise.</returns>
-        public static bool AsymEncryptionDecryptionTest(int length, AsymmetricAlgorithm algEnc, 
+        public static bool AsymEncryptionDecryptionTest(int length, AsymmetricAlgorithm algEnc,
             AsymmetricAlgorithm algDec = null)
         {
             string errorString;
@@ -4296,7 +4731,7 @@ namespace IG.Crypto
         /// <para>Returns true if the test passes (encrypted and then decrypted bytes equal to original) and false if not.</para>
         /// <para>The specified length must me smaller and equal to the value returned by <see cref="GetMaximalAsymmetricTextLength"/>
         /// for the test to pass (beside the encryption/decryption capability and correctness of operaton).</para></summary>
-        /// <param name="testString">Length of the random byte array to be encrypted and decrypted.
+        /// <param name="length">Length of the random byte array to be encrypted and decrypted.
         /// <para>Must be short enough in order to be suitable for asymmetric encryption / decryption. Maximal length 
         /// can be obtained by the <see cref="GetMaximalAsymmetricTextLength"/> method.</para>
         /// <para>If null or empty string then false is returned.</para> </param>
@@ -4311,8 +4746,8 @@ namespace IG.Crypto
         /// only the public key and a different object contains the private key.</para></param>
         /// <returns>True if the secified asymmetric algorithms correctly encrypt/decrypt a random byte array
         /// of the specified length, false otherwise.</returns>
-        public static bool AsymEncryptionDecryptionTest(int length, out string errorString, AsymmetricAlgorithm algEnc, 
-            AsymmetricAlgorithm algDec = null) 
+        public static bool AsymEncryptionDecryptionTest(int length, out string errorString, AsymmetricAlgorithm algEnc,
+            AsymmetricAlgorithm algDec = null)
         {
             errorString = null;
             if (algEnc == null)
@@ -4343,11 +4778,8 @@ namespace IG.Crypto
         }
 
 
-
-
-
-        /// <summary>Creates (if necessary) and returns a new asymmetric algorithm whose keys are created or obtained 
-        /// through arguments.</summary>
+        /// <summary>Creates (if necessary) and returns a new asymmetric algorithm whose keys are either created 
+        /// or obtained through arguments.</summary>
         /// <param name="algorithmType">Type of the asymmetric algorithm that is returned.</param>
         /// <param name="containerName">Name of the key container where the keys persist. If not specified then
         /// keys are not persistent.</param>
@@ -4356,8 +4788,14 @@ namespace IG.Crypto
         /// <param name="flags">Flags of type <see cref="CspProviderFlags"/> used in crypto service parameters
         /// when algorithm object is created. If the value is <see cref="CspProviderFlags.NoFlags"/> then
         /// flags are not used.</param>
+        /// <param name="certificateFilePath">Name of the certificate file from which algorithm keys are obtained.</param>
+        /// <param name="certificateName">Name of the certificate from one of the standard certificate stores from
+        /// which the algorithm keys are obtained.</param>
+        /// <param name="certStore">Certificate store from which certificate named <paramref name="certificateName"/> is 
+        /// obtained. If null then all standard stores are searched for.</param>
         public static AsymmetricAlgorithm GetAsymmetricAlgorithm(AsymmetricAlgorithmType algorithmType,
-            string containerName = null, string xmlString = null, CspProviderFlags flags = CspProviderFlags.NoFlags)
+            string containerName = null, string xmlString = null, CspProviderFlags flags = CspProviderFlags.NoFlags,
+              string certFileName = null, string certName = null, string certStore = null)
         {
             CspParameters cspParams = null;
             // Create a new instance of CspParameters.  Pass 
@@ -4395,6 +4833,14 @@ namespace IG.Crypto
                         rsa.PersistKeyInCsp = false;
                     if (!string.IsNullOrEmpty(xmlString))
                         rsa.FromXmlString(xmlString);
+                    else if (!string.IsNullOrEmpty(certFileName))
+                    {
+
+                    }
+                    else if (!string.IsNullOrEmpty(certName))
+                    {
+
+                    }
                     algorithm = rsa;
                     break;
                 case AsymmetricAlgorithmType.DSA:
@@ -4478,13 +4924,13 @@ namespace IG.Crypto
         /// only available on computers running MS Windows XP or later).</summary>
         /// <remarks>To do: <para>Check whether this works in Mono.</para></remarks>
         public static bool IsUsed_fOAEP
-        { get { return _isUsed_fOAEP1; }  }
+        { get { return _isUsed_fOAEP1; } }
 
 
 
 
         public static void PrepareAymmetricAllgorithmBasic(AsymmetricAlgorithmType algorithmType,
-            ref AsymmetricAlgorithm algorithm, string containerName = null, string xmlString = null, 
+            ref AsymmetricAlgorithm algorithm, string containerName = null, string xmlString = null,
             CspProviderFlags flags = CspProviderFlags.NoFlags, bool useLargestKey = false)
         {
             if (algorithm == null)
@@ -4508,49 +4954,49 @@ namespace IG.Crypto
 
 
 
-       // [Obsolete("Plain Asymmetric algorithms should not be used to encrypt/decrypt files.")]
-       // public static void EncryptFileAsymShort(string inputFilePath, string outputFilePath, AsymmetricAlgorithm algorithm,
-       //     AsymmetricAlgorithmType algorithmType = AsymmetricAlgorithmType.None)
-       // {
-       //     if (string.IsNullOrEmpty(inputFilePath))
-       //         throw new ArgumentException("Input file path not specified (null or empty string)");
-       //      if (string.IsNullOrEmpty(outputFilePath))
-       //         throw new ArgumentException("Output file path not specified (null or empty string)");
-       //      if (!File.Exists(inputFilePath))
-       //          throw new ArgumentException("Input file does not exist: " + inputFilePath);
-       //      byte[] inputBytes = File.ReadAllBytes(inputFilePath);
-       //      byte[] outputBytes = EncryptAsymShort(inputBytes, algorithm, algorithmType);
-       //      File.WriteAllBytes(outputFilePath, outputBytes);
-       //}
+        // [Obsolete("Plain Asymmetric algorithms should not be used to encrypt/decrypt files.")]
+        // public static void EncryptFileAsymShort(string inputFilePath, string outputFilePath, AsymmetricAlgorithm algorithm,
+        //     AsymmetricAlgorithmType algorithmType = AsymmetricAlgorithmType.None)
+        // {
+        //     if (string.IsNullOrEmpty(inputFilePath))
+        //         throw new ArgumentException("Input file path not specified (null or empty string)");
+        //      if (string.IsNullOrEmpty(outputFilePath))
+        //         throw new ArgumentException("Output file path not specified (null or empty string)");
+        //      if (!File.Exists(inputFilePath))
+        //          throw new ArgumentException("Input file does not exist: " + inputFilePath);
+        //      byte[] inputBytes = File.ReadAllBytes(inputFilePath);
+        //      byte[] outputBytes = EncryptAsymShort(inputBytes, algorithm, algorithmType);
+        //      File.WriteAllBytes(outputFilePath, outputBytes);
+        //}
 
-       // [Obsolete("Plain Asymmetric algorithms should not be used to encrypt/decrypt files.")]
-       // public static void DecryptFileAsymShort(string inputFilePath, string outputFilePath, AsymmetricAlgorithm algorithm,
-       //     AsymmetricAlgorithmType algorithmType = AsymmetricAlgorithmType.None)
-       // {
-       //     if (string.IsNullOrEmpty(inputFilePath))
-       //         throw new ArgumentException("Input file path not specified (null or empty string)");
-       //     if (string.IsNullOrEmpty(outputFilePath))
-       //         throw new ArgumentException("Output file path not specified (null or empty string)");
-       //     if (!File.Exists(inputFilePath))
-       //         throw new ArgumentException("Input file does not exist: " + inputFilePath);
-       //     byte[] inputBytes = File.ReadAllBytes(inputFilePath);
-       //     byte[] outputBytes = DecryptAsymShort(inputBytes, algorithm, algorithmType);
-       //     File.WriteAllBytes(outputFilePath, outputBytes);
-       // }
+        // [Obsolete("Plain Asymmetric algorithms should not be used to encrypt/decrypt files.")]
+        // public static void DecryptFileAsymShort(string inputFilePath, string outputFilePath, AsymmetricAlgorithm algorithm,
+        //     AsymmetricAlgorithmType algorithmType = AsymmetricAlgorithmType.None)
+        // {
+        //     if (string.IsNullOrEmpty(inputFilePath))
+        //         throw new ArgumentException("Input file path not specified (null or empty string)");
+        //     if (string.IsNullOrEmpty(outputFilePath))
+        //         throw new ArgumentException("Output file path not specified (null or empty string)");
+        //     if (!File.Exists(inputFilePath))
+        //         throw new ArgumentException("Input file does not exist: " + inputFilePath);
+        //     byte[] inputBytes = File.ReadAllBytes(inputFilePath);
+        //     byte[] outputBytes = DecryptAsymShort(inputBytes, algorithm, algorithmType);
+        //     File.WriteAllBytes(outputFilePath, outputBytes);
+        // }
 
 
         public static string EncryptStringAsymShort(string stringToEncrypt, AsymmetricAlgorithm algorithm,
             AsymmetricAlgorithmType algorithmType = AsymmetricAlgorithmType.None)
         {
             return Convert.ToBase64String(
-                EncryptAsymShort(StringEncoding.GetBytes(stringToEncrypt), algorithm, algorithmType)  );
+                EncryptAsymShort(StringEncoding.GetBytes(stringToEncrypt), algorithm, algorithmType));
         }
 
         public static string DecryptStringAsymShort(string cipherText, AsymmetricAlgorithm algorithm,
             AsymmetricAlgorithmType algorithmType = AsymmetricAlgorithmType.None)
         {
             return StringEncoding.GetString(
-                DecryptAsymShort(Convert.FromBase64String(cipherText) , algorithm, algorithmType) );
+                DecryptAsymShort(Convert.FromBase64String(cipherText), algorithm, algorithmType));
         }
 
 
@@ -4635,8 +5081,8 @@ namespace IG.Crypto
 
 
 
-        public static byte[] EncryptAsymShort(byte[] originalBytes, AsymmetricAlgorithmType algorithmType = AsymmetricAlgorithmType.None, 
-            AsymmetricAlgorithm algorithm = null, string containerName = null, string xmlString = null, 
+        public static byte[] EncryptAsymShort(byte[] originalBytes, AsymmetricAlgorithmType algorithmType = AsymmetricAlgorithmType.None,
+            AsymmetricAlgorithm algorithm = null, string containerName = null, string xmlString = null,
             CspProviderFlags flags = CspProviderFlags.NoFlags, bool useLargestKey = false)
         {
             byte[] ret = null;
@@ -4648,8 +5094,8 @@ namespace IG.Crypto
         }
 
 
-        public static byte[] DecryptAsymShort(byte[] originalBytes, AsymmetricAlgorithmType algorithmType = AsymmetricAlgorithmType.None, 
-            AsymmetricAlgorithm algorithm = null, string containerName = null, string xmlString = null, 
+        public static byte[] DecryptAsymShort(byte[] originalBytes, AsymmetricAlgorithmType algorithmType = AsymmetricAlgorithmType.None,
+            AsymmetricAlgorithm algorithm = null, string containerName = null, string xmlString = null,
             CspProviderFlags flags = CspProviderFlags.NoFlags, bool useLargestKey = false)
         {
             byte[] ret = null;
@@ -4733,14 +5179,14 @@ namespace IG.Crypto
         //private void button_Click(object sender, EventArgs e)
         //{
         //    AsymmetricKeyParameter myCAprivateKey = null;
-        //    //generate a root CA cert and obtain the privateKey
+        //    //generate a root CA certificate and obtain the privateKey
         //    X509Certificate2 MyRootCAcert = GenerateCACertificate("CN=MYTESTCA", ref myCAprivateKey);
-        //    //add CA cert to store
+        //    //add CA certificate to store
         //    addCertToStore(MyRootCAcert, StoreName.Root, StoreLocation.LocalMachine);
 
-        //    //generate cert based on the CA cert privateKey
+        //    //generate certificate based on the CA certificate privateKey
         //    X509Certificate2 MyCert = GenerateSelfSignedCertificate("CN=127.0.01", "CN=MYTESTCA", myCAprivateKey);
-        //    //add cert to store
+        //    //add certificate to store
         //    addCertToStore(MyCert, StoreName.My, StoreLocation.LocalMachine);
 
         //    MessageBox.Show("Done!");
@@ -4871,7 +5317,7 @@ namespace IG.Crypto
 
         //}
 
-        //public static bool addCertToStore(System.Security.Cryptography.X509Certificates.X509Certificate2 cert, System.Security.Cryptography.X509Certificates.StoreName st, System.Security.Cryptography.X509Certificates.StoreLocation sl)
+        //public static bool addCertToStore(System.Security.Cryptography.X509Certificates.X509Certificate2 certificate, System.Security.Cryptography.X509Certificates.StoreName st, System.Security.Cryptography.X509Certificates.StoreLocation sl)
         //{
         //    bool bRet = false;
 
@@ -4879,7 +5325,7 @@ namespace IG.Crypto
         //    {
         //        X509Store store = new X509Store(st, sl);
         //        store.Open(OpenFlags.ReadWrite);
-        //        store.Add(cert);
+        //        store.Add(certificate);
 
         //        store.Close();
         //    }

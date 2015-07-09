@@ -81,7 +81,7 @@ namespace IG.Crypto
             }
         }
 
-        static int _numNotifyExportPrivateKey = 0; 
+        static int _numNotifyExportPrivateKey = 0;
 
         /// <summary>Writes a notification informing that a private key may be exported.</summary>
         protected virtual void WarnExportPrivateKey()
@@ -118,7 +118,7 @@ namespace IG.Crypto
         string[] AppArguments = null;
 
         /// <summary>Number of command-line arguments.</summary>
-        int NumAppArguments { get { if (AppArguments != null) return AppArguments.Length;   return 0;   } }
+        int NumAppArguments { get { if (AppArguments != null) return AppArguments.Length; return 0; } }
 
 
         // ALGORITHM OPTIONS:
@@ -147,63 +147,104 @@ namespace IG.Crypto
         private bool _isExportPrivateKey = false;
 
         /// <summary>Whether private key is also exported or printed.</summary>
-        public bool IsExportPrivateKey { get { return _isExportPrivateKey; } 
-            protected set { _isExportPrivateKey = value; } }
+        public bool IsExportPrivateKey
+        {
+            get { return _isExportPrivateKey; }
+            protected set { _isExportPrivateKey = value; }
+        }
 
         private AsymmetricAlgorithmType _asymAlgorithmType = AsymmetricAlgorithmType.Default;
 
         public AsymmetricAlgorithmType AsymAlgorithmType
-        {   get { return _asymAlgorithmType; } 
-            protected set { _asymAlgorithmType = value; } }
+        {
+            get { return _asymAlgorithmType; }
+            protected set { _asymAlgorithmType = value; }
+        }
 
         private AsymmetricAlgorithm _asymAlgorithm = null;
 
         /// <summary>Asymmetric algorithm, equipped with keys, that will perform asymmetric cryptographic tasks.</summary>
-        protected AsymmetricAlgorithm AsymAlgorithm { get { return _asymAlgorithm; } 
-            set { _asymAlgorithm = value; } }
+        protected AsymmetricAlgorithm AsymAlgorithm
+        {
+            get { return _asymAlgorithm; }
+            set { _asymAlgorithm = value; }
+        }
 
         private CspProviderFlags _asymFlags = CspProviderFlags.NoFlags;
 
         /// <summary>Asymmetric CSP (crypto service provider) flags.</summary>
-        public CspProviderFlags AsymFlags { get { return _asymFlags; }
-            set { _asymFlags = CspProviderFlags.NoFlags; } }
+        public CspProviderFlags AsymFlags
+        {
+            get { return _asymFlags; }
+            set { _asymFlags = CspProviderFlags.NoFlags; }
+        }
 
         private string _asymAlgorithmTypeString = null;
 
         /// <summary>String that represents asymmetric algorithm type.</summary>
-        public string AsymAlgorithmTypeString { get { return _asymAlgorithmTypeString; } 
-            protected set { _asymAlgorithmTypeString = value; } }
+        public string AsymAlgorithmTypeString
+        {
+            get { return _asymAlgorithmTypeString; }
+            protected set { _asymAlgorithmTypeString = value; }
+        }
 
         private string _asymKeyContainerName = null;
 
         /// <summary>Asymmetric key container name.</summary>
-        public string AsymKeyContainerName { get { return _asymKeyContainerName; }
+        public string AsymKeyContainerName
+        {
+            get { return _asymKeyContainerName; }
             protected set { _asymKeyContainerName = value; }
         }
 
         private string _asymKeyFileXml = null;
 
         /// <summary>Asymmetric key file path in XML format.</summary>
-        public string AsymKeyFileXml { get { return _asymKeyFileXml; } 
-            protected set { _asymKeyFileXml = value; } }
+        public string AsymKeyFileXml
+        {
+            get { return _asymKeyFileXml; }
+            protected set { _asymKeyFileXml = value; }
+        }
 
         private string _certificatePath = null;
 
         /// <summary>Path to the certificate file (e.g. for obtaining asymmetric keys).</summary>
         public string CertificatePath { get { return _certificatePath; } protected set { _certificatePath = value; } }
 
+        private string _certificateName = null;
+
+        /// <summary>Certificate name (usually specified to locate the certificate in a certificate store).</summary>
+        public string CertificateName { get { return _certificateName; } protected set { _certificateName = value; } }
+
+        private string _certificateStoreName = null;
+
+        /// <summary>Name of the certificate store (usually, to locate the specified certificate).</summary>
+        public string CertificateStoreName { get { return _certificateStoreName; } protected set { _certificateStoreName = value; } }
+
+
+        private int _certificateStoreLocation = 0;
+
+        /// <summary>Location of the certificate store (usually used to filter certificate stores).</summary>
+        public int CertificateStoreLocation { get { return _certificateStoreLocation; } protected set { _certificateStoreLocation = value; } }
+
+
         private bool _certificatePasswordThroughUi = false;
 
         /// <summary>Indicates that pasword for private key should obtained from the user through GUI (usually through console).</summary>
-        public bool IsCertificatePasswordThroughUi { get { return _certificatePasswordThroughUi; }
+        public bool IsCertificatePasswordThroughUi
+        {
+            get { return _certificatePasswordThroughUi; }
             protected set { _certificatePasswordThroughUi = value; }
         }
 
         private string _certificatePassword = null;
 
         /// <summary>Password for accessing private keys (e.g. for private keys associated with certificate).</summary>
-        protected string CertificatePassword  {  get { return _certificatePassword; }  
-            set { _certificatePassword = value; }  }
+        protected string CertificatePassword
+        {
+            get { return _certificatePassword; }
+            set { _certificatePassword = value; }
+        }
 
 
 
@@ -275,13 +316,13 @@ namespace IG.Crypto
         double _targetedTotalTime = 0.1;
 
 
-        protected double TargetedTotalTime { get { return _targetedTotalTime; } set { _targetedTotalTime = value; }  } 
+        protected double TargetedTotalTime { get { return _targetedTotalTime; } set { _targetedTotalTime = value; } }
 
 
 
 
 
-         
+
 
         // FILES: 
 
@@ -320,9 +361,9 @@ namespace IG.Crypto
         /// relevant operation without asking for user's approval.</summary>
         bool IsForceOverwrites = false;
 
-        /// <summary>If true then eventual file overwrites are automatically skipped by the relevant operation.
+        /// <summary>If true then eventual file overwrites are automatically wasSkipped by the relevant operation.
         /// <para>This means that whenever the operation in question would normally have to overwrite an existent
-        /// file, this is skipped, without even asking ro user's approval. For example, if decryption is performed
+        /// file, this is wasSkipped, without even asking ro user's approval. For example, if decryption is performed
         /// but some of the original files already exist then these files will not be dcrypted as the operation
         /// would heve to overrwrite the original files.</para></summary>
         bool IsSkipOverwrites = false;
@@ -438,7 +479,7 @@ namespace IG.Crypto
                         Console.WriteLine("Argument No. " + whichArg + ": " + arg);
                 }
                 //if (whichArg == 0)
-                //    ;  //  arg. No. 0 skipped because it represents command name.
+                //    ;  //  arg. No. 0 wasSkipped because it represents command name.
                 // Any argument:
 
                 // ALGORITHM TYPE OPTIONS:
@@ -780,6 +821,50 @@ namespace IG.Crypto
                         CertificatePath = args[whichArg];
                     }
                 }
+
+                else if (argLowercase == CC.ArgCertificateName || argLowercase == CC.ArgCertificateName1)
+                {
+                    if (whichArg + 1 >= NumAppArguments)
+                        ReportError("Argument \"" + arg + "\" should be followed by certificate name.");
+                    else
+                    {
+                        ++whichArg;
+                        CertificateName = args[whichArg];
+                    }
+                }
+                else if (argLowercase == CC.ArgCertificateStoreName || argLowercase == CC.ArgCertificateStoreName1)
+                {
+                    if (whichArg + 1 >= NumAppArguments)
+                        ReportError("Argument \"" + arg + "\" should be followed by certificate store name.");
+                    else
+                    {
+                        ++whichArg;
+                        CertificateStoreName = args[whichArg];
+                    }
+                }
+                else if (argLowercase == CC.ArgCertificateStoreLocation || argLowercase == CC.ArgCertificateStoreLocation1)
+                {
+                    if (whichArg + 1 >= NumAppArguments)
+                        ReportError("Argument \"" + arg + "\" should be followed by certificate store location.");
+                    else
+                    {
+                        ++whichArg;
+                        string locationStr = args[whichArg];
+                        int location = CertificateStoreLocation;
+                        bool parsed = Util.TryParse(locationStr, ref location);
+                        if (!parsed)
+                        {
+                            ReportError("Certificate store location is not an integer: " + locationStr);
+                        }
+                        else
+                        {
+                            CertificateStoreLocation = location;
+                        }
+                    }
+                }
+
+
+
                 else if (argLowercase == CC.ArgAsymKeyFlag || argLowercase == CC.ArgAsymKeyFlag1)
                 {
                     if (whichArg + 1 >= NumAppArguments)
@@ -1962,7 +2047,7 @@ namespace IG.Crypto
                                                     //if (doDelete)
                                                     //    Console.WriteLine(Environment.NewLine + "Input file will be deleted." + Environment.NewLine);
                                                     //else
-                                                    //    Console.WriteLine(Environment.NewLine + "Input file deletion will be skipped." + Environment.NewLine);
+                                                    //    Console.WriteLine(Environment.NewLine + "Input file deletion will be wasSkipped." + Environment.NewLine);
 
                                                     ++numAnswersDelete;
                                                     if (numAnswersDelete == 1 && numCurrentInputFiles > whichFile + 1)
@@ -2668,15 +2753,17 @@ namespace IG.Crypto
                             string filenameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
                             originalFilePath = Path.Combine(fileDir, filenameWithoutExtension);
                             encryptedFilePath = filePath;
-                            decryptedFilePath = originalFilePath +  CC.FileExtensionDecrypted;
-                        } else if (fileExtension == CC.FileExtensionDecrypted)
+                            decryptedFilePath = originalFilePath + CC.FileExtensionDecrypted;
+                        }
+                        else if (fileExtension == CC.FileExtensionDecrypted)
                         {
                             string fileDir = Path.GetDirectoryName(filePath);
                             string filenameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
                             originalFilePath = Path.Combine(fileDir, filenameWithoutExtension);
                             decryptedFilePath = filePath;
                             encryptedFilePath = originalFilePath + CC.FileExtensionEncrypted;
-                        } else
+                        }
+                        else
                         {
                             originalFilePath = filePath;
                             encryptedFilePath = originalFilePath + CC.FileExtensionEncrypted;
@@ -2699,7 +2786,8 @@ namespace IG.Crypto
                             {
                                 deleteDecrypted = true;
                                 filesToDelete.Add(decryptedFilePath);
-                            } else
+                            }
+                            else
                             {
                                 if (IsDeleteAllVersions)
                                     deleteDecrypted = true;
@@ -2713,7 +2801,8 @@ namespace IG.Crypto
                             {
                                 deleteEncrypted = true;
                                 filesToDelete.Add(encryptedFilePath);
-                            } else
+                            }
+                            else
                             {
                                 if (IsDeleteAllVersions)
                                     deleteEncrypted = true;
@@ -2727,7 +2816,8 @@ namespace IG.Crypto
                             {
                                 deleteOriginal = true;
                                 filesToDelete.Add(originalFilePath);
-                            } else
+                            }
+                            else
                             {
 
                                 if (IsDeleteAllVersions)
@@ -2738,7 +2828,7 @@ namespace IG.Crypto
                         }
                         //if (! (deleteOriginal || deleteEncrypted || deleteDecrypted))
                         //{
-                        //    ReportInfo("All versions skipped: " + filePath);
+                        //    ReportInfo("All versions wasSkipped: " + filePath);
                         //}
                         // In the set of files associated with the specific input file, delete those that are 
                         // eligible for deletion (i.e., files on deletion list). Take into account the necessary 
@@ -2778,7 +2868,7 @@ namespace IG.Crypto
                                         //if (doDelete)
                                         //    Console.WriteLine(Environment.NewLine + "File will be deleted." + Environment.NewLine);
                                         //else
-                                        //    Console.WriteLine(Environment.NewLine + "File deletion will be skipped." + Environment.NewLine);
+                                        //    Console.WriteLine(Environment.NewLine + "File deletion will be wasSkipped." + Environment.NewLine);
 
                                         ++numAnswersDelete;
                                         if (numAnswersDelete == 1 && numCurrentInputFiles > whichFile + 1)
@@ -2803,7 +2893,8 @@ namespace IG.Crypto
                                         File.Delete(deletedFilePath);
                                         ReportInfo("Deleted: " + deletedFilePath);
                                     }
-                                    catch (Exception ex) {
+                                    catch (Exception ex)
+                                    {
                                         ReportError("File could not be deleted: " + deletedFilePath + Environment.NewLine
                                             + "  Error message: " + ex.Message);
                                     }
@@ -2819,7 +2910,7 @@ namespace IG.Crypto
             }
             return ReturnedString;
         }  // AppCleanFiles()  
-        
+
 
 
         /// <summary>Executes command-line action - measuring time of password generaton algorithms.</summary>
@@ -3262,14 +3353,15 @@ namespace IG.Crypto
                 if (AsymAlgorithm is DSA)
                 {
                     Console.WriteLine(Environment.NewLine + "DSA, encryption/decryption not implemented." + Environment.NewLine);
-                } else
+                }
+                else
                 {
                     // Test encryption / decryption with the asymmetric keys:
                     string errorStr = null;
                     bool encryptionTestPassed = UtilCrypto.AsymEncryptionDecryptionTest("Test String", out errorStr,
                         AsymAlgorithm, null /* encryption same as decryption */);
                     Console.WriteLine(Environment.NewLine + "Encryption / decryption test: "
-                        + (encryptionTestPassed ? "passed. " : "NOT passed.")); 
+                        + (encryptionTestPassed ? "passed. " : "NOT passed."));
                     if (errorStr != null)
                         Console.WriteLine("Error when encrypt/decrypt: " + errorStr);
                     if (encryptionTestPassed)
@@ -3284,11 +3376,13 @@ namespace IG.Crypto
                         if (passedAtMax && !passedAboveMax)
                         {
                             Console.WriteLine(Environment.NewLine + "Maximal original length (confirmed by test): " + maxLength);
-                        } else if (!passedAtMax)
+                        }
+                        else if (!passedAtMax)
                         {
                             Console.WriteLine(Environment.NewLine + "Encrypton/decryption test failed at theoretical maximal length (" + maxLength + ")."
                                 + Environment.NewLine + "  Error message: " + errorAtMax);
-                        } else if (passedAboveMax)
+                        }
+                        else if (passedAboveMax)
                         {
                             Console.WriteLine(Environment.NewLine + "Encrypton/decryption test passed above theoretical maximal length (" + maxLength + ").");
                         }
@@ -3297,7 +3391,7 @@ namespace IG.Crypto
                 }
             }
             return ReturnedString;
-        }
+        }  // AppAsymKeyInfo
 
 
         /// <summary>Executes command-line action - exports asymmetric keys specified by command-line parameters.</summary>
@@ -3329,31 +3423,33 @@ namespace IG.Crypto
                 bool encryptionTestPassed = UtilCrypto.AsymEncryptionDecryptionTest("Test String", out errorStr,
                     AsymAlgorithm, null /* encryption same as decryption */);
                 Console.WriteLine(Environment.NewLine + "Encryption / decryption test: "
-                    + (encryptionTestPassed ? "passed. " : "NOT passed.")); 
+                    + (encryptionTestPassed ? "passed. " : "NOT passed."));
                 if (errorStr != null)
                     Console.WriteLine("Error when encrypt/decrypt: " + errorStr);
 
                 if (encryptionTestPassed)
+                {
+                    int maxLength = UtilCrypto.GetMaximalAsymmetricTextLength(AsymAlgorithm);
+                    bool passedAtMax = false;
+                    bool passedAboveMax = false;
+                    string errorAtMax = null;
+                    string errorAboveMax = null;
+                    passedAtMax = UtilCrypto.AsymEncryptionDecryptionTest(maxLength, out errorAtMax, AsymAlgorithm, null /* encryption same as decryption */);
+                    passedAboveMax = UtilCrypto.AsymEncryptionDecryptionTest(maxLength + 1, out errorAboveMax, AsymAlgorithm, null /* encryption same as decryption */);
+                    if (passedAtMax && !passedAboveMax)
                     {
-                        int maxLength = UtilCrypto.GetMaximalAsymmetricTextLength(AsymAlgorithm);
-                        bool passedAtMax = false;
-                        bool passedAboveMax = false;
-                        string errorAtMax = null;
-                        string errorAboveMax = null;
-                        passedAtMax = UtilCrypto.AsymEncryptionDecryptionTest(maxLength, out errorAtMax, AsymAlgorithm, null /* encryption same as decryption */);
-                        passedAboveMax = UtilCrypto.AsymEncryptionDecryptionTest(maxLength + 1, out errorAboveMax, AsymAlgorithm, null /* encryption same as decryption */);
-                        if (passedAtMax && !passedAboveMax)
-                        {
-                            Console.WriteLine(Environment.NewLine + "Maximal original length (confirmed by test): " + maxLength);
-                        } else if (!passedAtMax)
-                        {
-                            Console.WriteLine(Environment.NewLine + "Encrypton/decryption test failed at theoretical maximal length (" + maxLength + ")."
-                                + Environment.NewLine + "  Error message: " + errorAtMax);
-                        } else if (passedAboveMax)
-                        {
-                            Console.WriteLine(Environment.NewLine + "Encrypton/decryption test passed above theoretical maximal length (" + maxLength + ").");
-                        }
+                        Console.WriteLine(Environment.NewLine + "Maximal original length (confirmed by test): " + maxLength);
                     }
+                    else if (!passedAtMax)
+                    {
+                        Console.WriteLine(Environment.NewLine + "Encrypton/decryption test failed at theoretical maximal length (" + maxLength + ")."
+                            + Environment.NewLine + "  Error message: " + errorAtMax);
+                    }
+                    else if (passedAboveMax)
+                    {
+                        Console.WriteLine(Environment.NewLine + "Encrypton/decryption test passed above theoretical maximal length (" + maxLength + ").");
+                    }
+                }
                 Console.WriteLine();
                 if (NumFreeParameters < 1)
                     ReportError("Export location (file) for asymmetric keys is not specified.");
@@ -3400,7 +3496,7 @@ namespace IG.Crypto
                             xmlStr = Util.XmlToString(AsymAlgorithm.ToXmlString(false /* exportPrivateKey */));
                         File.WriteAllText(outputFilePath, xmlStr);
                         if (IsExportPrivateKey)
-                            Console.WriteLine("Asymmetric keys (including private) were exported to " + Environment.NewLine 
+                            Console.WriteLine("Asymmetric keys (including private) were exported to " + Environment.NewLine
                                 + "  " + outputFilePath);
                         else
                             Console.WriteLine("Asymmetric key (just public part) was exported to " + Environment.NewLine
@@ -3413,8 +3509,306 @@ namespace IG.Crypto
         }
 
 
+        /// <summary>Executes command-line action - prints information about the certificate stores specified by command-line parameters.</summary>
+        /// <remarks>Information necessary to access the stores is extracted from command-line parameters.</remarks>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments of the embedded application's command.</param>
+        public virtual string AppCertStoreInfo(string appName, string[] args)
+        {
+            ReturnedString = null;
+            ClearAllFlags();
+            SetFlags(CryptoFlags.AsymmetricEncryption);
+            ParseCommandlineParameters(appName, args);
+
+            int outputDetailLevel = 0;
+            string certificateStoreName = null;
+            int storeLocation = 0;
+
+            if (NumFreeParameters >= 1)
+            {
+                bool parsed = Util.TryParse(FreeParameters[0], ref outputDetailLevel);
+                if (!parsed)
+                    throw new ArgumentException("Argument specifying whether to list individual certificates is not a boolean: " + FreeParameters[0] + ".");
+                if (NumFreeParameters >= 2)
+                {
+                    certificateStoreName = FreeParameters[1];
+                    if (NumFreeParameters >= 3)
+                    {
+                        parsed = Util.TryParse(FreeParameters[2], ref storeLocation);
+                        if (!parsed)
+                            throw new ArgumentException("Argument (store location) is not an int: " + FreeParameters[0] + ". "
+                                + Environment.NewLine + "  Should be 1 for current user, 2 for local machine, 0 or 3 for both.");
+                    }
+
+                }
+            }
+            Console.WriteLine(Environment.NewLine + "Informaton about certificate stores: " + Environment.NewLine
+                + UtilCrypto.GetCertificateStoreDescription(outputDetailLevel, certificateStoreName, storeLocation));
+            return ReturnedString;
+        }
+
+
+        /// <summary>Executes command-line action - prints information about the certificate stores specified by command-line parameters.</summary>
+        /// <remarks>Information necessary to access the stores is extracted from command-line parameters.</remarks>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments of the embedded application's command.</param>
+        public virtual string AppAddCertificate(string appName, string[] args)
+        {
+            ReturnedString = null;
+            ClearAllFlags();
+            SetFlags(CryptoFlags.AsymmetricEncryption);
+            ParseCommandlineParameters(appName, args);
+
+            string certificateStoreName = null;
+            int storeLocation = (int)StoreLocation.CurrentUser;
+
+            if (NumFreeParameters < 1)
+            {
+                ReportError("Store name must be specified to add the certificate.");
+                return null;
+            }
+            else
+                if (NumFreeParameters >= 1)
+                {
+                    certificateStoreName = FreeParameters[0];
+                    if (NumFreeParameters >= 2)
+                    {
+                        bool parsed = Util.TryParse(FreeParameters[1], ref storeLocation);
+                        if (!parsed)
+                            throw new ArgumentException("Argument (store location) is not an int: " + FreeParameters[0] + ". "
+                                + Environment.NewLine + "  Should be 1 for current user, 2 for local machine, 0 or 3 for both.");
+                    }
+                }
+            // Get certificate to be added:
+            string privateKeyPassword = null;
+            if (IsCertificatePasswordThroughUi)
+            {
+                Console.Write(Environment.NewLine + "Insert certificate password (<Enter> for none): ");
+                UtilConsole.ReadPwd(ref privateKeyPassword);
+                if (!string.IsNullOrEmpty(privateKeyPassword))
+                    CertificatePassword = privateKeyPassword;
+            }
+            X509Certificate2 certificate = UtilCrypto.GetCertificate(CertificatePassword, CertificatePath,
+                CertificateName, CertificateStoreName, CertificateStoreLocation);
+            if (certificate == null)
+                ReportError("Can not locate the certificate." + Environment.NewLine
+                    + "  Cert. file path: " + CertificatePath + Environment.NewLine
+                    + "  Cert. name: " + CertificateName + Environment.NewLine
+                    + "  Cert. store: " + CertificateStoreName + Environment.NewLine
+                    + "  Cert. location descriptor: " + CertificateStoreLocation);
+            else
+            {
+                try
+                {
+                    bool wasSkipped = false;
+                    bool wasOverwritten = false;
+                    ReturnedString = UtilCrypto.AddCertificateToStore(certificate, out wasSkipped, out wasOverwritten,
+                        certificateStoreName, storeLocation,
+                        IsForceOverwrites, IsSkipOverwrites);
+                    if (IsForceOverwrites && wasOverwritten)
+                    {
+                        ReportWarning("Certificate was overwritten: " + Environment.NewLine
+                                    + "  Cert. name: " + UtilCrypto.GetSimpleName(certificate) + Environment.NewLine
+                                    + "  Cert. store: " + CertificateStoreName + Environment.NewLine
+                                    + "  Cert. location descriptor: " + CertificateStoreLocation);
+                    }
+                    if (IsSkipOverwrites && wasSkipped)
+                    {
+                        ReportWarning("Certificate was NOT added (already exists): " + Environment.NewLine
+                                + "  Cert. name: " + UtilCrypto.GetSimpleName(certificate) + Environment.NewLine
+                                + "  Cert. store: " + CertificateStoreName + Environment.NewLine
+                                + "  Cert. location descriptor: " + CertificateStoreLocation);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ReportError("Could not add the certificate. " + Environment.NewLine + "  Error message: " + ex.Message);
+                }
+            }
+
+            //IList<X509Store> certStores = new List<X509Store>();
+            //UtilCrypto.GetCertificateStores(ref certStores, true /* clearAtBeginning */, storeName,
+            //    storeLocation);
+            //X509Store store = null;
+            //if (certStores.Count > 0)
+            //    store = certStores[0];
+            //if (store == null)
+            //{
+            //    // The speified store does not exist, we try to create it: 
+            //    bool tryToCreateStore = true;
+            //    StoreLocation location = StoreLocation.CurrentUser;
+            //    if (storeLocation == (int)StoreLocation.CurrentUser)
+            //        location = StoreLocation.CurrentUser;
+            //    else if (storeLocation == (int)StoreLocation.LocalMachine)
+            //        location = StoreLocation.LocalMachine;
+            //    else
+            //    {
+            //        tryToCreateStore = false;
+            //        ReportWarning("Can not create a new store, location is not specified unambiguously (" + storeLocation
+            //            + ", should be 1 or 2).");
+            //    }
+            //    if (tryToCreateStore)
+            //    {
+            //        store = new X509Store(storeName, location);
+            //        store.Open(OpenFlags.ReadWrite);
+            //    }
+            //}
+            //if (store == null)
+            //{
+            //    ReportError("Can not locate the certificate store to add the certificate.");
+            //} else
+            //{
+            //    // Get certificate to be added:
+            //    string privateKeyPassword = null;
+            //    if (IsCertificatePasswordThroughUi)
+            //    {
+            //        Console.Write(Environment.NewLine + "Insert certificate password (<Enter> for none): ");
+            //        UtilConsole.ReadPwd(ref privateKeyPassword);
+            //        if (!string.IsNullOrEmpty(privateKeyPassword))
+            //            CertificatePassword = privateKeyPassword;
+            //    }
+            //    X509Certificate2 certificate = UtilCrypto.GetCertificate(CertificatePassword, CertificatePath,
+            //        CertificateName, CertificateStoreName, CertificateStoreLocation);
+            //    if (certificate == null)
+            //        ReportError("Can not locate the certificate." + Environment.NewLine
+            //            + "  Cert. file path: " + CertificatePath + Environment.NewLine
+            //            + "  Cert. name: "  + CertificateName + Environment.NewLine
+            //            + "  Cert. store: " + CertificateStoreName + Environment.NewLine
+            //            + "  Cert. location descriptor: " + CertificateStoreLocation);
+            //    else
+            //    {
+            //        bool doAdd = true;
+            //        // Check whether the specified certificate already exists in the store: 
+            //        bool certExists = false;
+            //        foreach (X509Certificate2 cert1 in store.Certificates)
+            //        {
+            //            if (cert1 != null)
+            //                if (UtilCrypto.GetSimpleName(cert1) == UtilCrypto.GetSimpleName(certificate))
+            //                {
+            //                    certExists = true;
+            //                    break;
+            //                }
+            //        }
+            //        if (certExists)
+            //        {
+            //            if (isForceOverwrites)
+            //            {
+            //                doAdd = true;
+            //                ReportWarning("Certificate will be overwritten: " + Environment.NewLine
+            //                        + "  Cert. name: " + UtilCrypto.GetSimpleName(certificate) + Environment.NewLine
+            //                        + "  Cert. store: " + CertificateStoreName + Environment.NewLine
+            //                        + "  Cert. location descriptor: " + CertificateStoreLocation);
+            //            } else if (isSkipOverwrites)
+            //            {
+            //                doAdd = false;
+            //                ReportWarning("Certificate is NOT added (already exists): " + Environment.NewLine
+            //                        + "  Cert. name: " + UtilCrypto.GetSimpleName(certificate) + Environment.NewLine
+            //                        + "  Cert. store: " + CertificateStoreName + Environment.NewLine
+            //                        + "  Cert. location descriptor: " + CertificateStoreLocation);
+            //            } else
+            //            {
+            //                if (certExists)
+            //                {
+            //                    doAdd = false;
+            //                    Console.WriteLine(Environment.NewLine + "Warning: The certificate to be added to the store already exists: " + Environment.NewLine
+            //                        + "  Cert. name: " + UtilCrypto.GetSimpleName(certificate) + Environment.NewLine
+            //                        + "  Cert. store: " + CertificateStoreName + Environment.NewLine
+            //                        + "  Cert. location descriptor: " + CertificateStoreLocation);
+            //                    Console.Write(Environment.NewLine + "Overwrite the certificate (0/1)? ");
+            //                    UtilConsole.Read(ref doAdd);
+            //                    if (doAdd)
+            //                        Console.WriteLine(Environment.NewLine + "Certificate in the store will be overwritten." + Environment.NewLine);
+            //                    else
+            //                        Console.WriteLine(Environment.NewLine + "Certificate will NOT be added." + Environment.NewLine);
+            //                }
+            //            }
+            //        }
+            //        if (doAdd)
+            //        {
+            //            ReturnedString = UtilCrypto.GetAsymmetricalgorithmHash(certificate.PublicKey.Key);
+            //            store.Add(certificate);
+            //        }
+            //    }
+            //}
+            //if (certStores != null)
+            //    UtilCrypto.CloseCertificateStores(certStores);
+
+            return ReturnedString;
+        }  // AppAddCertificate
+
+
+
+
+        /// <summary>Executes command-line action - removes certificate with the specified name from the specified 
+        /// certificate store.</summary>
+        /// <remarks>Information about the certificate name and the store is extracted from command-line parameters.</remarks>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments of the embedded application's command.</param>
+        public virtual string AppRemoveCertificate(string appName, string[] args)
+        {
+            ReturnedString = null;
+            ClearAllFlags();
+            SetFlags(CryptoFlags.AsymmetricEncryption);
+            ParseCommandlineParameters(appName, args);
+
+            string certificateName = null;
+            string certificateStoreName = null;
+            int storeLocation = (int)StoreLocation.CurrentUser;
+
+            if (NumFreeParameters < 2)
+            {
+                ReportError("Certificate name and store name must be specified to delete the certificate.");
+                return null;
+            }
+            if (NumFreeParameters >= 1)
+            {
+                certificateName = FreeParameters[0];
+                if (NumFreeParameters >= 2)
+                {
+                    certificateStoreName = FreeParameters[1];
+                    if (NumFreeParameters >= 3)
+                    {
+                        bool parsed = Util.TryParse(FreeParameters[2], ref storeLocation);
+                        if (!parsed)
+                            throw new ArgumentException("Argument (store location) is not an int: " + FreeParameters[0] + ". "
+                                + Environment.NewLine + "  Should be 1 for current user, 2 for local machine, 0 or 3 for both.");
+                    }
+                }
+            }
+            try
+            {
+                bool wasSkipped = false;
+                bool wasDeleted = false;
+                ReturnedString = UtilCrypto.DeleteCertificateFromStore(out wasSkipped, out wasDeleted,
+                    certificateName, certificateStoreName, storeLocation,
+                    IsForceDeletes, IsSkipDeletes);
+                if (IsForceDeletes && wasDeleted)
+                {
+                    ReportWarning("Certificate was deleted: " + Environment.NewLine
+                                + "  Cert. name: " + certificateName + Environment.NewLine
+                                + "  Cert. store: " + CertificateStoreName + Environment.NewLine
+                                + "  Cert. location descriptor: " + CertificateStoreLocation);
+                }
+                if (IsSkipDeletes && wasSkipped)
+                {
+                    ReportWarning("Certificate was NOT deleted: " + Environment.NewLine
+                            + "  Cert. name: " + certificateName + Environment.NewLine
+                            + "  Cert. store: " + CertificateStoreName + Environment.NewLine
+                            + "  Cert. location descriptor: " + CertificateStoreLocation);
+                }
+            }
+            catch (Exception ex)
+            {
+                ReportError("Could not remove the certificate. " + Environment.NewLine + "  Error message: " + ex.Message);
+            }
+            return ReturnedString;
+        }  // AppRemoveCertificate
+
+
+
+
         /// <summary>Executes command-line action - prints information about the certificate specified by command-line parameters.</summary>
-        /// <remarks>Information necessary to access the asymmetric keys is extracted from command-line parameters.</remarks>
+        /// <remarks>Information necessary to access the certificate is extracted from command-line parameters.</remarks>
         /// <param name="appName">Name of the embedded application.</param>
         /// <param name="args">Arguments of the embedded application's command.</param>
         public virtual string AppCertInfo(string appName, string[] args)
@@ -3424,55 +3818,84 @@ namespace IG.Crypto
             SetFlags(CryptoFlags.AsymmetricEncryption);
             ParseCommandlineParameters(appName, args);
 
-            if (CertificatePath != null)
-            {
-                string privateKeyPassword = null;
-                if (IsCertificatePasswordThroughUi)
-                {
-                    Console.Write(Environment.NewLine + "Insert certificate password (<Enter> for none): ");
-                    UtilConsole.ReadPwd(ref privateKeyPassword);
-                    if (!string.IsNullOrEmpty(privateKeyPassword))
-                        CertificatePassword = privateKeyPassword;
-                }
-                X509Certificate2 cert = new X509Certificate2(CertificatePath, CertificatePassword); // X509Certificate2.CreateFromFile();
-                    //new X509Certificate2();
+            //if (CertificatePath != null)
+            //{
+            //    string privateKeyPassword = null;
+            //    if (IsCertificatePasswordThroughUi)
+            //    {
+            //        Console.Write(Environment.NewLine + "Insert certificate password (<Enter> for none): ");
+            //        UtilConsole.ReadPwd(ref privateKeyPassword);
+            //        if (!string.IsNullOrEmpty(privateKeyPassword))
+            //            CertificatePassword = privateKeyPassword;
+            //    }
+            //    X509Certificate2 certificate = new X509Certificate2(CertificatePath, CertificatePassword); // X509Certificate2.CreateFromFile();
+            //        //new X509Certificate2();
 
-                if (cert == null)
+
+
+
+            // Get certificate to be added:
+            string privateKeyPassword = null;
+            if (IsCertificatePasswordThroughUi)
+            {
+                Console.Write(Environment.NewLine + "Insert certificate password (<Enter> for none): ");
+                UtilConsole.ReadPwd(ref privateKeyPassword);
+                if (!string.IsNullOrEmpty(privateKeyPassword))
+                    CertificatePassword = privateKeyPassword;
+            }
+            X509Certificate2 certificate = UtilCrypto.GetCertificate(CertificatePassword, CertificatePath,
+                CertificateName, CertificateStoreName, CertificateStoreLocation);
+            if (certificate == null)
+            {
+                ReportError("Can not locate or create the certificate on basis of provided data." + Environment.NewLine
+                    + "  Cert. file path: " + CertificatePath + Environment.NewLine
+                    + "  Cert. name: " + CertificateName + Environment.NewLine
+                    + "  Cert. store: " + CertificateStoreName + Environment.NewLine
+                    + "  Cert. location: " + CertificateStoreLocation);
+            }
+            //else
+            //{
+            //    ReturnedString = UtilCrypto.GetAsymmetricalgorithmHash(certificate.PublicKey.Key);
+
+            //}
+
+
+            //if (certificate == null)
+            //{
+            //    ReportError("Could not create a certificate on basis of provided data.");
+            //}
+            else
+            {
+                ReturnedString = UtilCrypto.GetAsymmetricalgorithmHash(certificate.PublicKey.Key);
+                // We will return hash of the public key:
+                AsymmetricAlgorithm algPublic = certificate.PublicKey.Key;
+                if (algPublic != null)
+                    ReturnedString = UtilCrypto.GetAsymmetricalgorithmHash(algPublic);
+
+                Console.WriteLine(Environment.NewLine + "Certificate informaton:" + Environment.NewLine
+                    + UtilCrypto.ToString(certificate) + Environment.NewLine);
+
+                string detailedCertStr = certificate.ToString(true);
+                string certStr = certificate.ToString(false);
+
+
+                // Test encryption / decryption with the asymmetric keys:
+
+
+                if (algPublic is DSA)
                 {
-                    ReportError("Could not create a certificate on basis of provided data.");
+                    Console.WriteLine(Environment.NewLine + "DSA, encryption/decryption not implemented." + Environment.NewLine);
                 }
                 else
                 {
-
-                    // We will return hash of the public key:
-                    AsymmetricAlgorithm algPublic = cert.PublicKey.Key;
-                    if (algPublic != null)
-                        ReturnedString = UtilCrypto.GetAsymmetricalgorithmHash(algPublic);
-
-                    Console.WriteLine(Environment.NewLine + "Certificate informaton:" + Environment.NewLine
-                        + UtilCrypto.ToString(cert) + Environment.NewLine);
-
-                    string detailedCertStr = cert.ToString(true);
-                    string certStr = cert.ToString(false);
-
-
-                    // Test encryption / decryption with the asymmetric keys:
-
-
-                    if (algPublic is DSA)
-                    {
-                        Console.WriteLine(Environment.NewLine + "DSA, encryption/decryption not implemented." + Environment.NewLine);
-                    }
-                    else
-                    {
-                        bool encryptionTestPassed = false;
-                        AsymmetricAlgorithm algPrivate = cert.PrivateKey;
-                        string errorStr = null;
-                        encryptionTestPassed = UtilCrypto.AsymEncryptionDecryptionTest("Test String", out errorStr, algPublic, algPrivate);
-                        Console.WriteLine(Environment.NewLine + "Encryption / decryption test: "
-                            + (encryptionTestPassed ? "passed. " : "NOT passed."));
-                        if (errorStr != null)
-                            Console.WriteLine("Error when encrypt/decrypt: " + errorStr);
+                    bool encryptionTestPassed = false;
+                    AsymmetricAlgorithm algPrivate = certificate.PrivateKey;
+                    string errorStr = null;
+                    encryptionTestPassed = UtilCrypto.AsymEncryptionDecryptionTest("Test String", out errorStr, algPublic, algPrivate);
+                    Console.WriteLine(Environment.NewLine + "Encryption / decryption test: "
+                        + (encryptionTestPassed ? "passed. " : "NOT passed."));
+                    if (errorStr != null)
+                        Console.WriteLine("Error when encrypt/decrypt: " + errorStr);
                     if (encryptionTestPassed)
                     {
                         int maxLength = UtilCrypto.GetMaximalAsymmetricTextLength(AsymAlgorithm);
@@ -3485,41 +3908,43 @@ namespace IG.Crypto
                         if (passedAtMax && !passedAboveMax)
                         {
                             Console.WriteLine(Environment.NewLine + "Maximal original length (confirmed by test): " + maxLength);
-                        } else if (!passedAtMax)
+                        }
+                        else if (!passedAtMax)
                         {
                             Console.WriteLine(Environment.NewLine + "Encrypton/decryption test failed at theoretical maximal length (" + maxLength + ")."
                                 + Environment.NewLine + "  Error message: " + errorAtMax);
-                        } else if (passedAboveMax)
+                        }
+                        else if (passedAboveMax)
                         {
                             Console.WriteLine(Environment.NewLine + "Encrypton/decryption test passed above theoretical maximal length (" + maxLength + ").");
                         }
                     }
-                        Console.WriteLine();
-                    }
-
-                    //Console.WriteLine(Environment.NewLine + Environment.NewLine
-                    //    + "Certificate - very short description: " + Environment.NewLine + Environment.NewLine
-                    //    + cert.ToString() + Environment.NewLine);
-
-                    //Console.WriteLine(Environment.NewLine + Environment.NewLine
-                    //    + "Certificate - short description: " + Environment.NewLine + Environment.NewLine
-                    //    + cert.ToString(false) + Environment.NewLine);
-
-                    //Console.WriteLine(Environment.NewLine + Environment.NewLine
-                    //    + "Certificate - long description: " + Environment.NewLine + Environment.NewLine
-                    //    + cert.ToString(true) + Environment.NewLine);
-
-
-                    //string strXml = null;
-                    //strXml = cert.ToXmlString(false);
+                    Console.WriteLine();
                 }
 
+                //Console.WriteLine(Environment.NewLine + Environment.NewLine
+                //    + "Certificate - very short description: " + Environment.NewLine + Environment.NewLine
+                //    + certificate.ToString() + Environment.NewLine);
 
+                //Console.WriteLine(Environment.NewLine + Environment.NewLine
+                //    + "Certificate - short description: " + Environment.NewLine + Environment.NewLine
+                //    + certificate.ToString(false) + Environment.NewLine);
+
+                //Console.WriteLine(Environment.NewLine + Environment.NewLine
+                //    + "Certificate - long description: " + Environment.NewLine + Environment.NewLine
+                //    + certificate.ToString(true) + Environment.NewLine);
+
+
+                //string strXml = null;
+                //strXml = certificate.ToXmlString(false);
             }
-
-
             return ReturnedString;
+
         }
+
+
+
+
 
 
         /// <summary>Executes command-line action - a couple of custom asymmetric encryption-related tests.</summary>
@@ -3827,16 +4252,16 @@ namespace IG.Crypto
                 }
 
 
-                //Console.WriteLine(Environment.NewLine + Environment.NewLine + "Importing cert. IGLibTestCert.pfx without password... ");
-                //cert = new X509Certificate2("IGLibTestCert.pfx");
-                //if (cert == null)
+                //Console.WriteLine(Environment.NewLine + Environment.NewLine + "Importing certificate. IGLibTestCert.pfx without password... ");
+                //certificate = new X509Certificate2("IGLibTestCert.pfx");
+                //if (certificate == null)
                 //    Console.WriteLine(Environment.NewLine + "CERTIFICATE COULD NOT BE IMPORTED." + Environment.NewLine);
                 //else
                 //{
                 //    Console.WriteLine("... importing done." + Environment.NewLine + Environment.NewLine
-                //        + "Certificate: " + UtilCrypto.ToString(cert));
+                //        + "Certificate: " + UtilCrypto.ToString(certificate));
                 //    // Test encryption / decryption with the certificate's asymmetric keys:
-                //    encryptionTestPassed = UtilCrypto.AsymEncryptionDecryptionTest("Test String", cert.PublicKey.Key, cert.PrivateKey);
+                //    encryptionTestPassed = UtilCrypto.AsymEncryptionDecryptionTest("Test String", certificate.PublicKey.Key, certificate.PrivateKey);
                 //    Console.WriteLine(Environment.NewLine + "Certificate Encryption / decryption test: "
                 //        + (encryptionTestPassed ? "passed. " : "NOT passed.") + Environment.NewLine);
                 //}
@@ -3885,8 +4310,11 @@ namespace IG.Crypto
                                 decrypted = UtilCrypto.DecryptAsymShort(encrypted, cert.PrivateKey);
                                 sw.Stop();
                             }
-                            catch (Exception ex) { Console.WriteLine("Encrypted/decrypted ERROR, length = " + length1 
-                                + ", msg = " + ex.Message ); }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Encrypted/decrypted ERROR, length = " + length1
+                                    + ", msg = " + ex.Message);
+                            }
                             Console.WriteLine(Environment.NewLine + "Encrypt/decript, length = " + length1 + ": t = " +
                                 sw.Time + " s");
                             bool equal = Util.AreEqual(orig, decrypted);

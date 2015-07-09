@@ -287,7 +287,9 @@ namespace IG.Crypto
         /// <summary>File extension for encrypted files.</summary>
         public const string FileExtensionDecrypted = ".ig_dec";
 
-        public const string FileSignatureEncrypted = "IGLibEnc";
+        public const string FileSignatureEncrypted = "IgEnc";
+
+        public const string FileSignatureEncryptedAsymmetricRandomSymmetric = "IgEncAsRnSy";
 
 
         #region CommandLineOptions
@@ -389,6 +391,21 @@ namespace IG.Crypto
         /// <summary>Specifies that certificate password (for access to private key) should be obtained through 
         /// the user interface (normally, throough console).</summary>
         public const string ArgCertificatePasswordThroughUI1 = "/cpui";
+
+        /// <summary>Specification that certificate name follows.</summary>
+        public const string ArgCertificateName = "-cn";
+        /// <summary>Specification that certificate name follows.</summary>
+        public const string ArgCertificateName1 = "/cn";
+
+        /// <summary>Specification that certificate store name follows.</summary>
+        public const string ArgCertificateStoreName = "-cs";
+        /// <summary>Specification that certificate store name follows.</summary>
+        public const string ArgCertificateStoreName1 = "/cs";
+
+        /// <summary>Specification that certificate store location (current user or local machine) follows.</summary>
+        public const string ArgCertificateStoreLocation = "-csl";
+        /// <summary>Specification that certificate store location (current user or local machine) follows.</summary>
+        public const string ArgCertificateStoreLocation1 = "/csl";
 
 
         #endregion CommandLineOptions.Asym
@@ -543,14 +560,14 @@ namespace IG.Crypto
         public const string ArgOutputFile1 = "/o";
 
 
-        /// <summary>If files are to be overwritten, permission is not asked for and overwriting is forced.</summary>
+        /// <summary>If files are to be wasOverwritten, permission is not asked for and overwriting is forced.</summary>
         public const string ArgForceOverwrite = "-yo";
-        /// <summary>If files are to be overwritten, permission is not asked for and overwriting is forced..</summary>
+        /// <summary>If files are to be wasOverwritten, permission is not asked for and overwriting is forced..</summary>
         public const string ArgForceOverwrite1 = "/yo";
 
-        /// <summary>If files are to be overwritten, this is skipped without asking whether to overwrite.</summary>
+        /// <summary>If files are to be wasOverwritten, this is wasSkipped without asking whether to overwrite.</summary>
         public const string ArgSkipOverwrite = "-no";
-        /// <summary>If files are to be overwritten, this is skipped without asking whether to overwrite.</summary>
+        /// <summary>If files are to be wasOverwritten, this is wasSkipped without asking whether to overwrite.</summary>
         public const string ArgSkipOverwrite1 = "/no";
 
 
@@ -560,9 +577,9 @@ namespace IG.Crypto
         /// <summary>If files are to be deleted, permission is not asked for and deletion is forced.</summary>
         public const string ArgForceDelete1 = "/yd";
 
-        /// <summary>If files are to be deleted, this is automatically skipped without asking whether to delete.</summary>
+        /// <summary>If files are to be deleted, this is automatically wasSkipped without asking whether to delete.</summary>
         public const string ArgSkipDelete = "-nd";
-        /// <summary>If files are to be deleted, this is automatically skipped without asking whether to delete.</summary>
+        /// <summary>If files are to be deleted, this is automatically wasSkipped without asking whether to delete.</summary>
         public const string ArgSkipDelete1 = "/nd";
 
 

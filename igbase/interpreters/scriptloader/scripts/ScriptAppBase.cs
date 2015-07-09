@@ -1474,6 +1474,32 @@ A number of other options are supported:
 
 
 
+        #region Actions.CryptoUtilities.CertStoreInfo
+
+
+        public const string CryptoCertStoreInfo = "CertStoreInfo";
+
+        protected const string CryptoHelpCertStoreInfo = CryptoCertStoreInfo +
+@" : 
+  Prints information about the specified certificate store on the computer. 
+";
+
+
+        /// <summary>Executes embedded application - printing infomration about the specified certificate store.</summary>
+        /// <param name="AppName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        protected virtual string CryptoFunctionCertStoreInfo(string appName, string[] args)
+        {
+            CryptoManager crypto = new CryptoManager(OutputLevel);
+            return crypto.AppCertStoreInfo(appName, args);
+        }
+
+
+        #endregion Actions.CryptoUtilities.CertStoreInfo
+
+
+
+
 
         #region Actions.CryptoUtilities.CertInfo
 
@@ -1498,6 +1524,56 @@ A number of other options are supported:
 
         #endregion Actions.CryptoUtilities.CertInfo
 
+
+
+
+        #region Actions.CryptoUtilities.AddCertificate
+
+
+        public const string CryptoAddCertificate = "AddCertificate";
+
+        protected const string CryptoHelpAddCertificate = CryptoAddCertificate +
+@" : 
+  Adds the specified certificate to the specified certificate store. 
+";
+
+
+        /// <summary>Executes embedded application - adding the specified certificate to the specified certificate store.</summary>
+        /// <param name="AppName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        protected virtual string CryptoFunctionAddCertificate(string appName, string[] args)
+        {
+            CryptoManager crypto = new CryptoManager(OutputLevel);
+            return crypto.AppAddCertificate(appName, args);
+        }
+
+
+        #endregion Actions.CryptoUtilities.AddCertificate
+
+
+
+        #region Actions.CryptoUtilities.RemoveCertificate
+
+
+        public const string CryptoRemoveCertificate = "RemoveCertificate";
+
+        protected const string CryptoHelpRemoveCertificate = CryptoRemoveCertificate +
+@" : 
+  Removes the specified certificate from the specified certificate store. 
+";
+
+
+        /// <summary>Executes embedded application - removing the certificate from certificate store.</summary>
+        /// <param name="AppName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        protected virtual string CryptoFunctionRemoveCertificate(string appName, string[] args)
+        {
+            CryptoManager crypto = new CryptoManager(OutputLevel);
+            return crypto.AppRemoveCertificate(appName, args);
+        }
+
+
+        #endregion Actions.CryptoUtilities.RemoveCertificate
 
 
 
@@ -1613,7 +1689,10 @@ A number of other options are supported:
                 AddCryptoCommand(CryptoCleanFiles, CryptoFunctionCleanFiles, CryptoHelpCleanFiles);
 
                 AddCryptoCommand(CryptoAsymKeyInfo, CryptoFunctionAsymKeyInfo, CryptoHelpAsymKeyInfo);
+                AddCryptoCommand(CryptoCertStoreInfo, CryptoFunctionCertStoreInfo, CryptoHelpCertStoreInfo);
                 AddCryptoCommand(CryptoCertInfo, CryptoFunctionCertInfo, CryptoHelpCertInfo);
+                AddCryptoCommand(CryptoAddCertificate, CryptoFunctionAddCertificate, CryptoHelpAddCertificate);
+                AddCryptoCommand(CryptoRemoveCertificate, CryptoFunctionRemoveCertificate, CryptoHelpRemoveCertificate);
 
                 AddCryptoCommand(CryptoAsymTest, CryptoFunctionAsymTest, CryptoHelpAsymTest);
 
@@ -1795,7 +1874,7 @@ A number of other options are supported:
                         Console.WriteLine("Argument No. " + whichArg + ": " + arg);
                 }
                 //if (whichArg == 0)
-                //    ;  //  arg. No. 0 skipped because it represents command name.
+                //    ;  //  arg. No. 0 wasSkipped because it represents command name.
                 // Any argument:
                 // Arguments for modified behavior:
                 else if (argLowercase == CC.ArgCheck || argLowercase == CC.ArgCheck1)
@@ -2563,7 +2642,7 @@ A number of other options are supported:
                         Console.WriteLine("Argument No. " + whichArg + ": " + arg);
                 }
                 //if (whichArg == 0)
-                //    ;  //  arg. No. 0 skipped because it represents command name.
+                //    ;  //  arg. No. 0 wasSkipped because it represents command name.
                 // Any argument:
                 // Arguments for modified behavior:
                 else if (argLowercase == CC.ArgCheck || argLowercase == CC.ArgCheck1)
@@ -3068,7 +3147,7 @@ A number of other options are supported:
                         Console.WriteLine("Argument No. " + whichArg + ": " + arg);
                 }
                 //if (whichArg == 0)
-                //    ;  //  arg. No. 0 skipped because it represents command name.
+                //    ;  //  arg. No. 0 wasSkipped because it represents command name.
                 // Any argument:
 
                 // ALGORITHM TYPE OPTIONS:
@@ -3337,7 +3416,7 @@ A number of other options are supported:
                         Console.WriteLine("Argument No. " + whichArg + ": " + arg);
                 }
                 //if (whichArg == 0)
-                //    ;  //  arg. No. 0 skipped because it represents command name.
+                //    ;  //  arg. No. 0 wasSkipped because it represents command name.
                 // Any argument:
 
                 // BINARY FORMAT OPTIONS:
