@@ -52,7 +52,8 @@ namespace IG.Lib
     }  // class ScriptLoaderIGLib
 
 
-    /// <summary>Dynamically compiles and loads classes from files or from strings.</summary>
+    /// <summary>Dynamically compiles, loads and instantiates classes of type <see cref="ILoadableScript"/> 
+    /// from files or from strings.</summary>
     /// $A Igor Jul09 Feb10;
     public abstract class ScriptLoaderBase: ILockable
     {
@@ -387,7 +388,9 @@ namespace IG.Lib
 
         private static SortedList<string, string> _usedClassFullNames;
 
-        /// <summary>Stores used class names.</summary>
+        /// <summary>Stores used class names, i.e. class names that have already been used for dynamiically 
+        /// loaded classes.</summary>
+        /// <remarks>Every time a new class is dynamically loaded, its full name is added to this list.</remarks>
         protected static SortedList<string, string> UsedClassFullNames
         {
             get
@@ -405,9 +408,9 @@ namespace IG.Lib
         }
 
         /// <summary>Returns a flag indicating whether the specified class full name has already been used or not.</summary>
-        /// <param name="className">Fully qualified class name (namespace and class).</param>
-        public static bool IsClassFullNameUsed(string className)
-        { return UsedClassFullNames.ContainsKey(className); }
+        /// <param name="classFillName">Fully qualified class name (namespace and class).</param>
+        public static bool IsClassFullNameUsed(string classFillName)
+        { return UsedClassFullNames.ContainsKey(classFillName); }
 
         private static ScriptLoaderBase _global;
 
@@ -437,7 +440,7 @@ namespace IG.Lib
         }
 
 
-        #endregion Static
+        #endregion StaticUtilities
 
 
         #region Data
@@ -603,17 +606,20 @@ namespace " + ClassNamespace + @"
             set {
                 lock (Lock)
                 {
-                    _code = value;
-                    IsCodeLoaded = true;
-                    // Update dependencies:
-                    IsCompiled = false;
-                    if (OutputLevel > 0)
+                    if (!IsCodeLoaded || _code != value)
                     {
-                        Console.WriteLine();
-                        Console.WriteLine("Script code is loaded.");
-                        Console.WriteLine("Namespace used in the code:  \"" + FindNamespace(value) + "\"");
-                        Console.WriteLine("Class name used in the code: \"" + FindClassName(value) + "\"");
-                        Console.WriteLine();
+                        _code = value;
+                        IsCodeLoaded = true;
+                        // Update dependencies:
+                        IsCompiled = false;
+                        if (OutputLevel > 0)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("Script code is loaded.");
+                            Console.WriteLine("Namespace used in the code:  \"" + FindNamespace(value) + "\"");
+                            Console.WriteLine("Class name used in the code: \"" + FindClassName(value) + "\"");
+                            Console.WriteLine();
+                        }
                     }
                 }
             }
@@ -1394,6 +1400,9 @@ namespace " + ClassNamespace + @"
             }
         }
 
+        /// <summary>Gets or sets the assembly that has been compiled and loaded into the current application 
+        /// domain from the source code.
+        /// <para>Setter is protected.</para></summary>
         public virtual Assembly Assembly
         {
             get { lock (Lock) { return _assembly; } }
@@ -1508,22 +1517,22 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Loads code form a string.</summary>
         /// <param name="code">String containing script code that is loaded.</param>
-        /// <param name="className">Name of the class that is contained in the code and contains
+        /// <param name="classFullName">Name of the class that is contained in the code and contains
         /// loadable script that can be executed.</param>
-        public void LoadCode(string code, string className)
+        public void LoadCode(string code, string classFullName)
         {
             if (string.IsNullOrEmpty(code))
                 throw new ArgumentException("Code containing loadable script is not specified.");
             lock (Lock)
             {
                 Code = code;
-                if (string.IsNullOrEmpty(className))
+                if (string.IsNullOrEmpty(classFullName))
                 {
-                    className = FindClassName(code);
+                    classFullName = FindClassName(code);
                 }
-                if (string.IsNullOrEmpty(className))
+                if (string.IsNullOrEmpty(classFullName))
                     throw new ArgumentException("Class name is not specified and could not be extracted form loadable script code.");
-                ClassName = className;
+                ClassName = classFullName;
             }
         }
 
@@ -1536,7 +1545,7 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Creates and returns a loadable script object form code.</summary>
         /// <param name="code">Code that contains class definition and is dynamically compiled.</param>
-        /// <param name="className">Name of the class containing loadable script code.</param>
+        /// <param name="classFillName">Name of the class containing loadable script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object.</param>
         public ILoadableScript CreateObjectFromCode(string code, string className, string[] initializationArguments)
         {
@@ -1563,7 +1572,7 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Creates and runs a loadable script object form code.</summary>
         /// <param name="code">Code that contains class definition and is dynamically compiled.</param>
-        /// <param name="className">Name of the class containing loadable script code.</param>
+        /// <param name="classFillName">Name of the class containing loadable script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object.</param>
         /// <param name="runArguments">Arguments passed to the execution method of the loadable script.</param>
         public string RunCode(string code, string className, 
@@ -1592,7 +1601,7 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Runs a loadable script object form code.</summary>
         /// <param name="code">Code that contains class definition and is dynamically compiled.</param>
-        /// <param name="className">Name of the class containing loadable script code.</param>
+        /// <param name="classFillName">Name of the class containing loadable script code.</param>
         /// <param name="initializationAndRunArguments">Arguments used both for initialization of 
         /// the loadable script object and as parameters of the executable method..</param>
         public string RunCode(string code, string className, 
@@ -1641,7 +1650,7 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Loads loadable script code form the specified file.</summary>
         /// <param name="inputFilePath">Path to the file that contains script code.</param>
-        /// <param name="className">Name of the class that is contained in the code and 
+        /// <param name="classFillName">Name of the class that is contained in the code and 
         /// embeds loadable script that can be executed.</param>
         public void LoadFile(string filePath, string className)
         {
@@ -1660,7 +1669,7 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Creates and returns a loadable script object form a file containing its code.</summary>
         /// <param name="inputFilePath">Path to the file that contains script code.</param>
-        /// <param name="className">Name of the class containing class definition for loadable script objects.</param>
+        /// <param name="classFillName">Name of the class containing class definition for loadable script objects.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object.</param>
         public ILoadableScript CreateObjectFromFile(string filePath, string className, string[] initializationArguments)
         {
@@ -1690,7 +1699,7 @@ namespace " + ClassNamespace + @"
         /// <summary>Executes a loadable script form a file. The file must contain definition of the loadable 
         /// script class that is used to instantiate an object and execute it.</summary>
         /// <param name="inputFilePath">Path to the file that contains script code.</param>
-        /// <param name="className">Name of the class containing loadable script code.</param>
+        /// <param name="classFillName">Name of the class containing loadable script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object.</param>
         /// <param name="runArguments">Arguments passed to the execution mathod of the loadable script.</param>
         public string RunFile(string filePath, string className,
@@ -1725,7 +1734,7 @@ namespace " + ClassNamespace + @"
         /// The same arguments are taken for initialization of the loadable script object and for execution
         /// of the script.</summary>
         /// <param name="inputFilePath">Path to the file that contains script code.</param>
-        /// <param name="className">Name of the class containing loadable script code.</param>
+        /// <param name="classFillName">Name of the class containing loadable script code.</param>
         /// <param name="initializationAndRunArguments">Arguments used both for initialization of 
         /// the loadable script object and as parameters of the executable method.</param>
         public string RunFile(string filePath, string className,
@@ -1745,7 +1754,7 @@ namespace " + ClassNamespace + @"
         /// of the script.
         /// Class name is extracted from code.</summary>
         /// <param name="inputFilePath">Path to the file that contains script code.</param>
-        /// <param name="className">Name of the class containing loadable script code.</param>
+        /// <param name="classFillName">Name of the class containing loadable script code.</param>
         /// <param name="initializationAndRunArguments">Arguments used both for initialization of 
         /// the loadable script object and as parameters of the executable method.</param>
         public string RunFile(string filePath, string[] initializationAndRunArguments)

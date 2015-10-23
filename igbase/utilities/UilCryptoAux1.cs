@@ -103,19 +103,22 @@ namespace IG.Crypto
 
         #region Data
 
-        private int _outputLevel = 2;
 
         /// <summary>Level of output during operation.</summary>
         int OutputLevel { get { return _outputLevel; } set { _outputLevel = value; } }
+        private int _outputLevel = 2;
 
 
         // Data deduced from commandline:
 
-        /// <summary>Application name - name of the application when reading from command line.</summary>
-        string AppName = null;
+
+        public string AppName { get { return _appName; } protected set { _appName = value; } }
+        private string _appName = null;
+
 
         /// <summary>Last (or currently) read command-line arguments.</summary>
-        string[] AppArguments = null;
+        public string[] AppArguments { get { return _appArguments; } set { _appArguments = value; } }
+        private string[] _appArguments = null;
 
         /// <summary>Number of command-line arguments.</summary>
         int NumAppArguments { get { if (AppArguments != null) return AppArguments.Length; return 0; } }
@@ -123,20 +126,43 @@ namespace IG.Crypto
 
         // ALGORITHM OPTIONS:
 
-        PasswordAlgorithmType PasswordAlgorithmType = PasswordAlgorithmType.Default;
-        string PasswordAlgorithmTypeString = null;
-        PasswordAlgorithmBase PasswordAlgorithm = null;
 
-        string AlgorithmTypeString = null;
+        /// <summary>Type of the algorithm used for password hashing.</summary>
+        PasswordAlgorithmType PasswordAlgorithmType { get { return _passwordAlgorithmType; } set { _passwordAlgorithmType = value; } }
+        PasswordAlgorithmType _passwordAlgorithmType = PasswordAlgorithmType.Default;
 
-        HashType HashAlgorithmType = HashType.Default;
 
-        SymmetricAlgorithmType SymmetricAlgorithmType = SymmetricAlgorithmType.Default;
+        /// <summary>Name of the algorithm used in password hashing.</summary>
+        string PasswordAlgorithmTypeString { get { return _passwordAlgorithmTypeString; } set { _passwordAlgorithmTypeString = value; } }
+        string _passwordAlgorithmTypeString = null;
+        
 
-        protected bool _isDecrypt = false;
+        /// <summary>Password hashing algorithm.</summary>
+        PasswordAlgorithmBase PasswordAlgorithm  { get { return _passwordAlgorithm; } set { _passwordAlgorithm = value; } }
+        PasswordAlgorithmBase _passwordAlgorithm = null;
+
+
+        
+        /// <summary>String representation of algorithm type.</summary>
+        string AlgorithmTypeString  { get { return _algorithmTypeString; } set { _algorithmTypeString = value; } }
+        string _algorithmTypeString = null;
+
+
+        
+        /// <summary>Hashing algorithm type.</summary>
+        HashType HashAlgorithmType  { get { return _hashAlgorithmType; } set { _hashAlgorithmType = value; } }
+        HashType _hashAlgorithmType = HashType.Default;
+
+        
+        /// <summary>Symmetric algorithm type.</summary>
+        SymmetricAlgorithmType SymmetricAlgorithmType  { get { return _symmetricAlgorithmType; } set { _symmetricAlgorithmType = value; } }
+        SymmetricAlgorithmType _symmetricAlgorithmType = SymmetricAlgorithmType.Default;
+
+
 
         /// <summary>Whether decryption is perrformed, rather than encryption.</summary>
         public bool IsDecrypt { get { return _isDecrypt; } protected set { _isDecrypt = value; } }
+        protected bool _isDecrypt = false;
 
         /// <summary>Whether decryption is perrformed, rather than encryption.</summary>
         public bool IsEncrypt { get { return !IsDecrypt; } protected set { IsDecrypt = !value; } }
@@ -144,7 +170,6 @@ namespace IG.Crypto
 
         // ASYMMETRIC ALHORITHM OPTIONS:
 
-        private bool _isExportPrivateKey = false;
 
         /// <summary>Whether private key is also exported or printed.</summary>
         public bool IsExportPrivateKey
@@ -152,16 +177,12 @@ namespace IG.Crypto
             get { return _isExportPrivateKey; }
             protected set { _isExportPrivateKey = value; }
         }
+        private bool _isExportPrivateKey = false;
 
+
+        public AsymmetricAlgorithmType AsymAlgorithmType { get { return _asymAlgorithmType; } protected set { _asymAlgorithmType = value; } }
         private AsymmetricAlgorithmType _asymAlgorithmType = AsymmetricAlgorithmType.Default;
 
-        public AsymmetricAlgorithmType AsymAlgorithmType
-        {
-            get { return _asymAlgorithmType; }
-            protected set { _asymAlgorithmType = value; }
-        }
-
-        private AsymmetricAlgorithm _asymAlgorithm = null;
 
         /// <summary>Asymmetric algorithm, equipped with keys, that will perform asymmetric cryptographic tasks.</summary>
         protected AsymmetricAlgorithm AsymAlgorithm
@@ -169,8 +190,8 @@ namespace IG.Crypto
             get { return _asymAlgorithm; }
             set { _asymAlgorithm = value; }
         }
+        private AsymmetricAlgorithm _asymAlgorithm = null;
 
-        private CspProviderFlags _asymFlags = CspProviderFlags.NoFlags;
 
         /// <summary>Asymmetric CSP (crypto service provider) flags.</summary>
         public CspProviderFlags AsymFlags
@@ -178,8 +199,8 @@ namespace IG.Crypto
             get { return _asymFlags; }
             set { _asymFlags = CspProviderFlags.NoFlags; }
         }
+        private CspProviderFlags _asymFlags = CspProviderFlags.NoFlags;
 
-        private string _asymAlgorithmTypeString = null;
 
         /// <summary>String that represents asymmetric algorithm type.</summary>
         public string AsymAlgorithmTypeString
@@ -187,8 +208,8 @@ namespace IG.Crypto
             get { return _asymAlgorithmTypeString; }
             protected set { _asymAlgorithmTypeString = value; }
         }
+        private string _asymAlgorithmTypeString = null;
 
-        private string _asymKeyContainerName = null;
 
         /// <summary>Asymmetric key container name.</summary>
         public string AsymKeyContainerName
@@ -196,8 +217,8 @@ namespace IG.Crypto
             get { return _asymKeyContainerName; }
             protected set { _asymKeyContainerName = value; }
         }
+        private string _asymKeyContainerName = null;
 
-        private string _asymKeyFileXml = null;
 
         /// <summary>Asymmetric key file path in XML format.</summary>
         public string AsymKeyFileXml
@@ -205,21 +226,22 @@ namespace IG.Crypto
             get { return _asymKeyFileXml; }
             protected set { _asymKeyFileXml = value; }
         }
+        private string _asymKeyFileXml = null;
 
-        private string _certificatePath = null;
 
         /// <summary>Path to the certificate file (e.g. for obtaining asymmetric keys).</summary>
         public string CertificatePath { get { return _certificatePath; } protected set { _certificatePath = value; } }
+        private string _certificatePath = null;
 
-        private string _certificateName = null;
 
         /// <summary>Certificate name (usually specified to locate the certificate in a certificate store).</summary>
         public string CertificateName { get { return _certificateName; } protected set { _certificateName = value; } }
+        private string _certificateName = null;
 
-        private string _certificateStoreName = null;
 
         /// <summary>Name of the certificate store (usually, to locate the specified certificate).</summary>
         public string CertificateStoreName { get { return _certificateStoreName; } protected set { _certificateStoreName = value; } }
+        private string _certificateStoreName = null;
 
 
         private int _certificateStoreLocation = 0;
@@ -228,7 +250,6 @@ namespace IG.Crypto
         public int CertificateStoreLocation { get { return _certificateStoreLocation; } protected set { _certificateStoreLocation = value; } }
 
 
-        private bool _certificatePasswordThroughUi = false;
 
         /// <summary>Indicates that pasword for private key should obtained from the user through GUI (usually through console).</summary>
         public bool IsCertificatePasswordThroughUi
@@ -236,8 +257,8 @@ namespace IG.Crypto
             get { return _certificatePasswordThroughUi; }
             protected set { _certificatePasswordThroughUi = value; }
         }
+        private bool _certificatePasswordThroughUi = false;
 
-        private string _certificatePassword = null;
 
         /// <summary>Password for accessing private keys (e.g. for private keys associated with certificate).</summary>
         protected string CertificatePassword
@@ -245,49 +266,87 @@ namespace IG.Crypto
             get { return _certificatePassword; }
             set { _certificatePassword = value; }
         }
+        private string _certificatePassword = null;
 
 
 
 
         // HASHING options:
 
-        string HashValue = null;
+        string _hashValue = null;
+        
+        /// <summary>Hash value, usually used for checking consistency.</summary>
+        string HashValue { get { return _hashValue; } set { _hashValue = value; } }
+
+        bool _isStringInput = false;
 
         /// <summary>Flag indicating that input are strings or encoded byte arrays, rather than files.</summary>
-        bool IsStringInput = false;
+        bool IsStringInput { get { return _isStringInput; } set { _isStringInput = value; } }
 
         // PASSWORDS, SALTs, KEYs:
 
-        int PasswordLength = 0;
-        string PasswordString = null;
-        byte[] PasswordBytes = null;
+        /// <summary>Length of the (generated) password.</summary>
+        int PasswordLength { get { return _passwordLength; } set { _passwordLength = value; } }   
+        int _passwordLength = 0;
 
-        int SaltLength = 0;
-        string SaltString = null;
-        byte[] SaltBytes = null;
 
-        int IvLength = 0;
-        string IvString = null;
-        byte[] IvBytes = null;
+        string PasswordString { get { return _passwordString; } set { _passwordString = value; } }   
+        string _passwordString = null;
 
-        int KeyLength = 0;
-        byte[] KeyBytes = null;
 
-        protected bool _isLargestKey = false;
+        /// <summary>Password as byte array.</summary>
+        byte[] PasswordBytes { get { return _passwordBytes; } set { _passwordBytes = value; } }   
+        byte[] _passwordBytes = null;
+
+        /// <summary>Length of salt.</summary>
+        int SaltLength { get { return _saltLength; } set { _saltLength = value; } }   
+        int _saltLength = 0;
+
+        /// <summary>Salt string.</summary>
+        string SaltString { get { return _saltString; } set { _saltString = value; } }   
+        string _saltString = null;
+
+        /// <summary>Salt as byte array.</summary>
+        byte[] SaltBytes { get { return _saltBytes; } set { _saltBytes = value; } }   
+        byte[] _saltBytes = null;
+
+
+        /// <summary>Length of the initialization vector.</summary>
+        int IvLength { get { return _ivLength; } set { _ivLength = value; } }   
+        int _ivLength = 0;
+
+        /// <summary>Initialization vector in string form.</summary>
+        string IvString { get { return _ivString; } set { _ivString = value; } }   
+        string _ivString = null;
+
+        /// <summary>Initialization vector as byte array.</summary>
+        byte[] IvBytes { get { return _ivBytes; } set { _ivBytes = value; } }      
+        byte[] _ivBytes = null;
+
+
+        /// <summary>Length of the key.</summary>
+        int KeyLength { get { return _keyLength; } set { _keyLength = value; } }   
+        int _keyLength = 0;
+
+        /// <summary>Secret key as byte array.</summary>
+        byte[] KeyBytes { get { return _keyBytes; } set { _keyBytes = value; } }   
+        byte[] _keyBytes = null;
+
+        
 
         /// <summary>Whether the largest available key size for the algorithm in use is taken.</summary>
-        public bool IsLargestKey { get { return _isLargestKey; } protected set { _isLargestKey = value; } }
+        bool IsLargestKey { get { return _isLargestKey; } set { _isLargestKey = value; } } 
+        protected bool _isLargestKey = false;
 
-        int NumPasswordIterations = 0;
+        /// <summary>Number of iterations in passworg hashing algorithms, aimed at increasing processing effort to break the password.</summary>
+        int NumPasswordIterations { get { return _numPasswordIterations; } set { _numPasswordIterations = value; } }  
+        int _numPasswordIterations = 0;
 
-        // List<string> inputFilePaths = new List<string>();
-
-
-        private List<string> _freeParameters = new List<string>();
 
 
         /// <summary>List of free parameters from the parsed command-line.</summary>
         protected List<string> FreeParameters { get { return _freeParameters; } }
+        private List<string> _freeParameters = new List<string>();
 
         /// <summary>Number of free parameters (obtained from commans-line arguments).</summary>
         public int NumFreeParameters { get { if (FreeParameters != null) return FreeParameters.Count; return 0; } }
@@ -305,18 +364,19 @@ namespace IG.Crypto
 
         // GENERAL OPTIONS:
 
-        string _returnedString = null;
 
         /// <summary>Returned value of command-line application methods.</summary>
         string ReturnedString { get { return _returnedString; } set { _returnedString = value; } }
+        string _returnedString = null;
 
         /// <summary>Indicates that something is verified, not calculated (or checked in addition, after calculation).</summary>
-        bool IsChecked = false;  // indicates thatsomething is verified, not calculated
+        bool IsChecked { get { return _isChecked; } set { _isChecked = value; } }  
+        bool _isChecked = false;
 
-        double _targetedTotalTime = 0.1;
 
-
+        /// <summary>Total time targeted in multi-pass algorithms (e.g. in password hashing).</summary>
         protected double TargetedTotalTime { get { return _targetedTotalTime; } set { _targetedTotalTime = value; } }
+        double _targetedTotalTime = 0.1;
 
 
 
@@ -1023,7 +1083,7 @@ namespace IG.Crypto
                     else
                     {
                         ++whichArg;
-                        bool successful = Util.TryParse(args[whichArg], ref PasswordLength);
+                        bool successful = Util.TryParse(args[whichArg], ref _passwordLength);
                         if (!successful)
                             ReportError("Invalid format of password length: " + args[whichArg]);
                     }
@@ -1035,7 +1095,7 @@ namespace IG.Crypto
                     else
                     {
                         ++whichArg;
-                        bool successful = Util.TryParse(args[whichArg], ref KeyLength);
+                        bool successful = Util.TryParse(args[whichArg], ref _keyLength);
                         if (!successful)
                             ReportError("Invalid format of key length: " + args[whichArg]);
                     }
@@ -1047,7 +1107,7 @@ namespace IG.Crypto
                     else
                     {
                         ++whichArg;
-                        bool successful = Util.TryParse(args[whichArg], ref SaltLength);
+                        bool successful = Util.TryParse(args[whichArg], ref _saltLength);
                         if (!successful)
                             ReportError("Invalid format of salt length: " + args[whichArg]);
                     }
@@ -1059,7 +1119,7 @@ namespace IG.Crypto
                     else
                     {
                         ++whichArg;
-                        bool successful = Util.TryParse(args[whichArg], ref IvLength);
+                        bool successful = Util.TryParse(args[whichArg], ref _ivLength);
                         if (!successful)
                             ReportError("Invalid format of initializattion vector length: " + args[whichArg]);
                     }
@@ -1071,7 +1131,7 @@ namespace IG.Crypto
                     else
                     {
                         ++whichArg;
-                        bool successful = Util.TryParse(args[whichArg], ref NumPasswordIterations);
+                        bool successful = Util.TryParse(args[whichArg], ref _numPasswordIterations);
                         if (!successful)
                             ReportError("Argument can not be interpreted as integer number of key generation iterations: " + args[whichArg]);
                     }
@@ -1308,7 +1368,7 @@ namespace IG.Crypto
                         bool isStringForm = false;
                         bool isByteForm = false;
                         string keyString = null;
-                        UtilConsole.ReadPwd(ref KeyBytes, ref keyString, keyName, isStringForm, isByteForm, false /* isHexForm */, false /* isBase64Encoded */,
+                        UtilConsole.ReadPwd(ref _keyBytes, ref keyString, keyName, isStringForm, isByteForm, false /* isHexForm */, false /* isBase64Encoded */,
                             true /* verify */);
                         if (KeyBytes == null && keyString != null)
                             KeyBytes = UtilCrypto.StringEncoding.GetBytes(keyString);
@@ -1321,7 +1381,7 @@ namespace IG.Crypto
                     string passwordName = "initialization vector (IV)";
                     bool isStringForm = false;
                     bool isByteForm = false;
-                    UtilConsole.ReadPwd(ref IvBytes, ref IvString, passwordName, isStringForm, isByteForm, false /* isHexForm */, false /* isBase64Encoded */,
+                    UtilConsole.ReadPwd(ref _ivBytes, ref _ivString, passwordName, isStringForm, isByteForm, false /* isHexForm */, false /* isBase64Encoded */,
                         true /* verify */);
                 }
                 if (IvBytes == null && !string.IsNullOrEmpty(IvString))
@@ -2976,7 +3036,7 @@ namespace IG.Crypto
                 if (whichFreeParameterkeyLength >= 0 && NumFreeParameters > whichFreeParameterkeyLength)
                 {
                     string str = FreeParameters[whichFreeParameterkeyLength];
-                    bool successful = Util.TryParse(str, ref KeyLength);
+                    bool successful = Util.TryParse(str, ref _keyLength);
                     if (successful)
                     {
                         ++numFreeParametersUsed;
@@ -2997,7 +3057,7 @@ namespace IG.Crypto
                 if (whichFreeParameterNumIterations >= 0 && NumFreeParameters > whichFreeParameterNumIterations)
                 {
                     string str = FreeParameters[whichFreeParameterNumIterations];
-                    bool successful = Util.TryParse(str, ref NumPasswordIterations);
+                    bool successful = Util.TryParse(str, ref _numPasswordIterations);
                     if (successful)
                     {
                         ++numFreeParametersUsed;

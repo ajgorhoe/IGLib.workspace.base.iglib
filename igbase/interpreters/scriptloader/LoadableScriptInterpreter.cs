@@ -126,7 +126,7 @@ namespace IG.Lib
         /// <param name="commandName">Interpreter's name of the command; added command is installed 
         /// under this name on the current interpreter.</param>
         /// <param name="code">Script code containing definition of the loadable class that contains executable code of the command.</param>
-        /// <param name="className">Name of the class containing loadable script code.</param>
+        /// <param name="classFillName">Name of the class containing loadable script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object 
         /// that will perform execution of the added command.</param>
         public void AddCommandFromCode(string commandName, string code, string className, string[] initializationArguments)
@@ -152,7 +152,7 @@ namespace IG.Lib
         /// under this name on the current interpreter.</param>
         /// <param name="inputFilePath">Path to the file containing script code containing definition of the 
         /// loadable class that contains executable code of the command.</param>
-        /// <param name="className">Name of the class containing loadable script code.</param>
+        /// <param name="classFillName">Name of the class containing loadable script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object 
         /// that will perform execution of the added command.</param>
         public void AddCommandFromFile(string commandName, string filePath, string className, string[] initializationArguments)

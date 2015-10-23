@@ -24,435 +24,6 @@ using AsyncResult = System.Runtime.Remoting.Messaging.AsyncResult;
 namespace IG.Lib
 {
 
-    /// <summary>Interface for simple command-line applicatino interpreters.</summary>
-    public interface ICommandLineApplicationInterpreter
-    {
-
-        /// <summary>Name of the current interpreter.</summary>
-        string Name
-        { get; set; }
-
-        /// <summary>Description of hte current interpreter.</summary>
-        string Description
-        { get; set; }
-
-        /// <summary>Whether the exit flag is set, usually causing interpreter to stop.</summary>
-        bool Exit
-        { get; }
-
-        /// <summary>Gets the stopwatch used for measuring time of commands.
-        /// <para>This property always returns an initialized stopwatch.</para></summary>
-        StopWatch1 Timer
-        { get; }
-
-        /// <summary>Level of output for some of the interpreter's functionality (e.g. asynchronous command execution).</summary>
-        int OutputLevel
-        { get; set; }
-
-        /// <summary>Specifies whether a wrning should be launched whenever an installed command
-        /// is being replaced.</summary>
-        bool WarnCommandReplacement
-        { get; set; }
-
-        /// <summary>Returns the value of the specified variable of the current command line interpreter.
-        /// null is returned if the specified variable does not exist.</summary>
-        /// <param name="varName">Name of the variable.</param>
-        string GetVariable(string varName);
-
-        /// <summary>Sets the specified variable to the specified value.</summary>
-        /// <param name="varName">Name of the variable to be set.</param>
-        /// <param name="value">Value that is assigned to the variable.</param>
-        /// <returns>New value of the variable (before the method was called).</returns>
-        string SetVariable(string varName, string value);
-
-        /// <summary>Clears (removes) the specified variable.</summary>
-        /// <param name="varName">Name of the variable to be cleared.</param>
-        /// <returns>null.</returns>
-        string ClearVariable(string varName);
-
-        /// <summary>Prints the specified variable.</summary>
-        /// <param name="varName">Name of the variable to be cleared.</param>
-        /// <returns>null.</returns>
-        string PrintVariable(string varName);
-
-        /// <summary>Parses a command line and extracts arguments from it.
-        /// Arguments can be separated according to usual rules for command-line arguments:
-        /// spaces are separators, there can be arbitraty number of spaces, and if we want an
-        /// argument to contain spaces, we must enclose it in double quotes.
-        /// Command line can also contain the command name followed by arguments. In this case it is treated in the same way, and
-        /// command can be obtained simply as the first string in the returned array.</summary>
-        /// <param name="commandLine">Command line that is split to individual arguments.
-        /// Command line can also contain a command, which is treated equally.</param>
-        /// <returns>An array of arguments.</returns>
-        string[] GetArguments(string commandLine);
-
-        /// <summary>Runs all commands that are written in a file.
-        /// Each line of a file is interpreted as a single command, consisting of command name followed by arguments.</summary>
-        /// <param name="inputFilePath">Path to the file containing commands.</param>
-        /// <returns>Return value of the last command.</returns>
-        string RunFile(string filePath);
-
-        /// <summary>Reads commands one by one from the standard input and executes them.</summary>
-        string RunInteractive();
-
-        /// <summary>Returns true if the interpreter contains a command with specified name, false otherwise.</summary>
-        /// <param name="commandName">Name of the command whose existence is queried.</param>
-        bool ContainsCommand(string commandName);
-
-        /// <summary>Runs the specified command with specified name, installed on the current application object, without any
-        /// modifications of the command arguments.</summary>
-        /// <param name="commandName">Command name.</param>
-        /// <param name="commandArguments">Command arguments.</param>
-        /// <remarks>This method should not be overriden, but the <see cref="Run(string, string[])"/> method can be, e.g. in order to 
-        /// perform some argument or command name transformations.</remarks>
-        string RunWithoutModifications(string commandName, params string[] commandArguments);
-
-        /// <summary>Runs the command with specified name, installed on the current application object.</summary>
-        /// <param name="commandName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        string Run(string commandName, string[] args);
-
-        /// <summary>Runs command where the first argument is command name.
-        /// Extracts application name and runs the corresponding application delegate.Before running it, arguments
-        /// for the application delegate are extracted and then passed to the delegate.</summary>
-        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
-        /// are collected and passed to the command delegate.</param>
-        string Run(string[] args);
-
-        /// <summary>Runs a command asynchronously where the first argument is command name.
-        /// Extracts command name and runs the corresponding application delegate. Before running it, arguments
-        /// for the application delegate are extracted and then passed to the delegate.</summary>
-        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
-        /// are collected and passed to the command delegate.</param>
-        string RunAsync(string[] args);
-
-        /// <summary>Runs the command with specified name (installed on the current interpreter object) asynchronously.</summary>
-        /// <param name="commandName">Command name.</param>
-        /// <param name="commandArguments">Command arguments.</param>
-        /// <returns>ID of asynchronous run used to query results and whether command has completed, or -1 if a call was not
-        /// launched (actually, an exception would be thrown in this case).</returns>
-        string RunAsync(string commandName, params string[] commandArguments);
-
-        /// <summary>Returns true if the asynchronous command execution identified by id has completed, and false otherwise.</summary>
-        /// <param name="id">ID of the asynchronous command execution that is querried.</param>
-        /// <returns></returns>
-        bool AsyncIsCompleted(int id);
-
-        /// <summary>Waits until all asynchronously commands that have been eventually executed by the current 
-        /// interpreter, complete.
-        /// <para>It is sometimes necessary to call this method if any asynchronous command invocations were made because such 
-        /// commands are executed in background threads, which are automatically broken when all foreground threads complete.</para></summary>
-        void AsyncWaitAll();
-
-        /// <summary>Waits for the specified asynchronous command (specified by command ID) to complete.</summary>
-        /// <param name="callId">ID of the asynchronous command execution.</param>
-        /// <returns>Results of the command if the command has not completed before, null otherwise.</returns>
-        string AsyncWait(int callId);
-
-        /// <summary>Adds command with the specified name.</summary>
-        /// <param name="AppName">Name of the commant.</param>
-        /// <param name="appMain">Delegate that will be used to execute the command.</param>
-        void AddCommand(string appName, CommandLineApplicationInterpreter.ApplicationCommandDelegate appMain);
-
-        /// <summary>Removes the command with the specified name.</summary>
-        /// <param name="AppName">Name of the commad.</param>
-        void RemoveCommand(string appName);
-
-        /// <summary>Removes all commands from the current interpreter.</summary>
-        void RemoveAllCommands();
-
-        #region Modules
-
-        /// <summary>Adds a new module to the interpreter. This adds an initialization function (via a delegate)
-        /// which is executed when module module initialization is performed.</summary>
-        /// <param name="moduleName">Name of the module. When used, module names are case sensitive if commands are case sensitive.</param>
-        /// <param name="moduleDelegate">Method that performs module initialization.</param>
-        void AddModule(string moduleName, CommandLineApplicationInterpreter.ModuleDelegate moduleDelegate);
-
-        /// <summary>Loads and initializes the specified module.</summary>
-        /// <param name="moduleName">Name of the module. It is case sensitive if commands are case sensitive.</param>
-        void LoadModule(string moduleName);
-
-        /// <summary>Returns true if the specified module has been loaded on the interpreter,
-        /// false if not.</summary>
-        /// <param name="moduleName">Name of the module.</param>
-        bool IsModuleLoaded(string moduleName);
-
-        #endregion Modules
-
-        #region LoadableScripts
-
-        /// <summary>Interprater based on dynamically loadable scripts.
-        /// This enables installation and running of commands that are based on C# code that is 
-        /// dynamically compiled. 
-        /// Ihe object is created on first get access if it has not been assigned before.
-        /// This property can be overridden in derived classes such that getter creates
-        /// a dynamically loadable script - based interpreter of another kind. This is important 
-        /// because different script loaders (in particuar with different dynamic libraries referenced)
-        /// will be used in different contexts. Another possibility is that a custom object is 
-        /// assigned to this property, usually in the initialization stage of the current interpreter.</summary>
-        /// <exception cref="ArgumentNullException">When set to null reference.</exception>
-        /// $A Igor Aug11;
-        LoadableScriptInterpreterBase LoadableScriptInterpreter
-        { get; set; }
-
-        /// <summary>Dynamically loads (temporarily, just for execution of the current commad) a class 
-        /// form the script contained in the specified file and executes its executable method.
-        /// The file must contain the script that is dynamically loaded and executed, in form of 
-        /// definition of the appropriate class of type <see cref="ILoadableScript"/>. 
-        /// The dynamically loadable script class is loaded from the file and instantiated by the
-        /// <see cref="LoadableScriptInterpreter"/> interpreter that is based on loadable scripts.</summary>
-        /// <param name="scriptFilePath">Path to the file containing loadable script must be the first argument to the method.</param>
-        /// <param name="initAndRunArgs">Initialization arguments for the object that will be instantiated
-        /// in order to execute the script.</param>
-        /// <returns>Result of execution returned by the executable method of the dynamically loaded script object.</returns>
-        string RunScriptFile(string scriptFilePath, string[] initAndRunArgs);
-
-        /// <summary>Dynamically loads (compiles and instantiates) a loadable script class contained in the specified file, 
-        /// and installs a new command on <see cref="LoadableScriptInterpreter"/> and on the current interpreter, 
-        /// based on the dynamically created instance of the loaded (dynamically compiled) class.</summary>
-        /// <param name="newCommandName">Name of the newly installed command.</param>
-        /// <param name="scriptFilePath">Name of the file containing the script code that defines a loadable script class.</param>
-        /// <param name="initArgs">Arguments to the initialization method of the loaded object.
-        /// The initialization method will be called before the first call to the executable method of the class,
-        /// which takes care of execution of the newly installed command.</param>
-        void LoadScript(string newCommandName, string scriptFilePath, string[] initArgs);
-
-        /// <summary>Executes the specified command that has been dynamically loaded form a script.</summary>
-        /// <param name="commandName">Name under which the command is installed on the current intepreter
-        /// and on interpreder based on dynamically loaded scripts (<see cref="LoadableScriptInterpreter"/>).</param>
-        /// <param name="arguments">Arguments to the command.</param>
-        /// <returns>Results of command execution.</returns>
-        string RunLoadedScript(string commandName, string[] arguments);
-
-        /// <summary>Returns an array of assemblies that are currently referenced by the script loader
-        /// that takes care of loading the dynamic scripts.</summary>
-        /// <returns></returns>
-        string[] GetLoadableScriptReferencedAssemblies();
-
-        #endregion LoadableScripts
-
-    }  // interface ICommandLineApplication
-
-
-    /// <summary>Carries command execution data, results, and other data such as identification number, etc.
-    /// <para>Used as job container for parallel execution of interpreter commands.</para></summary>
-    /// <remarks>
-    /// <para>Objects of this type contain all data necessary for execution of the specified command by the specified
-    /// interpreter. Interpreter to execute the command, command name and arguments, and results of the command
-    /// are all stored on the object. </para>
-    /// </remarks>
-    public class CommandLineJobContainer :
-        ParallelJobContainerGen<CommandLineJobContainer, CommandLineJobContainer>,
-            IIdentifiable, ILockable
-    {
-
-        /// <summary>Prevent calling argument-less constructor.</summary>
-        private CommandLineJobContainer()
-            : base()
-        { }
-
-        /// <summary>Argument-less constructor that is called by all other constructors in order to
-        /// properly initialize the data. It sets the input for parallel job container's execution data 
-        /// simply to the current object (the object being constructed).</summary>
-        /// <param name="interpreter">Interpreter that will execute the command.</param>
-        protected CommandLineJobContainer(ICommandLineApplicationInterpreter interpreter)
-            : base(Run)
-        {
-            if (interpreter == null)
-                throw new ArgumentException("Interpreter to execute the command is not specified.");
-            // Set the interpreter to execute the command:
-            this.Interpreter = interpreter;
-            this.EvaluationDelegate = Run;
-            // Prepare the input for the delegate call:
-            this.Input = this;
-            this.StartTime = this.CompletionTime = DateTime.Now;
-        }
-
-        /// <summary>Constructs a new interpreter command data.</summary>
-        /// <param name="interpreter">Interpreter that will execute the command.</param>
-        /// <param name="commandName">Name of the command to be executed.</param>
-        /// <param name="commandArguments">Arguments to the command.</param>
-        public CommandLineJobContainer(ICommandLineApplicationInterpreter interpreter,
-            string commandName, string[] commandArguments)
-            : this(interpreter)
-        {
-            if (string.IsNullOrEmpty(commandName))
-                throw new ArgumentException("Command name is not specified (null or empty string).");
-            this.CommandName = commandName;
-            this.CommandArguments = commandArguments;
-        }
-
-
-        /// <summary>Constructs a new interpreter command data.</summary>
-        /// <param name="interpreter">Interpreter.</param>
-        /// <param name="commandAndArguments">Array containing the command to be executed (first element)
-        /// and its eventual arguments.
-        /// <para>Must not be null and the first element must not be null.</para></param>
-        public CommandLineJobContainer(ICommandLineApplicationInterpreter interpreter,
-            string[] commandAndArguments)
-            : this(interpreter)
-        {
-            if (commandAndArguments == null)
-                throw new ArgumentNullException("Commandline is not specified (null reference);");
-            else if (commandAndArguments.Length < 1)
-                throw new ArgumentNullException("Command name is not specified.");
-            else
-            {
-                string[] cmdArgs = new string[commandAndArguments.Length - 1];
-                string cmdName = commandAndArguments[0];
-                if (string.IsNullOrEmpty(cmdName))
-                    throw new ArgumentException("Command name not specifies (null or empty string - 1st array element).");
-                for (int i = 1; i < commandAndArguments.Length; ++i)
-                {
-                    cmdArgs[i - 1] = commandAndArguments[i];
-                }
-                this.CommandName = cmdName;
-                this.CommandArguments = cmdArgs;
-            }
-        }
-
-
-        #region IIdentifiable
-
-        private static object _lockIdCommandLine;
-
-        /// <summary>Lock used for acquiring IDs.</summary>
-        public static object LockIdCommandLine
-        {
-            get
-            {
-                if (_lockIdCommandLine == null)
-                {
-                    lock (Util.LockGlobal)
-                    {
-                        if (_lockIdCommandLine == null)
-                            _lockIdCommandLine = new object();
-
-                    }
-                }
-                return _lockIdCommandLine;
-            }
-        }
-
-        private static int _nextIdCommandLine = 0;
-
-        /// <summary>Returns another ID that is unique for objects of the containing class 
-        /// its and derived classes.</summary>
-        protected static int GetNextIdCommandLine()
-        {
-            lock (LockIdCommandLine)
-            {
-                ++_nextIdCommandLine;
-                return _nextIdCommandLine;
-            }
-        }
-
-        private int _id = GetNextIdCommandLine();
-
-        /// <summary>Unique ID for objects of the currnet and derived classes.</summary>
-        public override int Id
-        { get { return _id; } }
-
-        #endregion IIdentifiable
-
-
-        #region Data
-
-        /// <summary>Command-line interpreter that executes the command.</summary>
-        public ICommandLineApplicationInterpreter Interpreter;
-
-        /// <summary>name of the command to be executed.</summary>
-        public string CommandName;
-
-        /// <summary>Arguments to the command.</summary>
-        public string[] CommandArguments;
-
-        /// <summary>Stores the result of hte command when completed.</summary>
-        public string CommandResult;
-
-        /// <summary>Time when execution of the command has started.</summary>
-        public DateTime StartTime;
-
-        /// <summary>Time when the execution of the command has completed.</summary>
-        public DateTime CompletionTime;
-
-        /// <summary>Total execution time of the command, without the overhead generated
-        /// by scheduling the command for parallel execution.</summary>
-        public double ExecutionTime;
-
-        #endregion Data
-
-        #region Operation
-
-        /// <summary>Executes the command that is represented by the current command data, and
-        /// stores the results.</summary>
-        protected virtual void RunCommand()
-        {
-            this.StartTime = DateTime.Now;
-            this.CommandResult = Interpreter.Run(CommandName, CommandArguments);
-            this.CompletionTime = DateTime.Now;
-            this.ExecutionTime = (CompletionTime - StartTime).TotalSeconds;
-        }
-
-        /// <summary>Executes the command that is represented by the current command data,
-        /// and stores the results.
-        /// <para>This method just calls the argument-less <see cref="RunCommand"/> method and is used for execution delegate
-        /// for the parallel job container.</para></summary>
-        /// <param name="input">Input data. Does not have any effect because data is taken from the current object.</param>
-        /// <returns>Resuts. Actually it just returns the current object, since results are stored in this object
-        /// by the argument-less <see cref="RunCommand"/> function.</returns>
-        protected static CommandLineJobContainer Run(CommandLineJobContainer input)
-        {
-
-            //if (input == null)
-            //    input = this;
-            input.RunCommand();
-            return input;
-        }
-
-        #endregion Operation
-
-        #region Auxiliary
-
-
-        /// <summary>Returns the string that represents the command line, where command is followed
-        /// by eventual arguments separated by spaces.</summary>
-        public string CommandLine()
-        {
-            lock (Lock)
-            {
-                return UtilStr.GetCommandLine(CommandName, CommandArguments);
-            }
-        }
-
-        /// <summary>Returns string representation of the current command container object.</summary>
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Parallel command, job ID = " + Id + " (" + State.ToString() + "): ");
-            if (State >= ParallelJobState.Executing)
-            {
-                sb.AppendLine("  Started at " + StartTime);
-                if (State >= ParallelJobState.ResultsReady)
-                    sb.AppendLine("  Finished at " + CompletionTime + ". Duration: "
-                        + ExecutionTime + " s.");
-                //else
-                //    sb.AppendLine(".");
-            }
-
-            sb.Append("  " + CommandLine());
-            sb.AppendLine();
-            if (Result != null && State >= ParallelJobState.ResultsReady)
-                sb.AppendLine("    = '" + Result.CommandResult + "'");
-            return sb.ToString();
-        }
-
-        #endregion Auxiliary
-
-    }  // class CommandExecutionData
-
-
 
     /// <summary>Simple command-line application interpreters, holds a set of commands that can be executed by name.
     /// Each of these command can take an arbitrary number of string arguments.
@@ -465,25 +36,6 @@ namespace IG.Lib
     public class CommandLineApplicationInterpreter : ICommandLineApplicationInterpreter, ILockable
     {
 
-        /// <summary>Delegate for commands that are installed on interpreter.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run. 
-        /// Enables access to interpreter internal data from command body.</param>
-        /// <param name="commandName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        /// <returns>Command return data.</returns>
-        public delegate string ApplicationCommandDelegate(ICommandLineApplicationInterpreter interpreter, string commandName, string[] args);
-
-        /// <summary>Delegate for installing a module on the interpreter.</summary>
-        /// <param name="modulename">Name of the module.</param>
-        /// <param name="interpreter">Interperter where module is installed.</param>
-        public delegate void ModuleDelegate(string modulename, ICommandLineApplicationInterpreter interpreter);
-
-
-        /// <summary>Default value of the flg indicating whether command names are case sensitive.</summary>
-        public const bool DefaultCaseSensitive = false;
-
-        protected bool _caseSensitive = false;
-
         /// <summary>Creates a new MessyApplication object initialized with some basisc applications.
         /// <para>The flag indicating whether interpreter is case sensitive or not is set to <see cref="DefaultCaseSensitive"/></para></summary>
         public CommandLineApplicationInterpreter()
@@ -495,84 +47,141 @@ namespace IG.Lib
         /// <param name="caseSensitive">Flag that specifies whether command names are case sensitive.</param>
         public CommandLineApplicationInterpreter(bool caseSensitive)
         {
-            this._caseSensitive = caseSensitive;
-            this.AddCommand("Get", CmdGetVariable);
-            this.AddCommand("Set", CmdSetVariable);
-            this.AddCommand("Clear", CmdClearVariable);
-            this.AddCommand("PrintVariable", CmdPrintVariable);
-            this.AddCommand("Write", CmdWrite);
-            this.AddCommand("WriteLn", CmdWriteLine);
-            this.AddCommand("WriteLine", CmdWriteLine);
-            this.AddCommand("Run", CmdRunFile);
-            this.AddCommand("Try", CmdTryRun);
-            this.AddCommand("Repeat", CmdRunRepeat);
-            this.AddCommand("RepeatVerbose", CmdRunRepeatVerbose);
-            this.AddCommand("SetPriority", CmdSetPriority);
-            this.AddCommand("Parallel", CmdRunParallel);
-            this.AddCommand("Par", CmdRunParallel);
-            this.AddCommand("ParallelRepeat", CmdRunParallelRepeat);
-            this.AddCommand("ParRep", CmdRunParallelRepeat);
-            this.AddCommand("ParallelPrint", CmdPrintParallelCommands);
-            this.AddCommand("ParPrint", CmdPrintParallelCommands);
-            this.AddCommand("Async", CmdRunAsync);
-            this.AddCommand("RunAsync", CmdRunAsync);
-            this.AddCommand("AsyncWait", CmdAsyncWaitResults);
-            this.AddCommand("AsyncIsCompleted", CmdAsyncCompleted);
-            this.AddCommand("Sleep", CmdSleepSeconds);
-            this.AddCommand("ThrowExceptions", CmdThtrowExceptions);
-            this.AddCommand("Interactive", CmdRunInteractive);
-            this.AddCommand("Int", CmdRunInteractive);
-            this.AddCommand("System", CmdRunSystem);
-            this.AddCommand("Sys", CmdRunSystem);
+            InitCommandLineApplicationInterpreterBasic(caseSensitive);
+            InitCommands();
+        }
 
-            this.AddCommand("Calc", CmdExpressionEvaluatorInteractive);
+        /// <summary>Performs basic initializations of the interpreter.</summary>
+        /// <param name="caseSensitive">Whether interpreter is case sensitive or not.</param>
+        protected virtual void InitCommandLineApplicationInterpreterBasic(bool caseSensitive)
+        {
+            this.CaseSensitive = caseSensitive;
+            this.MainThread = this.AddNewThread();
+            this._globalThread = new CommandThread(this);
+            this._globalAuxiliaryFrame = _globalThread.BaseFrame;
+        }
 
-            this.AddCommand("Exit", CmdExit);
-            this.AddCommand("?", CmdHelp);
-            this.AddCommand("Help", CmdHelp);
-            this.AddCommand("About", CmdAbout);
-            this.AddCommand("ApplicationInfo", CmdApplicationInfo);
-            this.AddCommand("AppInfo", CmdApplicationInfo);
-            this.AddCommand("C", CmdComment);
-            this.AddCommand("Comment", CmdComment);
-            this.AddCommand("//", CmdComment);
-            this.AddCommand("PrintCommands", CmdPrintCommands);
+        /// <summary>Installs basic commands on the interpreter.</summary>
+        protected virtual void InitCommands()
+        {
 
-            this.AddCommand("PipeServer", CmdPipeServerCreate);
-            this.AddCommand("PipeServersRemove", CmdPipeServersRemove);
-            this.AddCommand("PipeServerInfo", CmdPipeServerInfo);
+            this.AddCommandMt("Get", CmdGetVariable);
+            this.AddCommandMt("Set", CmdSetVariable);
+            this.AddCommandMt("SetRes", CmdSetVariableToCommandResult);
+            this.AddCommandMt("SetResult", CmdSetVariableToCommandResult);
+            this.AddCommandMt("Clear", CmdClearVariable);
+            this.AddCommandMt("PrintVariable", CmdPrintVariable);
 
-            this.AddCommand("PipeClient", CmdPipeClientCreate);
-            this.AddCommand("PipeClientsRemove", CmdPipeClientsRemove);
-            this.AddCommand("PipeClientInfo", CmdPipeClientInfo);
-            this.AddCommand("PipeClientSend", CmdPipeClientGetServerResponse);
+            this.AddCommandMt("ThreadInfo", CmdInterpreterInfo);
+
+            this.AddCommandMt(Command_Block, CmdBlock);    // "Block"
+            this.AddCommandMt(Command_EndBlock, CmdEndBlock);    // "EndBlock"
+            this.AddCommandMt(Command_BeginCalc, CmdCalcJsBlock);    // "BeginCalc"
+            this.AddCommandMt(Command_EndCalc, CmdEndCalcJsBlock);    // "EndCalc"
+            this.AddCommandMt(Command_If, CmdIf);    // "CmdIf"
+            this.AddCommandMt(Command_ElseIf, CmdElseIf);    // "CmdElseIf"
+            this.AddCommandMt(Command_Else, CmdElse);    // "CmdElse"
+            this.AddCommandMt(Command_EndIf, CmdEndIf);    // "CmdEndIf"
+
+            this.AddCommandMt(Command_While, CmdWhile);  // "While"
+            this.AddCommandMt(Command_EndWhile, CmdEndWhile);  // "EndWhile"
+
+            //this.AddCommandMt("", Cmd);
+            //this.AddCommandMt("", Cmd);
+            //this.AddCommandMt("", Cmd);
+            //this.AddCommandMt("", Cmd);
+            //this.AddCommandMt("", Cmd);
 
 
-            this.AddCommand("Module", CmdLoadModule);
-            this.AddCommand("LoadModule", CmdLoadModule);
-            this.AddCommand("IsModuleLoaded", CmdIsModuleLoaded);
-            this.AddCommand("Loaded", CmdIsModuleLoaded);
+            this.AddCommandMt("OutputLevel", CmdOutputLevel);
+            this.AddCommandMt("Write", CmdWrite);
+            this.AddCommandMt("WriteLn", CmdWriteLine);
+            this.AddCommandMt("WriteLine", CmdWriteLine);
+            this.AddCommandMt("Read", CmdRead);
+            this.AddCommandMt("Run", CmdRunFile);
+            this.AddCommandMt("Try", CmdTryRun);
+            this.AddCommandMt("Repeat", CmdRunRepeat);
+            this.AddCommandMt("RepeatVerbose", CmdRunRepeatVerbose);
+            this.AddCommandMt("SetPriority", CmdSetPriority);
+            this.AddCommandMt("Parallel", CmdRunParallel);
+            this.AddCommandMt("Par", CmdRunParallel);
+            this.AddCommandMt("ParallelRepeat", CmdRunParallelRepeat);
+            this.AddCommandMt("ParRep", CmdRunParallelRepeat);
+            this.AddCommandMt("ParallelPrint", CmdPrintParallelCommands);
+            this.AddCommandMt("ParPrint", CmdPrintParallelCommands);
+            this.AddCommandMt("Async", CmdRunAsync);
+            this.AddCommandMt("RunAsync", CmdRunAsync);
+            this.AddCommandMt("AsyncWait", CmdAsyncWaitResults);
+            this.AddCommandMt("AsyncIsCompleted", CmdAsyncCompleted);
+            this.AddCommandMt("Sleep", CmdSleepSeconds);
+            this.AddCommandMt("ThrowExceptions", CmdThtrowExceptions);
+            this.AddCommandMt("Interactive", CmdRunInteractive);
+            this.AddCommandMt("Int", CmdRunInteractive);
+            // this.AddCommandMt("RunBlock", CmdRunBlock);
+            this.AddCommandMt("System", CmdRunSystem);
+            this.AddCommandMt("Sys", CmdRunSystem);
+            this.AddCommandMt("Cd", CmdCurrentDirectory);
+            this.AddCommandMt("CurrentDirectory", CmdCurrentDirectory);
 
-            this.AddCommand("RunInternal", CmdRunInternalScriptClass);
-            this.AddCommand("Internal", CmdRunInternalScriptClass);
-            this.AddCommand("RunScript", CmdRunScriptFile);
-            this.AddCommand("LoadClass", CmdLoadScript);
-            this.AddCommand("RunClass", CmdRunLoadedScript);
-            this.AddCommand("WriteAssemblies", WriteLoadableScriptReferencedAssemblies);
+            this.AddCommandMt("Calc", CmdExpressionEvaluatorJavascript);
+
+            this.AddCommandMt("Exit", CmdExit);
+            this.AddCommandMt("?", CmdHelp);
+            this.AddCommandMt("Help", CmdHelp);
+            this.AddCommandMt("About", CmdAbout);
+            this.AddCommandMt("ApplicationInfo", CmdApplicationInfo);
+            this.AddCommandMt("AppInfo", CmdApplicationInfo);
+            this.AddCommandMt("C", CmdComment);
+            this.AddCommandMt("Comment", CmdComment);
+            this.AddCommandMt("//", CmdComment);
+            this.AddCommandMt("PrintCommands", CmdPrintCommands);
+
+            this.AddCommandMt("PipeServer", CmdPipeServerCreate);
+            this.AddCommandMt("PipeServersRemove", CmdPipeServersRemove);
+            this.AddCommandMt("PipeServerInfo", CmdPipeServerInfo);
+
+            this.AddCommandMt("PipeClient", CmdPipeClientCreate);
+            this.AddCommandMt("PipeClientsRemove", CmdPipeClientsRemove);
+            this.AddCommandMt("PipeClientInfo", CmdPipeClientInfo);
+            this.AddCommandMt("PipeClientSend", CmdPipeClientGetServerResponse);
+
+
+            this.AddCommandMt("Module", CmdLoadModule);
+            this.AddCommandMt("LoadModule", CmdLoadModule);
+            this.AddCommandMt("IsModuleLoaded", CmdIsModuleLoaded);
+            this.AddCommandMt("Loaded", CmdIsModuleLoaded);
+
+            this.AddCommandMt("RunInternal", CmdRunInternalScriptClass);
+            this.AddCommandMt("Internal", CmdRunInternalScriptClass);
+            this.AddCommandMt("RunScript", CmdRunScriptFile);
+            this.AddCommandMt("LoadClass", CmdLoadScript);
+            this.AddCommandMt("RunClass", CmdRunLoadedScript);
+            this.AddCommandMt("WriteAssemblies", WriteLoadableScriptReferencedAssemblies);
 
             // Test commands and modules:
-            this.AddCommand("TestProduct", CmdTestProduct);
-            this.AddCommand("Test", CmdTest);
-            this.AddCommand("TestSpeed", CmdTestSpeed);
-            this.AddCommand("TestSpeedLong", CmdTestSpeedLong);
-            this.AddCommand("TestQR", CmdTestQR);
-            this.AddCommand("TestLU", CmdTestLU);
+            this.AddCommandMt("TestProduct", CmdTestProduct);
+            this.AddCommandMt("Test", CmdTest);
+            this.AddCommandMt("TestSpeed", CmdTestSpeed);
+            this.AddCommandMt("TestSpeedLong", CmdTestSpeedLong);
+            this.AddCommandMt("TestQR", CmdTestQR);
+            this.AddCommandMt("TestLU", CmdTestLU);
 
             this.AddModule("Test1", ModuleTest1);
             this.AddModule("Test2", ModuleTest2);
-
         }
 
+
+
+        /// <summary>Default value of the flg indicating whether command names are case sensitive.</summary>
+        public const bool DefaultCaseSensitive = false;
+
+        protected bool _caseSensitive = false;
+
+        public bool CaseSensitive
+        {
+            get { return _caseSensitive; }
+            protected set { _caseSensitive = value; }
+        }
 
         #region ThreadLocking
 
@@ -590,7 +199,48 @@ namespace IG.Lib
 
         protected static List<CommandLineApplicationInterpreter> _interpreters = new List<CommandLineApplicationInterpreter>();
 
-        protected SortedDictionary<string, ApplicationCommandDelegate> _commands = new SortedDictionary<string, ApplicationCommandDelegate>();
+        // protected SortedDictionary<string, ApplicationCommandDelegate> _commands = new SortedDictionary<string, ApplicationCommandDelegate>();
+
+        protected SortedDictionary<string, ApplicationCommandDelegateMt >
+            _commandsMt = new SortedDictionary<string, ApplicationCommandDelegateMt >();
+
+        // CommandStackFrame _globalFrame = null;
+
+
+        protected CommandThread _globalThread = null;
+
+        protected CommandStackFrame _globalAuxiliaryFrame = null;
+
+        /// <summary>Global frame where global variables are stored.</summary>
+        public CommandStackFrame GlobalFrame
+        {
+            get { return _globalAuxiliaryFrame; }
+        }
+
+        private CommandThread _mainThread = null; //new CommandThread<CommandLineApplicationInterpreter>(this);
+
+        /// <summary>Stack frames (containing variables) and other data for the main interpretation thread.</summary>
+        public CommandThread MainThread
+        {
+            get { return _mainThread; }
+            protected set { _mainThread = value; }
+        }
+
+        /// <summary>Main command thread of the interpreter (usually run in the same thread where interpreter was created).</summary>
+        private List<CommandThread> _commandThreads = new List<CommandThread>();
+
+        /// <summary>List of command threads that exist on the interpreter.</summary>
+        public List<CommandThread> CommandThreads
+        {
+            get { return _commandThreads; }
+            protected set { _commandThreads = value; }
+        }
+
+        public CommandThread AddNewThread()
+        {
+            CommandThread ret = new CommandThread(this);
+            return ret;
+        }
 
         protected SortedDictionary<string, string> _variables = new SortedDictionary<string, string>();
 
@@ -612,7 +262,9 @@ namespace IG.Lib
 
         protected string _description;
 
-        protected char variableStart = '$';
+        protected char _variableStart = '$';
+
+        protected char _expressionStart = '#';
 
         protected bool _exit = false;
 
@@ -663,14 +315,14 @@ namespace IG.Lib
             set { _description = value; }
         }
 
-        public StopWatch1 _timer;
+        //public StopWatch1 _timer;
 
-        /// <summary>Gets the stopwatch used for measuring time of commands.
-        /// <para>This property always returns an initialized stopwatch.</para></summary>
-        public StopWatch1 Timer
-        {
-            get { if (_timer == null) _timer = new StopWatch1(); return _timer; }
-        }
+        ///// <summary>Gets the stopwatch used for measuring time of commands.
+        ///// <para>This property always returns an initialized stopwatch.</para></summary>
+        //public StopWatch1 Timer
+        //{
+        //    get { if (_timer == null) _timer = new StopWatch1(); return _timer; }
+        //}
 
         public static int DefaultOutputLevel = 1;
 
@@ -699,29 +351,17 @@ namespace IG.Lib
         #region Operation
 
 
-        /// <summary>Returns the value of the specified variable of the current command line interpreter.
-        /// null is returned if the specified variable does not exist.</summary>
-        /// <param name="varName">Name of the variable.</param>
-        public virtual string GetVariable(string varName)
-        {
-            lock (Lock)
-            {
-                if (string.IsNullOrEmpty(varName))
-                    throw new ArgumentException("Interpreter variable name not specified.");
-                if (!_variables.ContainsKey(varName))
-                    throw new ArgumentException("Interpreter variable not defined: " + varName + ".");
-                return _variables[varName];
-            }
-        }
+
 
 
         /// <summary>Returns true if the specified string represents a variable reference, false otherwise.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="str">String that is checked.</param>
-        protected virtual bool IsVariableReference(string str)
+        protected virtual bool IsVariableReference(CommandThread cmdThread, string str)
         {
             if (str != null)
                 if (str.Length > 1)
-                    if (str[0] == variableStart)
+                    if (str[0] == _variableStart)
                         return true;
             return false;
         }
@@ -729,57 +369,577 @@ namespace IG.Lib
         /// <summary>Returns value of the referenced variable if the specified string represents a 
         /// variable reference (begins with the variableStart character, usually '$'), otherwise the 
         /// original sting is returned.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="str">String that is eventually substituted by variable value in the case that it 
         /// represents a variable reference.</param>
-        protected virtual string SubstituteVariableReference(string str)
+        protected virtual string SubstituteVariableOrExpressionReference(CommandThread cmdThread, string str)
         {
             if (str == null)
                 return str;
             else if (str.Length < 2)
                 return str;
-            else if (str[0] != variableStart)
-                return str;
-            else return GetVariable(str.Substring(1, str.Length - 1));
+            else
+            {
+                char firstChar = str[0];
+                if (firstChar == _variableStart)
+                    return this.GetVariable(cmdThread, str.Substring(1, str.Length - 1));
+                else if (firstChar == _expressionStart)
+                    return this.EvaluateJs(str.Substring(1, str.Length - 1));
+                else
+                    return str;
+            }
+        }
+
+
+        /// <summary>Returns the value of the specified variable of the current command line interpreter.
+        /// null is returned if the specified variable does not exist.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="varName">Name of the variable.</param>
+        public virtual string GetVariable(CommandThread cmdThread, string varName)
+        {
+            try
+            {
+                lock (Lock)
+                {
+                    return GlobalFrame[varName];
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Variable \"" + varName + "\" could not be obtained: " + Environment.NewLine
+                    + "  " + ex.Message, ex);
+            }
+
+            //lock (Lock)
+            //{
+            //    if (string.IsNullOrEmpty(varName))
+            //        throw new ArgumentException("Interpreter variable name not specified.");
+            //    if (!_variables.ContainsKey(varName))
+            //        throw new ArgumentException("Interpreter variable not defined: " + varName + ".");
+            //    return _variables[varName];
+            //}
         }
 
         /// <summary>Sets the specified variable to the specified value.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="varName">Name of the variable to be set.</param>
         /// <param name="value">Value that is assigned to the variable.</param>
         /// <returns>New value of the variable.</returns>
-        public virtual string SetVariable(string varName, string value)
+        public virtual string SetVariable(CommandThread cmdThread, string varName, string value)
         {
-            lock (Lock)
+            try
             {
-                if (string.IsNullOrEmpty(varName))
-                    throw new ArgumentException("Interpreter variable to be set not specified.");
-                _variables[varName] = value;
-                return value;
+                lock (this.Lock)
+                {
+                    GlobalFrame.SetVariable(varName, value);
+                }
             }
+            catch(Exception ex)
+            {
+                throw new InvalidOperationException("Variable " + varName + " could not be set: " + Environment.NewLine
+                    + "  " + ex.Message, ex);
+            }
+            return value;
+            //lock (Lock)
+            //{
+            //    if (string.IsNullOrEmpty(varName))
+            //        throw new ArgumentException("Interpreter variable to be set not specified.");
+            //    _variables[varName] = value;
+            //    return value;
+            //}
         }
 
         /// <summary>Clears (removes) the specified variable.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="varName">Name of the variable to be cleared.</param>
         /// <returns>null.</returns>
-        public virtual string ClearVariable(string varName)
+        public virtual string ClearVariable(CommandThread cmdThread, string varName)
         {
-            lock (Lock)
+            try
             {
-                if (string.IsNullOrEmpty(varName))
-                    throw new ArgumentException("Interpreter variable to be removed not specified.");
-                _variables.Remove(varName);
-                return null;
+                lock (Lock)
+                {
+                    GlobalFrame.RemoveVariable(varName);
+                }
             }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Variable " + varName + " could not be cleared: " + Environment.NewLine
+                    + "  " + ex.Message, ex);
+            }
+            return null;
+            //lock (Lock)
+            //{
+            //    if (string.IsNullOrEmpty(varName))
+            //        throw new ArgumentException("Interpreter variable to be removed not specified.");
+            //    _variables.Remove(varName);
+            //    return null;
+            //}
         }
 
 
         /// <summary>Prints the specified variable.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="varName">Name of the variable to be cleared.</param>
         /// <returns>null.</returns>
-        public virtual string PrintVariable(string varName)
+        public virtual string PrintVariable(CommandThread cmdThread, string varName)
         {
-            Console.WriteLine("  " + varName + " = " + GetVariable(varName));
+            Console.WriteLine("  " + varName + " = " + GetVariable(cmdThread, varName));
             return null;
         }
+
+
+        // Code blocks, branches and loops: entry and exit commands.
+
+        public readonly string Command_Block = "Block";
+
+        public readonly string Command_EndBlock = "EndBlock";
+
+        public readonly string Command_BeginCalc = "BeginCalc";
+
+        public readonly string Command_EndCalc = "EndCalc";
+
+        // TODO: If / Else / EndIf block is problematic from the point of block entry/exit . Solve this problem!
+        // PROPOSAL: This can be solved by different behavior of the CheckForBlockEnterOrExitCommand and the IsBlokExitQuietCommand
+        // functions in case of the If / Else etc. blocks. 
+        // For example:
+        // In If block, only If and EndIf commands would cause the level to be changed; however, also the 
+        // ElseIf and Else functions would return true when potential block exit is checked. - or something like this.
+
+
+        public readonly string Command_If = "If";
+
+        public readonly string Command_ElseIf = "ElseIf";
+
+        public readonly string Command_Else = "Else";
+
+        public readonly string Command_EndIf = "EndIf";
+
+        public readonly string Command_While = "While";
+
+        public readonly string Command_EndWhile = "EndWhile";
+
+
+        /// <summary>Adds block enter/exit commands for the "Block" block to the specified stack frame.
+        /// <para>This method should be executed by the appropriate block enter command for the specific
+        /// kind of code blocks.</para></summary>
+        /// <param name="frame">Stack frame on which the block entry/exit commands are added.</param>
+        protected virtual void AddEnterExitCommands_Block(CommandStackFrame frame)
+        {
+            frame.AddBlockEnterCommands(Command_Block);
+            frame.AddBlockExitCommands(Command_EndBlock);
+        }
+
+        /// <summary>Adds block enter/exit commands for the "BeginCalc" block to the specified stack frame.
+        /// <para>This method should be executed by the appropriate block enter command for the specific
+        /// kind of code blocks.</para></summary>
+        /// <param name="frame">Stack frame on which the block entry/exit commands are added.</param>
+        protected virtual void AddEnterExitCommands_BeginCalc(CommandStackFrame frame)
+        {
+            frame.AddBlockEnterCommands(Command_BeginCalc);
+            frame.AddBlockExitCommands(Command_EndCalc);
+        }
+
+        /// <summary>Adds block enter/exit commands for the "If" block to the specified stack frame.
+        /// <para>This method should be executed by the appropriate block enter command for the specific
+        /// kind of code blocks.</para></summary>
+        /// <param name="frame">Stack frame on which the block entry/exit commands are added.</param>
+        protected virtual void AddEnterExitCommands_If(CommandStackFrame frame)
+        {
+            frame.AddBlockEnterCommands(Command_If);
+            frame.AddBlockExitCommands(Command_EndIf);
+            frame.AddBlockExitCommandsNoLevelEffect(Command_ElseIf, Command_Else);
+        }
+
+        /// <summary>Adds block enter/exit commands for the "ElseIf" block to the specified stack frame.
+        /// <para>This method should be executed by the appropriate block enter command for the specific
+        /// kind of code blocks.</para></summary>
+        /// <param name="frame">Stack frame on which the block entry/exit commands are added.</param>
+        protected virtual void AddEnterExitCommands_ElseIf(CommandStackFrame frame)
+        {
+            frame.AddBlockEnterCommands(Command_If);
+            frame.AddBlockExitCommands(Command_EndIf);
+            frame.AddBlockExitCommandsNoLevelEffect(Command_ElseIf, Command_Else);
+        }
+
+        /// <summary>Adds block enter/exit commands for the "ElseIf" block to the specified stack frame.
+        /// <para>This method should be executed by the appropriate block enter command for the specific
+        /// kind of code blocks.</para></summary>
+        /// <param name="frame">Stack frame on which the block entry/exit commands are added.</param>
+        protected virtual void AddEnterExitCommands_Else(CommandStackFrame frame)
+        {
+            frame.AddBlockEnterCommands(Command_If);
+            frame.AddBlockExitCommands(Command_EndIf);
+            // Remarks, ElseIf is added below just for any casse, although the Else block should never 
+            // be terminated by the ElseIf block (while the opposite can happen):
+            frame.AddBlockExitCommandsNoLevelEffect(Command_ElseIf, Command_Else);
+        }
+
+        /// <summary>Adds block enter/exit commands for the "While" block to the specified stack frame.
+        /// <para>This method should be executed by the appropriate block enter command for the specific
+        /// kind of code blocks.</para></summary>
+        /// <param name="frame">Stack frame on which the block entry/exit commands are added.</param>
+        protected virtual void AddEnterExitCommands_While(CommandStackFrame frame)
+        {
+            frame.AddBlockEnterCommands(Command_While);
+            frame.AddBlockExitCommands(Command_EndWhile);
+        }
+
+
+        /// <summary>Enters a new code block. A new stack frame is added where code is executed, such that the 
+        /// embedded code block has isolated local variables.
+        /// <para>Must be paired with <see cref="ExitBlock"/>.</para></summary>
+        /// <param name="cmdThread">Command thread on which code is exected.</param>
+        /// <param name="executeCommands">Whether commands should be exected immediately as they are encountered.
+        /// <para>If false then execution is deferred until end of block is reached.</para></param>
+        /// <param name="saveCommands">Whether commands hould be saved. Mainly used for testing purposes, but if 
+        /// <paramref name="executeCommands"/> this flag is switched on, so that commands are collected and can be executed
+        /// when the end of the block is reached.</param>
+        public virtual void EnterBlock(CommandThread cmdThread, 
+            bool executeCommands = true, bool saveCommands = false)
+        {
+            cmdThread.WasBlockEnterCommand = true;
+            CommandStackFrame parentFrame = cmdThread.TopFrame;
+            parentFrame.ReturnedValue = null;
+            CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.Block);
+            // Add block enter / exit commands:
+            AddEnterExitCommands_Block(frame);
+
+            frame.DoExecuteCommands = executeCommands;
+            frame.DoSaveCommands = saveCommands;
+            if (!parentFrame.DoExecuteCommands)
+            {
+                frame.DoExecuteCommands = false;
+                if (executeCommands && OutputLevel >= 1)
+                    Console.WriteLine(Environment.NewLine + "DoExecuteCommands: DoExecute commands overridden, set to false." + Environment.NewLine);
+            }
+            if (parentFrame.DoSaveCommands)
+            {
+                frame.DoSaveCommands = true;
+                if (!saveCommands && OutputLevel >= 1)
+                    Console.WriteLine(Environment.NewLine + "EnterBlock: DoSaveCommands commands overridden, set to false." + Environment.NewLine);
+            }
+            if (frame.LastCommandLine != null)
+                frame.BlockCommanddLine = frame.LastCommandLine;
+        }
+
+        /// <summary>Exits the current code block. 
+        /// <para>Must be paired with <see cref="EnterBlock"/>.</para></summary>
+        /// <param name="cmdThread">Command execution thread where execution occurs.</param>
+        public virtual void ExitBlock(CommandThread cmdThread)
+        {
+            cmdThread.WasBlockExitCommand = true;
+            CommandStackFrame frame = cmdThread.TopFrame;
+            if (!frame.DoExecuteCommands && frame.DoSaveCommands)
+            {
+                var parentFrame = frame.GetParentStackFrame();
+                if (parentFrame == null)
+                    throw new InvalidOperationException("The current frame does not have a parent (level: " + frame.StackLevel 
+                        + ", type: " + frame.BlockType + ".");
+                if (frame.DoSaveCommands)
+                {
+                    // Remove the last stored command (because this would be the command that exits this block,
+                    // and we only want commands that purely belong to the block):
+                    int lastCommand = frame.CommandLines.Count - 1;
+                    if (lastCommand >= 0)
+                        frame.CommandLines.RemoveAt(lastCommand);
+                }
+                if (parentFrame.DoExecuteCommands)
+                {
+                    // Delayed execution of commands at the end of the block:
+                    frame.DoExecuteCommands = true;
+                    frame.DoSaveCommands = false;
+                    Run(cmdThread, frame.CommandLines);
+                    frame.CommandLines.Clear();
+                    frame.ConditionExpression = null;
+                    frame.BlockCommanddLine = null;
+                }
+            }
+            CommandStackFrame removedFrame = cmdThread.RemoveFrame();
+            // check:
+            if (!object.ReferenceEquals(frame, removedFrame))
+                throw new InvalidOperationException("Stack frame inconsistency when exiting the block.");
+            // Save returned value of the completed block to the parent frame (which is now the top frame):
+            cmdThread.TopFrame.ReturnedValue = frame.ReturnedValue;
+        }
+
+        /// <summary>Enters a new JavaScript calculator's code block. A new stack frame is added, such that the 
+        /// embedded code block collects command lines independently of the containing blocks, and lines can
+        /// be later concatenated into a single string and sent to JavaScript evaluator when the block exits.
+        /// <para>Must be paired with <see cref="ExitJsBlock"/>.</para>
+        /// <para>Important: JavaScript code block is executed in the parent stack frame (i.e. the frame that was executiing before the
+        /// JavaScript block entered).</para></summary>
+        /// <param name="cmdThread">Command thread on which code is exected.</param>
+        public virtual void EnterJsBlock(CommandThread cmdThread)
+        {
+            cmdThread.WasBlockEnterCommand = true;
+            Console.WriteLine(Environment.NewLine + Environment.NewLine 
+                + "Entering the JavaScript code block. " + Environment.NewLine);
+
+            //CommandStackFrame parentFrame = cmdThread.TopFrame;
+            //parentFrame.ReturnedValue = null;
+            CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.Block);
+            // Add block enter / exit commands:
+            AddEnterExitCommands_BeginCalc(frame);
+
+            // Commands within the block will not be executed, but mast be stored in order to evaluate them
+            // after the block exits by the internal JavaScript evaluator:
+            frame.DoExecuteCommands = false;
+            frame.DoSaveCommands = true;
+            // Store (for eventual inspection) the commandline that introduced the block:
+            if (frame.LastCommandLine != null)
+                frame.BlockCommanddLine = frame.LastCommandLine;
+        }
+
+        /// <summary>Exits the current JavaScript code block, and sends the JavaScrit code contained within the block 
+        /// (consisting of concatenated command lines entered within the block) to the JavaScript evaluator for execution.
+        /// <para>Must be paired with <see cref="EnterJsBlock"/>.</para>
+        /// <para>JavaScript code is executed in the parent stack frame (i.e. the frame on which code block was called).</para></summary>
+        /// <param name="cmdThread">Command execution thread where execution occurs.</param>
+        public virtual string ExitJsBlock(CommandThread cmdThread)
+        {
+            cmdThread.WasBlockExitCommand = true;
+            string ret = null;
+            // Concatenate the collected commandlines within the code block for execution with the JavaScript evaluator:
+            CommandStackFrame frame = cmdThread.TopFrame;
+            if (frame.DoSaveCommands)
+            {
+                // Remove the last stored command (because this would be the command that exits this block,
+                // and we only want commands that purely belong to the block):
+                int lastCommand = frame.CommandLines.Count - 1;
+                if (lastCommand >= 0)
+                    frame.CommandLines.RemoveAt(lastCommand);
+            }
+            StringBuilder sb = new StringBuilder();
+            foreach (string command in frame.CommandLines)
+                sb.AppendLine(command);
+            string codeBlock = sb.ToString();
+
+            if (OutputLevel >= 3)
+            {
+                Console.WriteLine(Environment.NewLine + "End of the JavaScript code block. " + Environment.NewLine
+                    + "Code to be executed:" + Environment.NewLine
+                    + "=====================================================================" + Environment.NewLine
+                    + codeBlock // + Environment.NewLine
+                    + "---------------------------------------------------------------------" + Environment.NewLine
+                    + Environment.NewLine);
+            }
+            // Exit the current stack frame such that code is exected in the containing frame:
+            CommandStackFrame removedFrame = cmdThread.RemoveFrame();
+            // Check stack frames consistency:
+            if (!object.ReferenceEquals(frame, removedFrame))
+                throw new InvalidOperationException("Stack frame inconsistency when exiting the block.");
+            // Execute the code in the JavaScript evaluator:
+            ret = EvaluateJs(codeBlock);
+            // Save returned value of the completed block to the parent frame (which is now the top frame):
+            cmdThread.TopFrame.ReturnedValue = ret;
+            return ret;
+        }
+
+        /// <summary>Enters the If block.</summary>
+        /// <param name="cmdThread">Command thread where commands are executed.</param>
+        /// <param name="condition">Value of the condition of the if branch.</param>
+        public virtual void EnterIf(CommandThread cmdThread, bool condition)
+        {
+            cmdThread.WasBlockEnterCommand = true;
+            CommandStackFrame parentFrame = cmdThread.TopFrame;
+            parentFrame.ReturnedValue = null;
+            CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.If);
+            // Add block enter / exit commands:
+            AddEnterExitCommands_If(frame);
+
+            // frame.DoExecuteCommands = executeCommands;
+            // frame.DoSaveCommands = saveCommands;
+            if (parentFrame.DoSaveCommands)
+            {
+                frame.DoSaveCommands = true;
+            }
+            if (!parentFrame.DoExecuteCommands)
+            {
+                frame.DoExecuteCommands = false;
+            } else
+            {
+                if (condition)
+                {
+                    frame.DoExecuteCommands = true;
+                    frame.WasBranchAlreadyExecuted = true;
+                }
+                else
+                    frame.DoExecuteCommands = false;
+            }
+            if (frame.LastCommandLine != null)
+                frame.BlockCommanddLine = frame.LastCommandLine;
+        }
+
+        /// <summary>Enters the ElseIf block.</summary>
+        /// <param name="cmdThread">Command thread where commands are executed.</param>
+        /// <param name="condition">Value of the condition of the branch.</param>
+        public virtual void EnterElseIf(CommandThread cmdThread, bool condition)
+        {
+            cmdThread.WasBlockEnterCommand = true;
+            cmdThread.WasBlockExitCommand = true;
+            CommandStackFrame previousFrame = cmdThread.RemoveFrame();
+            CommandStackFrame parentFrame = cmdThread.TopFrame;
+            CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.If);
+            frame.ReturnedValue = previousFrame.ReturnedValue;
+            // Add block enter / exit commands:
+            AddEnterExitCommands_ElseIf(frame);
+            frame.WasBranchAlreadyExecuted = previousFrame.WasBranchAlreadyExecuted;  // transfer this information to the current block
+            if (parentFrame.DoSaveCommands)
+            {
+                frame.DoSaveCommands = true;
+            }
+            if (!parentFrame.DoExecuteCommands)
+            {
+                frame.DoExecuteCommands = false;
+            } else
+            {
+                frame.DoExecuteCommands = false;
+                if (!frame.WasBranchAlreadyExecuted)
+                {
+                    // Any of the related if branches has not been executed yet, check condition and execute if appropriate:
+                    if (condition)
+                    {
+                        frame.DoExecuteCommands = true;
+                        frame.WasBranchAlreadyExecuted = true;
+                    }
+                }
+            }
+            if (frame.LastCommandLine != null)
+                frame.BlockCommanddLine = frame.LastCommandLine;
+        }
+
+        /// <summary>Enters the ElseIf block.</summary>
+        /// <param name="cmdThread">Command thread where commands are executed.</param>
+        public virtual void EnterElse(CommandThread cmdThread)
+        {
+            cmdThread.WasBlockEnterCommand = true;
+            cmdThread.WasBlockExitCommand = true;
+            CommandStackFrame previousFrame = cmdThread.RemoveFrame();
+            CommandStackFrame parentFrame = cmdThread.TopFrame;
+            CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.If);
+            frame.ReturnedValue = previousFrame.ReturnedValue;
+            // Add block enter / exit commands:
+            AddEnterExitCommands_Else(frame);
+            frame.WasBranchAlreadyExecuted = previousFrame.WasBranchAlreadyExecuted;  // transfer this information to the current block
+            if (parentFrame.DoSaveCommands)
+            {
+                frame.DoSaveCommands = true;
+            }
+            if (!parentFrame.DoExecuteCommands)
+            {
+                frame.DoExecuteCommands = false;  // unnecessary? 
+            } else
+            {
+                frame.DoExecuteCommands = false;
+                if (!frame.WasBranchAlreadyExecuted)
+                {
+                    // Any of the related if branches has not been executed yet, execute the else block:
+                    frame.DoExecuteCommands = true;
+                    frame.WasBranchAlreadyExecuted = true;
+                }
+            }
+            if (frame.LastCommandLine != null)
+                frame.BlockCommanddLine = frame.LastCommandLine;
+        }
+
+        /// <summary>Enters the EndIf block.</summary>
+        /// <param name="cmdThread">Command thread where commands are executed.</param>
+        public virtual void ExitIf(CommandThread cmdThread)
+        {
+            cmdThread.WasBlockExitCommand = true;
+            CommandStackFrame frame = cmdThread.TopFrame;
+            CommandStackFrame removedFrame = cmdThread.RemoveFrame();
+            // check:
+            if (!object.ReferenceEquals(frame, removedFrame))
+                throw new InvalidOperationException("Stack frame inconsistency when exiting the block.");
+            cmdThread.TopFrame.ReturnedValue = frame.ReturnedValue;
+        }
+
+
+        /// <summary>Enters the While block.</summary>
+        /// <param name="cmdThread">Command thread where commands are executed.</param>
+        /// <param name="conditionString">Value of the condition of the while loop.</param>
+        public virtual void EnterWhile(CommandThread cmdThread, string conditionString)
+        {
+            cmdThread.WasBlockEnterCommand = true;
+            CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.While);
+            // Add block enter / exit commands:
+            AddEnterExitCommands_While(frame);
+
+            frame.ConditionExpression = conditionString;
+            frame.DoExecuteCommands = false;
+            frame.DoSaveCommands = true;
+            frame.OppressInteractive = true;
+        }
+
+
+        /// <summary>Exits the current JavaScript code block, and sends the JavaScrit code contained within the block 
+        /// (consisting of concatenated command lines entered within the block) to the JavaScript evaluator for execution.
+        /// <para>Must be paired with <see cref="EnterJsBlock"/>.</para>
+        /// <para>JavaScript code is executed in the parent stack frame (i.e. the frame on which code block was called).</para></summary>
+        /// <param name="cmdThread">Command execution thread where execution occurs.</param>
+        public virtual string ExitWhile(CommandThread cmdThread)
+        {
+            cmdThread.WasBlockExitCommand = true;
+            string ret = null;
+            // Concatenate the collected commandlines within the code block for execution with the JavaScript evaluator:
+            CommandStackFrame frame = cmdThread.TopFrame;
+            bool storeDoExecute = frame.DoExecuteCommands;
+            bool storeDoSave = frame.DoSaveCommands;
+            // bool storeOppressInteractive = frame.OppressInteractive;
+            if (storeDoSave)
+            {
+                // Remove the last stored command (because this would be the command that exits this block,
+                // and we only want commands that purely belong to the block):
+                int lastCommand = frame.CommandLines.Count - 1;
+                if (lastCommand >= 0)
+                    frame.CommandLines.RemoveAt(lastCommand);
+            }
+            // Execute stored commands in a loop where condition is checked in each iteration:
+            frame.DoExecuteCommands = true;
+            frame.DoSaveCommands = false;
+            bool condition = false;
+            string conditionString = frame.ConditionExpression;
+            string evaluatedContidion = EvaluateJs(conditionString);
+            bool parsed = Util.TryParseBoolean(evaluatedContidion, ref condition);
+            // Store commands because stack frames may change within the loop:
+            string[] commands = frame.CommandLines.ToArray();
+            int numCommands = commands.Length;
+            while (condition)
+            {
+                for (int i = 0; i < numCommands; ++i)
+                {
+                    ret = Run(cmdThread, commands[i]);
+                }
+                // Re-evaluate condition in order to enter a new loop iteration if this is appropriate:
+                evaluatedContidion = EvaluateJs(conditionString);
+                parsed = Util.TryParseBoolean(evaluatedContidion, ref condition);
+            }
+
+            //Console.WriteLine(Environment.NewLine + "End of the JavaScript code block. " + Environment.NewLine
+            //    + "Code to be executed:" + Environment.NewLine
+            //    + "=====================================================================" + Environment.NewLine
+            //    + codeBlock // + Environment.NewLine
+            //    + "---------------------------------------------------------------------" + Environment.NewLine
+            //    + Environment.NewLine);
+            
+            // Restore saved flags:
+            frame.DoExecuteCommands = storeDoExecute;
+            frame.DoSaveCommands = storeDoSave;
+            frame.OppressInteractive = false;
+
+            // Exit the current stack frame such that code is exected in the containing frame:
+            CommandStackFrame removedFrame = cmdThread.RemoveFrame();
+            // Check stack frames consistency:
+            if (!object.ReferenceEquals(frame, removedFrame))
+                throw new InvalidOperationException("Stack frame inconsistency when exiting the block.");
+            // Save returned value of the completed block to the parent frame (which is now the top frame):
+            cmdThread.TopFrame.ReturnedValue = ret;
+            return ret;
+        }
+
+
 
 
         /// <summary>Parses a command line and extracts arguments from it.
@@ -798,9 +958,10 @@ namespace IG.Lib
 
         /// <summary>Runs all commands that are written in a file.
         /// Each line of a file is interpreted as a single command, consisting of command name followed by arguments.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="inputFilePath">Path to the file containing commands.</param>
         /// <returns>Return value of the last command.</returns>
-        public virtual string RunFile(string filePath)
+        public virtual string RunFile(CommandThread cmdThread, string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
                 throw new ArgumentException("Path of the file to be run by a command-line interpreter is not specified.");
@@ -819,11 +980,12 @@ namespace IG.Lib
                     ++lineNum;
                     try
                     {
-                        if (!string.IsNullOrEmpty(line))
-                        {
-                            string[] commandLineSplit = GetArguments(line);
-                            ret = Run(commandLineSplit);
-                        }
+                        ret = Run(cmdThread, line);
+                        //if (!string.IsNullOrEmpty(line))
+                        //{
+                        //    string[] commandLineSplit = GetArguments(line);
+                        //    ret = Run(cmdThread, commandLineSplit);
+                        //}
                     }
                     catch (Exception ex)
                     {
@@ -854,7 +1016,8 @@ namespace IG.Lib
         }
 
         /// <summary>Reads commands one by one from the standard input and executes them.</summary>
-        public virtual string RunInteractive()
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        public virtual string RunInteractive(CommandThread cmdThread)
         {
             Console.WriteLine();
             Console.WriteLine("Interactive interpreter started.");
@@ -873,7 +1036,8 @@ namespace IG.Lib
                 }
                 Console.Write("Cmd>");
                 line = Console.ReadLine();
-                if (string.IsNullOrEmpty(line))
+                CommandStackFrame frame = cmdThread.TopFrame;  // must be here to capture the current stack frame every time
+                if (string.IsNullOrEmpty(line) && !frame.OppressInteractive)
                 {
                     try
                     {
@@ -908,14 +1072,18 @@ namespace IG.Lib
                 {
                     try
                     {
-                        string[] commandLineSplit = GetArguments(line);
-                        ret = this.Run(commandLineSplit);
-                        string retOutput = ret;
-                        if (retOutput == null)
-                            retOutput = "null";
-                        else if (retOutput == "")
-                            retOutput = "\"\"";
-                        Console.WriteLine("  = " + retOutput);
+                        ret = Run(cmdThread, line);
+                        //string[] commandLineSplit = GetArguments(line);
+                        //ret = this.Run(cmdThread, commandLineSplit);
+                        if (cmdThread.WasCommandExecuted  && !cmdThread.WasBlockEnterCommand)
+                        {
+                            string retOutput = ret;
+                            if (retOutput == null)
+                                retOutput = "null";
+                            else if (retOutput == "")
+                                retOutput = "\"\"";
+                            Console.WriteLine("  = " + retOutput);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -932,7 +1100,7 @@ namespace IG.Lib
 
 
         /// <summary>Executes the specified system commmand and blocks until the execution completes.</summary>
-        /// <param name="AppArguments">Array of strings where the first element is command to be executed, and the subsequent
+        /// <param name="args">Array of strings where the first element is command to be executed, and the subsequent
         /// elements are command-line arguments.</param>
         public static void ExecuteSystemCommand(string[] args)
         {
@@ -949,7 +1117,7 @@ namespace IG.Lib
 
         /// <summary>Executes system command with arguments.</summary>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="AppArguments">Arguments to system command.</param>
+        /// <param name="args">Arguments to system command.</param>
         public static void ExecuteSystemCommand(string command, params string[] args)
         {
             string workingDirectory = null;
@@ -961,7 +1129,7 @@ namespace IG.Lib
             UtilSystem.ExecuteSystemCommand(workingDirectory, asynchronous, useShell,
                 createNoWindow, redirectedOutputPath, redirectStandardOutput,
                 command, args);
-            // UtilSystem.ExecuteSystemCommand(command, AppArguments);
+            // UtilSystem.ExecuteSystemCommand(command, args);
         }
 
         /// <summary>Reads commands with their arguments ont by one from the console and 
@@ -1025,39 +1193,51 @@ namespace IG.Lib
 
         // Expression evaluator:
 
-        protected ExpressionEvaluatorJs _expressionEvaluator;
+        protected ExpressionEvaluatorJs _evalutorJs;
 
         /// <summary>Expression evaluator used by the current </summary>
-        public ExpressionEvaluatorJs ExpressionEvaluator
+        public ExpressionEvaluatorJs EvaluatorJs
         {
             get
             {
                 lock (Lock)
                 {
-                    if (_expressionEvaluator == null)
+                    if (_evalutorJs == null)
                     {
-                        _expressionEvaluator = new ExpressionEvaluatorJs();
+                        _evalutorJs = new ExpressionEvaluatorJs();
                     }
-                    return _expressionEvaluator;
+                    return _evalutorJs;
                 }
             }
             protected set
             {
                 lock (Lock)
                 {
-                    _expressionEvaluator = value;
+                    _evalutorJs = value;
                 }
             }
         }
 
-        /// <summary>Runs interpreter's expression evaluator interactively.</summary>
-        public string ExpressionEvaluatorInteractive()
+        /// <summary>Runs interpreter's JavaScript expression evaluator interactively.</summary>
+        public string EvaluateJsInteractive()
         {
-            ExpressionEvaluator.CommandLine();
+            EvaluatorJs.CommandLine();
             return null;
-        } 
+        }
 
-        public string ExpressionEvaluatorEvaluate(string[] args)
+        /// <summary>Evaluates the specified block of code by the internal JavaScript evaluator.</summary>
+        /// <param name="codeBlock">Block of JavaScript code that is evaluateed (executed).</param>
+        /// <returns>The returned value of the evaluated code (or null if the code does not return anything).</returns>
+        public string EvaluateJs(string codeBlock)
+        { 
+            return EvaluatorJs.Execute(codeBlock); 
+        }
+
+        /// <summary>Evaluates a JavaScript expression obtained by merging elements of the array parameter
+        /// <paramref name="args"/>. These usually represent parts of the code block to evaluate, obtained through
+        /// command arguments or as commandlines read (but not executed) by the commandline interpreter.</summary>
+        /// <param name="args">An array of strings that are concatenated in order to form the evaluated expression.</param>
+        public string EvaluateJs(string[] args)
         {
             StringBuilder sb = new StringBuilder();
             if (args != null)
@@ -1065,7 +1245,7 @@ namespace IG.Lib
                 for (int i = 0; i < args.Length; ++i)
                     sb.Append(args[i] + " ");
             }
-            return ExpressionEvaluator.Execute(sb.ToString());
+            return EvaluateJs(sb.ToString());
         }
 
 
@@ -1076,7 +1256,7 @@ namespace IG.Lib
         {
             lock (Lock)
             {
-                SortedDictionary<string, ApplicationCommandDelegate>.KeyCollection keys = _commands.Keys;
+                SortedDictionary<string, ApplicationCommandDelegateMt>.KeyCollection keys = _commandsMt.Keys;
                 int numKeys = keys.Count;
                 string[] ret = new string[numKeys];
                 int ind = 0;
@@ -1090,49 +1270,76 @@ namespace IG.Lib
         }
 
 
-        /// <summary>Returns true if the interpreter contains a command with specified name, false otherwise.</summary>
-        /// <param name="commandName">Name of the command whose existence is queried.</param>
-        public virtual bool ContainsCommand(string commandName)
+
+        /// <summary>Obtains and stores the delegate that is used for execution of the specified command, and
+        /// retrns an iindicator ehether the command is installed on the interpreter or not.
+        /// <para>Interpreter seinsitivity is handled by the method.</para></summary>
+        /// <param name="commandName">Name of the command for which execution delegate is obtained.</param>
+        /// <param name="appDelegate">Reference to the variable where this function stores the obtained command
+        /// execution delegate.</param>
+        /// <returns>True if the specified command is installed on the current interpreter, false if not.</returns>
+        protected virtual bool GetCommandDelegate(string commandName, ref ApplicationCommandDelegateMt appDelegate)
         {
             lock (Lock)
             {
+                bool ret;
+                appDelegate = null;
                 if (!_caseSensitive)
                     commandName = commandName.ToLower();
-                return _commands.ContainsKey(commandName);
+                ret = _commandsMt.ContainsKey(commandName);
+                if (ret)
+                    appDelegate = _commandsMt[commandName];
+                return ret;
             }
         }
+
+
+        /// <summary>Returns true if the specified command is installed on the interpreter, false if not.
+        /// <para>Case sensitivity of the interpreter is treated appropriately.</para></summary>
+        /// <param name="commandName">Name of the command that is checked.</param>
+        /// <returns>True if the specified command is installed on the current interpreter, false if not.</returns>
+        public bool ContainsCommand(string commandName)
+        {
+            ApplicationCommandDelegateMt appDelegate = null;
+            return GetCommandDelegate(commandName, ref appDelegate);
+        }
+
+
         
         /// <summary>Runs command several times where the first argument is number of repetitions, second argument is command name.
         /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.
         /// <para>The interpreter's output level is used.</para></summary>
-        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
-        public virtual string RunRepeat(string[] args)
+        public virtual string RunRepeat(CommandThread cmdThread, string[] args)
         {
-            return RunRepeat(OutputLevel, args);
+            return RunRepeat(cmdThread, OutputLevel, args);
         }
         
         /// <summary>Runs command several times where the first argument is number of repetitions, second argument is command name.
         /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.
         /// <para>Output level 3 is used, such that all information is output to console.</para></summary>
-        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
-        public virtual string RunRepeatVerbose(string[] args)
+        public virtual string RunRepeatVerbose(CommandThread cmdThread, string[] args)
         {
-            return RunRepeat(3, args);
+            return RunRepeat(cmdThread, 3, args);
         }
         
         /// <summary>Runs command several times where the first argument is number of repetitions, second argument is command name.
         /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.
         /// <para>Output level 0 is used, such that no information is output to console.</para></summary>
-        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
-        public virtual string RunRepeatSilent(string[] args)
+        public virtual string RunRepeatSilent(CommandThread cmdThread, string[] args)
         {
-            return RunRepeat(0, args);
+            return RunRepeat(cmdThread, 0, args);
         }
 
         /// <summary>Runs command several times where the first argument is number of repetitions, second argument is command name.
@@ -1140,9 +1347,10 @@ namespace IG.Lib
         /// for the application delegate are extracted and then passed to the delegate.
         /// <para>Output level is defined by the first argument. Level 0 means no output, level 1 means that summary is written to 
         /// the console, and level e means that a note is printed before and afterr each repetition starts.</para></summary>
-        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
-        public virtual string RunRepeatSpecificOutputLevel(string[] args)
+        public virtual string RunRepeatSpecificOutputLevel(CommandThread cmdThread, string[] args)
         {
             int whichArgLevel = 1;
             int outputLevel = int.Parse(args[whichArgLevel]);
@@ -1153,17 +1361,18 @@ namespace IG.Lib
                 if (i != whichArgLevel)
                     arguments.Add(args[i]);
             }
-            return RunRepeat(outputLevel, arguments.ToArray());
+            return RunRepeat(cmdThread, outputLevel, arguments.ToArray());
         }
 
 
         /// <summary>Runs command several times where the first argument is number of repetitions, second argument is command name.
         /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="outputLevel">Level of output of the command.</param>
-        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
-        public virtual string RunRepeat(int outputLevel, string[] args)
+        public virtual string RunRepeat(CommandThread cmdThread, int outputLevel, string[] args)
         {
             lock (Lock)
             {
@@ -1191,7 +1400,7 @@ namespace IG.Lib
                                 + i + " / " + numRepetitions + " (thread " + threadId + ") ...");
                         }
                         t.Start();
-                        ret = ret + " " + Run(cmdName, cmdArgs);
+                        ret = ret + " " + Run(cmdThread, cmdName, cmdArgs);
                         t.Stop();
                         if (outputLevel >= 2)
                         {
@@ -1217,10 +1426,11 @@ namespace IG.Lib
         /// <summary>Runs command in a try-catch block, where first argument is command name.
         /// Extracts command name and runs the corresponding command delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="outputLevel">Level of output of the command.</param>
-        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
-        public virtual string RunTryCatch(int outputLevel, string[] args)
+        public virtual string RunTryCatch(CommandThread cmdThread, int outputLevel, string[] args)
         {
             lock (Lock)
             {
@@ -1243,7 +1453,7 @@ namespace IG.Lib
                         {
                             Console.WriteLine(Environment.NewLine + "Runninng command " + cmdName  + " in a try-catch block ...");
                         }
-                        ret = Run(cmdName, cmdArgs);
+                        ret = Run(cmdThread, cmdName, cmdArgs);
                         if (outputLevel >= 2)
                         {
                             Console.WriteLine(Environment.NewLine + "... command run successfully." + Environment.NewLine);
@@ -1260,72 +1470,162 @@ namespace IG.Lib
             }
         }
 
+        /// <summary>Runs a set of command by the current interpreter.</summary>
+        /// <param name="cmdThread">Interpreter's thread where commands are executed.</param>
+        /// <param name="commandLines">List of comands, in raw string form, to be executed.</param>
+        public virtual void Run(CommandThread cmdThread, List<string> commandLines)
+        {
+            if (commandLines != null)
+            {
+                int num = commandLines.Count;
+                for (int i = 0; i < num; ++i)
+                    Run(cmdThread, commandLines[i]);
+            }
+            throw new NotImplementedException();
+        }
+
+        
+        ///// <summary>Runs the specified command with specified name, installed on the current application object, without any
+        ///// modifications of the command arguments.</summary>
+        ///// <param name="commandName">Command name.</param>
+        ///// <param name="commandArguments">Command arguments.</param>
+        ///// <remarks>This method should not be overriden, but the <see cref="Run(CommandThread, string, string[])"/> method can be, e.g. in order to 
+        ///// perform some argument or command name transformations.</remarks>
+        //public string RunWithoutModificationsMainThread(string commandName, params string[] commandArguments)
+        //{
+        //    return RunWithoutModifications(this.MainThread, commandName, commandArguments);
+        //}
+
 
         /// <summary>Runs the specified command with specified name, installed on the current application object, without any
         /// modifications of the command arguments.</summary>
+        /// <param name="cmdThread">Interpreter's command thread where command is executed.</param>
         /// <param name="commandName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
-        /// <remarks>This method should not be overriden, but the <see cref="Run(string, string[])"/> method can be, e.g. in order to 
+        /// <remarks>This method should not be overriden, but the <see cref="Run(CommandThread, string, string[])"/> method can be, e.g. in order to 
         /// perform some argument or command name transformations.</remarks>
-        public string RunWithoutModifications(string commandName, params string[] commandArguments)
+        public string RunWithoutModifications(CommandThread cmdThread, string commandName, params string[] commandArguments)
         {
-            ApplicationCommandDelegate appDelegate = null;
-            lock (Lock)
+            string ret = null;
+            cmdThread.WasCommandExecuted = false;
+            CommandStackFrame frame = cmdThread.TopFrame;
+            bool doExecuteFurther = true;
+            if (!frame.DoExecuteCommands)
             {
-                if (string.IsNullOrEmpty(commandName))
-                    throw new ArgumentException("Command name is not specified.");
-                // Perform substitution of variables with their values in command name and argumnets:
-                commandName = SubstituteVariableReference(commandName);
-                bool substituteArgs = false;
-                if (commandArguments != null)
+                // Execution is switched off. Control will still be passed to further evaluation function in the case
+                // that commandline can represent one of the possible block enter or exit commands for the current
+                // kind of the code block. Thi is in order to execute the appropriate block exit command, even
+                // if the command execution is crrently switched off.
+                doExecuteFurther = false;
+                // Check if the command could eventually represent a block enter or block exit command (without side effects):
+                if (frame.CheckForBlockEnterOrExitCommand(commandName, justCheck: true, isOnlyCommandName: true))
                 {
-                    for (int i = 0; i < commandArguments.Length; ++i)
+                    // Yes, now check for real (with possible side effects on frame), but only if the command is actually
+                    // installed on the interpreter (this also safeguards for mistakes that may occur due to case sensitivity
+                    // of the interpreter):
+                    if (this.ContainsCommand(commandName))
                     {
-                        if (IsVariableReference(commandArguments[i]))
-                        {
-                            substituteArgs = true;
-                            break;
-                        }
-                    }
-                    if (substituteArgs)
-                    {
-                        string[] argsSubstituted = new string[commandArguments.Length];
-                        for (int i = 0; i < commandArguments.Length; ++i)
-                            argsSubstituted[i] = SubstituteVariableReference(commandArguments[i]);
-                        commandArguments = argsSubstituted;
+                        // Test condition before CheckForBlockEnterOrExitCommand, because that one will already
+                        // reduce the level! We still want to have the same level as before.
+                        bool isBlockExitQuiet = frame.IsBlockExitQuietCommand(commandName, isOnlyCommandName: true);
+                        if (frame.CheckForBlockEnterOrExitCommand(commandName, justCheck: false, isOnlyCommandName: true))
+                            if (isBlockExitQuiet)
+                            {
+                                // Command will be executed in spite of the fact that execution is switched off; This is because
+                                // the command represents the exit block command for the bolck that actually switched off execution.
+                                doExecuteFurther = true;
+                            }
                     }
                 }
-                if (!_caseSensitive)
-                    commandName = commandName.ToLower();
-                if (!_commands.ContainsKey(commandName))
-                    throw new ArgumentException("Interpreter does not contain the following command: \"" + commandName + "\".");
-                appDelegate = _commands[commandName];
-            }  // lock
-            if (appDelegate == null)
-            {
-                throw new InvalidOperationException("Can not find command named " + commandName + ".");
             }
-            else
+            if (doExecuteFurther)  
             {
-                return appDelegate(this, commandName, commandArguments);
+                ApplicationCommandDelegateMt appDelegate = null;
+                lock (Lock)
+                {
+                    //if (string.IsNullOrEmpty(commandName))
+                    //    throw new ArgumentException("Command name is not specified.");
+                    // Perform substitution of variables with their values in command name and argumnets:
+                    commandName = SubstituteVariableOrExpressionReference(MainThread, commandName);
+                    if (commandArguments != null)
+                    {
+                        for (int i = 0; i < commandArguments.Length; ++i)
+                        {
+                            commandArguments[i] = SubstituteVariableOrExpressionReference(cmdThread, commandArguments[i]);
+                        }
+                    }
+
+
+                    //{
+                    //    bool substituteArgs = false;
+                    //    if (commandArguments != null)
+                    //    {
+                    //        for (int i = 0; i < commandArguments.Length; ++i)
+                    //        {
+                    //            if (IsVariableReference(MainThread, commandArguments[i]))
+                    //            {
+                    //                substituteArgs = true;
+                    //                break;
+                    //            }
+                    //        }
+                    //        if (substituteArgs)
+                    //        {
+                    //            string[] argsSubstituted = new string[commandArguments.Length];
+                    //            for (int i = 0; i < commandArguments.Length; ++i)
+                    //                argsSubstituted[i] = SubstituteVariableReference(MainThread, commandArguments[i]);
+                    //            commandArguments = argsSubstituted;
+                    //        }
+                    //    }
+                    //}
+
+                    if (string.IsNullOrEmpty(commandName))
+                    {
+                        // Empty string will just be ignored.
+                    }
+                    else
+                    {
+                        bool containsCommand = GetCommandDelegate(commandName, ref appDelegate);
+                        if (!containsCommand)
+                            throw new ArgumentException("Interpreter does not contain the following command: \"" + commandName + "\".");
+                        if (appDelegate == null)
+                        {
+                            throw new InvalidOperationException("Command not properly installed on the interpreter: \"" + commandName + "\".");
+                        }
+                        else
+                        {
+                            ret = appDelegate(cmdThread, commandName, commandArguments);
+                            cmdThread.WasCommandExecuted = true;
+                        }
+                    }
+                }  // lock
             }
+            frame.ReturnedValue = ret;
+            return ret;
         }
 
 
+
+
+        // TODO:
+        // Check if you can remove the Run command below, and replace it by the called command, where 
+        // simultaneously the called command is renamed to "Run" such that all the interfaces remaiin satisfied.
+
         /// <summary>Runs the specified command with specified name, installed on the current application object.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="commandName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
-        public virtual string Run(string commandName, params string[] commandArguments)
+        public virtual string Run(CommandThread cmdThread, string commandName, params string[] commandArguments)
         {
-            return RunWithoutModifications(commandName, commandArguments);
+            return RunWithoutModifications(cmdThread, commandName, commandArguments);
         }
 
         /// <summary>Runs command where the first argument is command name.
         /// Extracts command name and runs the corresponding command delegate.Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.</summary>
-        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
-        public string Run(string[] args)
+        public string Run(CommandThread cmdThread, string[] args)
         {
             if (args == null)
                 throw new ArgumentNullException("Commandline is not specified (null reference);");
@@ -1339,8 +1639,52 @@ namespace IG.Lib
                 {
                     cmdArgs[i - 1] = args[i];
                 }
-                return Run(cmdName, cmdArgs);
+                return RunWithoutModifications(cmdThread, cmdName, cmdArgs);
             }
+        }
+
+        protected string [] _emptyCommandLine = { null };
+
+
+        protected string [] EmptyCommandLine { get { return _emptyCommandLine; } }
+
+        /// <summary>Runs command that is specified as a single string, composed of command name and its argumens.
+        /// Splits the command and runs it.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="commandLine">Commandline - string containing command and its arguments.</param>
+        public string Run(CommandThread cmdThread, string commandLine)
+        {
+            string ret = null;
+            cmdThread.WasCommandExecuted = false;
+            CommandStackFrame frame = cmdThread.TopFrame;
+            frame.LastCommandLine = commandLine;
+            if (frame.DoSaveCommands)
+                frame.CommandLines.Add(commandLine);
+            bool doExecuteFurther = true;
+            if (!frame.DoExecuteCommands)
+            {
+                // Execution is switched off. Control will still be passed to further evaluation function in the case
+                // that commandline can represent one of the possible block enter or exit commands for the current
+                // kind of the code block. Thi is in order to execute the appropriate block exit command, even
+                // if the command execution is crrently switched off.
+                doExecuteFurther = false;
+                if (frame.CheckForBlockEnterOrExitCommand(commandLine, justCheck: true, isOnlyCommandName: false))
+                    doExecuteFurther = true;
+            }
+            if (doExecuteFurther)  // don't bother if execution is switched off!
+            {
+                if (!string.IsNullOrEmpty(commandLine))
+                {
+                    string[] commandLineSplit;
+                    try
+                    {
+                        commandLineSplit = GetArguments(commandLine);
+                    }
+                    catch { commandLineSplit = EmptyCommandLine; }
+                    ret = Run(cmdThread, commandLineSplit);
+                }
+            }
+            return ret;
         }
 
         #region ParallelExecution
@@ -1732,9 +2076,11 @@ namespace IG.Lib
         /// <summary>Runs a command asynchronously where the first argument is command name.
         /// Extracts command name and runs the corresponding application delegate. Before running it, arguments
         /// for the application delegate are extracted and then passed to the delegate.</summary>
-        /// <param name="AppArguments">Command arguments where the first argument is command name. The rest of the arguments
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="args">Command arguments where the first argument is command name. The rest of the arguments
         /// are collected and passed to the command delegate.</param>
-        public virtual string RunAsync(string[] args)
+        public virtual string RunAsync(CommandThread cmdThread, 
+            string[] args)
         {
             lock (Lock)
             {
@@ -1752,48 +2098,61 @@ namespace IG.Lib
                     {
                         cmdArgs[i - 1] = args[i];
                     }
-                    return RunAsync(cmdName, cmdArgs);
+                    return RunAsync(cmdThread, cmdName, cmdArgs);
                 }
             }
         }
 
 
         /// <summary>Runs the command with specified name (installed on the current interpreter object) asynchronously.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="commandName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
         /// <returns>ID of asynchronous run used to query results and whether command has completed, or -1 if a call was not
         /// launched (actually, an exception would be thrown in this case).</returns>
-        public virtual string RunAsync(string commandName, params string[] commandArguments)
+        public virtual string RunAsync(CommandThread cmdThread, 
+            string commandName, params string[] commandArguments)
         {
+            // TODO: use normal Run() instead of directly the command delegate!
+            // TODO: Copy stack frames to the execution environment
+
+
             int asyncId = -1;
-            ApplicationCommandDelegate appDelegate = null;
+            ApplicationCommandDelegateMt appDelegate = null;
             lock (Lock)
             {
-                if (string.IsNullOrEmpty(commandName))
-                    throw new ArgumentException("Command name is not specified.");
-                // Perform substitution of variables with their values in command name and argumnets:
-                commandName = SubstituteVariableReference(commandName);
-                bool substituteArgs = false;
+                //if (string.IsNullOrEmpty(commandName))
+                //    throw new ArgumentException("Command name is not specified.");
+                // Perform substitution of variables and calc. expressions with their values in command name and argumnets:
+                commandName = SubstituteVariableOrExpressionReference(cmdThread, commandName);
                 for (int i = 0; i < commandArguments.Length; ++i)
                 {
-                    if (IsVariableReference(commandArguments[i]))
-                    {
-                        substituteArgs = true;
-                        break;
-                    }
+                    commandArguments[i] = SubstituteVariableOrExpressionReference(cmdThread, commandArguments[i]);
                 }
-                if (substituteArgs)
-                {
-                    string[] argsSubstituted = new string[commandArguments.Length];
-                    for (int i = 0; i < commandArguments.Length; ++i)
-                        argsSubstituted[i] = SubstituteVariableReference(commandArguments[i]);
-                    commandArguments = argsSubstituted;
-                }
+
+                //{
+                //    bool substituteArgs = false;
+                //    for (int i = 0; i < commandArguments.Length; ++i)
+                //    {
+                //        if (IsVariableReference(cmdThread, commandArguments[i]))
+                //        {
+                //            substituteArgs = true;
+                //            break;
+                //        }
+                //    }
+                //    if (substituteArgs)
+                //    {
+                //        string[] argsSubstituted = new string[commandArguments.Length];
+                //        for (int i = 0; i < commandArguments.Length; ++i)
+                //            argsSubstituted[i] = SubstituteVariableOrExpressionReference(cmdThread, commandArguments[i]);
+                //        commandArguments = argsSubstituted;
+                //    }
+                //}
                 if (!_caseSensitive)
                     commandName = commandName.ToLower();
-                if (!_commands.ContainsKey(commandName))
+                if (!_commandsMt.ContainsKey(commandName))
                     throw new ArgumentException("Interpreter does not contain the following command: " + commandName + ".");
-                appDelegate = _commands[commandName];
+                appDelegate = _commandsMt[commandName];
                 if (appDelegate == null)
                 {
                     throw new InvalidOperationException("Can not find command named " + commandName + ".");
@@ -1801,7 +2160,7 @@ namespace IG.Lib
                 else
                 {
                     // return appDelegate(this, commandName, commandArguments);
-                    IAsyncResult result = appDelegate.BeginInvoke(this, commandName, commandArguments, AsyncRunCallback, asyncId);
+                    IAsyncResult result = appDelegate.BeginInvoke(cmdThread, commandName, commandArguments, AsyncRunCallback, asyncId);
                     AsyncCommandResults.Add(result);
                     asyncId = AsyncCommandResults.Count - 1;
                     return asyncId.ToString();
@@ -1896,7 +2255,7 @@ namespace IG.Lib
                     }
                     else
                     {
-                        ApplicationCommandDelegate caller = (ApplicationCommandDelegate)result.AsyncDelegate;  // retrieve the delegate
+                        ApplicationCommandDelegateMt caller = (ApplicationCommandDelegateMt)result.AsyncDelegate;  // retrieve the delegate
                         // Call EndInvoke to retrieve the results.
                         commandResult = caller.EndInvoke(result);
                         if (OutputLevel > 0)
@@ -1937,7 +2296,7 @@ namespace IG.Lib
                 {
                     AsyncResult result = (AsyncResult)ar;
                     Id = (int)ar.AsyncState;
-                    ApplicationCommandDelegate caller = (ApplicationCommandDelegate)result.AsyncDelegate;  // retrieve the delegate
+                    ApplicationCommandDelegateMt caller = (ApplicationCommandDelegateMt)result.AsyncDelegate;  // retrieve the delegate
                     string returnValue = null;
                     // Call EndInvoke to retrieve the results.
                     if (AsyncEndInvokeInCallback)
@@ -1972,10 +2331,58 @@ namespace IG.Lib
         #endregion AsynchronousExecution
 
 
+        List<CommandAdapterSingleThreaded> _stAdapters = new List<CommandAdapterSingleThreaded>();
+
         /// <summary>Adds command with the specified name.</summary>
         /// <param name="commandName">Name of the commant.</param>
         /// <param name="commandDelegate">Delegate that will be used to execute the command.</param>
+        /// <remarks>After cleaning is finished, this method can be removed (also from the interface) because ther will be 
+        /// no command functions that still use the old signature (with interpreter rather than thread as the first argument).</remarks>
+        [Obsolete("Use the command that uses different function prototype (ApplicationCommandDelegate) where the first argument is CommandThread rather than Interpreter.")]
         public virtual void AddCommand(string commandName, ApplicationCommandDelegate commandDelegate)
+        {
+            CommandAdapterSingleThreaded atapterObj = new CommandAdapterSingleThreaded(commandDelegate, null);
+            _stAdapters.Add(atapterObj);
+            AddCommandMt(commandName, atapterObj.MultiThreadedApplication);
+
+
+            //lock (Lock)
+            //{
+            //    if (string.IsNullOrEmpty(commandName))
+            //        throw new ArgumentException("Command name not specified.");
+            //    if (!_caseSensitive)
+            //        commandName = commandName.ToLower();
+            //    if (WarnCommandReplacement) if (_commandsMt.ContainsKey(commandName))
+            //        {
+            //            Console.WriteLine();
+            //            Console.WriteLine("WARNING: Interpreter command redefined: " + commandName + ".");
+            //            Console.WriteLine();
+            //        }
+            //    _commandsMt[commandName] = commandDelegate;
+            //    //if (_commandsMt.ContainsKey(commandName))
+            //    //    _commandsMt.Remove(commandName);
+            //    //_commandsMt.Add(commandName, commandDelegate);
+            //}
+        }
+
+        
+        /// <summary>Adds command with the specified name.</summary>
+        /// <param name="commandName">Name of the commant.</param>
+        /// <param name="commandDelegate">Delegate that will be used to execute the command.</param>
+        /// <remarks>WARNING: This should be removed later. It is only here such that when the signature of 
+        /// the old command functions is changed, the AddCommand can act on them, so no new errors need
+        /// to be corrected. In the future, this shoud be removed, and AddCommandMt should be renamed to
+        /// AddCommand, and the old obsolete AddCommand should be also removed.</remarks>
+        /// [Obsolete "Converge both methods with the same signature to only one method - AddCommandMt should be used and renamed."]
+        public virtual void AddCommand(string commandName, ApplicationCommandDelegateMt commandDelegate)
+        {
+            AddCommandMt(commandName, commandDelegate);
+        }
+
+        /// <summary>Adds command with the specified name.</summary>
+        /// <param name="commandName">Name of the commant.</param>
+        /// <param name="commandDelegate">Delegate that will be used to execute the command.</param>
+        public virtual void AddCommandMt(string commandName, ApplicationCommandDelegateMt commandDelegate)
         {
             lock (Lock)
             {
@@ -1983,19 +2390,18 @@ namespace IG.Lib
                     throw new ArgumentException("Command name not specified.");
                 if (!_caseSensitive)
                     commandName = commandName.ToLower();
-                if (WarnCommandReplacement) if (_commands.ContainsKey(commandName))
+                if (WarnCommandReplacement) if (_commandsMt.ContainsKey(commandName))
                     {
                         Console.WriteLine();
                         Console.WriteLine("WARNING: Interpreter command redefined: " + commandName + ".");
                         Console.WriteLine();
                     }
-                _commands[commandName] = commandDelegate;
-                //if (_commands.ContainsKey(commandName))
-                //    _commands.Remove(commandName);
-                //_commands.Add(commandName, commandDelegate);
+                _commandsMt[commandName] = commandDelegate;
+                //if (_commandsMt.ContainsKey(commandName))
+                //    _commandsMt.Remove(commandName);
+                //_commandsMt.Add(commandName, commandDelegate);
             }
         }
-
 
         /// <summary>Removes the command with the specified name.</summary>
         /// <param name="commandName">Name of the commad.</param>
@@ -2007,8 +2413,8 @@ namespace IG.Lib
                     throw new ArgumentException("Application name not specified.");
                 if (!_caseSensitive)
                     commandName = commandName.ToLower();
-                if (_commands.ContainsKey(commandName))
-                    _commands.Remove(commandName);
+                if (_commandsMt.ContainsKey(commandName))
+                    _commandsMt.Remove(commandName);
             }
         }
 
@@ -2018,7 +2424,7 @@ namespace IG.Lib
         {
             lock (Lock)
             {
-                _commands.Clear();
+                _commandsMt.Clear();
             }
         }
 
@@ -2063,7 +2469,7 @@ namespace IG.Lib
                         initMethod(moduleName, this);
                         _loadedModules.Add(moduleName);  // mark module as loaded
                         // Add a new command that can be used for verification if module is installed.
-                        AddCommand(ModuleTestCommandName(moduleName), CmdModuleTestCommand);
+                        AddCommandMt(ModuleTestCommandName(moduleName), CmdModuleTestCommand);
 
                     }
                 }
@@ -2168,7 +2574,7 @@ namespace IG.Lib
             LoadableScriptInterpreter.AddCommandFromFile(newCommandName, scriptFilePath, initArgs);
             // Add new command with the same name on the current interpreter, such that command will execute
             // teh dynamically loaded command on LoadableScriptInterpreter when executed:
-            this.AddCommand(newCommandName, CmdRunLoadedScript);
+            this.AddCommandMt(newCommandName, CmdRunLoadedScript);
         }
 
         /// <summary>Executes the specified command that has been dynamically loaded form a script.</summary>
@@ -2203,7 +2609,7 @@ namespace IG.Lib
         #region CommandMethods
 
         /// <summary>Command.
-        /// Sets the specified varuable to the specified value. <br/>
+        /// Sets the specified interpreter variable to the specified value. <br/>
         /// Usage: <br/>
         /// 1. Set the variable to the specified value:
         ///   SetVar varName value <br/>
@@ -2217,12 +2623,17 @@ namespace IG.Lib
         ///     arg2: the second argument to the command (if any). <br/>
         ///     etc. <br/>
         /// </summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <param name="setCommandResult">If true then in any case variable value is set to the result of 
+        /// an interpreter command (ven if command has no arguments). If false, then the first argument
+        /// after variable name is considered an interpreter command only if additional arguments follow, 
+        /// otherwise it is considered as a literal value that is assigned to the variable.</param>
         /// <returns>Value of the variable after setting.</returns>
-        protected virtual string CmdSetVariable(ICommandLineApplicationInterpreter interpreter,
-            string cmdName, string[] args)
+        protected virtual string CmdSetVariableBase(CommandThread cmdThread, 
+            string cmdName, string[] args, bool setCommandResult)
         {
             string ret = null;
             if (args != null)
@@ -2230,10 +2641,24 @@ namespace IG.Lib
                     if (args[0] == "?")
                     {
                         string executableName = UtilSystem.GetCurrentProcessExecutableName();
-                        Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + " varName value : sets the variable varName to value.");
-                        Console.WriteLine();
-                        return null;
+                        if (setCommandResult)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine(executableName + " " + cmdName + " varName cmd <arg1 arg2 arg3...> : sets the variable varName to the " + Environment.NewLine
+                            + "  result of the command cmd with arguments arg1, arg2, etc. Arguments are OPTIONAL.");
+                            Console.WriteLine();
+                            return null;
+                        }
+                        else
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine(executableName + " " + cmdName + " varName value : sets the variable varName to value.");
+                            Console.WriteLine();
+                            Console.WriteLine(executableName + " " + cmdName + " varName cmd arg1 <arg2 arg3...> : sets the variable varName to the " + Environment.NewLine
+                            + "  result of the command cmd with arguments arg1, arg2, etc. There must be AT LEAST ONE ARGUMENT.");
+                            Console.WriteLine();
+                            return null;
+                        }
                     }
             if (args == null)
                 throw new ArgumentException(cmdName + " : Requires at lest two arguments.");
@@ -2243,29 +2668,76 @@ namespace IG.Lib
             {
                 string varName = null, value = null;
                 varName = args[0];
-                if (args.Length == 2)
+                if (args.Length == 2 && !setCommandResult)
                     value = args[1];
                 else
-                {  // AppArguments.Length>2
+                {  // args.Length>2
                     string cmd = args[1];
                     string[] argsCmd = new string[args.Length - 2];
                     for (int i = 2; i < args.Length; ++i)
                         argsCmd[i - 2] = args[i];
-                    value = Run(cmd, argsCmd);
+                    value = Run(cmdThread, cmd, argsCmd);
                 }
-                ret = SetVariable(varName, value);
+                ret = SetVariable(cmdThread, varName, value);
             }
             return ret;
         }
 
         /// <summary>Command.
-        /// Gets the specified varuable and returns its value (or null if the variable does not exist).
-        /// Variable name must be the only argument of the command.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// Sets the specified interpreter variable to the specified value. <br/>
+        /// Usage: <br/>
+        /// 1. Set the variable to the specified value:
+        ///   SetVar varName value <br/>
+        ///     varName: name of the variable to be set. <br/>
+        ///     value: value that is assigned to the variable. <br/>
+        /// 2. Set the variable to the return value of the specified command: <br/>
+        ///   SetVar varName command arg1 arg2 ... <br/>
+        ///     varName: name of the variable to be set. <br/>
+        ///     command: command whose return value is the value to be assigned to the variable. <br/>
+        ///     arg1: the first argument to the command (if any). <br/>
+        ///     arg2: the second argument to the command (if any). <br/>
+        ///     etc. <br/>
+        /// </summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Value of the variable after setting.</returns>
+        protected virtual string CmdSetVariable(CommandThread cmdThread, 
+            string cmdName, string[] args)
+        {
+            return CmdSetVariableBase(cmdThread, cmdName, args, false /* setCommandResult */);
+
+        }
+
+        /// <summary>Command.
+        /// Sets the specified interpreter variable to the result of the command (with arguments) that follow variable name. <br/>
+        /// Usage: <br/>
+        /// 2. Set the variable to the return value of the specified command: <br/>
+        ///   SetVar varName command [arg1 [arg2] ...] <br/>
+        ///     varName: name of the variable to be set. <br/>
+        ///     command: command whose return value is the value to be assigned to the variable. <br/>
+        ///     arg1: the first argument to the command (if any). <br/>
+        ///     arg2: the second argument to the command (if any). <br/>
+        ///     etc. <br/>
+        /// </summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Value of the variable after setting.</returns>
+        protected virtual string CmdSetVariableToCommandResult(CommandThread cmdThread, 
+            string cmdName, string[] args)
+        {
+            return CmdSetVariableBase(cmdThread, cmdName, args, true /* setCommandResult */);
+        }
+
+        /// <summary>Command.
+        /// Gets the specified variable and returns its value (or null if the variable does not exist).
+        /// Variable name must be the only argument of the command.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Value of the variable.</returns>
-        protected virtual string CmdGetVariable(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdGetVariable(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2288,19 +2760,19 @@ namespace IG.Lib
             else
             {
                 string varName = args[0];
-                ret = GetVariable(varName);
+                ret = GetVariable(cmdThread, varName);
             }
             return ret;
         }
 
         /// <summary>Command.
-        /// Clears the specified varuable.
+        /// Clears the specified variable.
         /// Variable name must be the only argument of the command.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
-        protected virtual string CmdClearVariable(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdClearVariable(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2323,19 +2795,19 @@ namespace IG.Lib
             else
             {
                 string varName = args[0];
-                ret = ClearVariable(varName);
+                ret = ClearVariable(cmdThread, varName);
             }
             return ret;
         }
 
         /// <summary>Command.
-        /// Prints the specified varuable.
+        /// Prints the specified variable.
         /// Variable name must be the only argument of the command.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
-        protected virtual string CmdPrintVariable(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdPrintVariable(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2356,21 +2828,523 @@ namespace IG.Lib
             else
             {
                 string varName = args[0];
-                ret = PrintVariable(varName);
+                ret = PrintVariable(cmdThread, varName);
+            }
+            return ret;
+        }
+
+
+        // FLOW OF CONTROL:
+
+
+        /// <summary>Command.
+        /// Prints the specified variable.
+        /// Variable name must be the only argument of the command.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdInterpreterInfo(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <threadInfo localVar globalVar> : prints the variable varName." + Environment.NewLine
+                            + "  threatInfo: whether information about the running thread is printed (default true)." + Environment.NewLine
+                            + "  localVar: whether information about local varables is printed (default true)." + Environment.NewLine
+                            + "  globalVar: whether information about global variables is printed (default true).");
+                        Console.WriteLine();
+                        return null;
+                    }
+            bool threadInfo = true, localVar = true, globalVar = true;
+            if (args != null)
+            {
+                bool parsed;
+                if (args.Length >= 1)
+                {
+                    parsed = Util.TryParseBoolean(args[0], ref threadInfo);
+                    if (!parsed)
+                        throw new ArgumentException("Argument can not be converted to boolean: " + args[0]);
+                    if (args.Length >= 2)
+                    {
+                        parsed = Util.TryParseBoolean(args[1], ref localVar);
+                        if (!parsed)
+                            throw new ArgumentException("Argument can not be converted to boolean: " + args[1]);
+                        if (args.Length >= 3)
+                        {
+                            parsed = Util.TryParseBoolean(args[2], ref globalVar);
+                            if (!parsed)
+                                throw new ArgumentException("Argument can not be converted to boolean: " + args[2]);
+                        }
+                    }
+                }
+            }
+            ret = cmdThread.TopFrame.ToString(includeThreadInfo: threadInfo, includeLocalVariables: localVar, 
+                includeGlobalVariables: globalVar); 
+            return ret;
+        }
+
+
+        /// <summary>Command.
+        /// Enters a new command block.
+        /// Optional arguments specify whether commands in the block are readily executed, and whether they are saved
+        /// (for later execution or inspection).</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdBlock(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <executeCmds saveCmds>: Enters a new code block. " + Environment.NewLine
+                            + "  executeCmds: whether to immediately execute commands in the block (default true). " + Environment.NewLine
+                            + "  saveCmds: whether to save commands in the block (default true if executeCmds is false). ");
+                        Console.WriteLine();
+                        return null;
+                    }
+            bool executeCommands = true;
+            bool saveCommands = true;
+            if (args != null)
+            {
+                bool parsed;
+                if (args.Length >= 1)
+                {
+                    parsed = Util.TryParseBoolean(args[0], ref executeCommands);
+                    if (!parsed)
+                        throw new ArgumentException("Argument can not be converted to boolean: " + args[0]);
+                    if (args.Length >= 2)
+                    {
+                        parsed = Util.TryParseBoolean(args[1], ref saveCommands);
+                        if (!parsed)
+                            throw new ArgumentException("Argument can not be converted to boolean: " + args[1]);
+                    }
+                }
+            }
+            EnterBlock(cmdThread, executeCommands, saveCommands);
+            return null;
+        }
+
+        /// <summary>Command.
+        /// Exits the current command block. Exception is thrown if we are not currently within a plain code block.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdEndBlock(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + ": Exits code block. ");
+                        Console.WriteLine();
+                        return null;
+                    }
+            //bool executeCommands = true;
+            //bool saveCommands = true;
+            if (args != null)
+            {
+                bool parsed;
+                if (args.Length >= 1)
+                    throw new Exception("Command " + cmdName + " can not have arguments.");
+            }
+            ExitBlock(cmdThread);
+            return ret;
+        }
+
+
+        /// <summary>Command.
+        /// Enters a new block of JavaScript expressions that are evaluated. All lines within the block are treated as part
+        /// of JavaScript code block, which is evaluated by the interpreter's JavaScript evaluator when the end of the block
+        /// is reached.
+        /// <para>A new command stack frame is entered only when execution is active, such that lines of JavaScript code are 
+        /// collected on a separate stack frame and do not in</para></summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdCalcJsBlock(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <executeCmds saveCmds>: Enters a new code block. " + Environment.NewLine
+                            + "  executeCmds: whether to immediately execute commands in the block (default true). " + Environment.NewLine
+                            + "  saveCmds: whether to save commands in the block (default true if executeCmds is false). ");
+                        Console.WriteLine();
+                        return null;
+                    }
+            bool executeCommands = true;
+            bool saveCommands = true;
+            if (args != null)
+            {
+                bool parsed;
+                if (args.Length >= 1)
+                {
+                    parsed = Util.TryParseBoolean(args[0], ref executeCommands);
+                    if (!parsed)
+                        throw new ArgumentException("Argument can not be converted to boolean: " + args[0]);
+                    if (args.Length >= 2)
+                    {
+                        parsed = Util.TryParseBoolean(args[1], ref saveCommands);
+                        if (!parsed)
+                            throw new ArgumentException("Argument can not be converted to boolean: " + args[1]);
+                    }
+                }
+            }
+            EnterJsBlock(cmdThread);
+            return ret;
+        }
+
+        /// <summary>Command.
+        /// Exits the current JavaScript expression block. If execution is active then the block of commands is sent to the
+        /// internal JavaScript evaluator for execution.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdEndCalcJsBlock(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + ": Enters a JavaScript code block and executes the code." );
+                        Console.WriteLine();
+                        return null;
+                    }
+            //bool executeCommands = true;
+            //bool saveCommands = true;
+            if (args != null)
+            {
+                bool parsed;
+                if (args.Length >= 1)
+                    throw new Exception("Command " + cmdName + " can not have arguments.");
+            }
+            ret = ExitJsBlock(cmdThread);
+            return null;
+        }
+
+
+
+        /// <summary>Command.
+        /// Prints the specified variable.
+        /// Variable name must be the only argument of the command.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdIf(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " condition : executes a branch if condition is true.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            if (args == null)
+                throw new ArgumentException(cmdName + " : Requires condition.");
+            else if (args.Length < 1)
+                throw new ArgumentException(cmdName + " : invalid number of arguments, should be at least 1 (condition not specified).");
+            else
+            {
+                bool condition = false;
+                string evaluatedExpression = EvaluateJs(args);
+                bool parsed = Util.TryParseBoolean(evaluatedExpression, ref condition);
+                if (!parsed)
+                    throw new InvalidOperationException(cmdName + ": Condition did not evaluate to boolean. Value: "
+                        + evaluatedExpression + Environment.NewLine
+                        + "  Command: " + cmdThread.TopFrame.LastCommandLine);
+                EnterIf(cmdThread, condition);
             }
             return ret;
         }
 
         /// <summary>Command.
-        /// Prints concatenated argument with spaces between them.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// Prints the specified variable.
+        /// Variable name must be the only argument of the command.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
-        protected virtual string CmdWriteLine(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdElseIf(CommandThread cmdThread,
             string cmdName, string[] args)
         {
-            string ret = CmdWrite(interpreter, cmdName, args);
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " condition : executes a branch if condition is true and " + Environment.NewLine
+                            + "  none of the previous if-else branches haven't been executed.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            if (args == null)
+                throw new ArgumentException(cmdName + " : Requires condition.");
+            else if (args.Length < 1)
+                throw new ArgumentException(cmdName + " : invalid number of arguments, should be at least 1 (condition not specified).");
+            else
+            {
+                bool condition = false;
+                string evaluatedExpression = EvaluateJs(args);
+                bool parsed = Util.TryParseBoolean(evaluatedExpression, ref condition);
+                if (!parsed)
+                    throw new InvalidOperationException(cmdName + ": Condition did not evaluate to boolean. Value: "
+                        + evaluatedExpression + Environment.NewLine
+                        + "  Command: " + cmdThread.TopFrame.LastCommandLine);
+                EnterElseIf(cmdThread, condition);
+            }
+            return ret;
+        }
+
+
+        /// <summary>Command.
+        /// Prints the specified variable.
+        /// Variable name must be the only argument of the command.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdElse(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + ": executes a branch if  " + Environment.NewLine
+                            + "  none of the previous if-else branches haven't been executed.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            if (args != null)
+            {
+                if (args.Length > 0)
+                    throw new ArgumentException(cmdName + " : Else should have no arguments.");
+            }
+            EnterElse(cmdThread);
+            return ret;
+        }
+
+
+        /// <summary>Command.
+        /// Ends the If/ElseIf/Else block.
+        /// Variable name must be the only argument of the command.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdEndIf(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + ": ends the if branch.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            if (args != null)
+            {
+                if (args.Length > 0)
+                    throw new ArgumentException(cmdName + " : Else should have no arguments.");
+            }
+            ExitIf(cmdThread);
+            return ret;
+        }
+
+
+
+        /// <summary>Command.
+        /// Enters the while block. Arguments represent loop contioton that is evaluated at the begining of each iteration.
+        /// Variable name must be the only argument of the command.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdWhile(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " condition : repeats the block as long as condition evaluates to true.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            if (args == null)
+                throw new ArgumentException(cmdName + " : Requires condition.");
+            else if (args.Length < 1)
+                throw new ArgumentException(cmdName + " : invalid number of arguments, should be at least 1 (condition not specified).");
+            else
+            {
+                int numArgs = 0;
+                if (args != null)
+                    numArgs = args.Length;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < numArgs; ++i)
+                {
+                    sb.AppendLine(args[i] + " ");
+                }
+                string conditionString = sb.ToString();
+                EnterWhile(cmdThread, conditionString);
+            }
+            return ret;
+        }
+
+
+        /// <summary>Command.
+        /// Ends (closes) the while loop.
+        /// Variable name must be the only argument of the command.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdEndWhile(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + ": closes the While loop.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            {
+                ExitWhile(cmdThread);
+            }
+            return ret;
+        }
+
+
+
+
+        /// <summary>Command.
+        /// Prints or sets the current output level of the interpreter.
+        /// <para>This determines how much information is ouptut by the interpreter about its actions.</para>
+        /// <para>Called without arguments just prints the current output level.</para>
+        /// <para>With one argument, ooutput level is set to that argument.</para></summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Result of the last command that is run.</returns>
+        protected virtual string CmdOutputLevel(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <newOutputLevel> : gets or sets the interpreter's output level." + Environment.NewLine
+                            + "  outputLevel: new output level (verbosity) of interpreter. " + Environment.NewLine
+                            + "    If not specified then current level is printed and returned." );
+                        Console.WriteLine();
+                        return null;
+                    }
+            // if (args == null)
+            //    throw new ArgumentNullException(cmdName + " : Requires 1 argument (file name).");
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            if (numArgs > 1)
+                throw new ArgumentException(cmdName + " : invalid number of arguments, should be at most 1 (argument being new output level).");
+            else
+            {
+                string argLevel = null;
+                if (numArgs >= 1)
+                    argLevel = args[0];
+                int currentLevel = OutputLevel;
+                if (string.IsNullOrEmpty(argLevel))
+                {
+                    // No arguments, just print and return the current output level:
+                    ret = OutputLevel.ToString();
+                    Console.WriteLine(Environment.NewLine + "Interpreter's output level: " + currentLevel + "." + Environment.NewLine);
+                } else
+                {
+                    int level = 0;
+                    bool parsed = Util.TryParse(argLevel, ref level);
+                    if (!parsed)
+                        throw new ArgumentException("Argument does not represent an integer output level: " + argLevel);
+                    else
+                    {
+                        ret = argLevel;
+                        OutputLevel = level;
+                        if (level > currentLevel)
+                            Console.WriteLine(Environment.NewLine + "Interpreter's output level increased to " + level + "." + Environment.NewLine);
+                        else if (level < currentLevel)
+                            Console.WriteLine(Environment.NewLine + "Interpreter's output decreased to " + level + "." + Environment.NewLine);
+                        else
+                            Console.WriteLine(Environment.NewLine + "Interpreter's output level unchanged (" + level + ").");
+                    }
+                }
+            }
+            return ret;
+        }
+
+
+
+
+        /// <summary>Command.
+        /// Prints concatenated argument with spaces between them.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdWriteLine(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = CmdWrite(cmdThread, cmdName, args);
             ret += Environment.NewLine;
             Console.WriteLine();
             return ret;
@@ -2378,11 +3352,11 @@ namespace IG.Lib
 
         /// <summary>Command.
         /// Prints concatenated argument with spaces between them.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
-        protected virtual string CmdWrite(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdWrite(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2415,13 +3389,63 @@ namespace IG.Lib
 
 
         /// <summary>Command.
+        /// Reads value of the specified variable from console.
+        /// Variable name must be the first argument; Eventual other arguments are concatenated and written to console.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdRead(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " varName <arg1 arg2> ... : reads variable named varName " + Environment.NewLine
+                        + "  from the standard input. Optional arguments arg1, arg2, etc. are printed first (e.g. to form a prompt)." );
+                        Console.WriteLine();
+                        return null;
+                    }
+            string varName = null;
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            //if (numArgs < 1)
+            //    throw new ArgumentException("The " + cmdName + " command should have at least one argument (variable name).");
+            varName = args[0];
+            if (string.IsNullOrEmpty(varName))
+                throw new ArgumentException(cmdName + ": Variable name to be read is not specified (should be the first argument).");
+            if (numArgs > 1)
+            {
+                StringBuilder sb = new StringBuilder();
+                {
+                    for (int i = 1; i < numArgs; ++i)
+                    {
+                        sb.Append(args[i]);
+                    }
+                }
+                string outputString = sb.ToString();
+                Console.Write(outputString);
+            }
+            string varValue = Console.ReadLine();
+            SetVariable(cmdThread, varName, varValue);
+            return ret;
+        }
+
+
+
+        /// <summary>Command.
         /// Runs a file by running all its lines in the current interpreter.
         /// File name must be the only argument of the command.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Result of the last command that is run.</returns>
-        protected virtual string CmdRunFile(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdRunFile(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2442,7 +3466,7 @@ namespace IG.Lib
             else
             {
                 string fileName = args[0];
-                ret = RunFile(fileName);
+                ret = RunFile(cmdThread, fileName);
             }
             return ret;
         }
@@ -2452,11 +3476,11 @@ namespace IG.Lib
         /// First argument must be the number of times command is run, the second argument must
         /// be command to be run repetitively, and the rest of the arguments are passed to that 
         /// command as its arguments.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Concatenated results of all runs, separated by spaces.</returns>
-        protected virtual string CmdRunRepeatVerbose(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdRunRepeatVerbose(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2481,7 +3505,7 @@ namespace IG.Lib
                     + Environment.NewLine + "  and include number of repetitions and command name.");
             else
             {
-                ret = RunRepeatVerbose(args);
+                ret = RunRepeatVerbose(cmdThread, args);
             }
             return ret;
         }
@@ -2491,11 +3515,11 @@ namespace IG.Lib
         /// First argument must be the number of times command is run, the second argument must
         /// be command to be run repetitively, and the rest of the arguments are passed to that 
         /// command as its arguments.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Concatenated results of all runs, separated by spaces.</returns>
-        protected virtual string CmdRunRepeat(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdRunRepeat(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2520,7 +3544,7 @@ namespace IG.Lib
                     + Environment.NewLine + "  and include number of repetitions and command name.");
             else
             {
-                ret = RunRepeat(1, args);
+                ret = RunRepeat(cmdThread, 1, args);
             }
             return ret;
         }
@@ -2530,11 +3554,11 @@ namespace IG.Lib
         /// broken.
         /// The second argument must be command to be run, and the rest of the arguments are passed to that 
         /// command as its arguments.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Concatenated results of all runs, separated by spaces.</returns>
-        protected virtual string CmdTryRun(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdTryRun(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2560,7 +3584,7 @@ namespace IG.Lib
                     + Environment.NewLine + "  and include command name.");
             else
             {
-                ret = RunTryCatch(OutputLevel, args);
+                ret = RunTryCatch(cmdThread, OutputLevel, args);
             }
             return ret;
         }
@@ -2568,11 +3592,11 @@ namespace IG.Lib
         /// <summary>Command. 
         /// Sets the flag for rethrowing exceptions in the interaction mode.
         /// Optional boolean arguemnt, default is true.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Result of the last command that is run.</returns>
-        protected virtual string CmdThtrowExceptions(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdThtrowExceptions(CommandThread cmdThread,
             string cmdName, string[] args)
         {
 
@@ -2610,12 +3634,12 @@ namespace IG.Lib
 
 
         /// <summary>Command. Runs interpreter commands interactively.
-        /// Reads commands one by one from console and executes them, until only Enter is pressed..</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// Reads commands one by one from console and executes them, until only Enter is pressed.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Result of the last command that is run.</returns>
-        protected virtual string CmdRunInteractive(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdRunInteractive(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2645,12 +3669,109 @@ namespace IG.Lib
                         for (int i = 0; i < numArgs; ++i)
                             commandArgs[i] = args[i + 1];
                     }
-                    Run(command, commandArgs);
+                    Run(cmdThread, command, commandArgs);
                     //throw new ArgumentNullException(cmdName + " : Requires no arguments.");
                 }
-            ret = RunInteractive();
+            ret = RunInteractive(cmdThread);
             return ret;
         }
+
+
+        //public static string ConstEndBlock = "EndBlock";
+        
+        //public static string ConstEndBlock1 = "/q";
+
+        ///// <summary>Command. Runs interpreter commands in one block that must end with EndBlock.
+        ///// Reads commands one by one from console and executes them, until only Enter is pressed..</summary>
+        ///// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        ///// <param name="cmdName">Command name.</param>
+        ///// <param name="args">Command arguments.</param>
+        ///// <returns>Result of the last command that is run.</returns>
+        //protected virtual string CmdRunBlock(CommandThread cmdThread,
+        //    string cmdName, string[] args)
+        //{
+        //    string ret = null;
+        //    if (args != null)
+        //        if (args.Length > 0)
+        //            if (args[0] == "?")
+        //            {
+        //                string executableName = UtilSystem.GetCurrentProcessExecutableName();
+        //                Console.WriteLine();
+        //                Console.WriteLine(executableName + " " + cmdName + " : runs a block of commands inserted by user.");
+        //                Console.WriteLine(executableName + " " + cmdName + "  Block must end with \"" +  ConstEndBlock +  "\".");
+        //                Console.WriteLine();
+        //                return null;
+        //            }
+        //    if (args != null)
+        //        if (args.Length > 0)
+        //        {
+        //            // If there were arguments specified, then we first execute teh command that was specified by 
+        //            // these arguments: 
+        //            string command = args[0];
+        //            int numArgs = args.Length - 1;
+        //            string[] commandArgs = null;
+        //            if (numArgs >= 1)
+        //            {
+        //                commandArgs = new string[numArgs];
+        //                for (int i = 0; i < numArgs; ++i)
+        //                    commandArgs[i] = args[i + 1];
+        //            }
+        //            Run(cmdThread, command, commandArgs);
+        //            //throw new ArgumentNullException(cmdName + " : Requires no arguments.");
+        //        }
+
+        //    Console.WriteLine(Environment.NewLine + Environment.NewLine 
+        //        + "Insert a block of commands! " + Environment.NewLine
+        //        + "Finish the block with a line containing just \"" +  ConstEndBlock +  "\" " + Environment.NewLine
+        //        + "  or \"" + ConstEndBlock1 + "\". ");
+        //    List<string> commands = new List<string>();
+        //    bool stopDo = false;
+
+        //    do
+        //    {
+        //        string line = Console.ReadLine();
+        //        string[] commandLineSplit = GetArguments(line);
+        //        if (commandLineSplit != null)
+        //            if (commandLineSplit.Length > 0)
+        //                if (commandLineSplit[0] == ConstEndBlock || commandLineSplit[0] == ConstEndBlock1)
+        //                    stopDo = true;
+        //        if (!stopDo)
+        //            commands.Add(line);
+        //    } while (!stopDo);
+
+        //    int numCommands = commands.Count;
+        //    for (int i = 0; i < numCommands; ++i)
+        //    {
+                                
+        //        try
+        //        {
+        //            string[] commandLineSplit = GetArguments(commands[i]);
+        //            if (commandLineSplit != null)
+        //                if (commandLineSplit.Length > 0)
+        //                    ret = this.Run(cmdThread, commandLineSplit);
+        //            bool outputAllResults = false;
+        //            if (outputAllResults)
+        //            {
+        //            string retOutput = ret;
+        //            if (retOutput == null)
+        //                retOutput = "null";
+        //            else if (retOutput == "")
+        //                retOutput = "\"\"";
+        //            Console.WriteLine("  = " + retOutput);
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Console.WriteLine();
+        //            Console.WriteLine("ERROR: " + ex.Message);
+        //            Console.WriteLine();
+        //            if (ThrowExceptions)
+        //                throw;
+        //        }
+        //    }
+
+        //    return ret;
+        //}
 
 
         /// <summary>Command. 
@@ -2658,11 +3779,11 @@ namespace IG.Lib
         /// The first argument is the command to be executed while the following arguments are 
         /// arguments to this command.
         /// If there are no arguments then user is requested to insert commands interactively.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="AppArguments">Command arguments this command.</param>
+        /// <param name="args">Command arguments this command.</param>
         /// <returns>Result of the last command that is run.</returns>
-        protected virtual string CmdRunSystem(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdRunSystem(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2696,13 +3817,65 @@ namespace IG.Lib
         }
 
 
+        /// <summary>Command.
+        /// Rturns or sets the current directory.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Result of the last command that is run.</returns>
+        protected virtual string CmdCurrentDirectory(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <newDir> : gets or sets the current directory.");
+                        Console.WriteLine("    newDir: new current directory. '..', './dir' etc. can be used.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            // if (args == null)
+            //    throw new ArgumentNullException(cmdName + " : Requires 1 argument (file name).");
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            if (numArgs > 1)
+                throw new ArgumentException(cmdName + " : invalid number of arguments, should be at most 1 (argument being new current directory).");
+            else
+            {
+                string newDirectory = null;
+                if (numArgs >= 1)
+                    newDirectory = args[0];
+                if (!string.IsNullOrEmpty(newDirectory))
+                {
+                    Directory.SetCurrentDirectory(newDirectory);
+                    ret = Directory.GetCurrentDirectory();
+                    if (OutputLevel >= 1)
+                        Console.WriteLine(Environment.NewLine + "New current directory: " + ret + Environment.NewLine);
+                }
+                else 
+                {
+                    ret = Directory.GetCurrentDirectory();
+                    if (OutputLevel >= 1)
+                        Console.WriteLine(Environment.NewLine + "Current directory: " + ret + Environment.NewLine);
+                }
+            }
+            return ret;
+        }
+
+
+
         /// <summary>Command. 
         /// Runs the built in expression evaluator.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="AppArguments">Command arguments this command.</param>
+        /// <param name="args">Command arguments this command.</param>
         /// <returns></returns>
-        protected virtual string CmdExpressionEvaluatorInteractive(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdExpressionEvaluatorJavascript(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2721,26 +3894,30 @@ namespace IG.Lib
                     }
             if (args == null)
             {
-                return ExpressionEvaluatorInteractive();
+                return EvaluateJsInteractive();
             }
             else if (args.Length < 1)
             {
-                ret = ExpressionEvaluatorInteractive();
+                ret = EvaluateJsInteractive();
             }
             else
             {
-                ret = ExpressionEvaluatorEvaluate(args);
+                ret = EvaluateJs(args);
                 Console.WriteLine(Environment.NewLine + "  = " + ret);
             }
             return ret;
         }
 
+
+
+
+
         /// <summary>Interpreter command. Sets the priority of the current process.</summary>
-        /// <param name="interpreter">Interpreter by which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments of this command.</param>
+        /// <param name="args">Command arguments of this command.</param>
         /// <returns>Null.</returns>
-        protected virtual string CmdSetPriority(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdSetPriority(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -2810,11 +3987,11 @@ namespace IG.Lib
         /// Runs the specified command-line in parallel thread.
         /// <para>The first argument is the command to be executed while the following arguments are 
         /// arguments to this command.</para></summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="AppArguments">Command arguments of this command.</param>
+        /// <param name="args">Command arguments of this command.</param>
         /// <returns>ID of the job container that contains all command data.</returns>
-        protected virtual string CmdRunParallel(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdRunParallel(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -2849,11 +4026,11 @@ namespace IG.Lib
         /// <para>The first argument is the number of parallel executions of the same command, the second
         /// argument is command to be executed while the following arguments are 
         /// arguments to this command.</para></summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="AppArguments">Command arguments of this command.</param>
+        /// <param name="args">Command arguments of this command.</param>
         /// <returns>IDs of the job container that contains all command data separated by spaces.</returns>
-        protected virtual string CmdRunParallelRepeat(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdRunParallelRepeat(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             StringBuilder sbReturned = new StringBuilder();
@@ -2900,11 +4077,11 @@ namespace IG.Lib
         /// Prints data about commands executed in parallel threads.
         /// <para>The optional first argument is a flag (boolean, can be integer) that specifies whether
         /// the completed commands are also printed or not. Default is true.</para></summary>
-        /// <param name="interpreter">Interpreter by which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="AppArguments">Command arguments of this command.</param>
+        /// <param name="args">Command arguments of this command.</param>
         /// <returns>Null.</returns>
-        protected virtual string CmdPrintParallelCommands(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdPrintParallelCommands(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -2938,11 +4115,11 @@ namespace IG.Lib
         /// Runs the specified command-line asynchronously.
         /// <para>The first argument is the command to be executed while the following arguments are 
         /// arguments to this command.</para></summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="AppArguments">Command arguments of this command.</param>
+        /// <param name="args">Command arguments of this command.</param>
         /// <returns>ID of the asynchronous command for querrying completion and ending invocation and picking results.</returns>
-        protected virtual string CmdRunAsync(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdRunAsync(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -2963,18 +4140,18 @@ namespace IG.Lib
                 throw new ArgumentException("Arguments (command name and eventually its arguments) not specified.");
             if (args.Length < 1)
                 throw new ArgumentException("Arguments (command name and eventually its arguments) not specified.");
-            return RunAsync(args);
+            return RunAsync(cmdThread, args);
         }
 
 
         /// <summary>Command. 
         /// Wait until asynchronously invoked command with the specified ID (first argument, must represent an int) completes.
         /// <para>The first argument is the ID of asynchronous invocation whose results are waited.</para></summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="AppArguments">Command arguments of this command.</param>
+        /// <param name="args">Command arguments of this command.</param>
         /// <returns>Results of the async. command execution whose completion is waited for.</returns>
-        protected virtual string CmdAsyncWaitResults(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdAsyncWaitResults(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -3004,11 +4181,11 @@ namespace IG.Lib
         /// Returns a flag indicating whether the asynchroneous command invocation identified by the specified ID 
         /// (first argument, must represent an int) has completed.
         /// <para>The first argument is the ID of asynchronous invocation whose completion is waited for.</para></summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="AppArguments">Command arguments of this command.</param>
+        /// <param name="args">Command arguments of this command.</param>
         /// <returns>Results of the async. command execution whose completion is waited for.</returns>
-        protected virtual string CmdAsyncCompleted(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdAsyncCompleted(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -3041,11 +4218,11 @@ namespace IG.Lib
         /// <summary>Command. 
         /// Sleeps (suspends execution of the executing thread) for the specified number of seconds.
         /// <para>The first argument is the number of seconds (must be string representing double) to sleep.</para></summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name of this command.</param>
-        /// <param name="AppArguments">Command arguments of this command.</param>
+        /// <param name="args">Command arguments of this command.</param>
         /// <returns>Returns the ID of the thread where sleep is performed.</returns>
-        protected virtual string CmdSleepSeconds(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdSleepSeconds(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -3090,11 +4267,11 @@ namespace IG.Lib
         /// Loads the specified module (whos name must be the first argument) and performs its initialization.
         /// If there are more than 1 arguments then the rest of the arguments specify a command and (if more 
         /// than 1) its arguments, and the specified command is also run.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
-        protected virtual string CmdLoadModule(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdLoadModule(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -3124,7 +4301,7 @@ namespace IG.Lib
                     string[] commandArgs = new string[args.Length - 2];
                     for (int i = 2; i < args.Length; ++i)
                         commandArgs[i - 2] = args[i];
-                    ret = this.Run(commandName, commandArgs);
+                    ret = this.Run(cmdThread, commandName, commandArgs);
                 }
             }
             return ret;
@@ -3134,10 +4311,10 @@ namespace IG.Lib
         /// <summary>Executinon method for command that checks if module is loaded.
         /// Writes to condole whether module is loaded or not, and returns "1" if module
         /// is loaded and "0" if not.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="thread">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        protected virtual string CmdIsModuleLoaded(ICommandLineApplicationInterpreter interpreter,
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdIsModuleLoaded(CommandThread thread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -3178,10 +4355,10 @@ namespace IG.Lib
 
         /// <summary>Executinon method for test command that is installed when a module is installed.
         /// This is a command that enables to verify that a module with the specified name has been installed.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        protected virtual string CmdModuleTestCommand(ICommandLineApplicationInterpreter interpreter,
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdModuleTestCommand(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -3218,11 +4395,10 @@ namespace IG.Lib
         /// <summary>Executinon method for test command, which just prints its name and arguments.
         /// This is a replacement for usuel test command, which gets installed when one of the two
         /// basic test modules are installed.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run. 
-        /// Enables access to interpreter internal data from command body.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        protected virtual string CmdTestFromTestModules(ICommandLineApplicationInterpreter interpreter,
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdTestFromTestModules(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -3340,17 +4516,18 @@ namespace IG.Lib
             }
 
             /// <summary>Constructs a new named pipe server with the specified pipe name and other paramters.</summary>
+            /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
             /// <param name="pipeName">Name of the pipe.</param>
             /// <param name="requestEnd">Line that ends each request. If null or empty string then the requests are single line.</param>
             /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
             /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
             /// i.e. <see cref="DefaultErrorBegin"/></param>
             /// <param name="startImmediately">If true then server is starrted immediately, otherwise this is postponed.</param>
-            public InterpreterPipeServer(ICommandLineApplicationInterpreter interpreter, string pipeName, 
+            public InterpreterPipeServer(CommandThread cmdThread, string pipeName, 
                 bool startImmediately, string requestEnd, string responseEnd, string errorBegin) :
                 base(pipeName, requestEnd, responseEnd, errorBegin, false /* startImmediately */)
             { 
-                Interpreter = interpreter;
+                Interpreter = cmdThread.Interpreter;
                 if (startImmediately)
                     ThreadServe();
             }
@@ -3365,8 +4542,8 @@ namespace IG.Lib
 
 
             /// <summary>Calculates and returns response </summary>
+            /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
             /// <param name="request"></param>
-            /// <returns></returns>
             public override string GetResponse(string request)
             {
                 string ret = null;
@@ -3377,7 +4554,7 @@ namespace IG.Lib
                     {
                         throw new ArgumentException("Pipe server's interpreter does not contain the command \"" + commandLine[0] + "\".");
                     }
-                    ret = Interpreter.Run(commandLine);
+                    ret = Interpreter.Run(Interpreter.MainThread, commandLine);
                 }
                 catch (Exception)
                 {
@@ -3561,9 +4738,9 @@ namespace IG.Lib
         /// Command arguments are pipe name and server name (optional, if not specified then server name is the same as pipe name).</summary>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>A string containing some basic data on the created pipe server.</returns>
-        protected virtual string CmdPipeServerCreate(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdPipeServerCreate(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -3612,10 +4789,11 @@ namespace IG.Lib
         /// Removes the spcified (or all, if names are not specified) named pipe servers.
         /// Command arguments are names of the pipe servers to be removed. If none is specified then all pipe servers 
         /// installed on the interperter are removed.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command-line arguments.</param>
         /// <returns>A string containing the information on the removed servers (their interpreter's names and pipe names).</returns>
-        protected virtual string CmdPipeServersRemove(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdPipeServersRemove(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -3641,10 +4819,12 @@ namespace IG.Lib
 
         /// <summary>Command.
         /// Prints and returns inormation on the installed named pipe servers.
-        /// Optional command argument is server name. If not specified then information about all installed servers is printed and returned.</param>
+        /// Optional command argument is server name. If not specified then information about all installed servers is printed and returned.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command-line arguments.</param>
         /// <returns>A string containing the information on pipe servers.</returns>
-        protected virtual string CmdPipeServerInfo(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdPipeServerInfo(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -3798,7 +4978,7 @@ namespace IG.Lib
             else
             {
                 IpcStreamClientBase client = IpcClients[clientName];
-                // string commandLine = UtilStr.GetCommandLine(AppArguments);
+                // string commandLine = UtilStr.GetCommandLine(args);
                 ret = client.GetServerResponse(commandLineString);
             }
             return ret;
@@ -3809,10 +4989,11 @@ namespace IG.Lib
         /// Creates a new client to the interpreter pipe server. The client can send command to the server listening on the
         /// specified named pipe, and recieves responses from the server and returns them.
         /// Command arguments are pipe name and client name (optional, if not specified then server name is the same as pipe name).</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Commandline arguments.</param>
         /// <returns>A string containing the information on pipe clients.</returns>
-        protected virtual string CmdPipeClientCreate(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdPipeClientCreate(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -3858,10 +5039,11 @@ namespace IG.Lib
         /// Removes the spcified (or all, if names are not specified) named pipe clients.
         /// Command arguments are names of the pipe clients to be removed. If none is specified then all pipe clients 
         /// installed on the interperter are removed.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Commandline arguments.</param>
         /// <returns>A string containing the information on the removed clients (their interpreter's names and pipe names).</returns>
-        protected virtual string CmdPipeClientsRemove(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdPipeClientsRemove(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -3888,10 +5070,12 @@ namespace IG.Lib
 
         /// <summary>Command.
         /// Prints and returns inormation on the installed named pipe clients.
-        /// Optional command argument is client name. If not specified then information about all installed clients is printed and returned.</param>
+        /// Optional command argument is client name. If not specified then information about all installed clients is printed and returned.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Commandline arguments.</param>
         /// <returns>A string containing some basic data on the created pipe client.</returns>
-        protected virtual string CmdPipeClientInfo(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdPipeClientInfo(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -3918,10 +5102,12 @@ namespace IG.Lib
 
         /// <summary>Command.
         /// Sends the specified command to the corresponding pipe serverr and reads and returns its response.
-        /// Command argument is the (interpreter's) name of the pipe client followed by command and eventual arguments sent to the server.</param>
+        /// Command argument is the (interpreter's) name of the pipe client followed by command and eventual arguments sent to the server.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Commandline arguments.</param>
         /// <returns>Server response.</returns>
-        protected virtual string CmdPipeClientGetServerResponse(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdPipeClientGetServerResponse(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -3983,11 +5169,12 @@ namespace IG.Lib
         /// The first argument must be a full name of the script class whose object is run.
         /// The rest of the arguments (if any) are directly transferred to the executable method of the script
         /// and are also used as argument to script initialization method.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="interpreter">Interpreter on which commad is run.</param>
-        /// <param name="commandName">Name of the command</param>
-        /// <param name="commandArgumens">Command arguments.</param>
+        /// <param name="cmdName">Name of the command</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Result of command execution.</returns>
-        protected virtual string CmdRunInternalScriptClass(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
+        protected virtual string CmdRunInternalScriptClass(CommandThread cmdThread, string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
@@ -4036,11 +5223,11 @@ namespace IG.Lib
         /// Interpreter command arguments:
         /// Path to the file containing loadable script must be the first argument to the method.
         /// The rest of the arguments (if any) are directly transferred to the executable method of the script.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
-        /// <param name="commandName">Name of the command</param>
-        /// <param name="commandArgumens">Command arguments.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Name of the command</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Result of command execution.</returns>
-        protected virtual string CmdRunScriptFile(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
+        protected virtual string CmdRunScriptFile(CommandThread cmdThread, string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
@@ -4083,11 +5270,11 @@ namespace IG.Lib
         /// The rest of the arguments are passed to the dynamically generated instance of the 
         /// class that was dynamically compiled and loaded and stored (under the specified command name)
         /// on <see cref="LoadableScriptInterpreter"/>.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
-        /// <param name="commandName">Name of the command</param>
-        /// <param name="commandArgumens">Command arguments.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Name of the command</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>null string.</returns>
-        protected virtual string CmdLoadScript(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdLoadScript(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -4128,7 +5315,7 @@ namespace IG.Lib
             LoadScript(newCommandName, scriptFilePath, initArgs);
             // Add new command with the same name on the current interpreter, such that command will execute
             // teh dynamically loaded command on LoadableScriptInterpreter when executed:
-            this.AddCommand(newCommandName, CmdRunLoadedScript);
+            this.AddCommandMt(newCommandName, CmdRunLoadedScript);
             return null;
         }  // CmdLoadScript()
 
@@ -4138,13 +5325,13 @@ namespace IG.Lib
         /// <see cref="LoadableScriptInterpreter"/> under the same <paramref name="cmdName"/>.
         /// Typically, the command that is executed by the current method, has been previously installed
         /// by the <see cref="CmdLoadScript"/>(...) method.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
-        /// <param name="commandName">Name of the command, which must be the same as command name
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Name of the command, which must be the same as command name
         /// under which dynamically loaded class is installed on <see cref="LoadableScriptInterpreter"/>.</param>
-        /// <param name="commandArgumens">Command arguments. These arguments are directly passed to the 
+        /// <param name="args">Command arguments. These arguments are directly passed to the 
         /// executable method on the corresponding class.</param>
         /// <returns>Result of command execution.</returns>
-        protected virtual string CmdRunLoadedScript(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdRunLoadedScript(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -4177,11 +5364,11 @@ namespace IG.Lib
         /// Writes to the console the assemblies that are currently referenced by compiler used 
         /// for dynamic loading of scripts. This information can be used for control if something
         /// goes wrong with dynamic script loading.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
-        /// <param name="commandName">Name of the command.</param>
-        /// <param name="commandArgumens">Command arguments.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Name of the command.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Result of command execution, a list of all referenced assemblies.</returns>
-        protected virtual string WriteLoadableScriptReferencedAssemblies(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string WriteLoadableScriptReferencedAssemblies(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -4219,10 +5406,10 @@ namespace IG.Lib
 
 
         /// <summary>Execution method that exits the interpreter.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        protected virtual string CmdExit(ICommandLineApplicationInterpreter interpreter,
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdExit(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string executableName = UtilSystem.GetCurrentProcessExecutableName();
@@ -4241,10 +5428,10 @@ namespace IG.Lib
 
 
         /// <summary>Execution method for applications help.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        protected virtual string CmdHelp(ICommandLineApplicationInterpreter interpreter,
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdHelp(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string executableName = UtilSystem.GetCurrentProcessExecutableName();
@@ -4267,14 +5454,14 @@ namespace IG.Lib
             sb.AppendLine("  arg1, arg2, arg3...: application arguments separated by spaces. ");
             sb.AppendLine();
             sb.AppendLine("Installed applications by names: ");
-            if (_commands == null)
+            if (_commandsMt == null)
                 sb.AppendLine("  No applications (null reference).");
-            else if (_commands.Count < 1)
+            else if (_commandsMt.Count < 1)
                 sb.AppendLine("  No applications. ");
             else
             {
                 sb.Append(" ");
-                foreach (KeyValuePair<string, ApplicationCommandDelegate> pair in _commands)
+                foreach (KeyValuePair<string, ApplicationCommandDelegateMt> pair in _commandsMt)
                 {
                     sb.AppendLine("  " + pair.Key);
                 }
@@ -4289,10 +5476,10 @@ namespace IG.Lib
         }
 
         /// <summary>Execution method that prints some information about the application.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        protected virtual string CmdAbout(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdAbout(CommandThread cmdThread, string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
@@ -4363,10 +5550,10 @@ namespace IG.Lib
         }
 
         /// <summary>Execution method that prints some information about the current application.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        protected virtual string CmdApplicationInfo(ICommandLineApplicationInterpreter interpreter, string cmdName, string[] args)
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdApplicationInfo(CommandThread cmdThread, string cmdName, string[] args)
         {
             if (args != null)
                 if (args.Length > 0)
@@ -4435,10 +5622,10 @@ namespace IG.Lib
         }
 
         /// <summary>Execution method that does nothing (for comments).</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        protected virtual string CmdComment(ICommandLineApplicationInterpreter interpreter,
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdComment(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -4455,10 +5642,10 @@ namespace IG.Lib
         }
 
         /// <summary>Execution method for command that prints names of all installed applications.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        protected virtual string CmdPrintCommands(ICommandLineApplicationInterpreter interpreter,
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdPrintCommands(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -4473,14 +5660,14 @@ namespace IG.Lib
                     }
             Console.WriteLine();
             Console.WriteLine("Installed commands by names: ");
-            if (_commands == null)
+            if (_commandsMt == null)
                 Console.WriteLine("  No commands (null reference).");
-            else if (_commands.Count < 1)
+            else if (_commandsMt.Count < 1)
                 Console.WriteLine("  No commands. ");
             else
             {
                 Console.Write(" ");
-                foreach (KeyValuePair<string, ApplicationCommandDelegate> pair in _commands)
+                foreach (KeyValuePair<string, ApplicationCommandDelegateMt> pair in _commandsMt)
                 {
                     Console.WriteLine("  " + pair.Key);
                 }
@@ -4492,10 +5679,10 @@ namespace IG.Lib
         }
 
         /// <summary>Executinon method for test command, which just prints its name and arguments.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        protected virtual string CmdTestProduct(ICommandLineApplicationInterpreter interpreter,
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdTestProduct(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -4526,10 +5713,10 @@ namespace IG.Lib
         }
 
         /// <summary>Executinon method for test command, which just prints its name and arguments.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
-        protected virtual string CmdTest(ICommandLineApplicationInterpreter interpreter,
+        /// <param name="args">Command arguments.</param>
+        protected virtual string CmdTest(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -4580,11 +5767,11 @@ namespace IG.Lib
 
         /// <summary>Executinon method for TestSpeed command, performs test of speed of numerical computations
         /// on LU decomposition, and outputs the result and comparison with reference results (usually achieved on Igor's computer).</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Speed factor - Ratio between reference computation time and time spent for the same thing in current environment.</returns>
-        protected virtual string CmdTestSpeed(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdTestSpeed(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -4635,11 +5822,11 @@ namespace IG.Lib
 
         /// <summary>Executinon method for TestSpeedLong command, performs a longer test of speed of numerical computations
         /// on QR decomposition, and outputs the result and comparison with reference results (usually achieved on Igor's computer).</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Speed factor - Ratio between reference computation time and time spent for the same thing in current environment.</returns>
-        protected virtual string CmdTestSpeedLong(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdTestSpeedLong(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -4696,11 +5883,11 @@ namespace IG.Lib
         /// If dimension is not stated then default value is taken.</para>
         /// <para>Optionally, command can take the second argument that represents number of repetitions of the 
         /// decomposition test. In this tame, command returns average total execution time for each test.</para></summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Total wallclock time spent for computation.</returns>
-        protected virtual string CmdTestQR(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdTestQR(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -4764,11 +5951,11 @@ namespace IG.Lib
         /// If dimension is not stated then default value is taken.</para>
         /// <para>Optionally, command can take the second argument that represents number of repetitions of the 
         /// decomposition test. In this tame, command returns average total execution time for each test.</para></summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="cmdName">Command name.</param>
-        /// <param name="AppArguments">Command arguments.</param>
+        /// <param name="args">Command arguments.</param>
         /// <returns>Total wallclock time spent for computation.</returns>
-        protected virtual string CmdTestLU(ICommandLineApplicationInterpreter interpreter,
+        protected virtual string CmdTestLU(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             if (args != null)
@@ -4844,8 +6031,8 @@ namespace IG.Lib
             Console.WriteLine();
             Console.WriteLine("This is TestModule1 that is built in the basic interpreter.");
             Console.WriteLine();
-            interpreter.AddCommand("Test", CmdTestFromTestModules);
-            interpreter.AddCommand("Test1", CmdTestFromTestModules);
+            interpreter.AddCommandMt("Test", CmdTestFromTestModules);
+            interpreter.AddCommandMt("Test1", CmdTestFromTestModules);
             Console.WriteLine("Module commands: ");
             Console.WriteLine("  " + ModuleTestCommandName(name) + " - automatically installed when a module is loaded.");
             Console.WriteLine("  Test -  test commands, replaces the old 'test' command");
@@ -4867,8 +6054,8 @@ namespace IG.Lib
             Console.WriteLine();
             Console.WriteLine("This is TestModule2 that is built in the basic interpreter.");
             Console.WriteLine();
-            interpreter.AddCommand("Test", CmdTestFromTestModules);
-            interpreter.AddCommand("Test2", CmdTestFromTestModules);
+            interpreter.AddCommandMt("Test", CmdTestFromTestModules);
+            interpreter.AddCommandMt("Test2", CmdTestFromTestModules);
             Console.WriteLine("Module commands: ");
             Console.WriteLine("  " + ModuleTestCommandName(name) + " - automatically installed when a module is loaded.");
             Console.WriteLine("  Test -  test commands, replaces the old 'test' command");
@@ -4882,6 +6069,6 @@ namespace IG.Lib
         #endregion Modules
 
 
-    }  // class MessyApplications
+    }  // class CommandLineApplicationInterpreter
 
 }

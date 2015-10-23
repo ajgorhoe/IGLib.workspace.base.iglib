@@ -22,6 +22,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
 
 
+
 namespace IG.Lib
 {
 
@@ -44,6 +45,29 @@ namespace IG.Lib
     /// $A Igor Apr10;
     public static class UtilSystem
     {
+
+
+        private static object _lockStatic = null;
+
+        /// <summary>Locking object for static methods and properties of this class.</summary>
+        /// <remarks>Read-only, safely provided on demand (using <see cref="Util.LockGlobal"/> when 
+        /// initializing the first time when referenced).</remarks>
+        public static object LockStatic
+        {
+            get
+            {
+                if (_lockStatic == null)
+                {
+                    lock (Util.LockGlobal)
+                    {
+                        if (_lockStatic == null)
+                            _lockStatic = new object();
+                    }
+                }
+                return _lockStatic;
+            }
+        }
+
 
 
         #region UserData
@@ -249,7 +273,7 @@ namespace IG.Lib
         /// <summary>Detects operating system.</summary>
         private static void DetectOs()
         {
-            lock (Util.LockGlobal)
+            lock (LockStatic)
             {
                 OperatingSystem os = Environment.OSVersion;
                 string platformStringLowercase = os.Platform.ToString().ToLower();
@@ -1891,6 +1915,28 @@ namespace IG.Lib
 
         #region Assemblies
 
+        // See also:
+        // Assembly class: 
+
+        // Best practices of assembly loading: https://msdn.microsoft.com/en-us/library/dd153782%28v=vs.110%29.aspx
+
+        // RESOLVE assemblies that should be loaded (either when referencing dependencies or when dynamically loading):
+        // Define AppDomain.AssemblyResolve event handler in order to resolve assemblies that could not be loaded, 
+        // which can happen when a type could not be instantiated (by doing it on a wrong assembly) or when dependency
+        // assemblies are not in the probing path.
+        // Resolving Assembly Loads: https://msdn.microsoft.com/en-us/library/ff527268%28v=vs.110%29.aspx
+        // AppDomain.AssemblyResolve Event (warning: example is useless!): https://msdn.microsoft.com/en-us/library/system.appdomain.assemblyresolve%28v=vs.110%29.aspx 
+        // ResolveEventArgs.RequestingAssembly (good explanation!): https://msdn.microsoft.com/en-us/library/system.resolveeventargs.requestingassembly%28v=vs.110%29.aspx
+
+        // General on loading assemblies:
+        // How the Runtime Locates Assemblies: https://msdn.microsoft.com/en-us/library/yx7xezcf%28v=vs.110%29.aspx
+
+        // Other:
+        // Using application domains: https://msdn.microsoft.com/en-us/library/yb506139%28v=vs.110%29.aspx
+        // 
+
+
+
         private static volatile Assembly _executingAssembly = null;
 
         private static volatile Assembly _iglibAssembly = null;
@@ -1902,7 +1948,7 @@ namespace IG.Lib
             {
                 if (_executingAssembly == null)
                 {
-                    lock (Util.LockGlobal)
+                    lock (LockStatic)
                     {
                         if (_executingAssembly == null)
                         {
@@ -1921,7 +1967,7 @@ namespace IG.Lib
             {
                 if (_iglibAssembly == null)
                 {
-                    lock (Util.LockGlobal)
+                    lock (LockStatic)
                     {
                         if (_iglibAssembly == null)
                         {
@@ -1939,6 +1985,7 @@ namespace IG.Lib
         /// <param name="assemblyName">Name of the assembly file.</param>
         /// <param name="caseSensitive">Whether names are case sensitive.</param>
         /// <param name="loadIfNecessary">Whether assembly can be loaded.</param>
+        /// <param name="byFileName">Whether assemblies are searched by file name.</param>
         public static Assembly GetAssemblyByName(string assemblyName, bool caseSensitive = false, bool loadIfNecessary = true, bool byFileName = false)
         {
             return GetAssemblyByNameOrFileName(assemblyName, caseSensitive, loadIfNecessary, true /* byName  */, false /* byFileName  */);
@@ -2035,7 +2082,6 @@ namespace IG.Lib
 
 
 
-
         #region Assembly.ReferencedAssemblies
 
         /// <summary>Assemblies directly referenced by the current executale assembly.
@@ -2067,7 +2113,7 @@ namespace IG.Lib
         {
             if (_referencedAssembliesDirectWithoutGac == null)
             {
-                lock (Util.LockGlobal)
+                lock (LockStatic)
                 {
                     if (_referencedAssembliesDirectWithoutGac == null)
                     {
@@ -2098,7 +2144,7 @@ namespace IG.Lib
         {
             if (_referencedAssembliesRecursiveWithoutGac == null)
             {
-                lock (Util.LockGlobal)
+                lock (LockStatic)
                 {
                     if (_referencedAssembliesRecursiveWithoutGac == null)
                     {
@@ -2129,7 +2175,7 @@ namespace IG.Lib
         {
             if (_referencedAssembliesDirect == null)
             {
-                lock (Util.LockGlobal)
+                lock (LockStatic)
                 {
                     if (_referencedAssembliesDirect == null)
                     {
@@ -2161,7 +2207,7 @@ namespace IG.Lib
         {
             if (_referencedAssembliesRecursive == null)
             {
-                lock (Util.LockGlobal)
+                lock (LockStatic)
                 {
                     if (_referencedAssembliesRecursive == null)
                     {
@@ -2202,7 +2248,7 @@ namespace IG.Lib
         /// <param name="assembly">Assembly whose referenced assemblies are obtained.</param>
         public static List<string> GetReferencedAssembliesFlat(Assembly assembly)
         {
-            lock (Util.LockGlobal)
+            lock (LockStatic)
             {
                 var results = assembly.GetReferencedAssemblies();
                 return results.Select(o => o.FullName).OrderBy(o => o).ToList();
@@ -2212,10 +2258,12 @@ namespace IG.Lib
         /// <summary>Creates and returns a dictionary containing all assemblies referenced (directly or indirectly)
         /// by the specified assembly. Recursive.</summary>
         /// <param name="assembly">Assembly whose referenced assemblies are obtained recursively.</param>
+        /// <param name="ignoreGac">Whether to ignore assemblies in GAC.</param>
+        /// <param name="recursive">Whetherr to get a listt of assemblies recursively.</param>
         public static Dictionary<string, Assembly> GetReferencedAssemblies(Assembly assembly, 
             bool ignoreGac = true, bool recursive = true)
         {
-            lock (Util.LockGlobal)
+            lock (LockStatic)
             {
                 _dependentAssemblyList = new Dictionary<string, Assembly>();
                 _missingAssemblyList = new List<MissingAssembly>();
@@ -2237,10 +2285,10 @@ namespace IG.Lib
             }
         }
 
-        /// <summary>Get missing assemblies.</summary>
+        /// <summary>Get missing assemblies - those referenced assemblies that could not be loaded.</summary>
         public static List<MissingAssembly> GetMissingAssemblies(Assembly assembly, bool recursive = true)
         {
-            lock (Util.LockGlobal)
+            lock (LockStatic)
             {
                 _dependentAssemblyList = new Dictionary<string, Assembly>();
                 _missingAssemblyList = new List<MissingAssembly>();
@@ -2253,7 +2301,7 @@ namespace IG.Lib
         /// assemblies, etc.</summary>
         private static void InternalGetReferencedAssembliesRecursive(Assembly assembly, bool recursive = true)
         {
-            lock (Util.LockGlobal)
+            lock (LockStatic)
             {
                 // Load assemblies with newest versions first. Omitting the ordering results in false positives on
                 // _missingAssemblyList.
@@ -2302,6 +2350,365 @@ namespace IG.Lib
         #endregion Assembly.ReferencedAssemblies
 
 
+        #region Assembly.Load
+
+        private static bool _assemblyResolveHandlerAdded = false;
+
+        /// <summary>Whether this class' event handler for resolving assembly loading is registered or not.</summary>
+        /// <returns></returns>
+        public static bool IsRegisteredAssemblyResolveHandler
+        { get { lock (LockStatic) { return _assemblyResolveHandlerAdded; } } }
+
+        /// <summary>Registers tis class' event handler for resolving assembly load failures.</summary>
+        public static void RegisterAssemblyResolveHandler()
+        {
+            lock(LockStatic)
+            {
+                if (!_assemblyResolveHandlerAdded)
+                {
+                    AppDomain currentDomain = AppDomain.CurrentDomain;
+                    currentDomain.AssemblyResolve += AssemblyResolveEventHandler; // new ResolveEventHandler(AssemblyResolveEventHandler);
+                    _assemblyResolveHandlerAdded = true;
+                }
+            }
+        }
+
+        /// <summary>Unregisters tis class' event handler for resolving assembly load failures.</summary>
+        public static void UnregisterAssemblyResolveHandler()
+        {
+            lock (LockStatic)
+            {
+                if (!_assemblyResolveHandlerAdded)
+                {
+                    _assemblyResolveHandlerAdded = false;
+                    try
+                    {
+                        AppDomain currentDomain = AppDomain.CurrentDomain;
+                        currentDomain.AssemblyResolve -= AssemblyResolveEventHandler;
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        /// <summary>Provides identity for assembly resolution attempts.
+        /// <para>Using objects of this class, the szstem can establish while the same kind of assembly resolution has
+        /// already occurred in the past, and thus skip the attempt.</para></summary>
+        public class ResolutionIdentity: IEquatable<ResolutionIdentity>
+        {
+            private ResolutionIdentity() { }
+
+            public ResolutionIdentity(string assembly, string requestingAssembly) 
+            { AssemblyName = assembly; RequestingAssemblyName = requestingAssembly; }
+
+            public string AssemblyName { get; set; }
+
+            public string RequestingAssemblyName { get; set; }
+
+            public bool Equals(ResolutionIdentity id)
+            {
+                if (id == null)
+                    return false;
+                else
+                    return AssemblyName == id.AssemblyName && RequestingAssemblyName == id.RequestingAssemblyName;
+            }
+        }
+
+        private static List<ResolutionIdentity> _failedResolves = new List<ResolutionIdentity>();
+
+
+        private static bool ResolveAlreadyFailed(ResolutionIdentity resId)
+        { lock(LockStatic) { return _failedResolves.Contains(resId); } }
+
+        private static void AddResolveFailed(ResolutionIdentity resId)
+        { lock (LockStatic) { if (!ResolveAlreadyFailed(resId)) _failedResolves.Add(resId); } }
+
+        private static void ClearResolveFailed(ResolutionIdentity resId)
+        { lock (LockStatic) { _failedResolves.Clear(); } }
+
+        private static List<string> _assemblyResolutionPaths = new List<string>();
+
+        /// <summary>Adds a new directory where assemblies to be loaded are looked for.</summary>
+        /// <param name="path">Path of the directory.</param>
+        public static void AddAssemblyResolutionPath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentException("Assembly search path to be added is not specified (null or empty string).");
+            lock (LockStatic)
+            {
+                if (!_assemblyResolutionPaths.Contains(path))
+                    _assemblyResolutionPaths.Add(path);
+            }
+        }
+
+        /// <summary>Removes the specified directory where assemblies to be loaded are looked for.
+        /// <para>Path string must be exactly the same as when the path was added to the list of locations.</para></summary>
+        /// <param name="path">Path of the directory.</param>
+        public static void RemoveAssemblyResolutionPath(string path)
+        {
+            lock (LockStatic)
+            {
+                if (_assemblyResolutionPaths.Contains(path))
+                    _assemblyResolutionPaths.Remove(path);
+            }
+        }
+
+        public static string[] AssemblyResolutionPaths
+        { get { lock (LockStatic) { return _assemblyResolutionPaths.ToArray(); } } }
+
+
+        /// <summary>Event handler that tries to resolve assembly load.</summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        private static Assembly AssemblyResolveEventHandler(object sender, ResolveEventArgs args)
+        {
+            
+            Assembly ret = null;
+            string fullName = args.Name;
+            AssemblyName name = new AssemblyName();
+            Console.WriteLine(Environment.NewLine + Environment.NewLine + "IGLib Assembly Resolve handler called.... " + Environment.NewLine
+                + "  assembly: " + fullName);
+            Console.WriteLine("  Assembly name: " + name.Name + Environment.NewLine
+                + "    version: " + name.Version + Environment.NewLine
+                + "    codebase: "  + name.CodeBase);
+            Assembly requestingAssmbly = args.RequestingAssembly;
+            string requestingAssmblyFullName = null;
+            if (requestingAssmbly != null)
+                requestingAssmblyFullName = requestingAssmbly.FullName;
+            if (requestingAssmblyFullName == null)
+                Console.WriteLine("Requesting assembly is not known.");
+            else
+                Console.WriteLine("RequestingAssmbly: " + requestingAssmblyFullName);
+            ResolutionIdentity resId = new ResolutionIdentity(fullName, requestingAssmblyFullName);
+            if (ResolveAlreadyFailed(resId))
+            {
+                Console.WriteLine(Environment.NewLine + "Resolution skipped." + Environment.NewLine + 
+                  "Resolution has already failed for the following combination: " + Environment.NewLine +
+                  "  loading assembly: " + fullName + Environment.NewLine + 
+                  "  requesting assembly: " + requestingAssmblyFullName + Environment.NewLine);
+            }
+
+            try
+            {
+                string assemblyFilename = name.Name + ".dll";
+                if (ret == null && requestingAssmbly != null)
+                {
+                    // Try to find the assembly in the same direectory where the requesting assembly is located:
+                    string reqLocation = requestingAssmbly.Location;
+                    if (!string.IsNullOrEmpty(reqLocation))
+                    {
+                        string path = Path.GetDirectoryName(reqLocation);
+                        if (!string.IsNullOrEmpty(reqLocation))
+                        {
+                            string filePath = Path.Combine(path, assemblyFilename);
+                            Console.WriteLine("Trying to load assembly from the directory of requesting assembly..." + Environment.NewLine
+                                + "  Tested path: " + filePath);
+                            if (File.Exists(filePath))
+                            {
+                                try
+                                {
+                                    ret = Assembly.LoadFrom(filePath);
+                                    if (ret != null)
+                                        Console.WriteLine("  ... loading successful.");
+                                    else
+                                        Console.WriteLine("  ... loading unsuccessful.");
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(Environment.NewLine + "Exception was thrown when trying to resolve assembly load. " + Environment.NewLine
+                                        + "  Message: " + ex.Message + Environment.NewLine
+                                        + "  Loar path: " + filePath + ". ");
+                                }
+                            }
+                        }
+                    }
+                }
+                if (ret == null)
+                {
+                    // Try to find and load the assembly from one of the user specified search paths:
+                    string[] paths = AssemblyResolutionPaths;
+                    foreach (string path in paths)
+                    {
+                        if (ret == null)
+                        {
+                            string filePath = Path.Combine(path, assemblyFilename);
+                            Console.WriteLine("Trying to load assembly from the user specified directory..." + Environment.NewLine
+                                + "  Tested path: " + filePath);
+                            if (File.Exists(filePath))
+                            {
+                                try
+                                {
+                                    ret = Assembly.LoadFrom(filePath);
+                                    if (ret != null)
+                                        Console.WriteLine("  ... loading successful.");
+                                    else
+                                        Console.WriteLine("  ... loading unsuccessful.");
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(Environment.NewLine + "Exception was thrown when trying to resolve assembly load. " + Environment.NewLine
+                                        + "  Message: " + ex.Message + Environment.NewLine
+                                        + "  Loar path: " + filePath + ". ");
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(Environment.NewLine + "Exception was thrown when trying to resolve assembly load. " + Environment.NewLine
+                    + "  Message: " + ex.Message);
+            }
+
+            if (ret == null)
+            {
+                Console.WriteLine("Assembly resolution FAILED." + Environment.NewLine);
+                AddResolveFailed(resId);
+            } else
+            {
+                Console.WriteLine("Assembly resolution successful." + Environment.NewLine);
+            }
+            return ret;
+        }
+
+
+
+        /// <summary>Loads the specified assembly.</summary>
+         /// <param name="fullName">Name of the assembly to be loaded.</param>
+        /// <param name="outputLevel">The level of output. If greater than 0 then some information 
+        /// abot loading the assembly and assembly itself is printed.</param>
+        /// <param name="reflectionOnly">If true then assembly is loaded for inspection only, i.e. 
+        /// out of any applicatin domain, and can not be executed.</param>
+        /// <returns>Loaded assembly, or null if the assembly could not be loaded.</returns>
+        public static Assembly LoadAssembly(string fullName, int outputLevel = 2, bool reflectionOnly = false)
+        {
+            Assembly ret = null;
+            if (outputLevel >= 1)
+            {
+                if (reflectionOnly)
+                    Console.WriteLine(Environment.NewLine + "Loading assembly (for reflection only): " + fullName + " ...");
+                else
+                    Console.WriteLine(Environment.NewLine + "Loading assembly " + fullName + " ...");
+            }
+            if (reflectionOnly)
+            {
+                // Load assembly for reflection only (out of any app domain, so it can not be executed):
+                if (ret == null)
+                {
+                    try
+                    {
+                        ret = Assembly.Load(fullName);
+                        if (ret == null)
+                            throw new InvalidOperationException("Could not load the following assembly: " + fullName);
+                        if (outputLevel >= 2)
+                            Console.WriteLine("Loaded by Assembly.Load(fullName).");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (outputLevel >= 2)
+                            Console.WriteLine("ERROR in Assembly.Load(fullName): " + Environment.NewLine + "  " + ex.Message);
+                    }
+                }
+            }
+            else
+            {
+                // Load assembly into current AppDomain, so that it can be executed:
+                if (ret == null)
+                {
+                    try
+                    {
+                        ret = Assembly.Load(fullName);
+                        if (ret == null)
+                            throw new InvalidOperationException("Could not load the following assembly: " + fullName);
+                        if (outputLevel >= 2)
+                            Console.WriteLine("Loaded by Assembly.Load(fullName).");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (outputLevel >= 2)
+                            Console.WriteLine("ERROR in Assembly.Load(fullName): " + Environment.NewLine + "  " + ex.Message);
+                    }
+                }
+
+                if (ret == null)
+                {
+                    try
+                    {
+                        ret = Assembly.LoadFrom(fullName);
+                        if (ret == null)
+                            throw new InvalidOperationException("Could not load the following assembly: " + fullName);
+                        if (outputLevel >= 2)
+                            Console.WriteLine("Loaded by Assembly.LoadFrom(fullName).");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (outputLevel >= 2)
+                            Console.WriteLine("ERROR in Assembly.LoadFrom(fullName): " + Environment.NewLine + "  " + ex.Message);
+                    }
+                }
+
+                if (ret == null)
+                {
+                    try
+                    {
+                        ret = Assembly.LoadFile(fullName);
+                        if (ret == null)
+                            throw new InvalidOperationException("Could not load the following assembly: " + fullName);
+                        if (outputLevel >= 2)
+                            Console.WriteLine("Loaded by Assembly.LoadFile(fullName).");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (outputLevel >= 2)
+                            Console.WriteLine("ERROR in Assembly.LoadFile(fullName): " + Environment.NewLine + "  " + ex.Message);
+                    }
+                }
+
+            }
+            if (outputLevel >= 1)
+            {
+                if (ret != null)
+                {
+                    Console.WriteLine("  ... done. " + Environment.NewLine);
+                    if (outputLevel >= 2)
+                    {
+                        int infoLevel = outputLevel;
+                        int versionLevel = outputLevel + 1;
+                        Console.WriteLine(Environment.NewLine + "Loaded assembly: " + Environment.NewLine 
+                            + GetAssemblyInfo(ret, infoLevel, versionLevel)
+                            + Environment.NewLine);
+                    }
+                }
+                else
+                    Console.WriteLine("  ... loading FALED for " + fullName);
+            }
+            return ret;
+        }
+
+
+
+        /// <summary>Loads all the assemblies specified by arguments, and returns the array of loaded assemblies.</summary>
+        /// <param name="fullNames">Names of the assemblies to be loaded.</param>
+        /// <param name="outputLevel">The level of output. If greater than 0 then some information 
+        /// abot loading the assembly and assembly itself is printed.</param>
+        /// <param name="reflectionOnly">If true then assembly is loaded for inspection only, i.e. 
+        /// out of any applicatin domain, and can not be executed.</param>
+        /// <returns>Array of loaded assemblies.</returns>
+        public static Assembly[] LoadAssemblies(string[] fullNames, int outputLevel = 2, bool reflectionOnly = false)
+        {
+            List<Assembly> assemblies = new List<Assembly>();
+            foreach (string assemblyName in fullNames)
+            {
+                assemblies.Add(LoadAssembly(assemblyName));
+            }
+            return assemblies.ToArray();
+        }
+
+
+        #endregion Assembly.Load
 
 
         #region Assemblies.General
@@ -2336,6 +2743,13 @@ namespace IG.Lib
         public static string GetAssemblyAssemblyName(Assembly assembly)
         {
             return assembly.GetName().Name;
+        }
+
+        /// <summary>Returns assembly name of the specified assembly.</summary>
+        /// <param name="assembly">Assembly whose name is returned.</param>
+        public static string GetAssemblyAssemblyFullName(Assembly assembly)
+        {
+            return assembly.GetName().FullName;
         }
 
         /// <summary>Returns version (from the file info) of the specified assembly.</summary>
@@ -2408,6 +2822,7 @@ namespace IG.Lib
             if (infoLevel >= 1)
             {
                 sb.AppendLine("Assembly: " + assembly.GetName().Name + ", version " + GetAssemblyVersion(assembly, versionLevel));
+                sb.AppendLine("Full name: " + assembly.GetName().FullName);
                 if (assembly == ExecutableAssembly)
                     sb.AppendLine("Executable name: " + GetAssemblyFileName(assembly));
                 else
@@ -2599,6 +3014,7 @@ namespace IG.Lib
 
         #endregion Assemblies.IGLib
 
+
         /// <summary>Returns a (possibly multiline) string containing basic information about the current application, 
         /// such as file name, directory, assembly name, and version. Information about IGLib can be included, too.</summary>
         /// <param name="infoLevel">Level of information put into the string:
@@ -2730,8 +3146,8 @@ namespace IG.Lib
         /// <para>By setting the <see cref="ThreadPriority"/> property, this flag is automatically set to false.</para></summary>
         public static bool DynamicThreadPriority
         {
-            get { lock (Util.LockGlobal) { return _dynamicThreadPriority; } }
-            set { lock (Util.LockGlobal) { _dynamicThreadPriority = value; } }
+            get { lock (LockStatic) { return _dynamicThreadPriority; } }
+            set { lock (LockStatic) { _dynamicThreadPriority = value; } }
         }
 
 
@@ -2750,7 +3166,7 @@ namespace IG.Lib
             {
                 ThreadPriority ret;
                 bool priorityChanged = false;
-                lock (Util.LockGlobal)
+                lock (LockStatic)
                 {
                     if (_dynamicThreadPriority)
                     {
@@ -2770,7 +3186,7 @@ namespace IG.Lib
             set
             {
                 bool priorityChanged = false;
-                lock (Util.LockGlobal)
+                lock (LockStatic)
                 {
                     if (value != _threadPriority)
                         priorityChanged = true;
@@ -2799,7 +3215,7 @@ namespace IG.Lib
         {
             ThreadPriority priority = GetThreadPriorityFromProcess();
             bool priorityChanged = false;
-            lock (Util.LockGlobal)
+            lock (LockStatic)
             {
                 if (priority != _threadPriority)
                 {
@@ -2819,7 +3235,7 @@ namespace IG.Lib
         public static void OnThreadPriorityChange()
         {
             ThreadStart onChange;
-            lock (Util.LockGlobal)
+            lock (LockStatic)
             {
                 onChange = _onThreadPriorityChange;
             }
@@ -2831,7 +3247,7 @@ namespace IG.Lib
         /// <param name="onPriorityChangeMethod">Method that is added.</param>
         public static void AddOnThreadPriorityChange(ThreadStart onPriorityChangeMethod)
         {
-            lock (Util.LockGlobal)
+            lock (LockStatic)
             {
                 _onThreadPriorityChange += onPriorityChangeMethod;
             }
@@ -2841,7 +3257,7 @@ namespace IG.Lib
         /// <param name="onPriorityChangeMethod">Method that is removed.</param>
         public static void RemoveOnThreadPriorityChange(ThreadStart onPriorityChangeMethod)
         {
-            lock (Util.LockGlobal)
+            lock (LockStatic)
             {
                 try
                 {

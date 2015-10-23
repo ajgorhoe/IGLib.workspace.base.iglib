@@ -215,11 +215,21 @@ package " + PackageName +
                     string[] splitCommand = command.Split('=');
                     if (splitCommand != null)
                         if (splitCommand.Length == 2)
-                            if (!string.IsNullOrEmpty(splitCommand[0]) && !string.IsNullOrEmpty(splitCommand[1]))
+                        {
+                            string firstPart = splitCommand[0];
+                            if (!string.IsNullOrEmpty(firstPart) && !string.IsNullOrEmpty(splitCommand[1]))
                             {
-                                if (!splitCommand[0].Contains("var") && !splitCommand[0].Contains("function"))
-                                    command = "var " + command;
+                                // Exclude cases with operators "<=", ">=", "!=", "_=", etc:
+                                char lastBeforeEquals = firstPart[firstPart.Length - 1];
+                                if (lastBeforeEquals != '<' && lastBeforeEquals != '>'
+                                    && lastBeforeEquals != '=' && lastBeforeEquals != '!')
+                                {
+                                    // Exclude ordinary variable and function definitions:
+                                    if (!splitCommand[0].Contains("var") && !splitCommand[0].Contains("function"))
+                                        command = "var " + command;
+                                }
                             }
+                        }
                 }
                 if (command.Contains("("))
                     if (command.Contains("{"))

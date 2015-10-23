@@ -303,7 +303,7 @@ namespace IG.Lib
                 {
                     try
                     {
-                        TestInterpreter.Run(args);
+                        TestInterpreter.Run(TestInterpreter.MainThread, args);
                     }
                     catch (Exception ex)
                     {
@@ -319,7 +319,6 @@ namespace IG.Lib
                     }
                     return;
                 }
-
             // We did not specify interpreter command to run (eventually with arguments), run the default:
             Console.WriteLine("Launching application, hard-coded arguments ...");
             TestInterpreter.WarnCommandReplacement = true;  // warn me if any command has been replaced.
@@ -349,7 +348,18 @@ namespace IG.Lib
 
 
 
+
+        ///// <summary>Entry point of the application, executed on the main interpreter thread.</summary>
+        ///// <param name="commandThread">Command thread that is being executed.</param>
+        ///// <param name="AppArguments">Application arguments.</param>
+        //public void Main(string[] args)
+        //{
+        //    Main(this.TestInterpreter.MainThread, args);
+        //}
+
+
         /// <summary>Entry point of the application.</summary>
+        /// <param name="commandThread">Command thread that is being executed.</param>
         /// <param name="AppArguments">Application arguments.</param>
         public void Main(string[] args)
         {
@@ -375,7 +385,7 @@ namespace IG.Lib
             base.AddDefaultAssemblies();
             ScriptLoaderBase.AddDefaultAssemblies(
                 "IGLib.dll",
-                "IGLibReporterMsg.dll",
+                //"IGLibReporterMsg.dll",
                 "MathNet.Numerics.dll"
                 );
 
@@ -416,7 +426,7 @@ namespace IG.Lib
 
 
         /// <summary>Runs the shell interpreter.</summary>
-        /// <param name="AppArguments">Commandline arguments.</param>
+        /// <param name="args">Commandline arguments.</param>
         /// <remarks><para>Standard scheme for IGLib-based test applications.</para></remarks>
         /// $A Igor Dec12;
         public override void TestMain(string[] args)
@@ -430,7 +440,7 @@ namespace IG.Lib
                 //// Run interpreter interactively:
                 //TestInterpreter.Run(new string[] { ConstRunInteractive });
                 // Run interpreter interactively:
-                TestInterpreter.Run(args);
+                TestInterpreter.Run(TestInterpreter.MainThread, args);
             }
             catch (Exception ex)
             {

@@ -18,13 +18,14 @@ namespace IG.Lib
     {
 
         /// <summary>Runs the specified command with specified name, installed on the current application object.</summary>
+        /// <param name="commandThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="AppName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
         /// <remarks>This command overrides the original Run commands in such a way that it treats script commands differently form 
         /// the original interpreter commands.
         /// <para>If a command is script command (i.e. contained on the <see cref="Script_CommandHelpStrings"/> list) then
         /// its arguments will contain the command name, otherwise they will not.</para></remarks>
-        public override string Run(string commandName, params string[] commandArguments)
+        public override string Run(CommandThread commandThread, string commandName, params string[] commandArguments)
         {
             string[] args = commandArguments;
             if (Script_ContainsScriptCommand(commandName))
@@ -39,7 +40,7 @@ namespace IG.Lib
                     args[i+1] = commandArguments[i];
                 }
             }
-            return base.Run(commandName, args);
+            return base.Run(commandThread, commandName, args);
         }
 
         private SortedList<string, string> _script_CommandHelpStrings;
@@ -517,8 +518,8 @@ namespace IG.Lib
             /// <para>This method actually runs the script command enclosed in this adapter.</para></summary>
             /// <param name="interpreter">Dummy argument, only to match delegate signature.</param>
             /// <param name="commandName">Name of the command. This will be the same as the 0-th argument.</param>
-            /// <param name="AppArguments">Command arguments. 0-th arguments will usually be command name.</param>
-            public string InterpreterCommand(ICommandLineApplicationInterpreter interpreter, string commandName, string[] args)
+            /// <param name="args">Command arguments. 0-th arguments will usually be command name.</param>
+            public string InterpreterCommand(CommandThread interpreter, string commandName, string[] args)
             {
                 string ret = _scriptCommand(args);
                 if (args!=null)
@@ -708,7 +709,7 @@ namespace IG.Lib
                 if (Script_ContainsScriptCommand(commandName))
                 {
                     // We are running a script command, therefore it is run without modifications:
-                    return Script_Interpreter.RunWithoutModifications(commandName, arguments);
+                    return Script_Interpreter.RunWithoutModifications(Script_Interpreter.MainThread, commandName, arguments);
                 }
                 else
                 {
@@ -724,7 +725,7 @@ namespace IG.Lib
                         for (int i = 0; i < numArgs; ++i)
                             args[i] = arguments[i + 1];
                     }
-                    return Script_Interpreter.RunWithoutModifications(commandName, args);
+                    return Script_Interpreter.RunWithoutModifications(Script_Interpreter.MainThread, commandName, args);
                 }
 
             }  else
@@ -788,6 +789,7 @@ namespace IG.Lib
         {
 
             protected override CommandLineApplicationInterpreter CreateInterpreter() { throw new NotImplementedException("Creation of commandline interpreter is not implemnted in this class."); }
+
             public override void TestMain(string[] args) { throw new NotImplementedException(""); }
 
             public void TestMain_Basic(string[] args)

@@ -50,6 +50,7 @@ namespace IG.Crypto
         private static object _lockStatic = null;
 
         /// <summary>Locking object for static methods and properties of this class.</summary>
+        /// <remarks>Read-only, safely provided on demand (using <see cref="Util.LockGlobal"/> when 
         public static object LockStatic
         {
             get
@@ -83,6 +84,25 @@ namespace IG.Crypto
 
 
         #region Passwords
+
+
+        // See also: 
+        // Verify the password knowledge iteratively and securely: 
+        //   Password-authenticated key agreement: https://en.wikipedia.org/wiki/Password-authenticated_key_agreement 
+        //     Zero-knowledge password proof: https://en.wikipedia.org/wiki/Zero-knowledge_password_proof 
+        //       http://crypto.stackexchange.com/questions/1467/zero-knowledge-password-proof 
+        //       Encrypted key exchange: https://en.wikipedia.org/wiki/Encrypted_key_exchange 
+        //       Secure Remote Password protocol: https://en.wikipedia.org/wiki/Secure_Remote_Password_protocol 
+
+        // Password Authentication Protocol: https://en.wikipedia.org/wiki/Password_Authentication_Protocol
+        //   Challenge-Handshake Authentication Protocol: https://en.wikipedia.org/wiki/Challenge-Handshake_Authentication_Protocol
+
+        // MAC - Message authentication code: https://en.wikipedia.org/wiki/Message_authentication_code
+        // HMAC - Hash-based message authentication code: https://en.wikipedia.org/wiki/Hash-based_message_authentication_code 
+
+
+
+
 
 
         #region Passwords.General

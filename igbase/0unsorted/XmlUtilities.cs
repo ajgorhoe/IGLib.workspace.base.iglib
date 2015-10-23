@@ -111,9 +111,9 @@ namespace IG.Lib
         /// <summary>Loads data store'result XML Doc from an XML string.
         /// An exception is thrown if the there is modified and unsaved data.</summary>
         /// <param name="str">XML string from which XML is loaded.</param>
-        public void LoadFromString(string filename)
+        public void LoadFromString(string str)
         {
-            Load(filename, false /* throw exception if data is already loaded. */ );
+            Load(str, false /* throw exception if data is already loaded. */ );
         }
 
 
@@ -229,7 +229,6 @@ namespace IG.Lib
 
         /// <summary>Returns the first ELEMENT node in the XML sub-tree whose root is basenode
         /// that satisfies the specified XPath expression.</summary>
-        /// <param name="basenode">Root node of the XML sub-tree in which _gridCoordinates are searched for.</param>
         /// <param name="xpath">The XPath expression used for selection of the node.</param>
         /// <returns>The first node that satisfies the XPath expression.</returns>
         public XmlElement GetElement(string xpath)

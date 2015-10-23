@@ -3904,7 +3904,7 @@ A number of other options are supported:
         protected List<CommandMethod> AppAssemblyMethods = new List<CommandMethod>();
 
         /// <summary>Adds a new assembly - related embedded application's command (added as sub-command of the base command named <see cref="ConstSystem"/>).</summary>
-        /// <param name="AppName">Application name.</param>
+        /// <param name="appName">Application name.</param>
         /// <param name="appMethod">Method used to perform the application.</param>
         /// <param name="appHelp">Eventual help string for the application.</param>
         protected void AddAssemblyCommand(string appName, CommandMethod appMethod, string appHelp)
@@ -3931,10 +3931,10 @@ A number of other options are supported:
             + "\n" + " AssemblyName is not specified then the information on executable assembly is printed.";
 
         /// <summary>Executes embedded application - writing to the console information about the specified assembly.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string AssemblyFunctionInfo(string surfaceName, string[] args)
+        protected virtual string AssemblyFunctionInfo(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -3988,51 +3988,125 @@ A number of other options are supported:
 
 
 
+        // TODO: Delete the block below later!
+        //#region Actions.AssemblyUtilities.ApplicationInfo
+
+        //public const string AssemblyApplicationInfo = "ApplicationInfo";
+        //public const string AssemblyApplicationInfo1 = "AppInfo";
+
+        //protected const string AssemblyHelpApplicationInfo = AssemblyApplicationInfo + " : Prints information on the application and its assemblies.";
+
+        //protected const string AssemblyHelpApplicationInfo1 = AssemblyHelpApplicationInfo;
+
+        ///// <summary>Executes embedded application - writing to the console information about the specified assembly.</summary>
+        ///// <param name="appName">Name of the embedded application.</param>
+        ///// <param name="appArguments">Arguments fo the embedded application's command.</param>
+        ///// <returns>Number of arguments passed.</returns>
+        //[Obsolete("Duplicates functionality of teh AssemblyFunctionInfo command.")]
+        //protected virtual string AssemblyFunctionApplicationInfo(string appName, string[] appArguments)
+        //{
+        //    int numArgs = 0;
+        //    if (appArguments != null)
+        //        numArgs = appArguments.Length;
+        //    int infoLevel = 3;
+        //    bool includeIglibInfo = true;
+        //    int versionLevel = 2;
+        //    IList<Assembly> additionalAssemblies = null;
+        //    string info = UtilSystem.GetApplicationInfo(infoLevel, includeIglibInfo, versionLevel, additionalAssemblies);
+        //    if (OutputLevel >= 3)
+        //    {
+        //        Console.WriteLine(Environment.NewLine + "Application and its assemblies: ");
+        //        Console.WriteLine(info + Environment.NewLine);
+        //    }
+        //    return info;
+        //}
+
+        //#endregion Actions.AssemblyUtilities.ApplicationInfo
+
+
+
         #region Actions.AssemblyUtilities.ReferencedAssemblies
 
         public const string AssemblyReferenced = "ReferencedAssemblies";
         public const string AssemblyReferenced1 = "Referenced";
 
-        protected const string AssemblyHelpReferenced = AssemblyReferenced + ": Prints a list of referenced assemblies.";
+        protected const string AssemblyHelpReferenced = AssemblyReferenced + @" <recursice includeGAC>: Prints a list of referenced assemblies.
+    recursive: if true then indirectly referenced assemblies are printed, too. Default is false.
+    includeGAC: if true (default) then assemblies from Global Assembly Cache are also included.";
 
-        protected const string AssemblyHelpReferenced1 = AssemblyReferenced1 + ": Prints a list of referenced assemblies.";
+        protected const string AssemblyHelpReferenced1 = AssemblyHelpReferenced; // AssemblyReferenced1 + ": Prints a list of referenced assemblies.";
 
         /// <summary>Executes embedded application - writing to the console list of referenced assemblies.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string AssemblyFunctionReferenced(string surfaceName, string[] args)
+        protected virtual string AssemblyFunctionReferenced(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
                 numArgs = args.Length;
             bool recursive = false;
+            bool includeGac = true;
             if (numArgs >= 1)
             {
                 string recursiveStr = args[0];
                 bool parsed = Util.TryParseBoolean(recursiveStr, ref recursive);
                 if (!parsed)
                     throw new ArgumentException("Recursive flag not specified correctly (not a boolean): " + recursiveStr + ".");
+                if (numArgs >= 2)
+                {
+                    string includeGacStr = args[1];
+                    parsed = Util.TryParseBoolean(includeGacStr, ref includeGac);
+                    if (!parsed)
+                        throw new ArgumentException("GAC inclusion flag not specified correctly (not a boolean): " + includeGacStr + ".");
+                }
             }
             Assembly[] assemblies = null;
             if (recursive)
-                assemblies = UtilSystem.GetReferencedAssembliesRecursive();
+            {
+                if (includeGac)
+                    assemblies = UtilSystem.GetReferencedAssembliesRecursive();
+                else
+                    assemblies = UtilSystem.GetReferencedAssembliesRecursiveWithoutGac();
+            }
             else
-                assemblies = UtilSystem.GetReferencedAssemblies();
+            {
+                if (includeGac)
+                    assemblies = UtilSystem.GetReferencedAssemblies();
+                else
+                    assemblies = UtilSystem.GetReferencedAssembliesWithoutGac();
+            }
             StringBuilder sb = new StringBuilder();
             int numAssemblies = 0;
             if (assemblies != null)
                 numAssemblies = assemblies.Length;
-            if (recursive)
-                Console.WriteLine("Referenced assemblies (recursive - including indirect): ");
+            if (OutputLevel >= 0)
+            {
+                if (recursive)
+                {
+                    if (includeGac)
+                        Console.WriteLine("Referenced assemblies (recursive - including indirectly referenced): ");
+                    else
+                        Console.WriteLine("Referenced assemblies (recursive - including indirectly referenced), GAC excluded: ");
+
+                }
+                else
+                {
+                    if (includeGac)
+                        Console.WriteLine("Referenced assemblies (directly): ");
+                    else
+                        Console.WriteLine("Referenced assemblies (directly), GAC excluded: ");
+                }
+            }
             for (int i = 0; i < numAssemblies; ++ i)
             {
                 Assembly assembly = assemblies[i];
                 if (i > 0)
                     sb.Append(", ");
                 sb.Append(UtilSystem.GetAssemblyName(assembly));
-                Console.WriteLine("  " + UtilSystem.GetAssemblyName(assembly) + " v. "
-                    + UtilSystem.GetAssemblyVersion(assembly));
+                if (OutputLevel >= 0)
+                    Console.WriteLine("  " + UtilSystem.GetAssemblyName(assembly) + " v. "
+                        + UtilSystem.GetAssemblyVersion(assembly));
             }
             if (sb.Length > 0)
                 return sb.ToString();
@@ -4042,6 +4116,143 @@ A number of other options are supported:
 
         #endregion Actions.AssemblyUtilities.ReferencedAssemblies
 
+
+
+
+        #region Actions.AssemblyUtilities.LoadedAssemblies
+
+        public const string AssemblyLoaded = "LoadedAssemblies";
+        public const string AssemblyLoaded1 = "Loaded";
+
+        protected const string AssemblyHelpLoaded = AssemblyLoaded + @" : Prints all loaded assemblies.";
+
+        protected const string AssemblyHelpLoaded1 = AssemblyHelpLoaded; // AssemblyLoaded1 + ": Prints a list of referenced assemblies.";
+
+        /// <summary>Executes embedded application - writing to the console list of loaded assemblies.</summary>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <returns>Number of arguments passed.</returns>
+        protected virtual string AssemblyFunctionLoaded(string appName, string[] args)
+        {
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            Assembly[] assemblies = null;
+            assemblies = UtilSystem.GetLoadedAssemblies();
+            StringBuilder sb = new StringBuilder();
+            int numAssemblies = 0;
+            if (assemblies != null)
+                numAssemblies = assemblies.Length;
+            if (OutputLevel >= 0)
+            {
+                Console.WriteLine("Loaded assemblies: ");
+            }
+            for (int i = 0; i < numAssemblies; ++i)
+            {
+                Assembly assembly = assemblies[i];
+                if (i > 0)
+                    sb.Append(", ");
+                sb.Append(UtilSystem.GetAssemblyName(assembly));
+                if (OutputLevel >= 0)
+                    Console.WriteLine("  " + UtilSystem.GetAssemblyName(assembly) + " v. "
+                        + UtilSystem.GetAssemblyVersion(assembly));
+            }
+            if (sb.Length > 0)
+                return sb.ToString();
+            else
+                return null;
+        }
+
+        #endregion Actions.AssemblyUtilities.LoadedAssemblies
+
+
+
+
+        #region Actions.AssemblyUtilities.LoadAssemblies
+
+        public const string AssemblyLoad = "LoadAssemblies";
+        public const string AssemblyLoad1 = "Load";
+
+        public const string AssemblyInfoLoad = "InfoLoadAssemblies";
+        public const string AssemblyInfoLoad1 = "InfoLoad";
+
+        protected const string AssemblyHelpLoad = AssemblyLoad + @" <assembly1 assembly2 ...>: Loads the specified assemblies.
+    assembly1, assembly2, ...: assembly file names for the assemblies to be loaded.";
+        protected const string AssemblyHelpLoad1 = AssemblyHelpLoad; // AssemblyLoad1 + ": Prints a list of referenced assemblies.";
+
+        protected const string AssemblyHelpInfoLoad = AssemblyInfoLoad + @" <assembly1 assembly2 ...>: Loads the specified assemblies 
+      for inspection onlly (can not be executed).
+    assembly1, assembly2, ...: assembly file names for the assemblies to be loaded.";
+        protected const string AssemblyHelpInfoLoad1 = AssemblyHelpInfoLoad; // AssemblyLoad1 + ": Prints a list of referenced assemblies.";
+
+        
+
+        /// <summary>Executes embedded application - loading the specified assemblies to the application domain.</summary>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <returns>Number of arguments passed.</returns>
+        protected virtual string AssemblyFunctionLoadAssemblies(string appName, string[] args)
+        {
+            return AssemblyFunctionLoadAssemblies(3 /* outputLevel */, false /* reflectionOnly */, appName, args);
+        }
+
+        /// <summary>Executes embedded application - loading the specified assemblies for inspection only
+        /// (can not be executed).</summary>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <returns>Number of arguments passed.</returns>
+        protected virtual string AssemblyFunctionInfoLoadAssemblies(string appName, string[] args)
+        {
+            return AssemblyFunctionLoadAssemblies(3 /* outputLevel */, true /* reflectionOnly */, appName, args);
+        }
+
+
+        /// <summary>Executes embedded application - loading the specified assemblies to the application domain.</summary>
+        /// <param name="outputLevel">Level of output.</param>
+        /// <param name="reflectionOnly">If true then assemblies are loaded for inspection only.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <returns>Number of arguments passed.</returns>
+        protected virtual string AssemblyFunctionLoadAssemblies(int outputLevel, bool reflectionOnly, string appName, string[] args)
+        {
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            Assembly[] loadedAssemblies = null;
+            // List<string> fullNames = new List<string>();
+            string[] fullNames = args;
+
+            int numargs = 0;
+            if (args != null)
+                numargs = args.Length;
+            if (numargs == 0)
+                throw new ArgumentException("No assemblies to be loaded, at least one should be specified.");
+            loadedAssemblies = UtilSystem.LoadAssemblies(fullNames, outputLevel, reflectionOnly);
+            StringBuilder sb = new StringBuilder();
+            int numAssemblies = 0;
+            if (loadedAssemblies != null)
+                numAssemblies = loadedAssemblies.Length;
+            if (OutputLevel >= 0)
+            {
+                Console.WriteLine("The following assemblies have been loaded: ");
+            }
+            for (int i = 0; i < numAssemblies; ++i)
+            {
+                Assembly assembly = loadedAssemblies[i];
+                if (i > 0)
+                    sb.Append(", ");
+                sb.Append(UtilSystem.GetAssemblyName(assembly));
+                if (OutputLevel >= 0)
+                    Console.WriteLine("  " + UtilSystem.GetAssemblyName(assembly) + " v. "
+                        + UtilSystem.GetAssemblyVersion(assembly));
+            }
+            if (sb.Length > 0)
+                return sb.ToString();
+            else
+                return null;
+        }
+
+        #endregion Actions.AssemblyUtilities.LoasAssemblies
 
 
 
@@ -4059,8 +4270,17 @@ A number of other options are supported:
 
                 AddAssemblyCommand(AssemblyInfo, AssemblyFunctionInfo, AssemblyHelpInfo);
                 AddAssemblyCommand(AssemblyInfo1, AssemblyFunctionInfo, AssemblyHelpInfo1);
+                //AddAssemblyCommand(AssemblyApplicationInfo, AssemblyFunctionApplicationInfo, AssemblyHelpApplicationInfo);
+                //AddAssemblyCommand(AssemblyApplicationInfo1, AssemblyFunctionApplicationInfo, AssemblyHelpApplicationInfo1);
                 AddAssemblyCommand(AssemblyReferenced, AssemblyFunctionReferenced, AssemblyHelpReferenced);
                 AddAssemblyCommand(AssemblyReferenced1, AssemblyFunctionReferenced, AssemblyHelpReferenced1);
+                AddAssemblyCommand(AssemblyLoaded, AssemblyFunctionLoaded, AssemblyHelpLoaded);
+                AddAssemblyCommand(AssemblyLoaded1, AssemblyFunctionLoaded, AssemblyHelpLoaded1);
+
+                AddAssemblyCommand(AssemblyLoad, AssemblyFunctionLoadAssemblies, AssemblyHelpLoad);
+                AddAssemblyCommand(AssemblyLoad1, AssemblyFunctionLoadAssemblies, AssemblyHelpLoad1);
+                AddAssemblyCommand(AssemblyInfoLoad, AssemblyFunctionInfoLoadAssemblies, AssemblyHelpInfoLoad);
+                AddAssemblyCommand(AssemblyInfoLoad1, AssemblyFunctionInfoLoadAssemblies, AssemblyHelpInfoLoad1);
 
                 _appAssemblyCommandsInitialized = true;
             }
@@ -4069,7 +4289,7 @@ A number of other options are supported:
 
 
         /// <summary>Runs a file assembly related utility (embedded application) according to arguments.</summary>
-        /// <param name="AppArguments">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
+        /// <param name="args">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
         /// arguments are arguments that are used by the embedded application.</param>
         protected virtual string RunAppAssembly(string[] args)
         {

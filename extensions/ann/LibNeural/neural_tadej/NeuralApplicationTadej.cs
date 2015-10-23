@@ -37,11 +37,11 @@ namespace IG.Neural
 
         /// <summary>Command.
         /// Example command for Tadej.</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="interpreterThread">Interpreter thread on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="AppArguments">Command arguments.</param>
         /// <returns>Format of the file if test was performed, null otherwise.</returns>
-        public static string CmdExampleTadej(ICommandLineApplicationInterpreter interpreter, 
+        public static string CmdExampleTadej(CommandThread interpreterThread, 
             string cmdName, string[] args)
         {
             if (args != null)

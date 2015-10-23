@@ -162,6 +162,7 @@ namespace IG.Lib
         }
 
         private object _evaluator = null;
+
         private Type _evaluatorType = null;
 
         /// <summary>Compiles the base script where evaluation is plugged in,

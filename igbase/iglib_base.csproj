@@ -57,6 +57,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.JScript">
       <HintPath>..\bin\Microsoft.JScript.dll</HintPath>
@@ -140,6 +146,8 @@
     <Compile Include="interfaces\simulations\Kosec\SimKosecFileManagerBase.cs" />
     <Compile Include="interpreters\CommandlineApplicationInterpreter.cs" />
     <Compile Include="interpreters\ApplicationCommandLineBase.cs" />
+    <Compile Include="interpreters\CommandlineApplicationInterpreterBase.cs" />
+    <Compile Include="interpreters\CommandlineApplicationInterpreterInterface.cs" />
     <Compile Include="interpreters\interfaces\InterfaceInterpreterBase.cs" />
     <Compile Include="interpreters\interfaces\InterfaceInv.cs" />
     <Compile Include="interpreters\scriptloader\LoadableScriptExamnple.cs" />
@@ -154,6 +162,7 @@
     <Compile Include="interpreters\scriptloader\ScalarFunctionScriptLoader.cs" />
     <Compile Include="interpreters\scriptloader\scripts\ScriptAppBase.cs" />
     <Compile Include="0guests\Tako78\scripts\ScriptAppBase1.cs" />
+    <Compile Include="interpreters\TestDevelop\CommandThreadTest_To_Delete.cs" />
     <Compile Include="numeric\approximation\linear\ApproxBasis.cs" />
     <Compile Include="numeric\approximation\neural\testneural\NeuralFileConst.cs" />
     <Compile Include="numeric\approximation\neural\testneural\NeuralFileManager.cs" />
@@ -315,11 +324,11 @@
     <Content Include="0readme\License_IGLib.html" />
     <Content Include="0readme\ReadMe_IGLib.html" />
     <Content Include="data\serialization\json\0readmeJsonPrettyPrinter.txt" />
+    <Content Include="interfaces\simulations\0ReadMeSimulationInterfaces.txt" />
     <Content Include="interpreters\ExpressionEvaluatorDefinitions.js" />
     <Content Include="interpreters\interfaces\0ReadMeInterpreterInterfaces.txt" />
     <Content Include="numeric\approximation\neural\0readme_TODO.txt" />
     <Content Include="optimization\0readme_optimization.txt" />
-    <Content Include="interfaces\simulations\0ReadMeSimulationInterfaces.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="0guests\0common\" />
@@ -334,6 +343,9 @@
     <Folder Include="optimization\responseeval\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
+    <None Include="ClassDiagram3.cd" />
     <None Include="interpreters\scriptloader\scripts\script_examples.cmd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
