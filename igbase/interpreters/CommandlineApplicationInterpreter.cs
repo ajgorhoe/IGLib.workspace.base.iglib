@@ -72,7 +72,12 @@ namespace IG.Lib
             this.AddCommandMt("Clear", CmdClearVariable);
             this.AddCommandMt("PrintVariable", CmdPrintVariable);
 
-            this.AddCommandMt("ThreadInfo", CmdInterpreterInfo);
+            // Information about interpretation:
+            this.AddCommandMt("ThreadInfo", CmdThreadInfo);
+            this.AddCommandMt("ThreadId", CmdThreadId);
+            this.AddCommandMt("StackLevel", CmdStackLevel);
+            this.AddCommandMt("SuppressInteractive", CmdSuppressInteractive);
+            this.AddCommandMt("SuppressInteractiveFrame", CmdSuppressInteractiveFrame);
 
             this.AddCommandMt(Command_Block, CmdBlock);    // "Block"
             this.AddCommandMt(Command_EndBlock, CmdEndBlock);    // "EndBlock"
@@ -593,9 +598,9 @@ namespace IG.Lib
             CommandStackFrame parentFrame = cmdThread.TopFrame;
             parentFrame.ReturnedValue = null;
             CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.Block);
+            frame.SuppressInteractive = parentFrame.SuppressInteractive;  // inherits from parent
             // Add block enter / exit commands:
             AddEnterExitCommands_Block(frame);
-
             frame.DoExecuteCommands = executeCommands;
             frame.DoSaveCommands = saveCommands;
             if (!parentFrame.DoExecuteCommands)
@@ -667,9 +672,10 @@ namespace IG.Lib
             Console.WriteLine(Environment.NewLine + Environment.NewLine 
                 + "Entering the JavaScript code block. " + Environment.NewLine);
 
-            //CommandStackFrame parentFrame = cmdThread.TopFrame;
+            CommandStackFrame parentFrame = cmdThread.TopFrame;
             //parentFrame.ReturnedValue = null;
             CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.Block);
+            frame.SuppressInteractive = parentFrame.SuppressInteractive;  // inherits from parent
             // Add block enter / exit commands:
             AddEnterExitCommands_BeginCalc(frame);
 
@@ -736,6 +742,7 @@ namespace IG.Lib
             CommandStackFrame parentFrame = cmdThread.TopFrame;
             parentFrame.ReturnedValue = null;
             CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.If);
+            frame.SuppressInteractive = parentFrame.SuppressInteractive;  // inherits from parent
             // Add block enter / exit commands:
             AddEnterExitCommands_If(frame);
 
@@ -772,6 +779,7 @@ namespace IG.Lib
             CommandStackFrame previousFrame = cmdThread.RemoveFrame();
             CommandStackFrame parentFrame = cmdThread.TopFrame;
             CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.If);
+            frame.SuppressInteractive = parentFrame.SuppressInteractive;  // inherits from parent
             frame.ReturnedValue = previousFrame.ReturnedValue;
             // Add block enter / exit commands:
             AddEnterExitCommands_ElseIf(frame);
@@ -809,6 +817,7 @@ namespace IG.Lib
             CommandStackFrame previousFrame = cmdThread.RemoveFrame();
             CommandStackFrame parentFrame = cmdThread.TopFrame;
             CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.If);
+            frame.SuppressInteractive = parentFrame.SuppressInteractive;  // inherits from parent
             frame.ReturnedValue = previousFrame.ReturnedValue;
             // Add block enter / exit commands:
             AddEnterExitCommands_Else(frame);
@@ -854,14 +863,16 @@ namespace IG.Lib
         public virtual void EnterWhile(CommandThread cmdThread, string conditionString)
         {
             cmdThread.WasBlockEnterCommand = true;
+            CommandStackFrame parentFrame = cmdThread.TopFrame;
             CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.While);
+            frame.SuppressInteractive = parentFrame.SuppressInteractive;  // inherits from parent
             // Add block enter / exit commands:
             AddEnterExitCommands_While(frame);
 
             frame.ConditionExpression = conditionString;
             frame.DoExecuteCommands = false;
             frame.DoSaveCommands = true;
-            frame.OppressInteractive = true;
+            frame.SuppressInteractive = true;
         }
 
 
@@ -918,7 +929,7 @@ namespace IG.Lib
             // Restore saved flags:
             frame.DoExecuteCommands = storeDoExecute;
             frame.DoSaveCommands = storeDoSave;
-            frame.OppressInteractive = false;
+            frame.SuppressInteractive = false;
 
             // Exit the current stack frame such that code is exected in the containing frame:
             CommandStackFrame removedFrame = cmdThread.RemoveFrame();
@@ -1027,8 +1038,8 @@ namespace IG.Lib
                 }
                 Console.Write("Cmd>");
                 line = Console.ReadLine();
-                CommandStackFrame frame = cmdThread.TopFrame;  // must be here to capture the current stack frame every time
-                if (string.IsNullOrEmpty(line) && !frame.OppressInteractive)
+                CommandStackFrame frame = cmdThread.TopFrame;  // must stand here to capture the current stack frame every time
+                if (string.IsNullOrEmpty(line) && !frame.SuppressInteractive && !cmdThread.SuppressInteractive)
                 {
                     try
                     {
@@ -1073,7 +1084,10 @@ namespace IG.Lib
                                 retOutput = "null";
                             else if (retOutput == "")
                                 retOutput = "\"\"";
-                            Console.WriteLine("  = " + retOutput);
+                            if (!frame.SuppressInteractive && !cmdThread.SuppressInteractive)
+                            {
+                                Console.WriteLine("  = " + retOutput);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -2835,7 +2849,7 @@ namespace IG.Lib
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
-        protected virtual string CmdInterpreterInfo(CommandThread cmdThread,
+        protected virtual string CmdThreadInfo(CommandThread cmdThread,
             string cmdName, string[] args)
         {
             string ret = null;
@@ -2879,6 +2893,214 @@ namespace IG.Lib
                 includeGlobalVariables: globalVar); 
             return ret;
         }
+
+
+        /// <summary>Command.
+        /// Returns the interpreter's current executing thread Id.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Result of the last command that is run.</returns>
+        protected virtual string CmdThreadId(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + ": Returns the interpreter's executing thread Id." );
+                        Console.WriteLine();
+                        return null;
+                    }
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            if (numArgs > 0)
+                throw new ArgumentException(cmdName + ": should be called without arguments.");
+            else
+            {
+                ret = cmdThread.Id.ToString();
+            }
+            return ret;
+        }
+
+
+        /// <summary>Command.
+        /// Returns the current interpreter's stack level for the currently executed interpreter thread.</summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Result of the last command that is run.</returns>
+        protected virtual string CmdStackLevel(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + ": Returns the interpreter's current stack level.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            if (numArgs > 0)
+                throw new ArgumentException(cmdName + ": should be called without arguments.");
+            else
+            {
+                ret = cmdThread.TopFrame.StackLevel.ToString();
+            }
+            return ret;
+        }
+
+
+
+        /// <summary>Command.
+        /// Prints and returns or sets and returns value of the flag that specifies whether interactive helpers 
+        /// and outputs are suppressed at the thread level.
+        /// <para>Called without arguments just prints and returns the current flag value.</para>
+        /// <para>With one argument, the flag is set to that argument.</para></summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Result of the last command that is run.</returns>
+        protected virtual string CmdSuppressInteractive(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <doSuppress> : gets or sets the flag for suppressing " + Environment.NewLine
+                            + "  interactive behavior (helpers and output)."
+                            + "    doSuppress: new value of the flag. " + Environment.NewLine
+                            + "      If not specified then the current flag value is printed and returned.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            if (numArgs > 1)
+                throw new ArgumentException(cmdName + " : invalid number of arguments, should be at most 1 (argument being new flag value).");
+            else
+            {
+                string argFlag = null;
+                if (numArgs >= 1)
+                    argFlag = args[0];
+                bool currentFlag = cmdThread.SuppressInteractive;
+                if (string.IsNullOrEmpty(argFlag))
+                {
+                    // No arguments, just print and return the current flag value:
+                    ret = currentFlag.ToString();
+                    if (this.OutputLevel >= 1)
+                        Console.WriteLine(Environment.NewLine + "Suppress interactive behavior on the current thread: " + currentFlag + "." + Environment.NewLine);
+                }
+                else
+                {
+                    bool newFlag = currentFlag;
+                    bool parsed = Util.TryParseBoolean(argFlag, ref newFlag);
+                    if (!parsed)
+                        throw new ArgumentException("Argument does not represent a bolean value: " + argFlag);
+                    else
+                    {
+                        ret = argFlag;
+                        cmdThread.SuppressInteractive = newFlag;
+                        if (this.OutputLevel >= 1)
+                        {
+                            if (newFlag)
+                                Console.WriteLine(Environment.NewLine + "Interactive behavior will be suppressed for the current thread." + Environment.NewLine);
+                            else
+                                Console.WriteLine(Environment.NewLine + "Interactive behavior will NOT be suppressed for the current thread." + Environment.NewLine);
+                        }
+                    }
+                }
+            }
+            return ret;
+        }
+
+
+
+
+        /// <summary>Command.
+        /// Prints and returns or sets and returns value of the flag that specifies whether interactive helpers 
+        /// and outputs are suppressed for the currentt stack frame (the effect of this setting vanished when
+        /// the stack frame exits).
+        /// <para>Called without arguments just prints and returns the current flag value.</para>
+        /// <para>With one argument, the flag is set to that argument.</para></summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Result of the last command that is run.</returns>
+        protected virtual string CmdSuppressInteractiveFrame(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <doSuppress> : gets or sets the flag for suppressing " + Environment.NewLine
+                            + "  interactive behavior on the current stack frame (helpers and output)."
+                            + "    doSuppress: new value of the flag. " + Environment.NewLine
+                            + "      If not specified then the current flag value is printed and returned.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            if (numArgs > 1)
+                throw new ArgumentException(cmdName + " : invalid number of arguments, should be at most 1 (argument being new flag value).");
+            else
+            {
+                string argFlag = null;
+                if (numArgs >= 1)
+                    argFlag = args[0];
+                bool currentFlag = cmdThread.TopFrame.SuppressInteractive;
+                if (string.IsNullOrEmpty(argFlag))
+                {
+                    // No arguments, just print and return the current flag value:
+                    ret = currentFlag.ToString();
+                    if (this.OutputLevel >= 1)
+                        Console.WriteLine(Environment.NewLine + "Suppress interactive behavior on the current stack frame: " + currentFlag + "." + Environment.NewLine);
+                }
+                else
+                {
+                    bool newFlag = currentFlag;
+                    bool parsed = Util.TryParseBoolean(argFlag, ref newFlag);
+                    if (!parsed)
+                        throw new ArgumentException("Argument does not represent a bolean value: " + argFlag);
+                    else
+                    {
+                        ret = argFlag;
+                        cmdThread.TopFrame.SuppressInteractive = newFlag;
+                        if (this.OutputLevel >= 1)
+                        {
+                            if (newFlag)
+                                Console.WriteLine(Environment.NewLine + "Interactive behavior will be suppressed for the current stack frame." + Environment.NewLine);
+                            else
+                                Console.WriteLine(Environment.NewLine + "Interactive behavior will NOT be suppressed for the current stack frame." + Environment.NewLine);
+                        }
+                    }
+                }
+            }
+            return ret;
+        }
+
+
 
 
         /// <summary>Command.
@@ -3894,7 +4116,7 @@ namespace IG.Lib
             else
             {
                 ret = EvaluateJs(args);
-                Console.WriteLine(Environment.NewLine + "  = " + ret);
+                // Console.WriteLine(Environment.NewLine + "  = " + ret);
             }
             return ret;
         }

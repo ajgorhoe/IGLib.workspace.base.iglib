@@ -32,6 +32,7 @@ namespace IG.Lib
     /// interpreter. Interpreter to execute the command, command name and arguments, and results of the command
     /// are all stored on the object. </para>
     /// </remarks>
+    /// $A Igor Jan09;
     public class CommandLineJobContainer :
         ParallelJobContainerGen<CommandLineJobContainer, CommandLineJobContainer>,
             IIdentifiable, ILockable
@@ -247,6 +248,7 @@ namespace IG.Lib
 
 
     /// <summary>Adapter class that wraps a single threaded command delegate and provides a multithreaded function.</summary>
+    /// $A Igor Aug08;
     [Obsolete("Single threaded command delegates are deprecated and will be removed in the future.")]
     public class CommandAdapterSingleThreaded
     {
@@ -298,6 +300,7 @@ namespace IG.Lib
     /// <param name="commandName">Command name.</param>
     /// <param name="args">Command arguments.</param>
     /// <returns>Command return data.</returns>
+    /// $A Igor Aug08;
     [Obsolete("Only suitable for single threaded command execution.")]
     public delegate string ApplicationCommandDelegate(ICommandLineApplicationInterpreter interpreter, string commandName, string[] args);
 
@@ -308,10 +311,18 @@ namespace IG.Lib
     /// <param name="commandName">Command name.</param>
     /// <param name="args">Command arguments.</param>
     /// <returns>Command return data.</returns>
+    /// $A Igor xx Sep15;
     public delegate string ApplicationCommandDelegateMtGeneric<InterpreterType>(CommandThread<InterpreterType> commandThread, 
         string commandName, string[] args)
         where InterpreterType: class, ICommandLineApplicationInterpreter;
 
+    /// <summary>Delegate for commands that are installed on interpreter.</summary>
+    /// <param name="commandThread">Interpreter on which commad is run. 
+    /// Enables access to interpreter internal data from command's body.</param>
+    /// <param name="commandName">Command name.</param>
+    /// <param name="args">Command arguments.</param>
+    /// <returns>Command return data.</returns>
+    /// $A Igor xx Sep15;
     public delegate string ApplicationCommandDelegateMt(CommandThread commandThread, 
         string commandName, string[] args);
 
@@ -319,13 +330,14 @@ namespace IG.Lib
     /// <summary>Delegate for installing a module on the interpreter.</summary>
     /// <param name="modulename">Name of the module.</param>
     /// <param name="interpreter">Interperter where module is installed.</param>
+    /// $A Igor Mar09;
     public delegate void ModuleDelegate(string modulename, ICommandLineApplicationInterpreter interpreter);
 
 
 
     /// <summary>Represents type of the interpretation block for which a stack frame exists on command thread.
     /// <para>Flag-like values.</para></summary>
-    /// $A Igor Sep15;
+    /// $A Igor Oct15;
     [Flags]
     public enum VariableFlags : int
     {
@@ -372,6 +384,7 @@ namespace IG.Lib
 
 
     /// <summary>Base class for interpreter variables.</summary>
+    /// $A Igor Oct15;
     public class InterpreterVariable
     {
 
@@ -672,6 +685,7 @@ namespace IG.Lib
     public class CommandStackFrame :
         CommandStackFrame<ICommandLineApplicationInterpreter, CommandThread>
     {
+
         /// <summary>Constructor.</summary>
         /// <param name="blockType">Type of code block corresponding to the current stack frame.</param>
         /// <param name="thread">Command thread on which the current stack frame exists.</param>
@@ -720,6 +734,7 @@ namespace IG.Lib
         /// <summary>Creates a new stack frame.</summary>
         /// <param name="type">Type of code block for which stack frame is created.</param>
         /// <param name="stackLevel">Level of the stack frame.</param>
+        /// $A Igor Sep15;
         protected override CommandStackFrame CreateFrame(CodeBlockType type, int stackLevel)
         {
             return new CommandStackFrame(type, this, stackLevel);
@@ -908,13 +923,13 @@ namespace IG.Lib
         /// <summary>Whether commands are executed in the current code block.</summary>
         public int LoopCount { get { return _loopCount; } set { _loopCount = value; } }
 
-        private bool _oppressInteractive = false;
+        private bool _suppressInteractive = false;
 
         /// <summary>Indicates that the interactive mode is temporarily represset.</summary>
-        public bool OppressInteractive
+        public bool SuppressInteractive
         {
-            get { return _oppressInteractive; }
-            set { _oppressInteractive = value; }
+            get { return _suppressInteractive; }
+            set { _suppressInteractive = value; }
         }
 
         private string _conditionExpression = null;
@@ -1513,7 +1528,7 @@ namespace IG.Lib
     /// <typeparam name="ThreadType">Type of command thread data - represents this very type, to make it easier to use
     /// the frame type (which, in turn, has a type parameter for thread type).</typeparam>
     /// $A Igor Sep15;
-    public abstract class CommandThread<InterpreterType, FrameType, ThreadType> : ILockable
+    public abstract class CommandThread<InterpreterType, FrameType, ThreadType> : IIdentifiable, ILockable
         where InterpreterType : class, ICommandLineApplicationInterpreter
         where FrameType : CommandStackFrame<InterpreterType, ThreadType>
         where ThreadType : CommandThread<InterpreterType, FrameType, ThreadType>
@@ -1540,6 +1555,51 @@ namespace IG.Lib
         public object Lock { get { return _mainLock; } }
 
         #endregion ThreadLocking
+
+
+        #region IIdentifiable
+
+        private static object _lockIdThread;
+
+        /// <summary>Lock used for acquiring IDs.</summary>
+        public static object LockIdThread
+        {
+            get
+            {
+                if (_lockIdThread == null)
+                {
+                    lock (Util.LockGlobal)
+                    {
+                        if (_lockIdThread == null)
+                            _lockIdThread = new object();
+
+                    }
+                }
+                return _lockIdThread;
+            }
+        }
+
+        private static int _nextIdThread = 0;
+
+        /// <summary>Returns another ID that is unique for objects of the containing class 
+        /// its and derived classes.</summary>
+        protected static int GetNextIdThread()
+        {
+            lock (LockIdThread)
+            {
+                ++_nextIdThread;
+                return _nextIdThread;
+            }
+        }
+
+        private int _id = GetNextIdThread();
+
+        /// <summary>Unique ID for objects of the currnet and derived classes.</summary>
+        public virtual int Id
+        { get { return _id; } }
+
+        #endregion IIdentifiable
+
 
 
         #region Data.Basic
@@ -1734,6 +1794,15 @@ namespace IG.Lib
         #region Datta.Auxiliary
 
 
+        private bool _threadSuppressInteractive = false;
+
+        /// <summary>Indicates that the interactive mode is temporarily represset.</summary>
+        public bool SuppressInteractive
+        {
+            get { return _threadSuppressInteractive; }
+            set { _threadSuppressInteractive = value; }
+        }
+
         public static int DefaultOutputLevel
         {
             get { return CommandLineApplicationInterpreter.DefaultOutputLevel; }
@@ -1824,8 +1893,6 @@ namespace IG.Lib
         }
 
     }  // abstract class CommandThread<InterpreterType, FrameType, ThreadType>
-
-
 
 
 }

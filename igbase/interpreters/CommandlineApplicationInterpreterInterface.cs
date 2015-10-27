@@ -25,6 +25,7 @@ namespace IG.Lib
 {
 
     /// <summary>Interface for simple command-line applicatino interpreters.</summary>
+    /// $A Igor xx Aug08 Dec09;
     public interface ICommandLineApplicationInterpreter
     {
 
