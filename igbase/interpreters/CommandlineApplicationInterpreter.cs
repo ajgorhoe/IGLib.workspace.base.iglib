@@ -409,15 +409,6 @@ namespace IG.Lib
                 throw new InvalidOperationException("Variable \"" + varName + "\" could not be obtained: " + Environment.NewLine
                     + "  " + ex.Message, ex);
             }
-
-            //lock (Lock)
-            //{
-            //    if (string.IsNullOrEmpty(varName))
-            //        throw new ArgumentException("Interpreter variable name not specified.");
-            //    if (!_variables.ContainsKey(varName))
-            //        throw new ArgumentException("Interpreter variable not defined: " + varName + ".");
-            //    return _variables[varName];
-            //}
         }
 
         /// <summary>Sets the specified variable to the specified value.</summary>

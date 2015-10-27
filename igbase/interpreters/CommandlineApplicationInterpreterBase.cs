@@ -323,21 +323,341 @@ namespace IG.Lib
 
 
 
+    /// <summary>Represents type of the interpretation block for which a stack frame exists on command thread.
+    /// <para>Flag-like values.</para></summary>
+    /// $A Igor Sep15;
+    [Flags]
+    public enum VariableFlags : int
+    {
+        /// <summary>Helper flag, meaning that no other type flag is set.</summary>
+        None = 0,
+        /// <summary>Indicates that variable is defined and active, i.e., it is valid and can be used.</summary>
+        Valid = 1,
+        /// <summary>Variable contains string value.
+        /// <para>Commandline interpreter variables are string variables by default, but may be extended to contain
+        /// other object types.</para></summary>
+        StringVar = 2,
+        /// <summary>Variable references another variable.</summary>
+        ReferenceVar = 4,
+        /// <summary>Default flags - for most ordinary value (= <see cref="VariableFlags.StringVar"/> & <see cref="VariableFlags.Valid"/>)</summary>
+        Default = Valid & StringVar
+    }
+
+
 
 
     /// <summary>Represents type of the interpretation block for which a stack frame exists on command thread.
     /// <para>Flag-like values.</para></summary>
     /// $A Igor Sep15;
     [Flags]
-    public enum CodeBlockType : long
+    public enum CodeBlockType : int
     {
+        /// <summary>Helper type, meaning that no other type flag is set.</summary>
         None = 0,
+        /// <summary>Base block of the thread. <para>Currently not used, but might be in the future.</para></summary>
         Base = 1,
+        /// <summary>Plain code block (entered via "Block" command).</summary>
         Block = 2,
+        /// <summary>Branching block (entered via If, ElseIf or Else comands).</summary>
         If = 4,
+        /// <summary>While block (entered via While command).</summary>
         While = 8,
-        Functin = 16
+        /// <summary>Function block (entered via Call command).</summary>
+        Function = 32,
+        /// <summary>Any callable block, such as function. <para>Code for such a block is stored in a separate store (e.g.
+        /// when Function command is executed that stores function definition) and it is executed from there. These blocks
+        /// do not see local variables of the calling blocks (lower level stack frames).</para></summary>
+        Callable = Function | Function
     }
+
+
+    /// <summary>Base class for interpreter variables.</summary>
+    public class InterpreterVariable
+    {
+
+        private InterpreterVariable() {  }
+
+
+        /// <summary>Constructs a new interpreter variable.</summary>
+        /// <param name="variableName">Variable name. Must be specified.</param>
+        /// <param name="variableValue">String value of the variable. Can be null.</param>
+        /// <param name="flags">Flags that define type and behavior of the variable. Default is <see cref="VariableFlags.Default"/></param>
+        public InterpreterVariable(string variableName, string variableValue = null, VariableFlags flags = VariableFlags.Default)
+        {
+            this.Name = variableName;
+            this.StringValue = variableValue;
+            this.Flags = flags;
+        }
+
+        private string _variableName;
+
+        /// <summary>Variable name.
+        /// <para>Normally, this will coincide with the name through which the variable is referenced in the interpreter.</para></summary>
+        public string Name
+        { get { return _variableName; } protected set { _variableName = value; } }
+
+        private int _stackLevel = -1;
+
+        /// <summary>Specifies the stack level of the local variable and whether the variable is local or global.
+        /// <para>Greater or equal to 0 means that the variable is a local variable defined on the stack frame of 
+        /// the specified level.</para>
+        /// <para>-1 means that the variable is global.</para>
+        /// <para>Less than -1 meand that the variable is neither local nor global (usually, this indicates an error).</para></summary>
+        public int StackLevel
+        { get { return _stackLevel; } protected set { _stackLevel = value; } }
+
+        /// <summary>Stack level used for global variables.</summary>
+        private const int StackLevelGlobal = -1;
+
+        /// <summary>Stack level used for variables that are neither local or global (or for which stack level is unknown).</summary>
+        private const int StackLevelUndefined = -2;
+
+        /// <summary>Default stack level - <see cref="StackLevelUndefined"/></summary>
+        private const int StackLevelDefault = StackLevelUndefined;
+        
+        /// <summary>Gets a flag indicating whether the current variable is a global variable.</summary>
+        bool IsGlobal { get { return _stackLevel == -1; } }
+
+        /// <summary>Gets a flag indicating whether the current variable is a global variable.</summary>
+        bool IsLocal { get { return _stackLevel >= 0; } }
+
+        private string _stringValue;
+
+        /// <summary>String value of the variable.</summary>
+        /// <remarks>
+        /// <para>Variables of the commandline interpreter (<see cref="ICommandLineApplicationInterpreter"/>) normally have string values.</para>
+        /// </remarks>
+        public string StringValue
+        { 
+            get 
+            { 
+                if (IsReference)
+                {
+                    if (ReferencedVariable == null)
+                        throw new InvalidOperationException("Getting variable value: Referenced variable is not defined.");
+                    return ReferencedVariable.StringValue;
+                }
+                return _stringValue;
+            } 
+            set 
+            {
+                if (IsReference)
+                {
+                    if (ReferencedVariable == null)
+                        throw new InvalidOperationException("Setting variable value: Referenced variable is not defined.");
+                    ReferencedVariable.StringValue = value;
+                } else
+                {
+                    _stringValue = value;
+                }
+            } 
+        }
+
+        private VariableFlags _flags = VariableFlags.Default;
+
+        /// <summary>Flags that define type and behavior of the variable.</summary>
+        public VariableFlags Flags
+        { get { return _flags; } protected set { _flags = value; } }
+
+        /// <summary>Indicates whether the variable is valid and can be used (i.e., is defined).
+        /// <para>Can be get and set.</para>
+        /// <para>When a variable is removed, its valid flag will be set to false. In this way, variables that
+        /// evantually reference this variable will know that their reference is invalid.</para></summary>
+        public bool IsValid
+        { 
+            get { return (Flags & VariableFlags.Valid) != 0; } 
+            set { if (value) { Flags |= VariableFlags.Valid; } else { Flags &= ~VariableFlags.Valid; } } 
+        }
+
+        /// <summary>Indicates whether the variable is a reference to another variable.</summary>
+        public bool IsReference
+        {
+            get { return (Flags & VariableFlags.ReferenceVar) != 0; }
+            protected set { if (value) { Flags |= VariableFlags.ReferenceVar; } else { Flags &= ~VariableFlags.ReferenceVar; } } 
+        }
+
+        private InterpreterVariable _referencedVar;
+
+        /// <summary>Reference to the variable that is referenced by the current variable.</summary>
+        public InterpreterVariable ReferencedVariable
+        { 
+            get { return _referencedVar; } 
+            protected set { 
+                _referencedVar = value;
+                if (value != null)
+                    IsReference = true;
+            } 
+        }
+
+        /// <summary>Sets the the variable reference, which defines the variable that the current variable references.
+        /// <para>Exception is thrown if the current variable is not a reference variable.</para></summary>
+        /// <param name="referencedVariable">Variable that will be referenced by the current variable.
+        /// <para>Normally, this is required information for reference variables, but can be set undefined.</para></param>
+        /// <param name="referencedVariableName">Name of the referenced variable. This is auxiliary information and is
+        /// usually provided only when the name <paramref name="referencedVariable"/> is not specified (i.e., it is a null reference).</param>
+        /// <param name="referencedVariableStackLevel">The stack level of the referenced variable.</param>
+        public void SetReferencedVariable(InterpreterVariable referencedVariable, string referencedVariableName = null,
+            int referencedVariableStackLevel = StackLevelDefault)
+        {
+            if (!IsReference)
+                throw new InvalidOperationException("The current variable is not a reference to another variable.");
+            // this.IsReference = true;
+            this.ReferencedVariable = referencedVariable;
+            if (referencedVariable != null)
+            {
+                // The variable reference is specified, no need to set the auxiliary data. Just check consistency of arguments.
+                if (referencedVariableName != null && referencedVariableName != ReferencedVariable.Name)
+                    throw new ArgumentException("The specified reference variable name \"" + referencedVariableName +
+                        "\" does not match its actual name (\"" + ReferencedVariable.Name + "\").");
+                if (referencedVariableStackLevel != StackLevelDefault && referencedVariableStackLevel != ReferencedVariable.StackLevel)
+                    throw new ArgumentException("The specified referenced variable stack level " + referencedVariableStackLevel +
+                        " does not match its actual stack level (" + ReferencedVariable.StackLevel + ").");
+            } else
+            {
+                this.ReferencedVariableName = referencedVariableName;
+                this.ReferencedVariableStackLevel = referencedVariableStackLevel;
+            }
+        }
+
+        private int _referencedVariableStackLevel = StackLevelDefault;
+
+        /// <summary>Gets the stack level of the referenced variable.</summary>
+        /// <exception cref="InvalidOperationException">Thrown when the current variable is not a reference to another variable.</exception>
+        public int ReferencedVariableStackLevel
+        { 
+            get {
+                if (!IsReference)
+                    throw new InvalidOperationException("The current variable is not a reference to another variable.");
+                if (ReferencedVariable != null)
+                    return ReferencedVariable.StackLevel;
+                else
+                    return _referencedVariableStackLevel; 
+            } 
+            protected set {
+                if (!IsReference)
+                    throw new InvalidOperationException("The current variable is not a reference to another variable."); 
+                _referencedVariableStackLevel = value;
+            }
+        }
+
+        private string _referencedVariableName = null;
+
+        /// <summary>Gets the referenced variable name.</summary>
+        /// <exception cref="InvalidOperationException">Thrown when the current variable is not a reference to another variable.</exception>
+        public string ReferencedVariableName
+        {
+            get
+            {
+                if (!IsReference)
+                    throw new InvalidOperationException("The current variable is not a reference to another variable.");
+                if (ReferencedVariable != null)
+                    return ReferencedVariable.Name;
+                else
+                    return _referencedVariableName;
+            }
+            protected set
+            {
+                if (!IsReference)
+                    throw new InvalidOperationException("The current variable is not a reference to another variable."); 
+                _referencedVariableName = value;
+            }
+        }
+
+        /// <summary>Gets a flag indicating whether the current variable references a local variable.</summary>
+        /// <exception cref="InvalidOperationException">Thrown when the current variable is not a reference to another variable.</exception>
+        public bool IsReferencedVariableLocal
+        /// <exception cref="InvalidOperationException">Thrown when the current variable is not a reference to another variable.</exception>
+        {
+            get
+            {
+                if (!IsReference)
+                    throw new InvalidOperationException("The current variable is not a reference to another variable."); 
+                return ReferencedVariableStackLevel >= 0;
+            }
+        }
+
+        /// <summary>Gets a flag indicating whether the current variable references a global variable.</summary>
+        /// <exception cref="InvalidOperationException">Thrown when the current variable is not a reference to another variable.</exception>
+        public bool IsReferencedVariableGlobal
+        {
+            get
+            {
+                if (!IsReference)
+                    throw new InvalidOperationException("The current variable is not a reference to another variable.");
+                return ReferencedVariableStackLevel == StackLevelGlobal;
+            }
+        }
+
+        /// <summary>Gets the number of stack levels for which the referenced variable is defined below the current variable.</summary>
+        /// <exception cref="InvalidOperationException">Thrown when the current variable is not a reference to another variable,
+        /// or the referenced variable is not a local variable, or the current variable is not a local variable..</exception>
+        public int ReferencedVariableLevelsBelow
+        { 
+            get {
+            if (!IsReference)
+                throw new InvalidOperationException("The current variable is not a reference to another variable.");
+            if (!IsReferencedVariableLocal)
+                throw new InvalidOperationException("Referenced variable is not a local variable.");
+            else if (!IsLocal)
+                throw new InvalidOperationException("The reference variable is not local.");
+            else
+                return this.StackLevel - this.ReferencedVariableStackLevel;
+            }
+        }
+
+        /// <summary>Returns a string that describes the current interpreter variable.</summary>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Interpreter variable \"" + Name + "\":");
+            if (IsValid)
+                sb.AppendLine("  Valid: " + IsValid);
+            else
+                sb.AppendLine("  NOT VALID.");
+            if (IsLocal)
+            {
+                sb.AppendLine("  Local variable (stack level: " + StackLevel + ").");
+            }
+            else if (IsGlobal)
+                sb.AppendLine("  Global variable.");
+            else
+                sb.AppendLine("  Local or global: NOT DEFINED.");
+            if (StringValue == null)
+                sb.AppendLine("  String value: undefined (null).");
+            else
+                sb.AppendLine("  String value: \"" + StringValue + "\".");
+            sb.Append("  Flags:");
+            if (Flags == VariableFlags.None)
+                sb.AppendLine(Environment.NewLine + "    No flags are specified.");
+            else
+            {
+                if ((Flags & VariableFlags.Valid) != 0)
+                    sb.Append(" " + VariableFlags.Valid.ToString());
+                if ((Flags & VariableFlags.StringVar) != 0)
+                    sb.Append(" " + VariableFlags.StringVar.ToString());
+                if ((Flags & VariableFlags.ReferenceVar) != 0)
+                    sb.Append(" " + VariableFlags.ReferenceVar.ToString());
+            }
+            if (IsReference)
+            {
+                sb.Append("  Variable is a reference to another variable.");
+                if (ReferencedVariable != null)
+                    sb.Append("    Referenced variable is defined explicitly.");
+                else
+                    sb.Append("    Referenced variable is NOT defined explicitly.");
+                if (IsReferencedVariableLocal)
+                    sb.AppendLine("    References a local variable with stack level " + ReferencedVariableStackLevel 
+                        + Environment.NewLine + "      (" + ReferencedVariableLevelsBelow + " levels below the current variable's stack level).");
+                else if (IsReferencedVariableGlobal)
+                    sb.AppendLine("    References a global variable.");
+                else
+                    sb.AppendLine("    Referenced variable: local or global NOT DEFINED.");
+            }
+            return sb.ToString();
+        }
+
+    }  // class InterpreterVariable
+
 
 
 
