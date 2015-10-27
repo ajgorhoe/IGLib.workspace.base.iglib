@@ -382,7 +382,7 @@ namespace IG.Lib
         /// <param name="variableName">Variable name. Must be specified.</param>
         /// <param name="variableValue">String value of the variable. Can be null.</param>
         /// <param name="flags">Flags that define type and behavior of the variable. Default is <see cref="VariableFlags.Default"/></param>
-        public InterpreterVariable(string variableName, string variableValue = null, VariableFlags flags = VariableFlags.Default)
+        public InterpreterVariable(string variableName, int stackLevel = StackLevelDefault, string variableValue = null, VariableFlags flags = VariableFlags.Default)
         {
             this.Name = variableName;
             this.StringValue = variableValue;
@@ -407,13 +407,13 @@ namespace IG.Lib
         { get { return _stackLevel; } protected set { _stackLevel = value; } }
 
         /// <summary>Stack level used for global variables.</summary>
-        private const int StackLevelGlobal = -1;
+        public const int StackLevelGlobal = -1;
 
         /// <summary>Stack level used for variables that are neither local or global (or for which stack level is unknown).</summary>
-        private const int StackLevelUndefined = -2;
+        public const int StackLevelUndefined = -2;
 
         /// <summary>Default stack level - <see cref="StackLevelUndefined"/></summary>
-        private const int StackLevelDefault = StackLevelUndefined;
+        public const int StackLevelDefault = StackLevelUndefined;
         
         /// <summary>Gets a flag indicating whether the current variable is a global variable.</summary>
         bool IsGlobal { get { return _stackLevel == -1; } }
@@ -1214,7 +1214,7 @@ namespace IG.Lib
         public string LastCommandLine { get { return _lastCommandLine; } set { _lastCommandLine = value; } }
 
         /// <summary>Local variables.</summary>
-        protected SortedDictionary<string, string> _variables = new SortedDictionary<string, string>();
+        protected SortedDictionary<string, InterpreterVariable> _variables = new SortedDictionary<string, InterpreterVariable>();
 
         private string _returnedValue = null;
 
@@ -1265,7 +1265,7 @@ namespace IG.Lib
                 {
                     try
                     {
-                        _auxVarNames.Add(key + "=" + this[key]);
+                        _auxVarNames.Add(key + "=" + this[key].StringValue);
                     }
                     catch { _auxVarNames.Add(key + "=" + "ERROR:Undefined!!!"); }
                 }
@@ -1276,7 +1276,7 @@ namespace IG.Lib
 
         /// <summary>Gets or sets value of the variable with the specified name.</summary>
         /// <param name="variableName">Name of the variable to be set or retrieved.</param>
-        public string this[string variableName]
+        public InterpreterVariable this[string variableName]
         {
             get { return _variables[variableName]; }
             set { _variables[variableName] = value; }
@@ -1300,41 +1300,67 @@ namespace IG.Lib
             }
         }
 
-        /// <summary>Returns value of the specified variable.</summary>
+        /// <summary>Returns variable object (definition) for the variable with specified name.</summary>
         /// <param name="varName">Name of the variable.</param>
-        public string GetVariable(string varName)
+        public InterpreterVariable GetVariableDef(string varName)
         {
             return this[varName];
+        }
+
+        /// <summary>Returns value of the specified variable.</summary>
+        /// <param name="varName">Name of the variable.</param>
+        public string GetVariableValue(string varName)
+        {
+            return this[varName].StringValue;
         }
 
         /// <summary>Gets the variable within lock on the <see cref="Lock"/> property and returns it.
         /// <para>Thread safe variant, lock is aquired on <see cref="Lock"/>.</para></summary>
         /// <param name="varName">Name of the variable whose value is to be reurned.</param>
-        public string GetVariableLocked(string varName)
+        public string GetVariableValueLocked(string varName)
         {
             lock (Lock)
             {
-                return this[varName];
+                return this[varName].StringValue;
             }
         }
+
 
         /// <summary>Sets value of the specified variable.</summary>
         /// <param name="varName">Name of the variable to be set.</param>
         /// <param name="varValue">Value to be assigned to the specified variable.</param>
-        public void SetVariable(string varName, string varValue)
+        /// <param name="flags">Variable flags (optional).</param>
+        public void SetVariableValue(string varName, string varValue, VariableFlags flags = VariableFlags.Default)
         {
-            this[varName] = varValue;
+            if (IsVariableDefined(varName))
+            {
+                InterpreterVariable intVar = this[varName];
+                if (flags != VariableFlags.Default && intVar.Flags != flags)
+                    throw new Exception("Variable " + varName + " exists and has different flags than specified by the set method." + Environment.NewLine
+                        + "  variable's flags: " + intVar.Flags.ToString() + ", specified: " + flags);
+                intVar.StringValue = varValue;
+            } else
+                this[varName] = new InterpreterVariable(varName, StackLevel, varValue, flags);
         }
 
         /// <summary>Sets the variable within lock on the property.
         /// <para>Thread safe variant, lock is aquired on <see cref="Lock"/>.</para></summary>
         /// <param name="varName">Name of the variable whose value is to be set.</param>
         /// <param name="varValue">Value to be assigned to the variable.</param>
-        public void SetVariableLocked(string varName, string varValue)
+        /// <param name="flags">Variable flags (optional).</param>
+        public void SetVariableValueLocked(string varName, string varValue, VariableFlags flags = VariableFlags.Default)
         {
             lock (Lock)
             {
-                this[varName] = varValue;
+                if (IsVariableDefined(varName))
+                {
+                    InterpreterVariable intVar = this[varName];
+                    if (flags != VariableFlags.Default && intVar.Flags != flags)
+                        throw new Exception("Variable " + varName + " exists and has different flags than specified by the set method." + Environment.NewLine
+                            + "  variable's flags: " + intVar.Flags.ToString() + ", specified: " + flags);
+                    intVar.StringValue = varValue;
+                } else
+                    this[varName] = new InterpreterVariable(varName, StackLevel, varValue, flags);
             }
         }
 

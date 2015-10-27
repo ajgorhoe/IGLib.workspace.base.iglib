@@ -401,7 +401,7 @@ namespace IG.Lib
             {
                 lock (Lock)
                 {
-                    return GlobalFrame[varName];
+                    return GlobalFrame[varName].StringValue;
                 }
             }
             catch (Exception ex)
@@ -422,7 +422,7 @@ namespace IG.Lib
             {
                 lock (this.Lock)
                 {
-                    GlobalFrame.SetVariable(varName, value);
+                    GlobalFrame.SetVariableValue(varName, value);
                 }
             }
             catch(Exception ex)
