@@ -408,6 +408,14 @@ namespace IG.Lib
         /// <returns></returns>
         public InterpreterVariable GetLocalVariable(CommandThread cmdThread, string varName, int framesBelowTop)
         {
+
+            int stackLevel = cmdThread.TopFrameIndex;
+
+            throw new NotImplementedException();
+
+
+
+
             if (cmdThread.TopFrameIndex < framesBelowTop)
                 throw new InvalidOperationException("The stack is less than " + framesBelowTop + " levels deep.");
             InterpreterVariable ret = null;
