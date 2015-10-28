@@ -81,6 +81,8 @@ namespace IG.Lib
 
             this.AddCommandMt(Command_Block, CmdBlock);    // "Block"
             this.AddCommandMt(Command_EndBlock, CmdEndBlock);    // "EndBlock"
+            this.AddCommandMt(Command_BeginRepeat, CmdBeginRepeat);    // "BeginRepeat"
+            this.AddCommandMt(Command_EndRepeat, CmdEndRepeat);    // "EndRepeat"
             this.AddCommandMt(Command_BeginCalc, CmdCalcJsBlock);    // "BeginCalc"
             this.AddCommandMt(Command_EndCalc, CmdEndCalcJsBlock);    // "EndCalc"
             this.AddCommandMt(Command_If, CmdIf);    // "CmdIf"
@@ -99,6 +101,7 @@ namespace IG.Lib
 
 
             this.AddCommandMt("OutputLevel", CmdOutputLevel);
+            this.AddCommandMt("OutputLevelCalc", CmdOutputLevelCalc);
             this.AddCommandMt("Write", CmdWrite);
             this.AddCommandMt("WriteLn", CmdWriteLine);
             this.AddCommandMt("WriteLine", CmdWriteLine);
@@ -599,6 +602,10 @@ namespace IG.Lib
 
         public readonly string Command_EndBlock = "EndBlock";
 
+        public readonly string Command_BeginRepeat = "BeginRepeat";
+
+        public readonly string Command_EndRepeat = "EndRepeat";
+
         public readonly string Command_BeginCalc = "BeginCalc";
 
         public readonly string Command_EndCalc = "EndCalc";
@@ -632,6 +639,16 @@ namespace IG.Lib
         {
             frame.AddBlockEnterCommands(Command_Block);
             frame.AddBlockExitCommands(Command_EndBlock);
+        }
+
+        /// <summary>Adds block enter/exit commands for the "BeginRepeat" block to the specified stack frame.
+        /// <para>This method should be executed by the appropriate block enter command for the specific
+        /// kind of code blocks.</para></summary>
+        /// <param name="frame">Stack frame on which the block entry/exit commands are added.</param>
+        protected virtual void AddEnterExitCommands_BeginRepeat(CommandStackFrame frame)
+        {
+            frame.AddBlockEnterCommands(Command_BeginRepeat);
+            frame.AddBlockExitCommands(Command_EndRepeat);
         }
 
         /// <summary>Adds block enter/exit commands for the "BeginCalc" block to the specified stack frame.
@@ -767,6 +784,122 @@ namespace IG.Lib
             cmdThread.TopFrame.ReturnedValue = frame.ReturnedValue;
             return frame.ReturnedValue;
         }
+
+
+        /// <summary>Enters a new repeat code block. A new stack frame is added where code is executed, such that the 
+        /// embedded code block has isolated local variables. 
+        /// <para>Block will be executed (repeatedly) the specified number of times and execution time measured and reported.</para>
+        /// <para>Must be paired with <see cref="ExitRepeatBlock"/>.</para></summary>
+        /// <param name="cmdThread">Command thread on which code is exected.</param>
+        /// <param name="numRepetitions">Number of times the code block will be repeated.</param>
+        public virtual void EnterRepeatBlock(CommandThread cmdThread,
+            int numRepetitions = 1)
+        {
+            cmdThread.WasBlockEnterCommand = true;
+            cmdThread.PushParameter(numRepetitions);  // store the parameter for the corresponding closing block
+            CommandStackFrame parentFrame = cmdThread.TopFrame;
+            parentFrame.ReturnedValue = null;
+            CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.Block);
+            frame.SuppressInteractive = parentFrame.SuppressInteractive;  // inherits from parent
+            // Add block enter / exit commands:
+            AddEnterExitCommands_BeginRepeat(frame);
+            frame.DoExecuteCommands = false;
+            frame.DoSaveCommands = true;
+            //if (!parentFrame.DoExecuteCommands)
+            //{
+            //    frame.DoExecuteCommands = false;
+            //    if (executeCommands && OutputLevel >= 1)
+            //        Console.WriteLine(Environment.NewLine + "DoExecuteCommands: DoExecute commands overridden, set to false." + Environment.NewLine);
+            //}
+            //if (parentFrame.DoSaveCommands)
+            //{
+            //    frame.DoSaveCommands = true;
+            //    if (!saveCommands && OutputLevel >= 1)
+            //        Console.WriteLine(Environment.NewLine + "EnterBlock: DoSaveCommands commands overridden, set to false." + Environment.NewLine);
+            //}
+            if (frame.LastCommandLine != null)
+                frame.BlockCommanddLine = frame.LastCommandLine;
+        }
+
+        /// <summary>Exits the current repetition code block. 
+        /// <para>Must be paired with <see cref="EnterRepeatBlock"/>.</para></summary>
+        /// <param name="cmdThread">Command execution thread where execution occurs.</param>
+        public virtual string ExitRepeatBlock(CommandThread cmdThread)
+        {
+            string ret = null;
+            cmdThread.WasBlockExitCommand = true;
+            int numRepetitions = (int) cmdThread.PopParameter();
+            CommandStackFrame frame = cmdThread.TopFrame;
+            if (!frame.DoExecuteCommands && frame.DoSaveCommands)
+            {
+                var parentFrame = frame.GetParentStackFrame();
+                if (parentFrame == null)
+                    throw new InvalidOperationException("The current frame does not have a parent (level: " + frame.StackLevel
+                        + ", type: " + frame.BlockType + ".");
+                if (frame.DoSaveCommands)
+                {
+                    // Remove the last stored command (because this would be the command that exits this block,
+                    // and we only want commands that purely belong to the block):
+                    int lastCommand = frame.CommandLines.Count - 1;
+                    if (lastCommand >= 0)
+                        frame.CommandLines.RemoveAt(lastCommand);
+                }
+                if (parentFrame.DoExecuteCommands)
+                {
+                    // Delayed execution of commands at the end of the block:
+                    frame.DoExecuteCommands = true;
+                    frame.DoSaveCommands = false;
+
+                    lock (Lock)  // lock the interpreter such that no other execution can affect the results (measured speed)
+                    {
+                        StopWatch1 t = new StopWatch1();
+                        // int threadId = Thread.CurrentThread.GetHashCode();
+                        int threadIdGeneral = Thread.CurrentThread.GetHashCode();
+                        int interpreterThreadId = cmdThread.Id;
+                        for (int i = 1; i <= numRepetitions; ++i)
+                        {
+                            if (OutputLevel >= 2)
+                            {
+                                Console.WriteLine(Environment.NewLine + "Repetively running code block "
+                                    + i + " / " + numRepetitions + " (thread " + interpreterThreadId + ") ...");
+                            }
+                            t.Start();
+
+                            Run(cmdThread, frame.CommandLines);
+
+                            t.Stop();
+                            if (OutputLevel >= 2)
+                            {
+                                Console.WriteLine(Environment.NewLine + "... repetition "
+                                    + i + "/" + numRepetitions + " (thread " + interpreterThreadId + ") fininshed in " + t.Time + " s.");
+                            }
+                        }
+                        double numPerSecond = (double)numRepetitions / t.TotalTime;
+                        double numPerSecondCPU = (double)numRepetitions / (t.TotalCpuTime + 1.0e-20);
+                        ret = numPerSecond.ToString();
+                        if (OutputLevel >= 1)
+                        {
+                            Console.WriteLine(Environment.NewLine + numRepetitions + " repetitions of code block "
+                                + " finished in " + t.TotalTime + " s (CPU: " + t.TotalCpuTime + " s)."
+                                + Environment.NewLine + "Number of executions per second: " + numPerSecond + " (CPU: " + numPerSecondCPU + ").");
+
+                        }
+                    }
+
+                    frame.CommandLines.Clear();
+                    frame.ConditionExpression = null;
+                    frame.BlockCommanddLine = null;
+                }
+            }
+            CommandStackFrame removedFrame = cmdThread.RemoveFrame();
+            // check:
+            if (!object.ReferenceEquals(frame, removedFrame))
+                throw new InvalidOperationException("Stack frame inconsistency when exiting the block.");
+            // Save returned value of the completed block to the parent frame (which is now the top frame):
+            cmdThread.TopFrame.ReturnedValue = ret;
+            return ret;
+        }
+
 
         /// <summary>Enters a new JavaScript calculator's code block. A new stack frame is added, such that the 
         /// embedded code block collects command lines independently of the containing blocks, and lines can
@@ -1056,7 +1189,6 @@ namespace IG.Lib
             cmdThread.TopFrame.ReturnedValue = ret;
             return ret;
         }
-
 
 
 
@@ -1391,7 +1523,6 @@ namespace IG.Lib
         }
 
 
-
         /// <summary>Obtains and stores the delegate that is used for execution of the specified command, and
         /// retrns an iindicator ehether the command is installed on the interpreter or not.
         /// <para>Interpreter seinsitivity is handled by the method.</para></summary>
@@ -1424,7 +1555,6 @@ namespace IG.Lib
             ApplicationCommandDelegateMt appDelegate = null;
             return GetCommandDelegate(commandName, ref appDelegate);
         }
-
 
         
         /// <summary>Runs command several times where the first argument is number of repetitions, second argument is command name.
@@ -1495,7 +1625,7 @@ namespace IG.Lib
         /// are collected and passed to the command delegate.</param>
         public virtual string RunRepeat(CommandThread cmdThread, int outputLevel, string[] args)
         {
-            lock (Lock)
+            lock (Lock)  // lock interpreter so that other executions can not change the results
             {
                 if (args == null)
                     throw new ArgumentNullException("Commandline is not specified (null reference);");
@@ -1521,7 +1651,8 @@ namespace IG.Lib
                                 + i + " / " + numRepetitions + " (thread " + threadId + ") ...");
                         }
                         t.Start();
-                        ret = ret + " " + Run(cmdThread, cmdName, cmdArgs);
+                        // ret = ret + " " + 
+                        Run(cmdThread, cmdName, cmdArgs);
                         t.Stop();
                         if (outputLevel >= 2)
                         {
@@ -3298,6 +3429,80 @@ namespace IG.Lib
 
 
         /// <summary>Command.
+        /// Enters a new repeat block, which repeats execution of its body for the specified number of time and reports 
+        /// execution speed.
+        /// Number of block execution repetitions must be specified as the only parameter of the command.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdBeginRepeat(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " numTimes: begins the code block that will be repeated. " + Environment.NewLine
+                            + "  numTimes: Specifies how many times the block is repeated. " + Environment.NewLine
+                            + "    Block of code is repeated the specified number of times, execution time is measured and" + Environment.NewLine 
+                            + "    execution speed reported. Number of executions per second is returned. ");
+                        Console.WriteLine();
+                        return null;
+                    }
+            bool parsed = false;
+            int numExecutions = 1;
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            if (numArgs != 1)
+                throw new ArgumentException("Command " + cmdName + ": should have 1 argument (number of repetitions).");
+            if (numArgs >=1)
+            {
+                parsed = Util.TryParse(args[0], ref numExecutions);
+                if (!parsed)
+                    throw new ArgumentException("Argument is not an integer: " + args[0]);
+            }
+            EnterRepeatBlock(cmdThread, numExecutions);
+            return null;
+        }
+
+        /// <summary>Command.
+        /// Exits the current repeat block, which repeats execution of its body for the specified number of time and reports 
+        /// execution speed.</summary>
+        /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>null.</returns>
+        protected virtual string CmdEndRepeat(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + ": Exits code repetition block. ");
+                        Console.WriteLine();
+                        return null;
+                    }
+            if (args != null)
+            {
+                if (args.Length >= 1)
+                    throw new Exception("Command " + cmdName + " can not have arguments.");
+            }
+            ret = ExitRepeatBlock(cmdThread);
+            return ret;
+        }
+
+
+
+        /// <summary>Command.
         /// Enters a new block of JavaScript expressions that are evaluated. All lines within the block are treated as part
         /// of JavaScript code block, which is evaluated by the interpreter's JavaScript evaluator when the end of the block
         /// is reached.
@@ -3637,7 +3842,7 @@ namespace IG.Lib
                 if (string.IsNullOrEmpty(argLevel))
                 {
                     // No arguments, just print and return the current output level:
-                    ret = OutputLevel.ToString();
+                    ret = currentLevel.ToString();
                     Console.WriteLine(Environment.NewLine + "Interpreter's output level: " + currentLevel + "." + Environment.NewLine);
                 } else
                 {
@@ -3661,6 +3866,71 @@ namespace IG.Lib
             return ret;
         }
 
+
+        /// <summary>Command.
+        /// Prints or sets the current output level of the calculator (i.e., the JavaScript expression evaluator).
+        /// <para>This determines how much information is ouptut by the calculator about its actions.</para>
+        /// <para>Called without arguments just prints the current output level.</para>
+        /// <para>With one argument, ooutput level is set to that argument.</para></summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Result of the last command that is run.</returns>
+        protected virtual string CmdOutputLevelCalc(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <newOutputLevel> : gets or sets the calculator's output level." + Environment.NewLine
+                            + "  outputLevel: new output level (verbosity) of the calculator (JavaScritp expression evaluator). " + Environment.NewLine
+                            + "    If not specified then current level is printed and returned." );
+                        Console.WriteLine();
+                        return null;
+                    }
+            // if (args == null)
+            //    throw new ArgumentNullException(cmdName + " : Requires 1 argument (file name).");
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            if (numArgs > 1)
+                throw new ArgumentException(cmdName + " : invalid number of arguments, should be at most 1 (argument being new output level).");
+            else
+            {
+                string argLevel = null;
+                if (numArgs >= 1)
+                    argLevel = args[0];
+                int currentLevel = EvaluatorJs.OutputLevel;
+                if (string.IsNullOrEmpty(argLevel))
+                {
+                    // No arguments, just print and return the current output level:
+                    ret = currentLevel.ToString();
+                    Console.WriteLine(Environment.NewLine + "Calculator's output level: " + currentLevel + "." + Environment.NewLine);
+                } else
+                {
+                    int level = 0;
+                    bool parsed = Util.TryParse(argLevel, ref level);
+                    if (!parsed)
+                        throw new ArgumentException("Argument does not represent an integer output level: " + argLevel);
+                    else
+                    {
+                        ret = argLevel;
+                        EvaluatorJs.OutputLevel = level;
+                        if (level > currentLevel)
+                            Console.WriteLine(Environment.NewLine + "Calculator's output level increased to " + level + "." + Environment.NewLine);
+                        else if (level < currentLevel)
+                            Console.WriteLine(Environment.NewLine + "Calculator's output decreased to " + level + "." + Environment.NewLine);
+                        else
+                            Console.WriteLine(Environment.NewLine + "Calculator's output level unchanged (" + level + ").");
+                    }
+                }
+            }
+            return ret;
+        }
 
 
 

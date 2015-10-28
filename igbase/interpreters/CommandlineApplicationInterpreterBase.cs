@@ -1787,10 +1787,57 @@ namespace IG.Lib
         }
 
 
-
-
         #endregion Data.Operational
 
+        #region Data.StoredParameters
+
+        // This defines a stack of parameters that commands can send ot each other.
+        // For example, command for beginning of a code block can store its parameters 
+        // for the command that ends the block and does something with the code.
+        // For example see BeginRepeatBlock(...) and ExitRepeatBlock(...) in CommandLineApplicationInterpreter.
+
+        private List<object> _objectStore = null;
+
+        /// <summary>Stored objects.</summary>
+        protected List<object> ObjectStore
+        {
+            get
+            {
+                if (_objectStore == null)
+                {
+                    lock(Lock)
+                    {
+                        if (_objectStore == null)
+                            _objectStore = new List<object>();
+                    }
+                }
+                return _objectStore;
+            }
+        }
+
+        /// <summary>Stores a new parameter at the end of the parameter store.
+        /// <para>WARNING: Users must make sure that <see cref="PushParameter"/> and <see cref="PopParameter"/> are
+        /// properrly called in pairs, otherwise parameter store will ger corrupted and unusable for otherr users.</para></summary>
+        /// <param name="param">Parameter that is added to parameter store.</param>
+        public void PushParameter(object param)
+        {
+            ObjectStore.Add(param);
+        }
+
+        /// <summary>Removae and returns the last object on the parameter store.
+        /// <para>WARNING: Users must make sure that <see cref="PushParameter"/> and <see cref="PopParameter"/> are
+        /// properrly called in pairs, otherwise parameter store will ger corrupted and unusable for otherr users.</para></summary>
+        public object PopParameter()
+        {
+            int numObjects = ObjectStore.Count;
+            if (numObjects < 1)
+                throw new InvalidOperationException("Thread's parameter store does not have any elements.");
+            object ret = ObjectStore[numObjects - 1];
+            ObjectStore.RemoveAt(numObjects - 1);
+            return ret;
+        }
+
+        #endregion Data.StoredParameters
 
         #region Datta.Auxiliary
 

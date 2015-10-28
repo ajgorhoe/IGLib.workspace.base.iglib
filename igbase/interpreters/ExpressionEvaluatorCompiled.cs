@@ -37,6 +37,9 @@ namespace IG.Lib
             InitExpressionEvaluator();
         }
 
+
+        #region IIDentifiable
+
         private static int _lastId = 0;
         private static object _idLock = new object();
         private int _id = -1;
@@ -44,7 +47,23 @@ namespace IG.Lib
         /// <summary>Returns object's Id that is unique within a given type.</summary>
         public int Id { get { return _id; } }
 
+        #endregion IIDentidiable
+
         protected abstract void InitExpressionEvaluator();
+
+
+        public static int DefaultOutputLevel = 0;
+
+        /// <summary>Default level of output for some of the interpreters' functionality (e.g. asynchronous command execution).</summary>
+        protected int _outputLevel = DefaultOutputLevel;
+
+        /// <summary>Level of output for some of the interpreter's functionality (e.g. asynchronous command execution).</summary>
+        public int OutputLevel
+        {
+            get { return _outputLevel; }
+            set { _outputLevel = value; }
+        }
+
 
         #region ILockableImplementation
 
@@ -265,6 +284,14 @@ namespace IG.Lib
             string result = "";
             string codeToExecute = CompleteCode + GetRepairedCommand(inputCode) /* + ";" */ + Environment.NewLine;
             // Complete input, evaluate it, print results, and reset the code:
+
+            if (this.OutputLevel >= 1)
+            {
+                Console.WriteLine(Environment.NewLine + Environment.NewLine + "Code to execute: " + Environment.NewLine
+                    + "============" + Environment.NewLine + codeToExecute + Environment.NewLine 
+                    + "------------" + Environment.NewLine + Environment.NewLine);
+            }
+
             result = EvalToString(codeToExecute);
             // Execution OK, append the inserted code to the complete code:
             CompleteCode = codeToExecute;

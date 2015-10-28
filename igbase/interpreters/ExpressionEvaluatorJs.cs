@@ -231,12 +231,12 @@ package " + PackageName +
                             }
                         }
                 }
-                if (command.Contains("("))
-                    if (command.Contains("{"))
-                    {
-                        if (!command.Contains("function"))
-                            command = "function " + command;
-                    }
+                //if (command.Contains("("))
+                //    if (command.Contains("{"))
+                //    {
+                //        if (!command.Contains("function"))
+                //            command = "function " + command;
+                //    }
                 int length = command.Length;
                 if (length > 0)
                 {
