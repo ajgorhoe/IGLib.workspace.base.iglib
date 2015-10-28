@@ -622,7 +622,7 @@ namespace IG.Lib
         /// <summary>Exits the current code block. 
         /// <para>Must be paired with <see cref="EnterBlock"/>.</para></summary>
         /// <param name="cmdThread">Command execution thread where execution occurs.</param>
-        public virtual void ExitBlock(CommandThread cmdThread)
+        public virtual string ExitBlock(CommandThread cmdThread)
         {
             cmdThread.WasBlockExitCommand = true;
             CommandStackFrame frame = cmdThread.TopFrame;
@@ -657,6 +657,7 @@ namespace IG.Lib
                 throw new InvalidOperationException("Stack frame inconsistency when exiting the block.");
             // Save returned value of the completed block to the parent frame (which is now the top frame):
             cmdThread.TopFrame.ReturnedValue = frame.ReturnedValue;
+            return frame.ReturnedValue;
         }
 
         /// <summary>Enters a new JavaScript calculator's code block. A new stack frame is added, such that the 
@@ -729,7 +730,7 @@ namespace IG.Lib
             // Execute the code in the JavaScript evaluator:
             ret = EvaluateJs(codeBlock);
             // Save returned value of the completed block to the parent frame (which is now the top frame):
-            cmdThread.TopFrame.ReturnedValue = ret;
+            // cmdThread.TopFrame.ReturnedValue = ret;
             return ret;
         }
 
@@ -778,6 +779,8 @@ namespace IG.Lib
             cmdThread.WasBlockExitCommand = true;
             CommandStackFrame previousFrame = cmdThread.RemoveFrame();
             CommandStackFrame parentFrame = cmdThread.TopFrame;
+            if (previousFrame.ReturnedValue != null)
+                parentFrame.ReturnedValue = previousFrame.ReturnedValue;
             CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.If);
             frame.SuppressInteractive = parentFrame.SuppressInteractive;  // inherits from parent
             frame.ReturnedValue = previousFrame.ReturnedValue;
@@ -816,6 +819,8 @@ namespace IG.Lib
             cmdThread.WasBlockExitCommand = true;
             CommandStackFrame previousFrame = cmdThread.RemoveFrame();
             CommandStackFrame parentFrame = cmdThread.TopFrame;
+            if (previousFrame.ReturnedValue != null)
+                parentFrame.ReturnedValue = previousFrame.ReturnedValue;
             CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.If);
             frame.SuppressInteractive = parentFrame.SuppressInteractive;  // inherits from parent
             frame.ReturnedValue = previousFrame.ReturnedValue;
@@ -845,15 +850,18 @@ namespace IG.Lib
 
         /// <summary>Enters the EndIf block.</summary>
         /// <param name="cmdThread">Command thread where commands are executed.</param>
-        public virtual void ExitIf(CommandThread cmdThread)
+        public virtual string ExitIf(CommandThread cmdThread)
         {
             cmdThread.WasBlockExitCommand = true;
-            CommandStackFrame frame = cmdThread.TopFrame;
-            CommandStackFrame removedFrame = cmdThread.RemoveFrame();
-            // check:
-            if (!object.ReferenceEquals(frame, removedFrame))
-                throw new InvalidOperationException("Stack frame inconsistency when exiting the block.");
-            cmdThread.TopFrame.ReturnedValue = frame.ReturnedValue;
+            CommandStackFrame previousFrame = cmdThread.RemoveFrame();
+            CommandStackFrame parentFrame = cmdThread.TopFrame;
+            if (previousFrame.ReturnedValue != null)
+                parentFrame.ReturnedValue = previousFrame.ReturnedValue;
+            //// check:
+            //if (!object.ReferenceEquals(frame, previousFrame))
+            //    throw new InvalidOperationException("Stack frame inconsistency when exiting the block.");
+            // Return the value returned by the last command executed in If statement:
+            return parentFrame.ReturnedValue;
         }
 
 
@@ -1486,7 +1494,6 @@ namespace IG.Lib
                 for (int i = 0; i < num; ++i)
                     Run(cmdThread, commandLines[i]);
             }
-            throw new NotImplementedException();
         }
 
         
@@ -1600,11 +1607,11 @@ namespace IG.Lib
                         {
                             ret = appDelegate(cmdThread, commandName, commandArguments);
                             cmdThread.WasCommandExecuted = true;
+                            frame.ReturnedValue = ret;
                         }
                     }
                 }  // lock
             }
-            frame.ReturnedValue = ret;
             return ret;
         }
 
@@ -3121,9 +3128,9 @@ namespace IG.Lib
                     {
                         string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + " <executeCmds saveCmds>: Enters a new code block. " + Environment.NewLine
-                            + "  executeCmds: whether to immediately execute commands in the block (default true). " + Environment.NewLine
-                            + "  saveCmds: whether to save commands in the block (default true if executeCmds is false). ");
+                        Console.WriteLine(executableName + " " + cmdName + " <executeImmediately saveCmds>: Enters a new code block. " + Environment.NewLine
+                            + "  executeImmediately: whether to immediately execute commands in the block (default true). " + Environment.NewLine
+                            + "  saveCmds: whether to save commands in the block (default true if executeImmediately is false). ");
                         Console.WriteLine();
                         return null;
                     }
@@ -3177,7 +3184,7 @@ namespace IG.Lib
                 if (args.Length >= 1)
                     throw new Exception("Command " + cmdName + " can not have arguments.");
             }
-            ExitBlock(cmdThread);
+            ret = ExitBlock(cmdThread);
             return ret;
         }
 
@@ -3202,30 +3209,34 @@ namespace IG.Lib
                     {
                         string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + " <executeCmds saveCmds>: Enters a new code block. " + Environment.NewLine
-                            + "  executeCmds: whether to immediately execute commands in the block (default true). " + Environment.NewLine
-                            + "  saveCmds: whether to save commands in the block (default true if executeCmds is false). ");
+                        Console.WriteLine(executableName + " " + cmdName + " <executeCmds saveCmds>: Enters a new JS code block. " + Environment.NewLine
+                            + "  All commands are appended to the block until block exit command is called, upon which the code is executed. " );
                         Console.WriteLine();
                         return null;
                     }
-            bool executeCommands = true;
-            bool saveCommands = true;
+            //bool executeCommands = true;
+            //bool saveCommands = true;
+            //if (args != null)
+            //{
+            //    bool parsed;
+            //    if (args.Length >= 1)
+            //    {
+            //        parsed = Util.TryParseBoolean(args[0], ref executeCommands);
+            //        if (!parsed)
+            //            throw new ArgumentException("Argument can not be converted to boolean: " + args[0]);
+            //        if (args.Length >= 2)
+            //        {
+            //            parsed = Util.TryParseBoolean(args[1], ref saveCommands);
+            //            if (!parsed)
+            //                throw new ArgumentException("Argument can not be converted to boolean: " + args[1]);
+            //        }
+            //    }
+            //}
+            int numArgs = 0;
             if (args != null)
-            {
-                bool parsed;
-                if (args.Length >= 1)
-                {
-                    parsed = Util.TryParseBoolean(args[0], ref executeCommands);
-                    if (!parsed)
-                        throw new ArgumentException("Argument can not be converted to boolean: " + args[0]);
-                    if (args.Length >= 2)
-                    {
-                        parsed = Util.TryParseBoolean(args[1], ref saveCommands);
-                        if (!parsed)
-                            throw new ArgumentException("Argument can not be converted to boolean: " + args[1]);
-                    }
-                }
-            }
+                numArgs = args.Length;
+            if (numArgs > 0)
+                throw new ArgumentException("Command " + cmdName + " can not have arguments.");
             EnterJsBlock(cmdThread);
             return ret;
         }
@@ -3246,20 +3257,17 @@ namespace IG.Lib
                     {
                         string executableName = UtilSystem.GetCurrentProcessExecutableName();
                         Console.WriteLine();
-                        Console.WriteLine(executableName + " " + cmdName + ": Enters a JavaScript code block and executes the code." );
+                        Console.WriteLine(executableName + " " + cmdName + ": Ends a JavaScript code block and executes the code." );
                         Console.WriteLine();
                         return null;
                     }
-            //bool executeCommands = true;
-            //bool saveCommands = true;
             if (args != null)
             {
-                bool parsed;
                 if (args.Length >= 1)
                     throw new Exception("Command " + cmdName + " can not have arguments.");
             }
             ret = ExitJsBlock(cmdThread);
-            return null;
+            return ret;
         }
 
 
@@ -3402,7 +3410,7 @@ namespace IG.Lib
                 if (args.Length > 0)
                     throw new ArgumentException(cmdName + " : Else should have no arguments.");
             }
-            ExitIf(cmdThread);
+            ret = ExitIf(cmdThread);
             return ret;
         }
 
