@@ -49,6 +49,8 @@ namespace IG.Lib
         {
             InitCommandLineApplicationInterpreterBasic(caseSensitive);
             InitCommands();
+            // Register the new interpreter in the list:
+            Interpreters.Add(this);
         }
 
         /// <summary>Performs basic initializations of the interpreter.</summary>
@@ -102,6 +104,7 @@ namespace IG.Lib
 
             this.AddCommandMt("OutputLevel", CmdOutputLevel);
             this.AddCommandMt("OutputLevelCalc", CmdOutputLevelCalc);
+            this.AddCommandMt("UseJint", CmdUseJint);
             this.AddCommandMt("Write", CmdWrite);
             this.AddCommandMt("WriteLn", CmdWriteLine);
             this.AddCommandMt("WriteLine", CmdWriteLine);
@@ -918,6 +921,9 @@ namespace IG.Lib
             //parentFrame.ReturnedValue = null;
             CommandStackFrame frame = cmdThread.AddFrame(CodeBlockType.Block);
             frame.SuppressInteractive = parentFrame.SuppressInteractive;  // inherits from parent
+
+            frame.SuppressInteractive = true;
+
             // Add block enter / exit commands:
             AddEnterExitCommands_BeginCalc(frame);
 
@@ -970,6 +976,8 @@ namespace IG.Lib
                 throw new InvalidOperationException("Stack frame inconsistency when exiting the block.");
             // Execute the code in the JavaScript evaluator:
             ret = EvaluateJs(codeBlock);
+
+
             // Save returned value of the completed block to the parent frame (which is now the top frame):
             // cmdThread.TopFrame.ReturnedValue = ret;
             return ret;
@@ -1448,25 +1456,62 @@ namespace IG.Lib
 
         protected ExpressionEvaluatorJs _evalutorJs;
 
+
+        protected ExpressionEvaluatorJint _evaluatorJint;
+
+        bool _useJint = false;
+
+        /// <summary>Flag that specified whether Jint JavaCcript engine is used or not.</summary>
+        public bool UseJint
+        {
+            get { return _useJint; }
+            protected set { _useJint = value; }
+        }
+
+
         /// <summary>Expression evaluator used by the current </summary>
         public ExpressionEvaluatorJs EvaluatorJs
         {
             get
             {
+                ExpressionEvaluatorJs ret;
                 lock (Lock)
                 {
-                    if (_evalutorJs == null)
+                    if (UseJint)
                     {
-                        _evalutorJs = new ExpressionEvaluatorJs();
+                        if (_evaluatorJint == null)
+                        {
+                            lock (Lock)
+                            {
+                                if (_evaluatorJint == null)
+                                    _evaluatorJint = new ExpressionEvaluatorJint();
+                            }
+                        }
+                        ret = _evaluatorJint;
                     }
-                    return _evalutorJs;
+                    else
+                    {
+                        if (_evalutorJs == null)
+                        {
+                            lock (Lock)
+                            {
+                                if (_evalutorJs == null)
+                                    _evalutorJs = new ExpressionEvaluatorJs();
+                            }
+                        }
+                        ret = _evalutorJs;
+                    }
                 }
+                return ret;
             }
             protected set
             {
                 lock (Lock)
                 {
-                    _evalutorJs = value;
+                    if (UseJint)
+                        _evaluatorJint = value as ExpressionEvaluatorJint;
+                    else
+                        _evalutorJs = value as ExpressionEvaluatorJs;
                 }
             }
         }
@@ -1937,6 +1982,29 @@ namespace IG.Lib
             }
             return ret;
         }
+
+
+
+        /// <summary>Runs the specified (unsplit) command on the interpreter's main thread.</summary>
+        /// <param name="command">Comamnd to be run (command with arguments, separated by spaces).</param>
+        /// <returns></returns>
+        public virtual string Run(string command)
+        {
+            return this.Run(MainThread, command);
+        }
+
+
+        /// <summary>Runs the specified (split) command with arguments on the interpreter's main thread.</summary>
+        /// <param name="commandAndArgs">Array containing command to be run and its arguments.</param>
+        /// <returns></returns>
+        public virtual string Run(params string[] commandAndArgs)
+        {
+            return this.Run(MainThread, commandAndArgs);
+        }
+
+
+
+
 
         #region ParallelExecution
 
@@ -3931,6 +3999,75 @@ namespace IG.Lib
             }
             return ret;
         }
+
+
+        /// <summary>Command.
+        /// Prints and returns or sets and returns value of the flag that specifies whether the Jint engine
+        /// is used to interpret JavaScript expressions.
+        /// <para>Called without arguments just prints and returns the current flag value.</para>
+        /// <para>With one argument, the flag is set to that argument.</para></summary>
+        /// <param name="cmdThread">Command thread that is being executed.</param>
+        /// <param name="cmdName">Command name.</param>
+        /// <param name="args">Command arguments.</param>
+        /// <returns>Result of the last command that is run.</returns>
+        protected virtual string CmdUseJint(CommandThread cmdThread,
+            string cmdName, string[] args)
+        {
+            string ret = null;
+            if (args != null)
+                if (args.Length > 0)
+                    if (args[0] == "?")
+                    {
+                        string executableName = UtilSystem.GetCurrentProcessExecutableName();
+                        Console.WriteLine();
+                        Console.WriteLine(executableName + " " + cmdName + " <useJint> : gets or sets the flag for sing Jint interpreter. " + Environment.NewLine
+                            + "  If the flag is set then Jint is used for interpretation of JavaScript code."
+                            + "    useJint: new value of the flag. " + Environment.NewLine
+                            + "      If not specified then the current flag value is printed and returned.");
+                        Console.WriteLine();
+                        return null;
+                    }
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            if (numArgs > 1)
+                throw new ArgumentException(cmdName + " : invalid number of arguments, should be at most 1 (argument being new flag value).");
+            else
+            {
+                string argFlag = null;
+                if (numArgs >= 1)
+                    argFlag = args[0];
+                bool currentFlag = UseJint;
+                if (string.IsNullOrEmpty(argFlag))
+                {
+                    // No arguments, just print and return the current flag value:
+                    ret = currentFlag.ToString();
+                    if (this.OutputLevel >= 1)
+                        Console.WriteLine(Environment.NewLine + "Jint used: " + currentFlag + "." + Environment.NewLine);
+                }
+                else
+                {
+                    bool newFlag = currentFlag;
+                    bool parsed = Util.TryParseBoolean(argFlag, ref newFlag);
+                    if (!parsed)
+                        throw new ArgumentException("Argument does not represent a bolean value: " + argFlag);
+                    else
+                    {
+                        ret = argFlag;
+                        UseJint = newFlag;
+                        if (this.OutputLevel >= 1)
+                        {
+                            if (newFlag)
+                                Console.WriteLine(Environment.NewLine + "Jint will be used as JavaScript interpreter." + Environment.NewLine);
+                            else
+                                Console.WriteLine(Environment.NewLine + "Jint will NOT be used as JavaScript interpreter." + Environment.NewLine);
+                        }
+                    }
+                }
+            }
+            return ret;
+        }
+
 
 
 

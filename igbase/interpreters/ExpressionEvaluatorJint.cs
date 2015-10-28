@@ -1,0 +1,182 @@
+﻿// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/ioptlib/
+
+using System;
+using System.CodeDom.Compiler;
+using System.Reflection;
+using System.IO;
+
+// using Microsoft.JScript;
+
+using Jint.Native;
+using Jint.Runtime;
+using Jint;
+
+
+        /***********************************************/
+        /*                                             */
+        /*    JavaScript INTERPRETER based oon Jint    */
+        /*                                             */
+        /***********************************************/
+
+
+namespace IG.Lib
+{
+
+
+    /// <summary>JavaScript Evaluator with command-line interpreter, based on Jint.</summary>
+    /// <remarks>
+    /// <para>See also: https://github.com/sebastienros/jint/blob/master/README.md </para></remarks>
+    /// $A Igor Oct15;
+    public class ExpressionEvaluatorJint : ExpressionEvaluatorJs,
+            ILockable, IIdentifiable, IRegisterable<ExpressionEvaluatorJs>
+    {
+
+        
+        /// <summary>Initializes a new JavaScript evaluator. This includes compiling the JavaScript code where 
+        /// evaluation is plugged in.</summary>
+        public ExpressionEvaluatorJint() : base()
+        { }
+
+        #region Initialzation 
+
+        /// <summary>Contains initializations for the particular class.</summary>
+        /// <remarks>This method is called form base class' constructor.</remarks>
+        protected override void InitExpressionEvaluator()
+        {
+
+            base.InitExpressionEvaluator();
+
+            Language = "JavaScript";
+            PackageName = "EvaluatorPackageJint";
+            ClassName = "EvaluatorClassJs_" + Id.ToString();
+
+            BaseDefinitions += _baseDefinitionsJs;
+
+            _inputMark = "JSi> ";
+            _definitionsMark = "JSi Def> ";
+            _multilineMark = "JSi ml> ";
+            // _resultMark = "      = ";
+
+        }
+
+        #endregion Initialization 
+
+
+
+        // Evaluation engine:
+
+        void Test()
+        {
+            Jint.Engine engine = new Jint.Engine();
+
+
+            //var engine = new Engine()
+            //    .SetValue("log", new Action<object>(Console.WriteLine))
+            //    ;
+
+            var engne = new Jint.Engine();
+
+        }
+
+
+
+        Jint.Engine _jsEngine = null;
+
+        /// <summary>JavaScript execution engine.</summary>
+        Jint.Engine JsEngine
+        {
+            get
+            {
+                if (_jsEngine == null)
+                {
+                    lock(Lock)
+                    {
+                        if (_jsEngine == null)
+                            _jsEngine = new Engine(
+                                cfg => cfg.AllowClr()
+                                    .AllowClr(typeof(IG.Lib.Util).Assembly)
+                                    //.AllowClr(typeof(IG.Gr.Poot2d).Assembly)
+                                ).SetValue("log", new Action<object>(Console.WriteLine));
+                    }
+                }
+                return _jsEngine;
+            }
+        }
+
+
+
+
+        #region BasicOperations
+
+
+        /// <summary>Evaluates JavaScript code and returns result as object.</summary>
+        /// <param name="code">JavaScript code to be evaluated.</param>
+        /// <returns>Object that is result of evaluaton of code.</returns>
+        public override object EvalToObject(string code)
+        {
+            Console.WriteLine(Environment.NewLine + Environment.NewLine + "Executed by Jint..." + Environment.NewLine);
+
+            JsValue val = JsEngine.Execute(code) // execute a statement
+                .GetCompletionValue(); // get the latest statement completion value
+
+            return val.ToObject(); // converts the value to .NET
+        }
+
+
+        /// <summary>Evaluates (interprets) JavaScript code and returns string result of evaluation.
+        /// Code must be such that result of evaluation can be interpreted as string.</summary>
+        /// <param name="code">Code that is evaluated.</param>
+        /// <returns></returns>
+        public override string EvalToString(string code)
+        {
+            JsValue val = JsEngine.Execute(code) // execute a statement
+                .GetCompletionValue(); // get the latest statement completion value
+            string ret = val.ToString();
+            return ret;
+        }
+
+        /// <summary>Executes the specified code and returns the result.
+        /// Throws exception if errors occur when interpreting code.
+        /// After execution, the code is appended to the complete code that has been executed up to this point.</summary>
+        /// <param name="code">Code that is exected by the JavaScript interpreter.</param>
+        /// <returns>Result of code execution as string.</returns>
+        public override string Execute(string inputCode)
+        {
+            if (string.IsNullOrEmpty(inputCode))
+                return null;
+            string result = "";
+            // string codeToExecute = CompleteCode + GetRepairedCommand(inputCode) /* + ";" */ + Environment.NewLine;
+
+            string codeToExecute = GetRepairedCommand(inputCode) /* + ";" */ + Environment.NewLine;
+
+            // Complete input, evaluate it, print results, and reset the code:
+
+            if (this.OutputLevel >= 1)
+            {
+                Console.WriteLine(Environment.NewLine + Environment.NewLine + "Code to execute: " + Environment.NewLine
+                    + "============ Jint expr." + Environment.NewLine + codeToExecute + Environment.NewLine
+                    + "------------" + Environment.NewLine + Environment.NewLine);
+            }
+
+            result = EvalToString(codeToExecute);
+            // Execution OK, append the inserted code to the complete code:
+            CompleteCode = codeToExecute;
+            return result;
+        }
+
+
+
+
+        #endregion BasicOperations
+
+
+
+
+
+
+
+
+    }  // ExpressionEvaluatorJint
+
+
+}

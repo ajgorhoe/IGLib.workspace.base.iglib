@@ -148,6 +148,7 @@
     <Compile Include="interpreters\ApplicationCommandLineBase.cs" />
     <Compile Include="interpreters\CommandlineApplicationInterpreterBase.cs" />
     <Compile Include="interpreters\CommandlineApplicationInterpreterInterface.cs" />
+    <Compile Include="interpreters\ExpressionEvaluatorJint.cs" />
     <Compile Include="interpreters\interfaces\InterfaceInterpreterBase.cs" />
     <Compile Include="interpreters\interfaces\InterfaceInv.cs" />
     <Compile Include="interpreters\scriptloader\LoadableScriptExamnple.cs" />
@@ -347,6 +348,12 @@
     <None Include="ClassDiagram2.cd" />
     <None Include="ClassDiagram3.cd" />
     <None Include="interpreters\scriptloader\scripts\script_examples.cmd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\external\jint\Jint\Jint.csproj">
+      <Project>{678738da-f723-4920-b9e5-cad667104bda}</Project>
+      <Name>Jint</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
