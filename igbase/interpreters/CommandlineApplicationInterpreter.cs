@@ -387,7 +387,7 @@ namespace IG.Lib
             {
                 char firstChar = str[0];
                 if (firstChar == _variableStart)
-                    return this.GetVariable(cmdThread, str.Substring(1, str.Length - 1));
+                    return this.GetVariableValue(cmdThread, str.Substring(1, str.Length - 1));
                 else if (firstChar == _expressionStart)
                     return this.EvaluateJs(str.Substring(1, str.Length - 1));
                 else
@@ -396,11 +396,111 @@ namespace IG.Lib
         }
 
 
+        // VARIABLES:
+
+
+        /// <summary>Returns local variable with the specified name that is defined specified 
+        /// number of frames below the top stack frame.
+        /// <para>Null is returned if the variable does not exist on that frame.</para></summary>
+        /// <param name="cmdThread">Thread where this method is executed.</param>
+        /// <param name="framesBelowTop">Number of frames below the top-most stack frame where the 
+        /// variable is defined.</param>
+        /// <returns></returns>
+        public InterpreterVariable GetLocalVariable(CommandThread cmdThread, string varName, int framesBelowTop)
+        {
+            if (cmdThread.TopFrameIndex < framesBelowTop)
+                throw new InvalidOperationException("The stack is less than " + framesBelowTop + " levels deep.");
+            InterpreterVariable ret = null;
+            int whichLevelBelow = 0;
+            CommandStackFrame frame = cmdThread.TopFrame;
+            while (whichLevelBelow <= framesBelowTop)
+            {
+                if (whichLevelBelow == framesBelowTop)
+                    return frame.GetVariableDef(varName);
+                else
+                {
+                    if (frame.StackLevel == 0)
+                        throw new InvalidOperationException("Stack is not deep enough.");
+                    else if (frame.BlockType == CodeBlockType.Callable)
+                        throw new InvalidOperationException("Callable code block was encountered " + whichLevelBelow + " levels below the stack top " 
+                            + Environment.NewLine + "  , before the specified stack level was reached.");
+                    frame = (CommandStackFrame) frame.GetParentStackFrame();
+                }
+
+            }
+            CommandStackFrame freme = cmdThread.TopFrame;
+            return ret;
+        }
+
+        public InterpreterVariable GetFirstLocalVariable(CommandThread cmdThread, string value)
+        {
+            InterpreterVariable ret = null;
+            
+            return ret;
+        }
+
+        public InterpreterVariable GetFiestLocalOrGlobalVariable(CommandThread cmdThread, string value)
+        {
+            InterpreterVariable ret = null;
+            
+            return ret;
+        }
+
+
+        /// <summary>Returns the specified global variable, if such a variable exists.</summary>
+        /// <param name="varName">Name of the global variable to be returned.</param>
+        public virtual InterpreterVariable GetGlobalVariable(string varName)
+        {
+            lock (Lock)
+            {
+                if (GlobalFrame.IsVariableDefined(varName))
+                    return GlobalFrame[varName];
+                else
+                    return null;
+            }
+        }
+
+
+        /// <summary>Returns value of the specified global variable, if such a global variable exists.</summary>
+        /// <param name="varName">Name of the global variable whose value is returned.</param>
+        public virtual string GetGlobalVariableValue(string varName)
+        {
+            lock (Lock)
+            {
+                return GlobalFrame.GetVariableValue(varName);
+            }
+        }
+
+        /// <summary>Returns value of the specified global variable, if such a global variable exists.</summary>
+        /// <param name="varName">Name of the variable.</param>
+        /// <value>Value that is assigned to the variable.</value>
+        public virtual void SetGetGlobalVariableValue(string varName, string varValue)
+        {
+            lock (Lock)
+            {
+                GlobalFrame.SetVariableValue(varName, varValue);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /// <summary>Returns the value of the specified variable of the current command line interpreter.
         /// null is returned if the specified variable does not exist.</summary>
         /// <param name="cmdThread">Command thread that is being executed.</param>
         /// <param name="varName">Name of the variable.</param>
-        public virtual string GetVariable(CommandThread cmdThread, string varName)
+        public virtual string GetVariableValue(CommandThread cmdThread, string varName)
         {
             try
             {
@@ -421,7 +521,7 @@ namespace IG.Lib
         /// <param name="varName">Name of the variable to be set.</param>
         /// <param name="value">Value that is assigned to the variable.</param>
         /// <returns>New value of the variable.</returns>
-        public virtual string SetVariable(CommandThread cmdThread, string varName, string value)
+        public virtual string SetVariableValue(CommandThread cmdThread, string varName, string value)
         {
             try
             {
@@ -480,7 +580,7 @@ namespace IG.Lib
         /// <returns>null.</returns>
         public virtual string PrintVariable(CommandThread cmdThread, string varName)
         {
-            Console.WriteLine("  " + varName + " = " + GetVariable(cmdThread, varName));
+            Console.WriteLine("  " + varName + " = " + GetVariableValue(cmdThread, varName));
             return null;
         }
 
@@ -2690,7 +2790,7 @@ namespace IG.Lib
                         argsCmd[i - 2] = args[i];
                     value = Run(cmdThread, cmd, argsCmd);
                 }
-                ret = SetVariable(cmdThread, varName, value);
+                ret = SetVariableValue(cmdThread, varName, value);
             }
             return ret;
         }
@@ -2772,7 +2872,7 @@ namespace IG.Lib
             else
             {
                 string varName = args[0];
-                ret = GetVariable(cmdThread, varName);
+                ret = GetVariableValue(cmdThread, varName);
             }
             return ret;
         }
@@ -3653,7 +3753,7 @@ namespace IG.Lib
                 Console.Write(outputString);
             }
             string varValue = Console.ReadLine();
-            SetVariable(cmdThread, varName, varValue);
+            SetVariableValue(cmdThread, varName, varValue);
             return ret;
         }
 

@@ -69,14 +69,14 @@ namespace IG.Lib
         /// null is returned if the specified variable does not exist.</summary>
         /// <param name="commandThread">Command thread that is being executed.</param>
         /// <param name="varName">Name of the variable.</param>
-        string GetVariable(CommandThread commandThread, string varName);
+        string GetVariableValue(CommandThread commandThread, string varName);
 
         /// <summary>Sets the specified variable to the specified value.</summary>
         /// <param name="commandThread">Command thread that is being executed.</param>
         /// <param name="varName">Name of the variable to be set.</param>
         /// <param name="value">Value that is assigned to the variable.</param>
         /// <returns>New value of the variable (before the method was called).</returns>
-        string SetVariable(CommandThread commandThread, string varName, string value);
+        string SetVariableValue(CommandThread commandThread, string varName, string value);
 
         /// <summary>Clears (removes) the specified variable.</summary>
         /// <param name="commandThread">Command thread that is being executed.</param>

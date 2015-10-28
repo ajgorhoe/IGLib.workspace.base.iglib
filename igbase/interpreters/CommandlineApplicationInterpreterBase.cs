@@ -335,7 +335,7 @@ namespace IG.Lib
 
 
 
-    /// <summary>Represents type of the interpretation block for which a stack frame exists on command thread.
+    /// <summary>Flags that specify interpreter variable type and behavior.
     /// <para>Flag-like values.</para></summary>
     /// $A Igor Oct15;
     [Flags]
@@ -351,7 +351,7 @@ namespace IG.Lib
         StringVar = 2,
         /// <summary>Variable references another variable.</summary>
         ReferenceVar = 4,
-        /// <summary>Default flags - for most ordinary value (= <see cref="VariableFlags.StringVar"/> & <see cref="VariableFlags.Valid"/>)</summary>
+        /// <summary>Default flags - for most ordinary value (= <see cref="VariableFlags.StringVar"/> and <see cref="VariableFlags.Valid"/>)</summary>
         Default = Valid & StringVar
     }
 
@@ -1293,7 +1293,7 @@ namespace IG.Lib
         /// <param name="variableName">Name of the variable to be set or retrieved.</param>
         public InterpreterVariable this[string variableName]
         {
-            get { return _variables[variableName]; }
+            get { if (_variables.ContainsKey(variableName)) return _variables[variableName]; else return null; }
             set { _variables[variableName] = value; }
         }
 
@@ -1315,7 +1315,8 @@ namespace IG.Lib
             }
         }
 
-        /// <summary>Returns variable object (definition) for the variable with specified name.</summary>
+        /// <summary>Returns variable object (definition) for the variable with specified name.
+        /// <para>null is returned if the variable does not exist.</para></summary>
         /// <param name="varName">Name of the variable.</param>
         public InterpreterVariable GetVariableDef(string varName)
         {
