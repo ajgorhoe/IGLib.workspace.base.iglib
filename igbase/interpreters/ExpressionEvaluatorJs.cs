@@ -120,6 +120,11 @@ Quit with '\q' .";
 
      function random() { return Math.random(); } // random number between 0 and 1
      
+
+
+     // SPECIAL - do not include in the basic script because there will be problems
+     // - the isarray works on some JavaScript engines but not on others, and functions
+     // below are dependent on it.
     
 	 // ARRAY UTILITIES: 
 

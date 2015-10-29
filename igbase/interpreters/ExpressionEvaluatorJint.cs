@@ -123,7 +123,7 @@ namespace IG.Lib
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine(Environment.NewLine + "WARNiNG: " + Environment.NewLine
+                            Console.WriteLine(Environment.NewLine + "WARNING: " + Environment.NewLine
                                 + "  Exception was hrown when interpreting basic JavaScript evaluator definitions. " + Environment.NewLine
                                 + "  Message: " + ex.Message + Environment.NewLine);
                         }

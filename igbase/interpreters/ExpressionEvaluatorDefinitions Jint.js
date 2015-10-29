@@ -28,6 +28,22 @@
 // is converted to "1,2". Aditional conversion function must be provided in order to enable a more
 // comfortabla calculator.
 
+// WARNING: Some of these functions cause problems because of incompatibility of different JavaScript
+// engines and their definition should be installed separately, not in the common initialization step.
+
+
+
+        //Checks if an object is array or not.
+        // Returns true if an object is array and false if it is not.
+        // This works with JavaScript engines that support the JSON class. 
+        // It works with Jint but not with the old JS engine used by IGLib.
+        function isarray(obj) {
+            //returns true is it is an array
+            if (JSON.stringify(obj)[0] == '[')
+                return true;
+            else
+                return false;
+        }
 
 
         // Returns minimum of function arguments. If some of the 
