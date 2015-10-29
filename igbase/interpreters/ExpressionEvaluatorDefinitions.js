@@ -178,7 +178,7 @@
 	         var arg = arguments[i];
 	         if (!isarray(arg)) {
 	             if (spacesBetween)
-	                 ret = ret + " ";
+	                 ret = ret + ' ';
 	             if (typeof arg == typeof "")
 	                 ret = ret + arg;
 	             else
@@ -189,8 +189,8 @@
 	                 var el = arg[j];
 	                 if (!isarray(el)) {
 	                     if (spacesBetween)
-	                         ret = ret + " ";
-	                     if (typeof el == typeof "")
+	                         ret = ret + ' ';
+	                     if (typeof el == typeof '')
 	                         ret = ret + el;
 	                     else
 	                         ret = ret + str(arg)
