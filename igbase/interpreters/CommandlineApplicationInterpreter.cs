@@ -241,10 +241,26 @@ namespace IG.Lib
         private List<CommandThread> _commandThreads = new List<CommandThread>();
 
         /// <summary>List of command threads that exist on the interpreter.</summary>
-        public List<CommandThread> CommandThreads
+        protected List<CommandThread> CommandThreads
         {
             get { return _commandThreads; }
-            protected set { _commandThreads = value; }
+            set { _commandThreads = value; }
+        }
+
+        /// <summary>Returns the number of command threads that are currently contained on the interpreter.</summary>
+        public int NumCommandThreads { get { lock (Lock) { return CommandThreads.Count; } } }
+
+        /// <summary>Returns the specified command thread for the current interpreter.</summary>
+        /// <param name="whichCommandThread">Index of the thread on the list of interpreter's threads.</param>
+        public CommandThreadBase GetCommmandThread(int whichCommandThread)
+        {
+            lock (Lock)
+            {
+                if (whichCommandThread > CommandThreads.Count || whichCommandThread < 0)
+                    throw new ArgumentException("Number of thread " + whichCommandThread + " is out of range, should be between 0 and "
+                        + CommandThreads.Count + ".");
+                return CommandThreads[whichCommandThread];
+            }
         }
 
         public CommandThread AddNewThread()
@@ -831,7 +847,7 @@ namespace IG.Lib
         {
             string ret = null;
             cmdThread.WasBlockExitCommand = true;
-            int numRepetitions = (int) cmdThread.PopParameter();
+            int numRepetitions = (int) cmdThread.GetParameterFromTop(0);
             CommandStackFrame frame = cmdThread.TopFrame;
             if (!frame.DoExecuteCommands && frame.DoSaveCommands)
             {
@@ -894,7 +910,7 @@ namespace IG.Lib
                     frame.BlockCommanddLine = null;
                 }
             }
-            CommandStackFrame removedFrame = cmdThread.RemoveFrame();
+            CommandStackFrame removedFrame = cmdThread.RemoveFrame(); cmdThread.PopParameter(); // parameter can be removed after removal of the frame as it belonged to the parent frame
             // check:
             if (!object.ReferenceEquals(frame, removedFrame))
                 throw new InvalidOperationException("Stack frame inconsistency when exiting the block.");
@@ -1459,7 +1475,7 @@ namespace IG.Lib
 
         protected ExpressionEvaluatorJint _evaluatorJint;
 
-        bool _useJint = false;
+        bool _useJint = true;
 
         /// <summary>Flag that specified whether Jint JavaCcript engine is used or not.</summary>
         public bool UseJint

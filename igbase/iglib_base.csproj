@@ -326,6 +326,7 @@
     <Content Include="0readme\ReadMe_IGLib.html" />
     <Content Include="data\serialization\json\0readmeJsonPrettyPrinter.txt" />
     <Content Include="interfaces\simulations\0ReadMeSimulationInterfaces.txt" />
+    <Content Include="interpreters\ExpressionEvaluatorDefinitions Jint.js" />
     <Content Include="interpreters\ExpressionEvaluatorDefinitions.js" />
     <Content Include="interpreters\interfaces\0ReadMeInterpreterInterfaces.txt" />
     <Content Include="numeric\approximation\neural\0readme_TODO.txt" />

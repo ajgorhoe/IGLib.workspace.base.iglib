@@ -97,6 +97,16 @@ namespace IG.Lib
                                     .AllowClr(typeof(IG.Lib.Util).Assembly)
                                     //.AllowClr(typeof(IG.Gr.Poot2d).Assembly)
                                 ).SetValue("log", new Action<object>(Console.WriteLine));
+                        try
+                        {
+                            _jsEngine.Execute(BaseDefinitions);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(Environment.NewLine + "WARNiNG: " + Environment.NewLine
+                                + "  Exception was hrown when interpreting basic JavaScript evaluator definitions. " + Environment.NewLine
+                                + "  Message: " + ex.Message + Environment.NewLine);
+                        }
                     }
                 }
                 return _jsEngine;

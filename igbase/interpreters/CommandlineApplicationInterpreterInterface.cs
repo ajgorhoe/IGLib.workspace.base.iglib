@@ -43,8 +43,15 @@ namespace IG.Lib
         /// <summary>Main command thread of the interpreter (usually run in the same thread where interpreter was created).</summary>
         CommandThread MainThread { get; }
 
-        /// <summary>List of command threads that exist on the interpreter.</summary>
-        List<CommandThread> CommandThreads { get; }
+        ///// <summary>List of command threads that exist on the interpreter.</summary>
+        //List<CommandThread> CommandThreads { get; }
+
+        /// <summary>Returns the number of command threads that are currently contained on the interpreter.</summary>
+        int NumCommandThreads { get; }
+
+        /// <summary>Returns the specified command thread for the current interpreter.</summary>
+        /// <param name="whichCommandThread">Index of the thread on the list of interpreter's threads.</param>
+        CommandThreadBase GetCommmandThread(int whichCommandThread);
 
         /// <summary>Whether the exit flag is set, usually causing interpreter to stop.</summary>
         bool Exit

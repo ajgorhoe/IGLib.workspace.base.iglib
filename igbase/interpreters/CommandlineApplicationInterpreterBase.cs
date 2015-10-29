@@ -697,7 +697,7 @@ namespace IG.Lib
         /// <summary>Returns the sibling stack frame at the certain level.</summary>
         /// <param name="stackLevel">Stack level for which the sibling frame is returned.</param>
         /// <returns></returns>
-        public override CommandStackFrame<ICommandLineApplicationInterpreter, CommandThread> GetSiblingStackFrame(int stackLevel)
+        public override CommandStackFrame<ICommandLineApplicationInterpreter, CommandThread> GetThreadStackFrame(int stackLevel)
         {
             return this.InterpreterThread[stackLevel];
         }
@@ -775,7 +775,7 @@ namespace IG.Lib
         /// <summary>Returns the sibling stack frame at the certain level.</summary>
         /// <param name="stackLevel">Stack level for which the sibling frame is returned.</param>
         /// <returns></returns>
-        public override CommandStackFrame<InterpreterType, CommandThread<InterpreterType>> GetSiblingStackFrame(int stackLevel)
+        public override CommandStackFrame<InterpreterType, CommandThread<InterpreterType>> GetThreadStackFrame(int stackLevel)
         {
             return this.InterpreterThread[stackLevel];
         }
@@ -833,9 +833,9 @@ namespace IG.Lib
     /// <typeparam name="InterpreterType">Type of the interpreter for which this class provides a stack frame.</typeparam>
     /// <typeparam name="ThreadType">Type of the thread object on which the stack frames are installed.</typeparam>
     /// $A Igor Sep15;
-    public abstract class CommandStackFrame<InterpreterType, ThreadType> // : ILockable
+    public abstract class CommandStackFrame<InterpreterType, ThreadType> : CommandStackFrameBase // : ILockable
         where InterpreterType : class, ICommandLineApplicationInterpreter
-        where ThreadType : class
+        where ThreadType : CommandThreadBase
     {
 
         /// <summary>Prevent default constructor of being called.</summary>
@@ -849,10 +849,75 @@ namespace IG.Lib
         /// <param name="stackLevel">Stack level of the current stack frame (growing from 0 upwards).</param>
         public CommandStackFrame(CodeBlockType blockType, ThreadType thread, int stackLevel)
         {
-            this.BlockType = _blockType;
+            this.BlockType = blockType;
             this.InterpreterThread = thread;
             this.StackLevel = stackLevel;
         }
+
+        #region Data.GenericTypesBypass
+
+        /// <summary>Returns the commans-line interpreter to which the current command thread belongs.
+        /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
+        /// dependent) methods in derived classes.</para></summary>
+        public override ICommandLineApplicationInterpreter GetInterpreterBase()
+        { return Interpreter; }
+
+        /// <summary>Returns the stack frame of the specified level for the current thread.
+        /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
+        /// dependent) methods in derived classes.</para></summary>
+        /// <param name="level">Level of the stack frame to be returned.
+        /// <para>Command thread (if not replicated for another one) begins executon at stack level 0, then each 
+        /// command block or function call increments the stack level by creating a new stack frame.</para></param>
+        public override CommandThreadBase GetThreadBase()
+        { return InterpreterThread; }
+
+        #endregion Data.GenericTypesBypass
+
+
+        private ThreadType _interpreterThread = null;
+
+        /// <summary>Interpretation thread that contains the current stack frame.</summary>
+        public ThreadType InterpreterThread
+        { get { return this._interpreterThread; } protected set { this._interpreterThread = value; } }
+
+        /// <summary>Returns the sibling stack frame of the specified level.</summary>
+        /// <param name="stackLevel">Level of the sibling stack frame.</param>
+        public abstract CommandStackFrame<InterpreterType, ThreadType> GetThreadStackFrame(int stackLevel);
+
+        /// <summary>Returns the previous (parent, or one lower level) stack frame of the current stack frame.</summary>
+        public abstract CommandStackFrame<InterpreterType, ThreadType> GetParentStackFrame();
+
+        /// <summary>Returns the commandline interpreter of the crrent stack frame.</summary>
+        public abstract InterpreterType Interpreter { get; }
+
+
+    }  // abstract class CommandStackFrame<InterpreterType, ThreadType>
+
+
+    /// <summary>Base class for classes of type CommandStackFrame{InterpreterType, ThreadType}see cref=""/>.
+    /// Contains everyting that does not depend on specific type of generic parameters.</summary>
+    public abstract class CommandStackFrameBase
+    {
+
+        public CommandStackFrameBase() {  }
+
+
+        #region Data.GenericTypesBypass
+
+        /// <summary>Returns the commans-line interpreter to which the current command thread belongs.
+        /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
+        /// dependent) methods in derived classes.</para></summary>
+        public abstract ICommandLineApplicationInterpreter GetInterpreterBase();
+
+        /// <summary>Returns the stack frame of the specified level for the current thread.
+        /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
+        /// dependent) methods in derived classes.</para></summary>
+        /// <para>Command thread (if not replicated for another one) begins executon at stack level 0, then each 
+        /// command block or function call increments the stack level by creating a new stack frame.</para></param>
+        public abstract CommandThreadBase GetThreadBase();
+
+        #endregion Data.GenericTypesBypass
+
 
         #region ILockable
 
@@ -865,92 +930,11 @@ namespace IG.Lib
 
         #endregion ILockable
 
-        /// <summary>Interrpreter that handles interpretation of commands that act on the current stack frame.</summary>
-        //public abstract InterpreterType Interpreter { get; }
-        //{
-        //    get
-        //    {
-        //        return this.InterpreterThread.Interpreter;
-        //    }
-        //}
-
-        private ThreadType _interpreterThread = null;
-
-        /// <summary>Interpretation thread that contains the current stack frame.</summary>
-        public ThreadType InterpreterThread
-        { get { return this._interpreterThread; } protected set { this._interpreterThread = value; } }
-
-        /// <summary>Returns the sibling stack frame of the specified level.</summary>
-        /// <param name="stackLevel">Level of the sibling stack frame.</param>
-        public abstract CommandStackFrame<InterpreterType, ThreadType> GetSiblingStackFrame(int stackLevel);
-
-        /// <summary>Returns the previous (parent, or one lower level) stack frame of the current stack frame.</summary>
-        public abstract CommandStackFrame<InterpreterType, ThreadType> GetParentStackFrame();
-
-        /// <summary>Returns the commandline interpreter of the crrent stack frame.</summary>
-        public abstract InterpreterType Interpreter { get; }
 
         private int _stackLevel = 0;
 
         public int StackLevel
         { get { return _stackLevel; } protected set { _stackLevel = value; } }
-
-        private CodeBlockType _blockType = CodeBlockType.None;
-
-        /// <summary>Type of the code block represented by the current stack frame.</summary>
-        public CodeBlockType BlockType
-        {
-            get { return _blockType; }
-            protected set { _blockType = value; }
-        }
-
-        private bool _doExecute = true;
-
-        /// <summary>Whether commands are executed in the current code block.</summary>
-        public bool DoExecuteCommands { get { return _doExecute; } set { _doExecute = value; } }
-
-        private bool _isBranchExecuted = false;
-
-        /// <summary>Whether a branch has already been executed.</summary>
-        public bool WasBranchAlreadyExecuted { get { return _isBranchExecuted; } set { _isBranchExecuted = value; } }
-
-        private int _numExitLevels = 0;
-
-        public int NumExitLevels { get { return _numExitLevels; } set { _numExitLevels = value; } }
-
-        private int _loopCount = 0;
-
-        /// <summary>Whether commands are executed in the current code block.</summary>
-        public int LoopCount { get { return _loopCount; } set { _loopCount = value; } }
-
-        private bool _suppressInteractive = false;
-
-        /// <summary>Indicates that the interactive mode is temporarily represset.</summary>
-        public bool SuppressInteractive
-        {
-            get { return _suppressInteractive; }
-            set { _suppressInteractive = value; }
-        }
-
-        private string _conditionExpression = null;
-
-        /// <summary>For loopig and branching blocks, this property contains the condition expression of the block,
-        /// which was a part of the block command (such as While, If, or ElseIf).</summary>
-        public string ConditionExpression
-        {
-            get { return _conditionExpression; }
-            set { _conditionExpression = value; }
-        }
-
-        private string _blockCommandLine = null;
-
-        /// <summary>Commandline that started the current block. It may have been saved when the current block of 
-        /// code was entered, in order to be used within the block (e.g. for inspection and debugging) or when
-        /// the block exits. Typical use is in blocks with deferred evaluation, such as in While block, where
-        /// commandlines within the block are stored first, and then repeatedly evaluated until the condition
-        /// from the While block entering command is fulfilled.</summary>
-        public string BlockCommanddLine { get { return _blockCommandLine; } set { _blockCommandLine = value; } }
-
 
         #region  BlockEnterAndExit
 
@@ -964,19 +948,25 @@ namespace IG.Lib
 
         /// <summary>A list of commands that can enter the type of the current code block.</summary>
         protected List<string> BlockEnterCommands
-        { get {
-            if (_blockEnterCommands == null)
-                _blockEnterCommands = new List<string>();
-            return _blockEnterCommands;
-        } }
+        {
+            get
+            {
+                if (_blockEnterCommands == null)
+                    _blockEnterCommands = new List<string>();
+                return _blockEnterCommands;
+            }
+        }
 
         /// <summary>A list of commands that can exit the type of the current code block.</summary>
         protected List<string> BlockExitCommands
-        { get {
-            if (_blockExitCommands == null)
-                _blockExitCommands = new List<string>();
-            return _blockExitCommands;
-        } }
+        {
+            get
+            {
+                if (_blockExitCommands == null)
+                    _blockExitCommands = new List<string>();
+                return _blockExitCommands;
+            }
+        }
 
         /// <summary>A list of commands that can exit the type of the current code block, but willl nnot have effect on
         /// the quet wxit/entry level.</summary>
@@ -984,11 +974,14 @@ namespace IG.Lib
         /// only Endif should decrease the quiet entry/exit level (becauee only If increases it, and If always have the
         /// cottesponding EndIf).</remarks>
         protected List<string> BlockExitCommandsNoLevelEffect
-        { get {
-            if (_blockExitCommandsNoLevelffect == null)
-                _blockExitCommandsNoLevelffect = new List<string>();
-            return _blockExitCommandsNoLevelffect;
-        } }
+        {
+            get
+            {
+                if (_blockExitCommandsNoLevelffect == null)
+                    _blockExitCommandsNoLevelffect = new List<string>();
+                return _blockExitCommandsNoLevelffect;
+            }
+        }
 
         /// <summary>Adds the specified strings to the list of commands that can enter the current kind of the code block.
         /// <para>Warnig: Kind of the code block is not defined by the <see cref="CodeBlockType"/> in this context,
@@ -1071,7 +1064,8 @@ namespace IG.Lib
                 {
                     if (string.Compare(commandLine, cmd, StringComparison.OrdinalIgnoreCase) == 0)
                         canBeListedCommand = true;
-                } else
+                }
+                else
                 {
                     int firstIndex = commandLine.IndexOf(cmd, StringComparison.OrdinalIgnoreCase);
                     if (firstIndex >= 0)
@@ -1164,7 +1158,8 @@ namespace IG.Lib
                     isEnterOrExitCommand = true;
                     if (!justCheck)
                         ++QuietBlockEntryLevel;
-                } else if (IsEventualBlockExitCommand(commandLine, isOnlyCommandName))
+                }
+                else if (IsEventualBlockExitCommand(commandLine, isOnlyCommandName))
                 {
                     isEnterOrExitCommand = true;
                     if (!justCheck)
@@ -1191,15 +1186,82 @@ namespace IG.Lib
         /// i.e. it must not contain eventual whitespaces or parameters.</param>
         public bool IsBlockExitQuietCommand(string commandLine, bool isOnlyCommandName = false)
         {
-            return (!DoExecuteCommands && QuietBlockEntryLevel <= 0 && 
-                (IsEventualBlockExitCommand(commandLine, isOnlyCommandName) || 
-                 IsEventualBlockExitCommandNoLevelEffect(commandLine, isOnlyCommandName) )  );
+            return (!DoExecuteCommands && QuietBlockEntryLevel <= 0 &&
+                (IsEventualBlockExitCommand(commandLine, isOnlyCommandName) ||
+                 IsEventualBlockExitCommandNoLevelEffect(commandLine, isOnlyCommandName)));
         }
 
 
         #endregion BlockEnterAndExit
 
 
+        #region Data.Execution 
+
+        // Data that controls execution of the iinterpreter, and are bound to stack frames.
+        
+        private CodeBlockType _blockType = CodeBlockType.None;
+
+        /// <summary>Type of the code block represented by the current stack frame.</summary>
+        public CodeBlockType BlockType
+        {
+            get { return _blockType; }
+            protected set { _blockType = value; }
+        }
+
+        private bool _doExecute = true;
+
+        /// <summary>Whether commands are executed in the current code block.</summary>
+        public bool DoExecuteCommands { get { return _doExecute; } set { _doExecute = value; } }
+
+        private bool _isBranchExecuted = false;
+
+        /// <summary>Whether a branch has already been executed.</summary>
+        public bool WasBranchAlreadyExecuted { get { return _isBranchExecuted; } set { _isBranchExecuted = value; } }
+
+        private int _numExitLevels = 0;
+
+        public int NumExitLevels { get { return _numExitLevels; } set { _numExitLevels = value; } }
+
+        private int _loopCount = 0;
+
+        /// <summary>Whether commands are executed in the current code block.</summary>
+        public int LoopCount { get { return _loopCount; } set { _loopCount = value; } }
+
+        private bool _suppressInteractive = false;
+
+        /// <summary>Indicates that the interactive mode is temporarily represset.</summary>
+        public bool SuppressInteractive
+        {
+            get { return _suppressInteractive; }
+            set { _suppressInteractive = value; }
+        }
+
+        private string _conditionExpression = null;
+
+        /// <summary>For loopig and branching blocks, this property contains the condition expression of the block,
+        /// which was a part of the block command (such as While, If, or ElseIf).</summary>
+        public string ConditionExpression
+        {
+            get { return _conditionExpression; }
+            set { _conditionExpression = value; }
+        }
+
+        private string _blockCommandLine = null;
+
+        /// <summary>Commandline that started the current block. It may have been saved when the current block of 
+        /// code was entered, in order to be used within the block (e.g. for inspection and debugging) or when
+        /// the block exits. Typical use is in blocks with deferred evaluation, such as in While block, where
+        /// commandlines within the block are stored first, and then repeatedly evaluated until the condition
+        /// from the While block entering command is fulfilled.</summary>
+        public string BlockCommanddLine { get { return _blockCommandLine; } set { _blockCommandLine = value; } }
+
+        #endregion Data.Execution
+
+
+        #region Data.Operation
+
+        // Data that affects operation of the interpreter (data that interpreter and its commands woulld want
+        // to save or exchange on stack frames).
 
         private bool _doSave = false;
 
@@ -1235,7 +1297,7 @@ namespace IG.Lib
 
         /// <summary>Value returned from the last executed command.</summary>
         public string ReturnedValue
-        { get { return _returnedValue; }  set { _returnedValue = value; } }
+        { get { return _returnedValue; } set { _returnedValue = value; } }
 
         //private string _returnedBlockValue = null;
 
@@ -1249,18 +1311,19 @@ namespace IG.Lib
         /// <para>Operation is locked.</para></summary>
         public string[] VariableNames
         {
-            get {
-                lock(Lock)
+            get
+            {
+                lock (Lock)
                 {
-                if (_auxVarNames == null)
-                    _auxVarNames = new List<string>();
-                _auxVarNames.Clear();
-                var keys = _variables.Keys;
-                foreach (string key in keys)
-                {
-                    _auxVarNames.Add(key);
-                }
-                return _auxVarNames.ToArray();
+                    if (_auxVarNames == null)
+                        _auxVarNames = new List<string>();
+                    _auxVarNames.Clear();
+                    var keys = _variables.Keys;
+                    foreach (string key in keys)
+                    {
+                        _auxVarNames.Add(key);
+                    }
+                    return _auxVarNames.ToArray();
                 }
             }
         }
@@ -1269,22 +1332,23 @@ namespace IG.Lib
         /// <para>Operation is locked.</para></summary>
         public string[] VariableValueStrings
         {
-            get {
-                lock(Lock)
+            get
+            {
+                lock (Lock)
                 {
-                if (_auxVarNames == null)
-                    _auxVarNames = new List<string>();
-                _auxVarNames.Clear();
-                var keys = _variables.Keys;
-                foreach (string key in keys)
-                {
-                    try
+                    if (_auxVarNames == null)
+                        _auxVarNames = new List<string>();
+                    _auxVarNames.Clear();
+                    var keys = _variables.Keys;
+                    foreach (string key in keys)
                     {
-                        _auxVarNames.Add(key + "=" + this[key].StringValue);
+                        try
+                        {
+                            _auxVarNames.Add(key + "=" + this[key].StringValue);
+                        }
+                        catch { _auxVarNames.Add(key + "=" + "ERROR:Undefined!!!"); }
                     }
-                    catch { _auxVarNames.Add(key + "=" + "ERROR:Undefined!!!"); }
-                }
-                return _auxVarNames.ToArray();
+                    return _auxVarNames.ToArray();
                 }
             }
         }
@@ -1355,7 +1419,8 @@ namespace IG.Lib
                     throw new Exception("Variable " + varName + " exists and has different flags than specified by the set method." + Environment.NewLine
                         + "  variable's flags: " + intVar.Flags.ToString() + ", specified: " + flags);
                 intVar.StringValue = varValue;
-            } else
+            }
+            else
                 this[varName] = new InterpreterVariable(varName, StackLevel, varValue, flags);
         }
 
@@ -1375,7 +1440,8 @@ namespace IG.Lib
                         throw new Exception("Variable " + varName + " exists and has different flags than specified by the set method." + Environment.NewLine
                             + "  variable's flags: " + intVar.Flags.ToString() + ", specified: " + flags);
                     intVar.StringValue = varValue;
-                } else
+                }
+                else
                     this[varName] = new InterpreterVariable(varName, StackLevel, varValue, flags);
             }
         }
@@ -1400,12 +1466,9 @@ namespace IG.Lib
         }
 
 
-        /// <summary>Returns string representation of the current object.</summary>
-        public override string ToString()
-        {
-            return ToString(includeThreadInfo: true, includeLocalVariables: true, 
-                includeGlobalVariables: true);
-        }
+        #endregion Data.Operaton
+
+
 
         public string ToStringVariableNames()
         {
@@ -1418,7 +1481,7 @@ namespace IG.Lib
         }
 
         /// <summary>Returns a string containing information about the current command thread.</summary>
-        public virtual string ToString(bool includeThreadInfo = true, bool includeLocalVariables = true, 
+        public virtual string ToString(bool includeThreadInfo = true, bool includeLocalVariables = true,
             bool includeGlobalVariables = true)
         {
             StringBuilder sb = new StringBuilder();
@@ -1445,7 +1508,7 @@ namespace IG.Lib
                 {
                     sb.AppendLine("  Saved commandlines: ");
                     for (int i = 0; i < num; ++i)
-                      sb.AppendLine("    " + i + ": " + CommandLines[i]);
+                        sb.AppendLine("    " + i + ": " + CommandLines[i]);
                 }
             }
 
@@ -1453,7 +1516,7 @@ namespace IG.Lib
             {
                 if (includeThreadInfo)
                 {
-                    sb.AppendLine(Environment.NewLine + InterpreterThread.ToString());
+                    sb.AppendLine(Environment.NewLine + GetInterpreterBase().ToString());
                 }
             }
             catch { }
@@ -1463,11 +1526,11 @@ namespace IG.Lib
                 if (includeLocalVariables)
                 {
                     sb.AppendLine("  Stack frame variables: " + Environment.NewLine
-                        + "    " + ToStringVariableNames() + Environment.NewLine 
+                        + "    " + ToStringVariableNames() + Environment.NewLine
                         + "  Variables with values: " + Environment.NewLine
                         + "    " + ToStringVariableValues());
                 }
-                var thread = this.InterpreterThread;
+                var thread = GetInterpreterBase();
                 int level = StackLevel - 1;
                 if (level < 0)
                     sb.AppendLine("  This is the lowest stack frame.");
@@ -1477,10 +1540,12 @@ namespace IG.Lib
                     {
                         try
                         {
-                            CommandStackFrame<InterpreterType, ThreadType> lowerFrame = GetSiblingStackFrame(level);
-                            
+                            // CommandStackFrame<InterpreterType, ThreadType> lowerFrame = GetSiblingStackFrame(level);
+
+                            CommandStackFrameBase lowerFrame = GetThreadBase().GetStackFrameBase(level);
+
                             sb.AppendLine("  Stack frame variables for stack level " + level + ": " + Environment.NewLine
-                                + "    " + lowerFrame.ToStringVariableNames() + Environment.NewLine 
+                                + "    " + lowerFrame.ToStringVariableNames() + Environment.NewLine
                                 + "  Variables with values: " + Environment.NewLine
                                 + "    " + lowerFrame.ToStringVariableValues());
                         }
@@ -1495,7 +1560,7 @@ namespace IG.Lib
             {
                 try
                 {
-                    ICommandLineApplicationInterpreter interpreter = this.Interpreter;
+                    ICommandLineApplicationInterpreter interpreter = this.GetInterpreterBase();
 
                     var globalFrame = interpreter.GlobalFrame;
 
@@ -1504,8 +1569,11 @@ namespace IG.Lib
                         + "  Variables with values: " + Environment.NewLine
                         + "    " + globalFrame.ToStringVariableValues());
                 }
-                catch (Exception ex) { sb.AppendLine("  Error when accessing interpreter global variables: " +
-                    Environment.NewLine + "  " +  ex.Message); }
+                catch (Exception ex)
+                {
+                    sb.AppendLine("  Error when accessing interpreter global variables: " +
+                        Environment.NewLine + "  " + ex.Message);
+                }
             }
 
 
@@ -1513,7 +1581,15 @@ namespace IG.Lib
         }
 
 
-    }  // abstract class CommandStackFrame<InterpreterType, ThreadType>
+        /// <summary>Returns string representation of the current object.</summary>
+        public override string ToString()
+        {
+            return ToString(includeThreadInfo: true, includeLocalVariables: true,
+                includeGlobalVariables: true);
+        }
+
+
+    }  // class CommandStackFrameBase
 
 
 
@@ -1529,7 +1605,7 @@ namespace IG.Lib
     /// <typeparam name="ThreadType">Type of command thread data - represents this very type, to make it easier to use
     /// the frame type (which, in turn, has a type parameter for thread type).</typeparam>
     /// $A Igor Sep15;
-    public abstract class CommandThread<InterpreterType, FrameType, ThreadType> : IIdentifiable, ILockable
+    public abstract class CommandThread<InterpreterType, FrameType, ThreadType> : CommandThreadBase,  IIdentifiable, ILockable
         where InterpreterType : class, ICommandLineApplicationInterpreter
         where FrameType : CommandStackFrame<InterpreterType, ThreadType>
         where ThreadType : CommandThread<InterpreterType, FrameType, ThreadType>
@@ -1544,6 +1620,154 @@ namespace IG.Lib
             this.Interpreter = interpreter;
             this.BaseFrame = this.AddFrame(CodeBlockType.Block);
         }
+
+
+        #region Data.GenericTypesBypass
+
+        /// <summary>Returns the commans-line interpreter to which the current command thread belongs.
+        /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
+        /// dependent) methods in derived classes.</para></summary>
+        public override ICommandLineApplicationInterpreter GetInterpreterBase()
+        { return Interpreter; }
+
+        /// <summary>Returns the stack frame of the specified level for the current thread.
+        /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
+        /// dependent) methods in derived classes.</para></summary>
+        /// <param name="level">Level of the stack frame to be returned.
+        /// <para>Command thread (if not replicated for another one) begins executon at stack level 0, then each 
+        /// command block or function call increments the stack level by creating a new stack frame.</para></param>
+        public override CommandStackFrameBase GetStackFrameBase(int level)
+        { return this[level]; }
+
+
+        #endregion Data.GenericTypesBypass
+
+
+        #region Data.Basic
+
+        private InterpreterType _interpreter;
+
+        /// <summary>Returns interpreter that handles command execution on the current command thread.</summary>
+        public InterpreterType Interpreter
+        {
+            get
+            {
+                if (_interpreter == null) throw new InvalidOperationException("Interpreater is not set on CommandThread.");
+                return _interpreter;
+            }
+            protected set { _interpreter = value; }
+        }
+
+        private List<FrameType> _stackFrames = new List<FrameType>();
+
+        /// <summary>A list of stack frames existent in the current thread.</summary>
+        protected List<FrameType> StackFrames
+        { get { return _stackFrames; } }
+
+        private FrameType _baseFrame = null;
+
+        /// <summary>Base stack frame, created when the thread is initialized and exists until thread is exited.</summary>
+        public FrameType BaseFrame
+        { get { return _baseFrame; } protected set { _baseFrame = value; } }
+
+        private FrameType _topFrame = null;
+
+        /// <summary>Base stack frame, created when the thread is initialized and exists until thread is exited.</summary>
+        public FrameType TopFrame
+        { get { return _topFrame; } protected set { _topFrame = value; } }
+
+        public FrameType this[int which]
+        {
+            get { return StackFrames[which]; }
+        }
+
+
+        protected abstract FrameType CreateFrame(CodeBlockType type, int stackLevel);
+
+        /// <summary>Adds a new stack frame.</summary>
+        /// <param name="blockType">Type of the code block represented by the stack frame.</param>
+        /// <returns>Stack frame that has been added.</returns>
+        public FrameType AddFrame(CodeBlockType blockType)
+        {
+            FrameType ret = CreateFrame(blockType, TopFrameIndex+1); // new FrameType(blockType, this);
+            StackFrames.Add(ret);
+            TopFrame = ret;
+            ++TopFrameIndex;
+            SaveNumStoredParameters();
+            return ret;
+        }
+
+
+
+        /// <summary>Removes the last stack frame.</summary>
+        /// <returns>The stack frame that has been removed, so it can be used for inspection.</returns>
+        public FrameType RemoveFrame()
+        {
+            FrameType ret = null;
+            int which = StackFrames.Count - 1;
+            if (which == 0)
+                throw new InvalidOperationException("Can not remove the base stack frame.");
+            if (which < 0)
+                throw new InvalidOperationException("The current command thread does not contain any stack frames.");
+            ret = StackFrames[which];
+            StackFrames.RemoveAt(which);
+            --which;
+            TopFrame = StackFrames[which];
+            --TopFrameIndex;
+            RestorePreviousNumStoredParameters(ret);
+            return ret;
+        }
+
+
+        #endregion Data.Basic
+
+
+    }  // abstract class CommandThread<InterpreterType, FrameType, ThreadType>
+
+
+
+
+
+    /// <summary>Base class for classes of type <see cref="CommandThread{InterpreterType, FrameType, ThreadType}"/>.
+    /// Contains everything that is not dependent on generic frame and other parameters.</summary>
+    public abstract class CommandThreadBase: IIdentifiable, ILockable
+    {
+
+        public CommandThreadBase() { }
+
+        #region Data.GenericTypesBypass
+
+        /// <summary>Returns the commans-line interpreter to which the current command thread belongs.
+        /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
+        /// dependent) methods in derived classes.</para></summary>
+        public abstract ICommandLineApplicationInterpreter GetInterpreterBase();
+
+        /// <summary>Returns the stack frame of the specified level for the current thread.
+        /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
+        /// dependent) methods in derived classes.</para></summary>
+        /// <param name="level">Level of the stack frame to be returned.
+        /// <para>Command thread (if not replicated for another one) begins executon at stack level 0, then each 
+        /// command block or function call increments the stack level by creating a new stack frame.</para></param>
+        public abstract CommandStackFrameBase GetStackFrameBase(int level);
+
+
+        #endregion Data.GenericTypesBypass
+
+
+
+        #region Data.Basic
+
+
+        private int _topFrameIndex = -1;
+
+        public int TopFrameIndex
+        {
+            get { return _topFrameIndex; }
+            protected set { _topFrameIndex = value; }
+        }
+
+
+        #endregion Data.Basic
 
 
         #region ThreadLocking
@@ -1603,117 +1827,6 @@ namespace IG.Lib
 
 
 
-        #region Data.Basic
-
-        private InterpreterType _interpreter;
-
-        /// <summary>Returns interpreter that handles command execution on the current command thread.</summary>
-        public InterpreterType Interpreter
-        {
-            get
-            {
-                if (_interpreter == null) throw new InvalidOperationException("Interpreater is not set on CommandThread.");
-                return _interpreter;
-            }
-            protected set { _interpreter = value; }
-        }
-
-        private List<FrameType> _stackFrames = new List<FrameType>();
-
-        /// <summary>A list of stack frames existent in the current thread.</summary>
-        protected List<FrameType> StackFrames
-        { get { return _stackFrames; } }
-
-        private FrameType _baseFrame = null;
-
-        /// <summary>Base stack frame, created when the thread is initialized and exists until thread is exited.</summary>
-        public FrameType BaseFrame
-        { get { return _baseFrame; } protected set { _baseFrame = value; } }
-
-        private FrameType _topFrame = null;
-
-        /// <summary>Base stack frame, created when the thread is initialized and exists until thread is exited.</summary>
-        public FrameType TopFrame
-        { get { return _topFrame; } protected set { _topFrame = value; } }
-
-        private int _topFrameIndex = -1;
-
-        public int TopFrameIndex
-        {
-            get { return _topFrameIndex; }
-            protected set { _topFrameIndex = value; }
-        }
-
-        public FrameType this[int which]
-        {
-            get { return StackFrames[which]; }
-        }
-
-
-        protected abstract FrameType CreateFrame(CodeBlockType type, int stackLevel);
-
-        /// <summary>Adds a new stack frame.</summary>
-        /// <param name="blockType">Type of the code block represented by the stack frame.</param>
-        /// <returns>Stack frame that has been added.</returns>
-        public FrameType AddFrame(CodeBlockType blockType)
-        {
-            FrameType ret = CreateFrame(blockType, TopFrameIndex+1); // new FrameType(blockType, this);
-            StackFrames.Add(ret);
-            TopFrame = ret;
-            ++TopFrameIndex;
-            return ret;
-        }
-
-
-        /// <summary>Removes the last stack frame.</summary>
-        /// <returns>The stack frame that has been removed, so it can be used for inspection.</returns>
-        public FrameType RemoveFrame()
-        {
-            FrameType ret = null;
-            int which = StackFrames.Count - 1;
-            if (which == 0)
-                throw new InvalidOperationException("Can not remove the base stack frame.");
-            if (which < 0)
-                throw new InvalidOperationException("The current command thread does not contain any stack frames.");
-            ret = StackFrames[which];
-            StackFrames.RemoveAt(which);
-            --which;
-            TopFrame = StackFrames[which];
-            --TopFrameIndex;
-            return ret;
-        }
-
-
-        //public string this[string varName]
-        //{
-        //    get
-        //    {
-        //        string ret = null;
-        //        if (TopFrame.IsVariableDefined(varName))
-        //            ret = TopFrame[varName];
-        //        if (ret == null && BaseFrame.IsVariableDefined(varName))
-        //            ret = BaseFrame[varName];
-        //        if (ret == null)
-        //            throw new ArgumentException("Neither local nor global variable is defined named " + varName + ".");
-        //        return ret;
-
-        //    }
-        //    set
-        //    {
-        //        BaseFrame[varName] = value;
-        //    }
-        //}
-
-        ///// <summary>Returns true if the specified interpreter variable is defined (either local or global), false if not.</summary>
-        ///// <param name="varName">Variable whose existence is queried.</param>
-        ////public bool IsVariableDefined(string varName)
-        //{
-        //    return TopFrame.IsVariableDefined(varName) || BaseFrame.IsVariableDefined(varName);
-        //}
-
-        #endregion Data.Basic
-
-
         #region Data.Operational
 
         private bool _wasCommandExecuted = false;
@@ -1721,11 +1834,14 @@ namespace IG.Lib
         /// <summary>Auxiliary flag that indicates whether the last command launched on the current thread has actually been executed.
         /// <para>This flag is used for communication between the calling environment and the method that takes care of
         /// final invocation of commands.</para></summary>
-        public bool WasCommandExecuted {
+        public bool WasCommandExecuted
+        {
             get { return _wasCommandExecuted; }
-            set { _wasCommandExecuted = value;
-            if (value == false)
-                WasBlockEnterCommand = false;
+            set
+            {
+                _wasCommandExecuted = value;
+                if (value == false)
+                    WasBlockEnterCommand = false;
                 WasBlockExitCommand = false;
             }
         }
@@ -1735,7 +1851,8 @@ namespace IG.Lib
         /// <summary>Auxiliary flag that indicates whether the last executed command was a block enter command.
         /// <para>This flag is cleared when <see cref="WasCommandExecuted"/> is cleared, and is set by 
         /// block entering commands themselves.</para></summary>
-        public bool WasBlockEnterCommand {
+        public bool WasBlockEnterCommand
+        {
             get { return _wasBlockEnterCommand; }
             set { _wasBlockEnterCommand = value; }
         }
@@ -1745,7 +1862,8 @@ namespace IG.Lib
         /// <summary>Auxiliary flag that indicates whether the last executed command was a block exit command.
         /// <para>This flag is cleared when <see cref="WasCommandExecuted"/> is cleared, and is set by 
         /// block exiting commands themselves.</para></summary>
-        public bool WasBlockExitCommand {
+        public bool WasBlockExitCommand
+        {
             get { return _wasBlockExitCommand; }
             set { _wasBlockExitCommand = value; }
         }
@@ -1789,6 +1907,7 @@ namespace IG.Lib
 
         #endregion Data.Operational
 
+
         #region Data.StoredParameters
 
         // This defines a stack of parameters that commands can send ot each other.
@@ -1796,22 +1915,22 @@ namespace IG.Lib
         // for the command that ends the block and does something with the code.
         // For example see BeginRepeatBlock(...) and ExitRepeatBlock(...) in CommandLineApplicationInterpreter.
 
-        private List<object> _objectStore = null;
+        private List<object> _parametersStore = null;
 
         /// <summary>Stored objects.</summary>
-        protected List<object> ObjectStore
+        private List<object> ParameterStore
         {
             get
             {
-                if (_objectStore == null)
+                if (_parametersStore == null)
                 {
-                    lock(Lock)
+                    lock (Lock)
                     {
-                        if (_objectStore == null)
-                            _objectStore = new List<object>();
+                        if (_parametersStore == null)
+                            _parametersStore = new List<object>();
                     }
                 }
-                return _objectStore;
+                return _parametersStore;
             }
         }
 
@@ -1821,25 +1940,100 @@ namespace IG.Lib
         /// <param name="param">Parameter that is added to parameter store.</param>
         public void PushParameter(object param)
         {
-            ObjectStore.Add(param);
+            ParameterStore.Add(param);
         }
 
         /// <summary>Removae and returns the last object on the parameter store.
         /// <para>WARNING: Users must make sure that <see cref="PushParameter"/> and <see cref="PopParameter"/> are
-        /// properrly called in pairs, otherwise parameter store will ger corrupted and unusable for otherr users.</para></summary>
+        /// properrly called in pairs, otherwise parameter store will ger corrupted and unusable for otherr users.</para>
+        /// <para>This method must be called on the same top-level stack frame on which the <see cref="PushParameter"/> for
+        /// the corresponding stored parameter was called.</para></summary>
         public object PopParameter()
         {
-            int numObjects = ObjectStore.Count;
+            int numObjects = ParameterStore.Count;
+            if (numObjects <= _lastNumStoredParameters)
+                throw new InvalidOperationException("Can not pop another parameter on the current top-level stack frame: " + Environment.NewLine
+                    + "  Number of stored parameters is already less or equal to the number before the" + Environment.NewLine 
+                    + "  current stack frame was entered. " + Environment.NewLine
+                    + "  Some methods must have used stored parameters inappropriately (e.g. popped " + Environment.NewLine 
+                    + "  the same parameter twice). " + Environment.NewLine
+                    + "    Thread ID: " + Id + Environment.NewLine
+                    + "    Top stack frame level: " + TopFrameIndex + Environment.NewLine
+                    + "    Number of stored parameters (before executon of pop()): " + numObjects + Environment.NewLine
+                    + "    Number of stored parameters before the current frame: " + _lastNumStoredParameters + Environment.NewLine
+                    + "    Frame index noted internally: " + _indexOfLastNumStoredParameters+ Environment.NewLine
+                    + "    Number of stored parameters before the current frame, obtained another way: " 
+                    + _numParamsBeforeFrame[_numParamsBeforeFrame.Count - 1]);
             if (numObjects < 1)
                 throw new InvalidOperationException("Thread's parameter store does not have any elements.");
-            object ret = ObjectStore[numObjects - 1];
-            ObjectStore.RemoveAt(numObjects - 1);
+            object ret = ParameterStore[numObjects - 1];
+            ParameterStore.RemoveAt(numObjects - 1);
             return ret;
+        }
+
+
+
+        /// <summary>Returns the stored parameter with the specified index from the top.
+        /// <para>This method allows to access parameters that are owned by parent frames (because the <see cref="PopParameter"/>
+        /// method can not access parameters that were not added by the current frame).</para></summary>
+        /// <param name="whichPlaceFromTop">Specifies which stored parameter, in terms of the place from the 
+        /// top of the parameter stack downwards, should be obtained. Index 0 (default) specifies the last (top-most) parameter.</param>
+        public object GetParameterFromTop(int whichPlaceFromTop = 0)
+        {
+            int numObjects = ParameterStore.Count;
+            if (numObjects < 1 + whichPlaceFromTop)
+                throw new InvalidOperationException("Thread's parameter store does not have enough elements.");
+            return ParameterStore[numObjects - 1 - whichPlaceFromTop];
+        }
+
+        public int NumStoredParameters { get { return ParameterStore.Count; } }
+
+        private List<int> _numParamsBeforeFrame = new List<int>();
+
+        private int _lastNumStoredParameters = 0;
+
+        private int _indexOfLastNumStoredParameters = -1;
+
+        /// <summary>Saves the current number of stored parameters on the command thread.
+        /// <para>This must be called when a new stack frame is added.</para>
+        /// <para>If called at other places, it must be consistently called in pair with <see cref="RestorePreviousNumStoredParameters"/>.</para></summary>
+        protected virtual void SaveNumStoredParameters()
+        {
+            _lastNumStoredParameters = NumStoredParameters;
+            ++_indexOfLastNumStoredParameters;
+            _numParamsBeforeFrame.Add(_lastNumStoredParameters);
+        }
+
+        /// <summary>Saves the current number of stored parameters on the command thread.
+        /// <para>This must normally be called when a stack frame is removed.</para>
+        /// <para>If called at other places, it must be consistently called in pair with <see cref="SaveNumStoredParameters"/>.</para></summary>
+        protected virtual void RestorePreviousNumStoredParameters(CommandStackFrameBase frame)
+        {
+            int count = _numParamsBeforeFrame.Count;
+            int savedNumParams = _lastNumStoredParameters;  // how many parameters were stored on the thread before the removed frame was added
+            --_indexOfLastNumStoredParameters;
+            if (_indexOfLastNumStoredParameters < 0)
+                throw new InvalidOperationException("Internal error in keeping track of number of stored parameters: index" + Environment.NewLine
+                    + "  of last stored information is less than 0. " + Environment.NewLine 
+                    + "  Saves and restores of number of stored parameters were not performed coherently.");
+            _lastNumStoredParameters = _numParamsBeforeFrame[_indexOfLastNumStoredParameters];  // information obtained fromprevious save
+            _numParamsBeforeFrame.RemoveAt(count - 1);  // remove the information
+            if (NumStoredParameters != savedNumParams)
+            {
+                // Number of stored parameters is not equal than it was before the frame was added:
+                throw new InvalidOperationException("Number of command thresd's stored parameters after removal of the current stack frame ("
+                    + NumStoredParameters + ") " + Environment.NewLine + "  is not equal to number of parameters before additon of this stack frame ("
+                    + savedNumParams + "). " + Environment.NewLine
+                    + "  Some methods must have used stored parameters inappropriately (e.g. did not clean its parameters). " + Environment.NewLine
+                    + "    Thread ID: " + Id + Environment.NewLine
+                    + "    Stack level of the corrupted frame: " + frame.StackLevel);
+            }
         }
 
         #endregion Data.StoredParameters
 
-        #region Datta.Auxiliary
+
+        #region Data.Auxiliary
 
 
         private bool _threadSuppressInteractive = false;
@@ -1869,14 +2063,14 @@ namespace IG.Lib
         protected int _outputLevel = DefaultOutputLevel;
 
         /// <summary>Level of output for some of the interpreter's functionality (e.g. asynchronous command execution).</summary>
-        public int OutputLevel
+        public virtual int OutputLevel
         {
             get
             {
                 if (IsOutputLevelSet)
                     return _outputLevel;
                 else
-                    return Interpreter.OutputLevel;
+                    return GetInterpreterBase().OutputLevel;
             }
             set { _outputLevel = value; }
         }
@@ -1900,12 +2094,12 @@ namespace IG.Lib
             sb.AppendLine("Command interpretation thread: ");
             try
             {
-                sb.AppendLine("  Interpreter: " + Interpreter.Name);
+                sb.AppendLine("  Interpreter: " + GetInterpreterBase().Name);
             }
             catch { }
             try
             {
-                if (object.ReferenceEquals(this, Interpreter.MainThread))
+                if (object.ReferenceEquals(this, GetInterpreterBase().MainThread))
                     sb.AppendLine("  This is the MAIN THREAD.");
                 else
                     sb.AppendLine("  Not the main thread.");
@@ -1913,13 +2107,12 @@ namespace IG.Lib
             catch { }
             try
             {
-                ICommandLineApplicationInterpreter interp = this.Interpreter;
-                List<CommandThread> threads = interp.CommandThreads;
+                ICommandLineApplicationInterpreter interp = this.GetInterpreterBase();
                 int threadIndex = -1;
-                int numThreads = threads.Count; 
+                int numThreads = interp.NumCommandThreads;
                 for (int i = 0; i < numThreads; ++i)
                 {
-                    if (object.ReferenceEquals(this, threads[i]))
+                    if (object.ReferenceEquals(this, interp.GetCommmandThread(i)))
                     {
                         threadIndex = i;
                         break;
@@ -1931,8 +2124,8 @@ namespace IG.Lib
                     sb.AppendLine("  Interpreter's thread index: " + threadIndex + " (number of threads: " + numThreads + "(.");
 
             }
-            catch {  }
-            
+            catch { }
+
 
             sb.AppendLine("  Stack depth: " + TopFrameIndex);
 
@@ -1940,7 +2133,12 @@ namespace IG.Lib
             return sb.ToString();
         }
 
-    }  // abstract class CommandThread<InterpreterType, FrameType, ThreadType>
+
+    }  // class CommandThreadBase
+
+
+
+
 
 
 }
