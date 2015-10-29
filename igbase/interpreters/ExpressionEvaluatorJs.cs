@@ -48,7 +48,7 @@ namespace IG.Lib
             PackageName = "EvaluatorPackageJs";
             ClassName = "EvaluatorClassJs_" + Id.ToString();
 
-            BaseDefinitions += _baseDefinitionsJs;
+            // BaseDefinitions += _baseDefinitionsJs;
 
             _inputMark = "JS> ";
             _definitionsMark = "JS Def> ";
@@ -79,8 +79,12 @@ Quit with '\q' .";
         }
 
 
+    // WARNING:
+    // When using Jint, it does not work correctly if the initiallization string is longer than the below string.
+    // Therefore, do not add anything more to the initialization string, but try ro execure additional things
+    // separately!
 
-        protected string _baseDefinitionsJs = @"
+     protected string _baseDefinitionsJs = @"
 
      var const_pi = Math.PI; // pi, ratio between circle circumference and diameter
 	 var const_e = Math.E; // basis of natural logarithm
@@ -116,13 +120,13 @@ Quit with '\q' .";
 
      function random() { return Math.random(); } // random number between 0 and 1
      
-
+    
 	 // ARRAY UTILITIES: 
 
 	 //Check if an object is an array or not.
 	 function isarray(obj) {
 		//returns true is it is an array
-		if (obj.constructor.toString().indexOf(""Array"") == -1)
+		if (obj.constructor.toString().indexOf('Array') == -1)
 		return false;
 		else
 		return true;
@@ -144,6 +148,7 @@ Quit with '\q' .";
 		} else
 			return obj;
 	}
+  
 
 	// Returns average of array members (or just the argument if it is not an array)
 	function average(obj)
@@ -161,8 +166,219 @@ Quit with '\q' .";
 		} else
 			return obj;
 	}
+
+
+
+	// Returns concatenated strings from the array (or just the argument if it is not an array)
+	function concatStrings(obj, spacesBetween)
+	{
+	    if (isarray(obj))
+	    {
+	        var num = obj.length;
+	        var ret = '';
+	        var i;
+	        for (i=0; i<num; ++i)
+	        {
+
+	            ret = ret + (obj[i]).toString();
+	            if (spacesBetween)
+	            {
+	                ret = ret + ' ';
+	            }
+	        }
+	        return ret;
+	    } else
+	        return obj.toString();
+	}
+
+
+
+
 ";  // _baseDefinitionsJs
 
+
+    public string BaseDefinitionsJsAdditional = @"
+
+
+	 // Returns minimum of function arguments. If some of the 
+	 // arguments are arrays, their (recursive) minimum over 
+	 // all elements is returned. Recursion goes to arbitrary levels.
+	 function min() {
+	     var ret = Infinity;
+	     var i;
+	     for (i = 0; i < arguments.length; i++) {
+	         var arg = arguments[i];
+	         if (!isarray(arg)) {
+	             if (arg < ret)
+	                 ret = arg;
+	         } else {
+	             var j;
+	             for (j = 0; j < arg.length; j++) {
+	                 var el = arg[j];
+	                 if (!isarray(el)) {
+	                     if (el < ret)
+	                         ret = el;
+	                 }
+	                 else
+	                     ret = min(ret, el);
+	             }
+	         }
+	     }
+	     return ret;
+	 }
+
+	 // Returns maximum of function arguments. If some of the 
+	 // arguments are arrays, their (recursive) minimum over 
+	 // all elements is returned. Recursion goes to arbitrary levels.
+	 function max() {
+	     var ret = -Infinity;
+	     var i;
+	     for (i = 0; i < arguments.length; i++) {
+	         var arg = arguments[i];
+	         if (!isarray(arg)) {
+	             if (arg > ret)
+	                 ret = arg;
+	         } else {
+	             var j;
+	             for (j = 0; j < arg.length; j++) {
+	                 var el = arg[j];
+	                 if (!isarray(el)) {
+	                     if (el > ret)
+	                         ret = el;
+	                 }
+	                 else
+	                     ret = max(ret, el);
+	             }
+	         }
+	     }
+	     return ret;
+	 }
+
+
+	 // Returns sum of function arguments. If some of the 
+	 // arguments are arrays, their (recursive) sums of 
+	 // elements are added. Recursion goes to arbitrary levels.
+	 function sum() {
+	     var ret = 0;
+	     var i;
+	     for (i = 0; i < arguments.length; i++) {
+	         var arg = arguments[i];
+	         if (!isarray(arg)) {
+	             ret = ret + arg;
+	         } else {
+	             var j;
+	             for (j = 0; j < arg.length; j++) {
+	                 var el = arg[j];
+	                 if (!isarray(el))
+	                     ret = ret + el;
+	                 else
+	                     ret = ret + sum(el);
+	             }
+	         }
+	     }
+	     return ret;
+	 }
+
+	 // Returns number of elements of all arguments. If some of the 
+	 // arguments are arrays, their  (recursive) sums of number of 
+	 // elements are added. 1 is added for each nontable argument.
+	 // Recursion goes to arbitrary levels.
+	 function numelements() {
+	     var ret = 0;
+	     var i;
+	     for (i = 0; i < arguments.length; i++) {
+	         var arg = arguments[i];
+	         if (!isarray(arg)) {
+	             ret = ret + 1;
+	         } else {
+	             var j;
+	             for (j = 0; j < arg.length; j++) {
+	                 var el = arg[j];
+	                 if (!isarray(el))
+	                     ret = ret + 1;
+	                 else
+	                     ret = ret + numelements(el);
+	             }
+	         }
+	     }
+	     return ret;
+	 }
+
+	 // Returns average of function arguments. If some of the 
+	 // arguments are arrays, their (recursive) elements are 
+	 // all taken into account. Recursion goes to arbitrary levels.
+	 function average() {
+	     return sum(args) / numelements(args);
+	 }
+
+
+	 // Concatenates all arguments after the 1st one as string, and returns the resulting string.
+	 // If some arguments are arrays then their elements are appended 
+	 // recursively until arbitrary depth. If some nonarray argments (or elements
+	 // of array arguments) are not strings then they are converted to strings
+	 // by the str() function and then appended to the returned string.
+	 // If the first element is true then spaces are inserter between individual strings.
+	 function concatelements(spacesBetween) {
+	     var ret = "";
+	     var i;
+	     for (i = 1; i < arguments.length; i++) {
+	         var arg = arguments[i];
+	         if (!isarray(arg)) {
+	             if (spacesBetween)
+	                 ret = ret + ' ';
+	             if (typeof arg == typeof "")
+	                 ret = ret + arg;
+	             else
+	                 ret = ret + str(arg)
+	         } else {
+	             var j;
+	             for (j = 0; j < arg.length; j++) {
+	                 var el = arg[j];
+	                 if (!isarray(el)) {
+	                     if (spacesBetween)
+	                         ret = ret + ' ';
+	                     if (typeof el == typeof '')
+	                         ret = ret + el;
+	                     else
+	                         ret = ret + str(arg)
+	                 }
+	                 else
+	                     ret = ret + concatStrings(spacesBetween, el);
+	             }
+	         }
+	     }
+	     return ret;
+	 }
+
+
+
+";  // _baseDefinitionsJs
+
+     protected string _baseDefinitionsJsExtended = @"
+
+	 // ARRAY UTILITIES: 
+
+	 //Check if an object is an array or not.
+	 function isarray(obj) {
+		//returns true is it is an array
+		if (obj.constructor.toString().indexOf(""Array"") == -1)
+		return false;
+		else
+		return true;
+	}
+
+
+
+";  // _baseDefinitionsJsExtended
+
+
+     /// <summary>A set of pre-defined definitions that can be used in the evaluated code.</summary>
+     public override string BaseDefinitions
+     {
+         get { return _baseDefinitionsJs // definitions that should work with all interpreters.
+             + _baseDefinitionsJsExtended; }
+         protected set { base.BaseDefinitions = value; }
+     }
 
         #endregion Initialization
 

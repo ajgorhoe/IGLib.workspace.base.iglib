@@ -37,6 +37,7 @@ namespace IG.Lib
         public ExpressionEvaluatorJint() : base()
         { }
 
+
         #region Initialzation 
 
         /// <summary>Contains initializations for the particular class.</summary>
@@ -59,25 +60,44 @@ namespace IG.Lib
 
         }
 
-        #endregion Initialization 
+        protected string BaseDefinitionsJint = @"
+
+
+        //Checks if an object is an array or not.
+        function isarray(obj) 
+        {
+        //returns true is it is an array
+        if (JSON.stringify(obj)[0] == '[')
+	        return true;
+        else
+	        return false;
+        }
+	 
+        // Returns string representation of the argument.
+        // String represeentation is obtained by JSON.stringify() 
+        function str(obj) {
+        return JSON.stringify(obj)
+        }
+
+
+";
+
+
+        /// <summary>A set of pre-defined definitions that can be used in the evaluated code.</summary>
+        public override string BaseDefinitions
+        {
+            get { return _baseDefinitionsJs; }
+            protected set { base.BaseDefinitions = value; }
+        }
+
+        
+
+
+        #endregion Initialization
 
 
 
         // Evaluation engine:
-
-        void Test()
-        {
-            Jint.Engine engine = new Jint.Engine();
-
-
-            //var engine = new Engine()
-            //    .SetValue("log", new Action<object>(Console.WriteLine))
-            //    ;
-
-            var engne = new Jint.Engine();
-
-        }
-
 
 
         Jint.Engine _jsEngine = null;
@@ -89,14 +109,14 @@ namespace IG.Lib
             {
                 if (_jsEngine == null)
                 {
-                    lock(Lock)
+                    lock (Lock)
                     {
                         if (_jsEngine == null)
                             _jsEngine = new Engine(
                                 cfg => cfg.AllowClr()
                                     .AllowClr(typeof(IG.Lib.Util).Assembly)
-                                    //.AllowClr(typeof(IG.Gr.Poot2d).Assembly)
-                                ).SetValue("log", new Action<object>(Console.WriteLine));
+                                //.AllowClr(typeof(IG.Gr.Poot2d).Assembly)
+                                ).SetValue("writeline", new Action<object>(Console.WriteLine));
                         try
                         {
                             _jsEngine.Execute(BaseDefinitions);
@@ -112,7 +132,6 @@ namespace IG.Lib
                 return _jsEngine;
             }
         }
-
 
 
 

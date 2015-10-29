@@ -40,19 +40,67 @@
 	 function log10(x) { return log(x,10); }  // base 10 logarithm of x
 
      function random() { return Math.random(); } // random number between 0 and 1
-     
-	 // ARRAY UTILITIES: 
-
-	 //Check if an object is an array or not.
-	 function isarray(obj) {
-		//returns true is it is an array
-		if (obj.constructor.toString().indexOf('Array') == -1)
-		return false;
-		else
-		return true;
-	}
 
 
+     // ARRAY UTILITIES: 
+
+     //Check if an object is an array or not.
+     function isarray(obj) {
+         //returns true is it is an array
+         if (obj.constructor.toString().indexOf('Array') == -1)
+             return false;
+         else
+             return true;
+     }
+
+     // Returns sum of array members (or just the argument if it is not an array)
+     function sum(obj) {
+         if (isarray(obj)) {
+             var num = obj.length;
+             var ret = 0.0;
+             var i;
+             for (i = 0; i < num; ++i) {
+                 ret = ret + obj[i];
+             }
+             return ret;
+         } else
+             return obj;
+     }
+
+
+     // Returns average of array members (or just the argument if it is not an array)
+     function average(obj) {
+         if (isarray(obj)) {
+             var num = obj.length;
+             var ret = 0.0;
+             var i;
+             for (i = 0; i < num; ++i) {
+                 ret = ret + obj[i];
+             }
+             return ret / num;
+         } else
+             return obj;
+     }
+
+
+
+     // Returns concatenated strings from the array (or just the argument if it is not an array)
+     function concatStrings(obj, spacesBetween) {
+         if (isarray(obj)) {
+             var num = obj.length;
+             var ret = '';
+             var i;
+             for (i = 0; i < num; ++i) {
+
+                 ret = ret + (obj[i]).toString();
+                 if (spacesBetween) {
+                     ret = ret + ' ';
+                 }
+             }
+             return ret;
+         } else
+             return obj.toString();
+     }
 
 
 
