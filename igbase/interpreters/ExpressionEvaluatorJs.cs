@@ -169,30 +169,6 @@ Quit with '\q' .";
 
 
 
-	// Returns concatenated strings from the array (or just the argument if it is not an array)
-	function concatStrings(obj, spacesBetween)
-	{
-	    if (isarray(obj))
-	    {
-	        var num = obj.length;
-	        var ret = '';
-	        var i;
-	        for (i=0; i<num; ++i)
-	        {
-
-	            ret = ret + (obj[i]).toString();
-	            if (spacesBetween)
-	            {
-	                ret = ret + ' ';
-	            }
-	        }
-	        return ret;
-	    } else
-	        return obj.toString();
-	}
-
-
-
 
 ";  // _baseDefinitionsJs
 
