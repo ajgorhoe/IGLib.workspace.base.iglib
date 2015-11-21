@@ -19,7 +19,7 @@ namespace IG.Script
     public class TestIglibExt_ToDelete : LoadableScriptBase, ILoadableScript
     {
 
-        ScriptGraphics3DBase a1;
+        // ScriptGraphics3DBase a1;
 
         protected override void InitializeThis(string[] arguments)
         {
