@@ -323,7 +323,10 @@
     <Content Include="0guests\Tako78\0readme_guest_tako78.txt" />
     <Content Include="0obsolete\0readme_obsolete.txt" />
     <Content Include="0readme\License_IGLib.html" />
+    <Content Include="0readme\License_IGLib_Partner.html" />
+    <Content Include="0readme\License_IGLib_Redistributable.html" />
     <Content Include="0readme\ReadMe_IGLib.html" />
+    <Content Include="0readme\Repositories_IGLib.html" />
     <Content Include="data\serialization\json\0readmeJsonPrettyPrinter.txt" />
     <Content Include="interfaces\simulations\0ReadMeSimulationInterfaces.txt" />
     <Content Include="interpreters\ExpressionEvaluatorDefinitions Jint.js" />
