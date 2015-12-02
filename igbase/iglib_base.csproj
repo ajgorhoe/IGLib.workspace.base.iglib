@@ -347,7 +347,6 @@
     <Folder Include="0guests\Qliu\" />
     <Folder Include="0guests\Robert\" />
     <Folder Include="0guests\Umut\" />
-    <Folder Include="0readme\" />
     <Folder Include="data\datastructures\" />
     <Folder Include="optimization\responseeval\" />
   </ItemGroup>

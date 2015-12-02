@@ -331,7 +331,6 @@
     <None Include="Resources\icon_iglib.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="0readme\" />
     <Folder Include="0TestNumeric\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
