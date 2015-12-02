@@ -322,18 +322,17 @@
   <ItemGroup>
     <Content Include="0guests\Tako78\0readme_guest_tako78.txt" />
     <Content Include="0obsolete\0readme_obsolete.txt" />
-    <Content Include="0readme\License_IGLib.html" />
-    <Content Include="0readme\License_IGLib_Partner.html" />
-    <Content Include="0readme\License_IGLib_Redistributable.html" />
-    <Content Include="0readme\ReadMe_IGLib.html" />
-    <Content Include="0readme\Repositories_IGLib.html" />
+    <Content Include="0readme_iglib.txt" />
     <Content Include="data\serialization\json\0readmeJsonPrettyPrinter.txt" />
     <Content Include="interfaces\simulations\0ReadMeSimulationInterfaces.txt" />
     <Content Include="interpreters\ExpressionEvaluatorDefinitions Jint.js" />
     <Content Include="interpreters\ExpressionEvaluatorDefinitions.js" />
     <Content Include="interpreters\interfaces\0ReadMeInterpreterInterfaces.txt" />
+    <Content Include="License_IGLib_Partner.html" />
+    <Content Include="License_IGLib_Redistributable.html" />
     <Content Include="numeric\approximation\neural\0readme_TODO.txt" />
     <Content Include="optimization\0readme_optimization.txt" />
+    <Content Include="ReadMe_IGLib.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="0guests\0common\" />
@@ -344,6 +343,7 @@
     <Folder Include="0guests\Qliu\" />
     <Folder Include="0guests\Robert\" />
     <Folder Include="0guests\Umut\" />
+    <Folder Include="0readme\" />
     <Folder Include="data\datastructures\" />
     <Folder Include="optimization\responseeval\" />
   </ItemGroup>
