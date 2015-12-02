@@ -320,13 +320,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="0readme_igforms.txt" />
-    <Content Include="0readme\License_IGLib.html" />
-    <Content Include="0readme\ReadMe_IGLib.html" />
     <None Include="Resources\ig.ico" />
     <None Include="Resources\iglib_small.jpg" />
     <None Include="Resources\icon_iglib.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="0readme\" />
     <Folder Include="0TestNumeric\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
