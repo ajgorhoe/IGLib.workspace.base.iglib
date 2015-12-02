@@ -320,9 +320,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Repositories_IGLib.html">
+      <Link>Repositories_IGLib.html</Link>
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="0guests\Tako78\0readme_guest_tako78.txt" />
     <Content Include="0obsolete\0readme_obsolete.txt" />
-    <Content Include="0readme\Repositories_IGLib.html" />
     <Content Include="0readme_iglib.txt" />
     <Content Include="data\serialization\json\0readmeJsonPrettyPrinter.txt" />
     <Content Include="interfaces\simulations\0ReadMeSimulationInterfaces.txt" />
@@ -344,6 +347,7 @@
     <Folder Include="0guests\Qliu\" />
     <Folder Include="0guests\Robert\" />
     <Folder Include="0guests\Umut\" />
+    <Folder Include="0readme\" />
     <Folder Include="data\datastructures\" />
     <Folder Include="optimization\responseeval\" />
   </ItemGroup>

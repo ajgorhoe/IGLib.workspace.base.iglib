@@ -319,7 +319,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Repositories_IGLib.html">
+      <Link>Repositories_IGLib.html</Link>
+    </Content>
     <Content Include="0readme_igforms.txt" />
+    <Content Include="License_IGLib_Partner.html" />
+    <Content Include="License_IGLib_Redistributable.html" />
+    <Content Include="ReadMe_IGLib.html" />
     <None Include="Resources\ig.ico" />
     <None Include="Resources\iglib_small.jpg" />
     <None Include="Resources\icon_iglib.bmp" />
@@ -327,6 +333,7 @@
   <ItemGroup>
     <Folder Include="0readme\" />
     <Folder Include="0TestNumeric\" />
+    <Folder Include="Basic\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
