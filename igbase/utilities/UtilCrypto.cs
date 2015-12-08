@@ -15,7 +15,7 @@ using System.Numerics;
 
 namespace IG.Crypto
 {
-
+    
 
     // See:
     // Writing secure code - MSDN: https://msdn.microsoft.com/en-us/security/aa570401.aspx 
