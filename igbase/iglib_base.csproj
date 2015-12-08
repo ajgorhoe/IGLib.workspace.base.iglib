@@ -46,6 +46,8 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -56,12 +58,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <DelaySign>false</DelaySign>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.JScript">
@@ -355,7 +352,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\external\jint\Jint\Jint.csproj">
-      <Project>{678738da-f723-4920-b9e5-cad667104bda}</Project>
+      <Project>{678738DA-F723-4920-B9E5-CAD667104BDA}</Project>
       <Name>Jint</Name>
     </ProjectReference>
   </ItemGroup>
