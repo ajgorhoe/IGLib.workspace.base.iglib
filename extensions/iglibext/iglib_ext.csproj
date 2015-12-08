@@ -75,10 +75,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\external\MathNet\Iridium\Sources\Library\Iridium.csproj">
-      <Project>{26FC15DE-EFDA-403A-8284-1E2A4AE8A9D8}</Project>
-      <Name>Iridium</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\igbase\iglib_base.csproj">
       <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
       <Name>iglib_base</Name>

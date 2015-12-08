@@ -352,7 +352,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\external\jint\Jint\Jint.csproj">
-      <Project>{678738DA-F723-4920-B9E5-CAD667104BDA}</Project>
+      <Project>{678738da-f723-4920-b9e5-cad667104bda}</Project>
       <Name>Jint</Name>
     </ProjectReference>
   </ItemGroup>

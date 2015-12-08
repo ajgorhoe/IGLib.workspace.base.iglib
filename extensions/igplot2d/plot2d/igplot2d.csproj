@@ -104,11 +104,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\external\nplot\NPlot.csproj">
-      <Project>{E6867FF5-74EC-4464-8958-D71CB46232F3}</Project>
+      <Project>{e6867ff5-74ec-4464-8958-d71cb46232f3}</Project>
       <Name>NPlot</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\external\zedGraph\lib_5.1.2\ZedGraph 5.1\source\ZedGraph.csproj">
-      <Project>{2541686B-1673-43BF-AF89-3163945DB009}</Project>
+      <Project>{2541686b-1673-43bf-af89-3163945db009}</Project>
       <Name>ZedGraph</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\igbase\iglib_base.csproj">
