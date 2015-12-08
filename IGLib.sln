@@ -29,6 +29,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZedGraph.Demo", "external\z
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iglib_base", "igbase\iglib_base.csproj", "{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{950DED53-B6BD-4C62-B125-A5AA160BB938}"
+	ProjectSection(SolutionItems) = preProject
+		0readme_solution_iglib.txt = 0readme_solution_iglib.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		ajgor|Any CPU = ajgor|Any CPU
