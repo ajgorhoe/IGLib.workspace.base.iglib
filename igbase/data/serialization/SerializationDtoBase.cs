@@ -437,7 +437,7 @@ namespace IG.Lib
     /// deserialization of state of various kinds of objects that need to be transfered between applications,
     /// across platforms, or simply stored in files for future use.
     /// WARNING:
-    /// In most cases ISerializationDto<Type> will be used. Different BaseType and Type are used only in 
+    /// In most cases ISerializationDto type will be used. Different BaseType and Type are used only in 
     /// relatively rare cases where different derived types all have the same data that is copied to DTO. 
     /// Otherwise the advantage of this can not be used because of single inheritance.
     /// </summary>

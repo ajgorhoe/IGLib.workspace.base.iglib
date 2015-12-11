@@ -152,7 +152,7 @@ namespace IG.Forms
                     setNames = true;
                 if (_parameterValues == null)
                     setVal = true;
-                else if (_parameterValues.Length == null)
+                else if (_parameterValues.Length == 0)
                     setVal = true;
                 if (setNames)
                     SetDefaultParameterNames(value);
