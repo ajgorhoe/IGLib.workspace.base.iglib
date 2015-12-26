@@ -1,4 +1,6 @@
-﻿namespace IG.Forms
+﻿// Copyright (c) Igor Grešovnik, IGLib license; http://www2.arnes.si/~ljc3m2/igor/ioptlib/
+
+namespace IG.Forms
 {
 
     /// <summary>An exemple form that launches various message boxes.
