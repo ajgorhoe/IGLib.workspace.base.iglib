@@ -8,8 +8,8 @@
     <ProjectGuid>{18F39270-8A1B-44B7-833D-BF01E9DCD9B8}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Premisa.ReporterMsg_Example</RootNamespace>
-    <AssemblyName>Premisa.ReporterMsg_Example</AssemblyName>
+    <RootNamespace>ReporterMsg_Example</RootNamespace>
+    <AssemblyName>ReporterMsg_Example</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
