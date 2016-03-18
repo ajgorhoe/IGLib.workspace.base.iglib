@@ -138,7 +138,7 @@ namespace IG.Gr3d
             else
             {
                 // Form's top level parent can not be closed, blink the button:
-                UtilForms.BlinkForm(btnCloseWin);
+                UtilForms.BlinkControl(btnCloseWin);
             }
         }
 

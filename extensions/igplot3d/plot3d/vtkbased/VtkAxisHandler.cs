@@ -2032,7 +2032,7 @@ namespace IG.Gr3d
                 {
                     if (ShowScalarBar)
                     {
-                        vtkScalarBarActor sba;
+                        //vtkScalarBarActor sba;
                         vtkLookupTable tmp = ScalarBarLookupTable;
                         vtkScalarBarActor scalarBarActor = this.ScalarBarActor;
                         if (scalarBarActor != null)

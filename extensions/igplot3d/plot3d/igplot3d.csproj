@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>TRACE;DEBUG;VTKFORMSDESIGN999</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,14 +24,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>TRACE;DEBUG;VTKFORMSDESIGN999</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -41,7 +41,7 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -62,12 +62,15 @@
     <Reference Include="System.Xml" />
     <Reference Include="MathNet.Numerics">
       <HintPath>..\..\..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Kitware.mummy.Runtime" Condition="'$(Platform)'!='x86'">
       <HintPath>..\..\..\externalextended\ActiViz\bin\Kitware.mummy.Runtime.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Kitware.VTK" Condition="'$(Platform)'!='x86'">
       <HintPath>..\..\..\externalextended\ActiViz\bin\Kitware.VTK.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Kitware.mummy.Runtime" Condition="'$(Platform)'=='x86'">
       <HintPath>..\..\..\externalextended\ActiViz_5.6.1_x86\bin\Kitware.mummy.Runtime.dll</HintPath>
@@ -169,15 +172,26 @@
     <ProjectReference Include="..\..\..\igbase\iglib_base.csproj">
       <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
       <Name>iglib_base</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\igforms\igform.csproj">
       <Project>{50235FC8-A69D-47AE-A557-6518B35CC7C9}</Project>
       <Name>igform</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon_iglib.bmp" />
+    <Content Include="..\..\..\00readme_developers_iglib.html">
+      <Link>00readme_developers_iglib.html</Link>
+    </Content>
+    <Content Include="..\..\..\Repositories_IGLib.html">
+      <Link>Repositories_IGLib.html</Link>
+    </Content>
     <Content Include="0readme_igplot3d.txt" />
+    <Content Include="License_IGLib_Partner.html" />
+    <Content Include="License_IGLib_Redistributable.html" />
+    <Content Include="ReadMe_IGLib.html" />
     <Content Include="vtkbased\Forms\0readme_formsvtk.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -171,7 +171,7 @@ namespace IG.Gr3d
             FunctionZ = Func.GetConstant(0.0);
         }
 
-        private IFunc2d _funcAuxX, _funcAuxY;
+        //private IFunc2d _funcAuxX, _funcAuxY;
 
         ///// <summary>Auxiliary function used to adapt definition of parametric curve to definition by function of 1 variables.</summary>
         //protected IRealFunction FuncAuxX

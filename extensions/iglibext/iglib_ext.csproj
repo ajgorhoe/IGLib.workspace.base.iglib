@@ -8,30 +8,34 @@
     <ProjectGuid>{4E4B240A-6994-4747-BB6C-0CC0D2578D04}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IG</RootNamespace>
+    <RootNamespace>IG.Ext</RootNamespace>
     <AssemblyName>IGLibExt</AssemblyName>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -39,9 +43,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -49,8 +54,13 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MathNet.Numerics, Version=2.6.1.30, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -62,9 +72,15 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Kitware.mummy.Runtime">
       <HintPath>..\..\externalextended\ActiViz\bin\Kitware.mummy.Runtime.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Kitware.VTK">
       <HintPath>..\..\externalextended\ActiViz\bin\Kitware.VTK.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ZedGraph, Version=5.1.5.27330, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\lib\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -72,29 +88,182 @@
     <Compile Include="00testscriptsext\examples\ScriptGraphics2dBase.cs" />
     <Compile Include="00testscriptsext\examples\ScriptGraphics3dBase.cs" />
     <Compile Include="00testscriptsext\examples\Test_To_Delete.cs" />
+    <Compile Include="Forms\Numeric\FromNeural\Basic\InputDataDefinitionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\Basic\InputDataDefinitionControl.Designer.cs">
+      <DependentUpon>InputDataDefinitionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\Basic\InputOutputDataDefinitionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\Basic\InputOutputDataDefinitionControl.Designer.cs">
+      <DependentUpon>InputOutputDataDefinitionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\Basic\InputOutputDataDefinitionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\Basic\InputOutputDataDefinitionForm.Designer.cs">
+      <DependentUpon>InputOutputDataDefinitionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\Basic\ParametricInputParameterSelectorMinMax.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\Basic\ParametricInputParameterSelectorMinMax.Designer.cs">
+      <DependentUpon>ParametricInputParameterSelectorMinMax.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\Basic\ParametricOutputValueSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\Basic\ParametricOutputValueSelector.Designer.cs">
+      <DependentUpon>ParametricOutputValueSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\VectorFunctionPlotter2dForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\VectorFunctionPlotter2dForm.Designer.cs">
+      <DependentUpon>VectorFunctionPlotter2dForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\VectorFunctionPlotter2d.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\VectorFunctionPlotter2d.Designer.cs">
+      <DependentUpon>VectorFunctionPlotter2d.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\Basic\InputParametersControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\Basic\InputParametersControl.Designer.cs">
+      <DependentUpon>InputParametersControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\VectorFunctionPlotter1d.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\VectorFunctionPlotter1d.Designer.cs">
+      <DependentUpon>VectorFunctionPlotter1d.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\VectorFunctionPlotter1dForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\FromNeural\VectorFunctionPlotter1dForm.Designer.cs">
+      <DependentUpon>VectorFunctionPlotter1dForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\ScalarFunctionEvaluatorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\ScalarFunctionEvaluatorControl.Designer.cs">
+      <DependentUpon>ScalarFunctionEvaluatorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\ScalarFunctionEvaluatorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\ScalarFunctionEvaluatorForm.Designer.cs">
+      <DependentUpon>ScalarFunctionEvaluatorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\ScalarFunctionScriptControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\ScalarFunctionScriptControl.Designer.cs">
+      <DependentUpon>ScalarFunctionScriptControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\ScalarFunctionScriptForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\ScalarFunctionScriptForm.Designer.cs">
+      <DependentUpon>ScalarFunctionScriptForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\UtilResponseFormsExt.cs" />
+    <Compile Include="Forms\Numeric\VectorFunctionScriptControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\VectorFunctionScriptControl.Designer.cs">
+      <DependentUpon>VectorFunctionScriptControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Numeric\VectorFunctionScriptForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Numeric\VectorFunctionScriptForm.Designer.cs">
+      <DependentUpon>VectorFunctionScriptForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\igbase\iglib_base.csproj">
       <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
       <Name>iglib_base</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\igforms\igform.csproj">
       <Project>{50235FC8-A69D-47AE-A557-6518B35CC7C9}</Project>
       <Name>igform</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\igplot2d\plot2d\igplot2d.csproj">
       <Project>{C9A09DBC-B304-42DF-9CEE-6BA0E856ABC2}</Project>
       <Name>igplot2d</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\igplot3d\plot3d\igplot3d.csproj">
       <Project>{8BBF5C58-2562-4E9B-ACB8-3F3A3B031F62}</Project>
       <Name>igplot3d</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\00readme_developers_iglib.html">
+      <Link>00readme_developers_iglib.html</Link>
+    </Content>
     <Content Include="00testscriptsext\tmp\0ReadMeCustomScripts.txt" />
     <Content Include="0iglibext.txt" />
+    <Content Include="License_IGLib_Partner.html" />
+    <Content Include="License_IGLib_Redistributable.html" />
+    <Content Include="ReadMe_IGLib.html" />
+    <EmbeddedResource Include="Forms\Numeric\FromNeural\Basic\InputDataDefinitionControl.resx">
+      <DependentUpon>InputDataDefinitionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\FromNeural\Basic\InputOutputDataDefinitionControl.resx">
+      <DependentUpon>InputOutputDataDefinitionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\FromNeural\Basic\InputOutputDataDefinitionForm.resx">
+      <DependentUpon>InputOutputDataDefinitionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\FromNeural\Basic\ParametricInputParameterSelectorMinMax.resx">
+      <DependentUpon>ParametricInputParameterSelectorMinMax.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\FromNeural\Basic\ParametricOutputValueSelector.resx">
+      <DependentUpon>ParametricOutputValueSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\FromNeural\VectorFunctionPlotter2dForm.resx">
+      <DependentUpon>VectorFunctionPlotter2dForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\FromNeural\VectorFunctionPlotter2d.resx">
+      <DependentUpon>VectorFunctionPlotter2d.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\FromNeural\Basic\InputParametersControl.resx">
+      <DependentUpon>InputParametersControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\FromNeural\VectorFunctionPlotter1d.resx">
+      <DependentUpon>VectorFunctionPlotter1d.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\FromNeural\VectorFunctionPlotter1dForm.resx">
+      <DependentUpon>VectorFunctionPlotter1dForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\VectorFunctionScriptControl.resx">
+      <DependentUpon>VectorFunctionScriptControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\VectorFunctionScriptForm.resx">
+      <DependentUpon>VectorFunctionScriptForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\ig.ico" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="00testscriptsext\igor\archive\" />
@@ -102,6 +271,20 @@
     <Folder Include="00testscriptsext\tests\" />
     <Folder Include="Examples\" />
     <Folder Include="VTK\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\Numeric\ScalarFunctionEvaluatorControl.resx">
+      <DependentUpon>ScalarFunctionEvaluatorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\ScalarFunctionEvaluatorForm.resx">
+      <DependentUpon>ScalarFunctionEvaluatorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\ScalarFunctionScriptControl.resx">
+      <DependentUpon>ScalarFunctionScriptControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Numeric\ScalarFunctionScriptForm.resx">
+      <DependentUpon>ScalarFunctionScriptForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

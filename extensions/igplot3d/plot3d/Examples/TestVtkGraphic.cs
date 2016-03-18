@@ -2089,7 +2089,7 @@ namespace IG.Gr3d
 
             // auxiliary objects:
             vtkDataSetMapper datasetMapper;
-            vtkPolyDataMapper mapper;
+            //vtkPolyDataMapper mapper;
             vtkProperty properties;
 
             for (int j = 0; j < numj; j++)
@@ -2705,23 +2705,23 @@ namespace IG.Gr3d
 
 
         // TODO: remove these variables.
-        static vtkMath math;
-        static vtkPoints points;
-        static vtkPolyData profile;
-        static vtkDelaunay2D del;
-        static vtkPolyDataMapper mapMesh;
-        static vtkActor meshActor;
-        static vtkExtractEdges extract;
-        static vtkTubeFilter tubes;
-        static vtkPolyDataMapper mapEdges;
-        static vtkActor edgeActor;
-        static vtkSphereSource ball;
-        static vtkGlyph3D balls;
-        static vtkPolyDataMapper mapBalls;
-        static vtkActor ballActor;
-        static vtkRenderer ren1;
-        static vtkRenderWindow renWin;
-        static vtkRenderWindowInteractor iren;
+        //static vtkMath math;
+        //static vtkPoints points;
+        //static vtkPolyData profile;
+        //static vtkDelaunay2D del;
+        //static vtkPolyDataMapper mapMesh;
+        //static vtkActor meshActor;
+        //static vtkExtractEdges extract;
+        //static vtkTubeFilter tubes;
+        //static vtkPolyDataMapper mapEdges;
+        //static vtkActor edgeActor;
+        //static vtkSphereSource ball;
+        //static vtkGlyph3D balls;
+        //static vtkPolyDataMapper mapBalls;
+        //static vtkActor ballActor;
+        //static vtkRenderer ren1;
+        //static vtkRenderWindow renWin;
+        //static vtkRenderWindowInteractor iren;
 
         public static ColorScale CreateGreenRedYellow(double minValue, double maxValue)
         {

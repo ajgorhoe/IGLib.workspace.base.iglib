@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -24,14 +24,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -41,7 +41,7 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -51,6 +51,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MathNet.Numerics, Version=2.6.1.30, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -60,8 +65,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="MathNet.Numerics">
-      <HintPath>..\..\..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
+    <Reference Include="ZedGraph, Version=5.1.5.27330, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\lib\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -106,14 +112,12 @@
     <ProjectReference Include="..\..\..\external\nplot\NPlot.csproj">
       <Project>{E6867FF5-74EC-4464-8958-D71CB46232F3}</Project>
       <Name>NPlot</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\external\zedGraph\lib_5.1.2\ZedGraph 5.1\source\ZedGraph.csproj">
-      <Project>{2541686B-1673-43BF-AF89-3163945DB009}</Project>
-      <Name>ZedGraph</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\igbase\iglib_base.csproj">
       <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
       <Name>iglib_base</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +135,17 @@
     <EmbeddedResource Include="zedgraph\ZedGraphWindow.resx">
       <DependentUpon>ZedGraphWindow.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\00readme_developers_iglib.html">
+      <Link>00readme_developers_iglib.html</Link>
+    </Content>
+    <Content Include="..\..\..\Repositories_IGLib.html">
+      <Link>Repositories_IGLib.html</Link>
+    </Content>
+    <Content Include="License_IGLib_Partner.html" />
+    <Content Include="License_IGLib_Redistributable.html" />
+    <Content Include="ReadMe_IGLib.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

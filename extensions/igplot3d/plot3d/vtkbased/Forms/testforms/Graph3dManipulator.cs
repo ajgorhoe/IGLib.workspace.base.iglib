@@ -329,7 +329,7 @@ namespace IG.Gr3d
             else
             {
                 // Form's top level parent can not be closed, blink the button:
-                UtilForms.BlinkForm(btnClose);
+                UtilForms.BlinkControl(btnClose);
             }
         }
 
@@ -462,7 +462,7 @@ namespace IG.Gr3d
                 double newValue = GraphControl.CameraViewAngle;
                 parsed = double.TryParse(txtViewAngle.Text, out newValue);
                 if (!parsed)
-                    UtilForms.BlinkForm(txtViewAngle);
+                    UtilForms.BlinkControl(txtViewAngle);
                 else
                 {
                     GraphControl.CameraViewAngle = newValue;
@@ -480,7 +480,7 @@ namespace IG.Gr3d
                 double newValue = dir.x;
                 parsed = double.TryParse(txtR.Text, out newValue);
                 if (!parsed)
-                    UtilForms.BlinkForm(txtR);
+                    UtilForms.BlinkControl(txtR);
                 else
                 {
                     dir.x = newValue;
@@ -499,7 +499,7 @@ namespace IG.Gr3d
                 double newValue = dir.y;
                 parsed = double.TryParse(txtFi.Text, out newValue);
                 if (!parsed)
-                    UtilForms.BlinkForm(txtFi);
+                    UtilForms.BlinkControl(txtFi);
                 else
                 {
                     dir.y = newValue;
@@ -518,7 +518,7 @@ namespace IG.Gr3d
                 double newValue = dir.z;
                 parsed = double.TryParse(txtTheta.Text, out newValue);
                 if (!parsed)
-                    UtilForms.BlinkForm(txtTheta);
+                    UtilForms.BlinkControl(txtTheta);
                 else
                 {
                     dir.z = newValue;
@@ -536,7 +536,7 @@ namespace IG.Gr3d
                 double newValue = GraphControl.CameraRoll;
                 parsed = double.TryParse(txtRoll.Text, out newValue);
                 if (!parsed)
-                    UtilForms.BlinkForm(txtRoll);
+                    UtilForms.BlinkControl(txtRoll);
                 else
                 {
                     GraphControl.CameraRoll = newValue;
@@ -553,7 +553,7 @@ namespace IG.Gr3d
                 double newValue = GraphControl.RotationStep;
                 parsed = double.TryParse(txtRotationStep.Text, out newValue);
                 if (!parsed)
-                    UtilForms.BlinkForm(txtRotationStep);
+                    UtilForms.BlinkControl(txtRotationStep);
                 else
                 {
                     GraphControl.RotationStep = newValue;
@@ -571,7 +571,7 @@ namespace IG.Gr3d
                 double newValue = GraphControl.ZoomFactor;
                 parsed = double.TryParse(txtZoomFactor.Text, out newValue);
                 if (!parsed)
-                    UtilForms.BlinkForm(txtZoomFactor);
+                    UtilForms.BlinkControl(txtZoomFactor);
                 else
                 {
                     GraphControl.ZoomFactor = newValue;
