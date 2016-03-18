@@ -20,7 +20,7 @@ namespace IG.Num
     /// between point containers, and to compare point containers according to their distance with 
     /// a reference point.</remarks></summary>
     /// <typeparam name="PointType">Type of the point objects that have a point position in space,
-    /// and whose containers of type PointContainer<PointType> are compared by the current class.</typeparam>
+    /// and whose containers of type PointContainer{PointType} are compared by the current class.</typeparam>
     /// <typeparam name="PointContainerType">Type of point container that is used to wrap points of the point type.</typeparam>
     public interface IDistanceComparer<PointContainerType, PointType> :
             IComparer<PointContainerType>
@@ -135,7 +135,7 @@ namespace IG.Num
         /// output length scales that affects the definition).</para></remarks>
         double OutputDistance(PointContainerType pt1, PointContainerType pt2);
 
-        
+
         ///// <summary>Returns output distance between two output vectors.
         ///// <para>If vector of output scales (property <see cref="OutputLengthScales"/>) is specified
         ///// then weighted Euclidean distance between coordinates of the specified point is returned 
@@ -150,7 +150,7 @@ namespace IG.Num
         ///// definition of output distance is currenyly fixed, can not be modified (except by setting the vector of
         ///// output length scales that affects the definition).</para></remarks>
         //public virtual double OutputDistance(IVector outVec1, IVector outVec2);
-        
+
 
         #endregion OutputVectors
 
@@ -158,45 +158,45 @@ namespace IG.Num
         /// <summary>Returns distance between the specified two points.</summary>
         /// <param name="pt1">The first point.</param>
         /// <param name="pt2">The second point.</param>
-        /// <remarks>Distance is defined by the <see cref="DistanceFunction"/> property, which is a delegate of type <see cref="DistanceDelegate<PointType>"/>.</remarks>
+        /// <remarks>Distance is defined by the DistanceFunction property, which is a delegate of type <see cref="DistanceDelegate{PointType}"/>.</remarks>
         double Distance(PointType pt1, PointType pt2);
         
-        /// <summary>Returns distance between the specified two points enclosed in <see cref="PointContainer"/> objects,
-        /// as defined by the distance calculation delegate (property <see cref="DistanceFunction"/>) of the current object.</summary>
+        /// <summary>Returns distance between the specified two points enclosed in PointContainer{PointType} objects,
+        /// as defined by the distance calculation delegate (property DistanceFunction) of the current object.</summary>
         /// <param name="boxedPt1">The first point.</param>
         /// <param name="boxedPt2">The second point.</param>
         double Distance(PointContainerType boxedPt1, PointContainerType boxedPt2);
         
-        /// <summary>Returns distance between the specified point encolosed in an <see cref="PointContainer"/> object and
-        /// a non-enclosed point, as defined by the distance calculation delegate (property <see cref="DistanceFunction"/>) 
+        /// <summary>Returns distance between the specified point encolosed in an PointContainer object and
+        /// a non-enclosed point, as defined by the distance calculation delegate (property DistanceFunction) 
         /// of the current object.</summary>
         /// <param name="boxedPt1">The first training element.</param>
         /// <param name="pt2">The second training element.</param>
         double Distance(PointContainerType boxedPt1, PointType pt2);
-        
-        /// <summary>Returns distance between the specified point and the second point encolosed in an <see cref="PointContainer"/> object,
-        /// as defined by the distance calculation delegate (property <see cref="DistanceFunction"/>) of the current object.</summary>
+
+        /// <summary>Returns distance between the specified point and the second point encolosed in an PointContainer{PointType} object,
+        /// as defined by the distance calculation delegate (property DistanceFunction) of the current object.</summary>
         /// <param name="pt1">The first point.</param>
-        /// <param name="boxedPt2">The second point enclosed in <see cref="PointContainer<PointType>"/> object.</param>
+        /// <param name="boxedPt2">The second point enclosed in PointContainer{PointType} object.</param>
         double Distance(PointType pt1, PointContainerType boxedPt2);
-        
-        /// <summary>Returns distance between the specified point and the  reference point (property <see cref="ReferencePoint"/>) 
-        /// of the current object (enclosed in <see cref="PointContainer<PointType>"/> object), as defined by the distance calculation
-        /// delegate  of the current comparer object (property <see cref="DistanceFunction"/>).</summary>
+
+        /// <summary>Returns distance between the specified point and the  reference point (property ReferencePoint) 
+        /// of the current object (enclosed in PointContainer{PointType} object), as defined by the distance calculation
+        /// delegate  of the current comparer object (property DistanceFunction).</summary>
         /// <param name="pt">Vector whose distance to the reference point is returned.</param>
         double Distance(PointType pt);
-        
-        /// <summary>Returns distance between the specified point (enclosed in <see cref="PointContainer<PointType>"/> pbject) and the  
+
+        /// <summary>Returns distance between the specified point (enclosed in PointContainer{PointType} pbject) and the  
         /// reference point (property <see cref="ReferencePoint"/>)  of the current object (property <see cref="ReferencePoint"/>), as 
-        /// defined by the distance calculation delegate  of the current comparer object (property <see cref="DistanceFunction"/>).</summary>
-        /// <param name="pt">Pont enclosed in an <see cref="PointContainer<PointType>"/> whose distance to the reference point is returned.</param>
+        /// defined by the distance calculation delegate  of the current comparer object (property DistanceFunction).</summary>
+        /// <param name="boxedPt">Pont enclosed in an PointContainer{PointType} whose distance to the reference point is returned.</param>
         double Distance(PointContainerType boxedPt);
 
         /// <summary>Sorts a list of point containers with the current comparer.</summary>
         /// <param name="list">List of point containers to be sorted.</param>
         void Sort(List<PointContainerType> list);
         
-        /// <summary>Gets comparer that compares two point containers of type <see cref="PointContainerType"/>
+        /// <summary>Gets comparer that compares two point containers of type PointContainerType{}
         /// by the stored distance stored on those points.</summary>
         IComparer<PointContainerType> StoredDistanceComparer
         {
@@ -211,7 +211,7 @@ namespace IG.Num
 
     /// <summary>Class that is used to calculate and compare distances between point containers.</summary>
     /// <typeparam name="PointType">Type of the point objects that have a point position in space,
-    /// and whose containers of type PointContainer<PointType> are compared by the current class.</typeparam>
+    /// and whose containers of type PointContainer{PointType} are compared by the current class.</typeparam>
     /// <typeparam name="PointContainerType">Type of point container that is used to wrap points of the point type.</typeparam>
     /// <remarks>This class as a part of group of classes that have been created in 2008 in order to support 
     /// different operations and algorithms on losely connected clouds of points that are embedded in space 
@@ -241,18 +241,15 @@ namespace IG.Num
             /// <summary>Constructs a new comparer according to input distance to a reference poiont (type <see cref="IVector"/>).</summary>
             /// <param name="referencePoint">Reference point. Training elements are compared by their distance to this point.</param>
             /// <param name="distanceFunction">Delegate used for calculation of distance between two points.</param>
-            /// <param name="immutable">If true then a copy of the reference point is stored internally rather than just 
-            /// its reference, so it can not be changed.</param>
             public DistanceComparer(PointContainerType referencePoint, DistanceDelegate<PointType> distanceFunction):
                 this(referencePoint, distanceFunction, null /* lengthScales */)
             {  }
 
-            /// <summary>Constructs a new comparer according to input distance to a reference poiont (type <see cref="IVector"/>).</summary>
-            /// <param name="referencePoint">Reference point. Training elements are compared by their distance to this point.</param>
-            /// <param name="distanceFunction">Delegate used for calculation of distance between two points.</param>
-            /// <param name="immutable">If true then a copy of the reference point is stored internally rather than just 
-            /// its reference, so it can not be changed.</param>
-            public DistanceComparer(PointContainerType referencePoint, DistanceDelegate<PointType> distanceFunction,
+        /// <summary>Constructs a new comparer according to input distance to a reference poiont (type <see cref="IVector"/>).</summary>
+        /// <param name="referencePoint">Reference point. Training elements are compared by their distance to this point.</param>
+        /// <param name="distanceFunction">Delegate used for calculation of distance between two points.</param>
+        /// <param name="lengthScales">Length scales, used for scaling lengths along coo-rdinate axes.</param>
+        public DistanceComparer(PointContainerType referencePoint, DistanceDelegate<PointType> distanceFunction,
                 IVector lengthScales)
             {
                 if (referencePoint == null)
@@ -605,7 +602,7 @@ namespace IG.Num
         /// <summary>Returns distance between the specified two points.</summary>
         /// <param name="pt1">The first point.</param>
         /// <param name="pt2">The second point.</param>
-        /// <remarks>Distance is defined by the <see cref="DistanceFunction"/> property, which is a delegate of type <see cref="DistanceDelegate<PointType>"/>.</remarks>
+        /// <remarks>Distance is defined by the <see cref="DistanceFunction"/> property, which is a delegate of type <see cref="DistanceDelegate{PointType}"/>.</remarks>
         public virtual double Distance(PointType pt1, PointType pt2)
         {
             if (DistanceFunction == null)
@@ -615,7 +612,7 @@ namespace IG.Num
         }
 
 
-        /// <summary>Returns distance between the specified two points enclosed in <see cref="PointContainer"/> objects,
+        /// <summary>Returns distance between the specified two points enclosed in PointContainer{} objects,
         /// as defined by the distance calculation delegate (property <see cref="DistanceFunction"/>) of the current object.</summary>
         /// <param name="boxedPt1">The first point.</param>
         /// <param name="boxedPt2">The second point.</param>
@@ -626,7 +623,7 @@ namespace IG.Num
             return Distance(boxedPt1.Point, boxedPt2.Point);
         }
 
-        /// <summary>Returns distance between the specified point encolosed in an <see cref="PointContainer"/> object and
+        /// <summary>Returns distance between the specified point encolosed in an PointContainer{...} object and
         /// a non-enclosed point, as defined by the distance calculation delegate (property <see cref="DistanceFunction"/>) 
         /// of the current object.</summary>
         /// <param name="boxedPt1">The first training element.</param>
@@ -640,10 +637,10 @@ namespace IG.Num
             return Distance(boxedPt1.Point, pt2);
         }
 
-        /// <summary>Returns distance between the specified point and the second point encolosed in an <see cref="PointContainer"/> object,
+        /// <summary>Returns distance between the specified point and the second point encolosed in an PointContainer{...} object,
         /// as defined by the distance calculation delegate (property <see cref="DistanceFunction"/>) of the current object.</summary>
         /// <param name="pt1">The first point.</param>
-        /// <param name="boxedPt2">The second point enclosed in <see cref="PointContainer<PointType>"/> object.</param>
+        /// <param name="boxedPt2">The second point enclosed in PointContainer{PointType} object.</param>
         public double Distance(PointType pt1, PointContainerType boxedPt2)
         {
             if (pt1 == null)
@@ -654,7 +651,7 @@ namespace IG.Num
         }
 
         /// <summary>Returns distance between the specified point and the  reference point (property <see cref="ReferencePoint"/>) 
-        /// of the current object (enclosed in <see cref="PointContainer<PointType>"/> object), as defined by the distance calculation
+        /// of the current object (enclosed in PointContainer{PointType} object), as defined by the distance calculation
         /// delegate  of the current comparer object (property <see cref="DistanceFunction"/>).</summary>
         /// <param name="pt">Vector whose distance to the reference point is returned.</param>
         public double Distance(PointType pt)
@@ -663,10 +660,10 @@ namespace IG.Num
         }
 
 
-        /// <summary>Returns distance between the specified point (enclosed in <see cref="PointContainer<PointType>"/> pbject) and the  
+        /// <summary>Returns distance between the specified point (enclosed in PointContainer{PointType} object) and the  
         /// reference point (property <see cref="ReferencePoint"/>)  of the current object (property <see cref="ReferencePoint"/>), as 
         /// defined by the distance calculation delegate  of the current comparer object (property <see cref="DistanceFunction"/>).</summary>
-        /// <param name="pt">Pont enclosed in an <see cref="PointContainer"/> object whose distance to the reference point is returned.</param>
+        /// <param name="boxedPt">Point enclosed in an PointContainer{T} object whose distance to the reference point is returned.</param>
         public double Distance(PointContainerType boxedPt)
         {
             return Distance(boxedPt.Point, ReferencePoint.Point);
@@ -680,11 +677,11 @@ namespace IG.Num
                 list.Sort(this);
         }
 
-        /// <summary>Compares two point containers according to their <see cref="StoredDistance"/> property.</summary>
+        /// <summary>Compares two point containers according to their  StoredDistance property.</summary>
         protected class StoredDistanceComparerClass : IComparer<PointContainerType>
         {
             public StoredDistanceComparerClass() { }
-
+            
             public int Compare(PointContainerType pt1, PointContainerType pt2)
             {
                 double l1 = pt1.StoredDistance;
@@ -695,7 +692,7 @@ namespace IG.Num
 
         private IComparer<PointContainerType> _storedDistanceComparer;
 
-        /// <summary>Gets comparer that compares two point containers of type <see cref="PointContainerType"/>
+        /// <summary>Gets comparer that compares two point containers of type <typeparamref name="PointContainerType"/>
         /// by the stored distance stored on those points.</summary>
         public IComparer<PointContainerType> StoredDistanceComparer
         {

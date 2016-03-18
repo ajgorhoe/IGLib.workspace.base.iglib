@@ -159,7 +159,7 @@ namespace IG.Num
         /// all non-null vectors on the specified field will fit within the bounds.
         /// <para>Call has no effect if the field is null. Bounding box object must be allocated and of the same dimension
         /// as elements of the field.</para></summary>
-        /// <typeparam name="TElement">Type of elements of the field, must be <see cref="IVector"/>.</typeparam>
+        /// <typeparam name="TEl">Type of elements of the field, must be <see cref="IVector"/>.</typeparam>
         /// <param name="field">Field according to whose elements the bounds are updated.</param>
         /// <param name="bounds">Bounding box object that is updated in such a way that all elements of the field fit in it.</param>
         public static void UpdateBounds<TEl>(Field<TEl> field, IBoundingBox bounds)
@@ -433,7 +433,7 @@ namespace IG.Num
         /// <param name="referenceField">Field containing coordinates that will be mapped to scalar values.
         /// <para>Dimensions must be set and array of vector values (coordinates) must be allocated 
         /// before the function is called.</para></param>
-        /// <param name="targetField">Field in which the mapped scalars are stored. 
+        /// <param name="targetScalarField">Field in which the mapped scalars are stored. 
         /// <para>Dimensions must be set and consistent with dimensions of the reference field, and array of 
         /// values must be allocated before the function is called.</para></param>
         /// <param name="scalarMap">Function that maps node coordinates of the reference grid to scalar values of the target grid.</param>
@@ -458,7 +458,7 @@ namespace IG.Num
         /// <param name="referenceField">Field containing coordinates that will be mapped to scalar values.
         /// <para>Dimensions must be set and array of vector values (coordinates) must be allocated 
         /// before the function is called.</para></param>
-        /// <param name="targetField">Field in which the mapped scalars are stored. 
+        /// <param name="targetScalarField">Field in which the mapped scalars are stored. 
         /// <para>Dimensions must be set and consistent with dimensions of the reference field, and array of 
         /// values must be allocated before the function is called.</para></param>
         /// <param name="scalarMap">Function that maps node coordinates of the reference grid to scalar values of the target grid.</param>
@@ -733,8 +733,6 @@ namespace IG.Num
         /// node coordinates of the actual grid.</param>
         /// <param name="fy">Function that maps node coordinates of the reference grid to the second 
         /// node coordinates of the actual grid.</param>
-        /// <param name="fz">Function that maps node coordinates of the reference grid to the third 
-        /// node coordinates of the actual grid.</param>
         public static void MapCoordinates1dPlain(Field<vec2> referenceField, Field<vec2> targetField,
             IRealFunction fx, IRealFunction fy)
         {
@@ -769,8 +767,6 @@ namespace IG.Num
         /// node coordinates of the actual grid.</param>
         /// <param name="fy">Function that maps node coordinates of the reference grid to the second 
         /// node coordinates of the actual grid.</param>
-        /// <param name="fz">Function that maps node coordinates of the reference grid to the third 
-        /// node coordinates of the actual grid.</param>
         public static void MapCoordinates1d(Field<vec2> referenceField, Field<vec2> targetField,
             IRealFunction fx, IRealFunction fy)
         {
@@ -794,7 +790,7 @@ namespace IG.Num
         /// <param name="referenceField">Field containing coordinates that will be mapped to scalar values.
         /// <para>Dimensions must be set and array of vector values (coordinates) must be allocated 
         /// before the function is called.</para></param>
-        /// <param name="targetField">Field in which the mapped scalars are stored. 
+        /// <param name="targetScalarField">Field in which the mapped scalars are stored. 
         /// <para>Dimensions must be set and consistent with dimensions of the reference field, and array of 
         /// values must be allocated before the function is called.</para></param>
         /// <param name="scalarMap">Function that maps node coordinates of the reference grid to scalar values of the target grid.</param>
@@ -819,7 +815,7 @@ namespace IG.Num
         /// <param name="referenceField">Field containing coordinates that will be mapped to scalar values.
         /// <para>Dimensions must be set and array of vector values (coordinates) must be allocated 
         /// before the function is called.</para></param>
-        /// <param name="targetField">Field in which the mapped scalars are stored. 
+        /// <param name="targetScalarField">Field in which the mapped scalars are stored. 
         /// <para>Dimensions must be set and consistent with dimensions of the reference field, and array of 
         /// values must be allocated before the function is called.</para></param>
         /// <param name="scalarMap">Function that maps node coordinates of the reference grid to scalar values of the target grid.</param>
@@ -848,7 +844,6 @@ namespace IG.Num
         /// and array of vector values allocated before this function is called.</param>
         /// <param name="dimx">Number of nodes in x direction.</param>
         /// <param name="dimy">Number of nodes in y direction.</param>
-        /// <param name="dimz">Number of nodes in z direction.</param>
         /// <param name="minxRef">Minimal value of x coordinate of the generated grid.</param>
         /// <param name="maxxRef">Maximal value of x coordinate of the generated grid.</param>
         /// <param name="minyRef">Minimal value of y coordinate of the generated grid.</param>
@@ -881,7 +876,6 @@ namespace IG.Num
         /// and array of vector values allocated before this function is called.</param>
         /// <param name="dimx">Number of nodes in x direction.</param>
         /// <param name="dimy">Number of nodes in y direction.</param>
-        /// <param name="dimz">Number of nodes in z direction.</param>
         /// <param name="minxRef">Minimal value of x coordinate of the generated grid.</param>
         /// <param name="maxxRef">Maximal value of x coordinate of the generated grid.</param>
         /// <param name="minyRef">Minimal value of y coordinate of the generated grid.</param>
@@ -913,7 +907,6 @@ namespace IG.Num
         /// and array of vector values allocated before this function is called.</param>
         /// <param name="dimx">Number of nodes in x direction.</param>
         /// <param name="dimy">Number of nodes in y direction.</param>
-        /// <param name="dimz">Number of nodes in z direction.</param>
         /// <param name="minxRef">Lower bound for the first parameter in the reference coordinate system.</param>
         /// <param name="maxxRef">Upper bound for the first parameter in the reference coordinate system.</param>
         /// <param name="minyRef">Lower bound for the second parameter in the reference coordinate system.</param>
@@ -942,7 +935,6 @@ namespace IG.Num
         /// and array of vector values allocated before this function is called.</param>
         /// <param name="dimx">Number of nodes in x direction.</param>
         /// <param name="dimy">Number of nodes in y direction.</param>
-        /// <param name="dimz">Number of nodes in z direction.</param>
         /// <param name="minxRef">Lower bound for the first parameter in the reference coordinate system.</param>
         /// <param name="maxxRef">Upper bound for the first parameter in the reference coordinate system.</param>
         /// <param name="minyRef">Lower bound for the second parameter in the reference coordinate system.</param>
@@ -973,7 +965,6 @@ namespace IG.Num
         /// and array of vector values allocated before this function is called.</param>
         /// <param name="dimx">Number of nodes in x direction.</param>
         /// <param name="dimy">Number of nodes in y direction.</param>
-        /// <param name="dimz">Number of nodes in z direction.</param>
         /// <param name="minxRef">Minimal value of x coordinate of the generated grid.</param>
         /// <param name="maxxRef">Maximal value of x coordinate of the generated grid.</param>
         /// <param name="minyRef">Minimal value of y coordinate of the generated grid.</param>
@@ -1007,7 +998,6 @@ namespace IG.Num
         /// and array of vector values allocated before this function is called.</param>
         /// <param name="dimx">Number of nodes in x direction.</param>
         /// <param name="dimy">Number of nodes in y direction.</param>
-        /// <param name="dimz">Number of nodes in z direction.</param>
         /// <param name="minxRef">Minimal value of x coordinate of the generated grid.</param>
         /// <param name="maxxRef">Maximal value of x coordinate of the generated grid.</param>
         /// <param name="minyRef">Minimal value of y coordinate of the generated grid.</param>
@@ -1039,7 +1029,6 @@ namespace IG.Num
         /// and array of vector values allocated before this function is called.</param>
         /// <param name="dimx">Number of nodes in x direction.</param>
         /// <param name="dimy">Number of nodes in y direction.</param>
-        /// <param name="dimz">Number of nodes in z direction.</param>
         /// <param name="minxRef">Lower bound for the first parameter in the reference coordinate system.</param>
         /// <param name="maxxRef">Upper bound for the first parameter in the reference coordinate system.</param>
         /// <param name="minyRef">Lower bound for the second parameter in the reference coordinate system.</param>
@@ -1047,6 +1036,8 @@ namespace IG.Num
         /// <param name="fx">Function that maps node coordinates of the reference grid to the first 
         /// node coordinates' component of the actual grid.</param>
         /// <param name="fy">Function that maps node coordinates of the reference grid to the second 
+        /// node coordinates' component of the actual grid.</param>
+        /// <param name="fz">Function that maps node coordinates of the reference grid to the third 
         /// node coordinates' component of the actual grid.</param>
         public static void GenerateCoordinates2dPlain(Field<vec3> field,
             int dimx, int dimy,
@@ -1061,14 +1052,13 @@ namespace IG.Num
         /// <summary>Generates coordinates of a 3D unstructured grid of a parametric volume according 
         /// to functions specifying the x, y, and z coordinates in terms of three scalar functions of 3 variables.
         /// <para>Coordinates are obtained by transforming individual coordinates of a regular equidistant grid
-        /// from the reference system.</para>.
+        /// from the reference system.</para>
         /// <para>Numbers of nodes in each grid directions are specified by current dimensions of the grid.</para>
         /// <para>Consistency of dimensions and existence of objects are checked and exceptions are thrown when checks fail.</para></summary>
         /// <param name="field">Field for which coordinates are generated. Dimensions must be set
         /// and array of vector values allocated before this function is called.</param>
         /// <param name="dimx">Number of nodes in x direction.</param>
         /// <param name="dimy">Number of nodes in y direction.</param>
-        /// <param name="dimz">Number of nodes in z direction.</param>
         /// <param name="minxRef">Lower bound for the first parameter in the reference coordinate system.</param>
         /// <param name="maxxRef">Upper bound for the first parameter in the reference coordinate system.</param>
         /// <param name="minyRef">Lower bound for the second parameter in the reference coordinate system.</param>
@@ -1076,6 +1066,8 @@ namespace IG.Num
         /// <param name="fx">Function that maps node coordinates of the reference grid to the first 
         /// node coordinates' component of the actual grid.</param>
         /// <param name="fy">Function that maps node coordinates of the reference grid to the second 
+        /// node coordinates' component of the actual grid.</param>
+        /// <param name="fz">Function that maps node coordinates of the reference grid to the third 
         /// node coordinates' component of the actual grid.</param>
         public static void GenerateCoordinates2d(Field<vec3> field,
             int dimx, int dimy,
@@ -1124,6 +1116,7 @@ namespace IG.Num
         /// and array of vector values allocated before this function is called.</param>
         /// <param name="dimx">Number of nodes in x direction.</param>
         /// <param name="minxRef">Minimal value of x coordinate of the generated grid.</param>
+        /// <param name="maxxRef">Maximal value of x coordinate of the generated grid.</param>
         public static void GenerateCoordinates1d(Field<vec3> field,
             int dimx,
             double minxRef, double maxxRef)
@@ -1233,6 +1226,7 @@ namespace IG.Num
         /// and array of vector values allocated before this function is called.</param>
         /// <param name="dimx">Number of nodes in x direction.</param>
         /// <param name="minxRef">Minimal value of x coordinate of the generated grid.</param>
+        /// <param name="maxxRef">Minimal value of x coordinate of the generated grid.</param>
         public static void GenerateCoordinates(Field<vec2> field,
             int dimx,
             double minxRef, double maxxRef)

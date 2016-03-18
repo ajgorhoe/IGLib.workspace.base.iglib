@@ -87,6 +87,8 @@ namespace IG.Num
         /// <summary>Constructs a new 2D field with the specified dimensions, name and description.
         /// Table of elements is allocated.
         /// <para>Elements of the field are arranged in a 2D structured grid.</para></summary>
+        /// <param name="dim1">First dimension.</param>
+        /// <param name="dim2">Second dimension.</param>
         /// <param name="fieldName">Name of the field.</param>
         public StructuredField2d(int dim1, int dim2, string fieldName)
             : this(dim1, dim2, fieldName, null /* description */)
@@ -336,7 +338,7 @@ namespace IG.Num
         /// <param name="referenceField">Field containing coordinates that will be mapped to scalar values.
         /// <para>Dimensions must be set and array of vector values (coordinates) must be allocated 
         /// before the function is called.</para></param>
-        /// <param name="targetField">Field in which the mapped scalars are stored. 
+        /// <param name="targetScalarField">Field in which the mapped scalars are stored. 
         /// <para>Dimensions must be set and consistent with dimensions of the reference field, and array of 
         /// values must be allocated before the function is called.</para></param>
         /// <param name="scalarMap">Function that maps node coordinates of the reference grid to scalar values of the target grid.</param>
@@ -355,7 +357,7 @@ namespace IG.Num
         /// <param name="referenceField">Field containing coordinates that will be mapped to scalar values.
         /// <para>Dimensions must be set and array of vector values (coordinates) must be allocated 
         /// before the function is called.</para></param>
-        /// <param name="targetField">Field in which the mapped scalars are stored. 
+        /// <param name="targetScalarField">Field in which the mapped scalars are stored. 
         /// <para>Dimensions must be set and consistent with dimensions of the reference field, and array of 
         /// values must be allocated before the function is called.</para></param>
         /// <param name="scalarMap">Function that maps node coordinates of the reference grid to scalar values of the target grid.</param>
@@ -391,7 +393,7 @@ namespace IG.Num
             double minyRef, double maxyRef)
         {
             double dimx = field.Dim1, dimy = field.Dim2;
-            double hx = 0, hy = 0, hz = 0, xRef, yRef, zRef;
+            double hx = 0, hy = 0, xRef, yRef;
             if (dimx > 1)
                 hx = (maxxRef - minxRef) / (double)(dimx - 1);
             if (dimy > 1)
@@ -444,8 +446,6 @@ namespace IG.Num
         /// <param name="maxxRef">Upper bound for the first parameter in the reference coordinate system.</param>
         /// <param name="minyRef">Lower bound for the second parameter in the reference coordinate system.</param>
         /// <param name="maxyRef">Upper bound for the second parameter in the reference coordinate system.</param>
-        /// <param name="minzRef">Lower bound for the third parameter in the reference coordinate system.</param>
-        /// <param name="maxzRef">Upper bound for the third parameter in the reference coordinate system.</param>
         /// <param name="fx">Function that maps node coordinates of the reference grid to the first 
         /// node coordinates' component of the actual grid.</param>
         /// <param name="fy">Function that maps node coordinates of the reference grid to the second 
@@ -474,8 +474,6 @@ namespace IG.Num
         /// <param name="maxxRef">Upper bound for the first parameter in the reference coordinate system.</param>
         /// <param name="minyRef">Lower bound for the second parameter in the reference coordinate system.</param>
         /// <param name="maxyRef">Upper bound for the second parameter in the reference coordinate system.</param>
-        /// <param name="minzRef">Lower bound for the third parameter in the reference coordinate system.</param>
-        /// <param name="maxzRef">Upper bound for the third parameter in the reference coordinate system.</param>
         /// <param name="fx">Function that maps node coordinates of the reference grid to the first 
         /// node coordinates' component of the actual grid.</param>
         /// <param name="fy">Function that maps node coordinates of the reference grid to the second 
@@ -565,7 +563,7 @@ namespace IG.Num
         /// <param name="referenceField">Field containing coordinates that will be mapped to scalar values.
         /// <para>Dimensions must be set and array of vector values (coordinates) must be allocated 
         /// before the function is called.</para></param>
-        /// <param name="targetField">Field in which the mapped scalars are stored. 
+        /// <param name="targetScalarField">Field in which the mapped scalars are stored. 
         /// <para>Dimensions must be set and consistent with dimensions of the reference field, and array of 
         /// values must be allocated before the function is called.</para></param>
         /// <param name="scalarMap">Function that maps node coordinates of the reference grid to scalar values of the target grid.</param>
@@ -584,7 +582,7 @@ namespace IG.Num
         /// <param name="referenceField">Field containing coordinates that will be mapped to scalar values.
         /// <para>Dimensions must be set and array of vector values (coordinates) must be allocated 
         /// before the function is called.</para></param>
-        /// <param name="targetField">Field in which the mapped scalars are stored. 
+        /// <param name="targetScalarField">Field in which the mapped scalars are stored. 
         /// <para>Dimensions must be set and consistent with dimensions of the reference field, and array of 
         /// values must be allocated before the function is called.</para></param>
         /// <param name="scalarMap">Function that maps node coordinates of the reference grid to scalar values of the target grid.</param>
@@ -690,7 +688,7 @@ namespace IG.Num
         /// 2D structured grid with grid directions parallel to coordinate axes. 
         /// <para>Coordinates of each reference grid node are mapped to the two coordinate components of the 
         /// generated grid.</para> 
-        /// <para>The generated grid covers a bounded parametric patch in 2D specified by the two functions.</para>unctions.</para>
+        /// <para>The generated grid covers a bounded parametric patch in 2D specified by the two functions.</para>
         /// <para>Numbers of nodes in each grid directions are specified by current dimensions of the grid.</para>
         /// <para>Consistency of dimensions and existence of objects are checked and exceptions are thrown when checks fail.</para></summary>
         /// <param name="field">Field for which coordinates are generated. Dimensions must be set

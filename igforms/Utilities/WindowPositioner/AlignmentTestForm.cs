@@ -11,12 +11,13 @@ using System.Windows.Forms;
 
 using IG.Lib;
 
-namespace IG.Forms
+namespace IG.Forms 
 {
 
     /// <summary>Test form, used only to test if control can be inclded in the form..</summary>
     /// <remarks><para>This is a dummy control used for various tests such as window positioning.</para></remarks>
     /// $A Igor Oct09;
+    [Obsolete("This form is not used.")]
     public partial class AlignmentTestForm : Form, IIdentifiable,
         IG.Forms.IClosableFromContainedForm
     {

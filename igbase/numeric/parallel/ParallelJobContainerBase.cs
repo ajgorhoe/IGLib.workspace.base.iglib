@@ -192,7 +192,7 @@ namespace IG.Num
 
 
         /// <summary>Default output level for objects of this and derived types.
-        /// <para>Also used for classes derived from <see cref="ParallelJobServerBase"/> and <see cref="ParallelJobDispatcherBase"/></para></summary>
+        /// <para>Also used for classes derived from <see cref="ParallelJobServerBase{JT}"/> and <see cref="ParallelJobDispatcherBase"/></para></summary>
         public static volatile int DefaultOutputLevel = -1;
 
         /// <summary>Output level for objects of this class. 
@@ -210,7 +210,7 @@ namespace IG.Num
         // private static bool _defaultIsTestMode = false;
 
         /// <summary>Default value of the testmode flag.
-        /// <para>Also used for classes derived from <see cref="ParallelJobServerBase"/> and <see cref="ParallelJobDispatcherBase"/></para></summary>
+        /// <para>Also used for classes derived from <see cref="ParallelJobServerBase{CT}"/> and <see cref="ParallelJobDispatcherBase"/></para></summary>
         public static volatile bool DefaultIsTestMode = false;
 
         protected bool _isTestMode = DefaultIsTestMode;
@@ -275,7 +275,7 @@ namespace IG.Num
         protected double _testDelayInSeconds = 1.0;
 
         /// <summary>Delay time in the testing mode (in seconds), which is caused by calling sleep for
-        /// the <see cref="Thread.Sleep"/> method.</summary>
+        /// the <see cref="Thread.Sleep(int)"/> method.</summary>
         public double TestDelayInSeconds
         {
             get { return _testDelayInSeconds; }
@@ -434,8 +434,8 @@ namespace IG.Num
 
 
         /// <summary>Assigns the current job to the specified dispatcher.
-        /// <para>This method is called in dispatcher's <see cref="SendJob"/> method.</para></summary>
-        /// <param name="dispatcher"></param>
+        /// <para>This method is called in dispatcher's SendJob() method.</para></summary>
+        /// <param name="dispatcher">Dispatcher to which the current job is assigned.</param>
         protected internal void AssignToDispatcher(ParallelJobDispatcherBase dispatcher)
         {
             lock (Lock)
@@ -539,10 +539,7 @@ namespace IG.Num
         /// <summary>Test of parallel job execution by calculating the specified real function of one variable in
         /// a number of points. Calculatin is performed in parallel threads by using job dispatcher with parallel 
         /// servers.</summary>
-        /// <param name="from">Lower bount of the interval on which function is evaluated.</param>
-        /// <param name="to">Upper bound of teh interval on which function is evaluated.</param>
         /// <param name="numPoints">Number of equidistand points in which function is evaluated.</param>
-        /// <param name="evaluationFunction">Delegate that is used to evaluate functions.</param>
         /// <param name="numServers">Number of servers to be used.</param>
         /// <param name="maxEnqueued">Maximal allowed number of jobs enquied.</param>
         /// <param name="delayTimeSeconds">Delay tie iin seconds.</param>

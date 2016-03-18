@@ -10,7 +10,7 @@ namespace IG.Lib
 
 
     /// <summary>Object store.
-    /// Objects of the specified type can be stored here for later reuse (efficiency improvement).
+    /// Objects of the specified type can be stored here for later reuse (efficiency improvement).</summary>
     /// <typeparam name="T">Type of objects to be stored, must be a reference type.</typeparam>
     public interface IObjectStore<T> where T : class
     {

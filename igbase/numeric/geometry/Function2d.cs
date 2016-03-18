@@ -29,7 +29,6 @@ namespace IG.Num
         /// <summary>Calculates and returns value of the current 2D scalar function.</summary>
         /// <param name="x">First parameter.</param>
         /// <param name="y">Second parameter.</param>
-        /// <param name="z">Third parameter.</param>
         double Value(double x, double y);
         
         /// <summary>Calculates and returns value of the current 2D scalar function.</summary>
@@ -161,7 +160,6 @@ namespace IG.Num
         /// <summary>Calculates and returns value of the current 2D scalar function.</summary>
         /// <param name="x">First parameter.</param>
         /// <param name="y">Second parameter.</param>
-        /// <param name="z">Third parameter.</param>
         public abstract double Value(double x, double y);
 
         /// <summary>Calculates and returns value of the current 2D scalar function.</summary>
@@ -176,10 +174,8 @@ namespace IG.Num
         /// through the specified output variables.</summary>
         /// <param name="x">First parameter.</param>
         /// <param name="y">Second parameter.</param>
-        /// <param name="z">Third parameter.</param>
         /// <param name="gradx">First component of the returned gradient.</param>
         /// <param name="grady">Second component of the returned gradient.</param>
-        /// <param name="gradz">Third component of the returned gradient.</param>
         public abstract void Gradient(double x, double y, out double gradx, out double grady);
 
         /// <summary>Calculates and returns gradient of the current 2D scalar function.</summary>
@@ -196,13 +192,9 @@ namespace IG.Num
         /// the specified output variables.</summary>
         /// <param name="x">First parameter.</param>
         /// <param name="y">Second parameter.</param>
-        /// <param name="z">Third parameter.</param>
         /// <param name="dxx">Component 1-1 of the calculated Hessian.</param>
         /// <param name="dyy">Component 2-2 of the calculated Hessian.</param>
-        /// <param name="dzz">Component 3-3 of the calculated Hessian.</param>
         /// <param name="dxy">Component 1-2 of the calculated Hessian.</param>
-        /// <param name="dxz">Component 1-3 of the calculated Hessian.</param>
-        /// <param name="dyz">Component 2-3 of the calculated Hessian.</param>
         public abstract void Hessian(double x, double y, out double dxx, out double dyy, 
             out double dxy);
 
@@ -246,7 +238,7 @@ namespace IG.Num
         {
             if (parameters.Length!=NumParam)
                 throw new ArgumentException("Wrong dimension of parameter vector, " + parameters.Length + " instead of " + NumParam + ".");
-            double x = parameters[0], y = parameters[1], z = parameters[2], dx, dy, dz;
+            double x = parameters[0], y = parameters[1], z = parameters[2], dx, dy;
             Gradient(x, y, out dx, out dy);
             gradient[1] = dx;
             gradient[2] = dy;
@@ -261,7 +253,7 @@ namespace IG.Num
         {
             if (parameters.Length != NumParam)
                 throw new ArgumentException("Wrong dimension of parameter vector, " + parameters.Length + " instead of " + NumParam + ".");
-            double x = parameters[0], y = parameters[1], dxx, dyy, dxy, dxz, dyz;
+            double x = parameters[0], y = parameters[1], dxx, dyy, dxy;
             Hessian(x, y, out dxx, out dyy, out dxy);
             hessian[0, 0] = dxx;
             hessian[0, 1] = dxy;
@@ -375,7 +367,7 @@ namespace IG.Num
 
         /// <summary>Calculates and returns Hessian of the current 2D scalar function and returns it
         /// (in the form of a <see cref="mat2"/> struct).
-        /// <para>This method must be overridden in derives classes where calculation of function Hessian is implemented.</summary>
+        /// <para>This method must be overridden in derives classes where calculation of function Hessian is implemented.</para></summary>
         public override mat2 Hessian(vec2 parameters)
         {
             throw new NotImplementedException("Calculation of function Hessian is not implemented.");
@@ -388,7 +380,6 @@ namespace IG.Num
         /// <summary>Calculates and returns value of the current 2D scalar function.</summary>
         /// <param name="x">First parameter.</param>
         /// <param name="y">Second parameter.</param>
-        /// <param name="z">Third parameter.</param>
         public sealed override double Value(double x, double y)
         {
             return Value(new vec2(x, y));
@@ -400,7 +391,6 @@ namespace IG.Num
         /// <param name="y">Second parameter.</param>
         /// <param name="gradx">First component of the returned gradient.</param>
         /// <param name="grady">Second component of the returned gradient.</param>
-        /// <param name="gradz">Third component of the returned gradient.</param>
         public sealed override void Gradient(double x, double y, out double gradx, out double grady)
         {
             vec2 grad = Gradient(new vec2(x, y));
@@ -442,7 +432,7 @@ namespace IG.Num
             : base()
         { ValueDefined = true; GradientDefined = true; HessianDefined = true; }
 
-        /// <summary>Creation of a linear 2D scalar function.</param>
+        /// <summary>Creation of a linear 2D scalar function.</summary>
         /// <param name="gradient0">Vector of linear coefficients - gradient of the linear function.</param>
         /// <param name="scalarTerm">Constant term.</param>
         public Func2dLinear(vec2 gradient0, double scalarTerm)
@@ -609,11 +599,11 @@ namespace IG.Num
     } // class Func2dQuadratic
 
 
-    /// <summary>Example classes of type <see cref="Func2d"/>.</summary>
+    /// <summary>Example classes of type <see cref="Func2dBase"/>.</summary>
     /// $A Igor Aug09 Oct09;
     public static class Func2dExamples
     {
-
+        
         /// <summary>Function f(x, y) = x * y.
         /// <para>Value and gradient are defined.</para></summary>
         public class Func2dXY : Func2dBaseNoHessian, IFunc2d, IScalarFunctionUntransformed
@@ -622,7 +612,6 @@ namespace IG.Num
             /// <summary>Calculates and returns value of the current 2D scalar function.</summary>
             /// <param name="x">First parameter.</param>
             /// <param name="y">Second parameter.</param>
-            /// <param name="z">Third parameter.</param>
             public override double Value(double x, double y)
             {
                 return x * y;
@@ -632,10 +621,8 @@ namespace IG.Num
             /// through the specified output variables.</summary>
             /// <param name="x">First parameter.</param>
             /// <param name="y">Second parameter.</param>
-            /// <param name="z">Third parameter.</param>
             /// <param name="gradx">First component of the returned gradient.</param>
             /// <param name="grady">Second component of the returned gradient.</param>
-            /// <param name="gradz">Third component of the returned gradient.</param>
             public override void Gradient(double x, double y, out double gradx, out double grady)
             {
                 gradx = y; grady = x;
@@ -702,7 +689,6 @@ namespace IG.Num
         /// <summary>Calculates and returns value of the current 2D scalar function.</summary>
         /// <param name="x">First parameter.</param>
         /// <param name="y">Second parameter.</param>
-        /// <param name="z">Third parameter.</param>
         public abstract double Value(double x, double y);
 
         /// <summary>Calculates and returns value of the current 2D scalar function.</summary>
@@ -717,10 +703,8 @@ namespace IG.Num
         /// through the specified output variables.</summary>
         /// <param name="x">First parameter.</param>
         /// <param name="y">Second parameter.</param>
-        /// <param name="z">Third parameter.</param>
         /// <param name="gradx">First component of the returned gradient.</param>
         /// <param name="grady">Second component of the returned gradient.</param>
-        /// <param name="gradz">Third component of the returned gradient.</param>
         public abstract void Gradient(double x, double y, out double gradx, out double grady);
 
         /// <summary>Calculates and returns gradient of the current 2D scalar function.</summary>
@@ -737,7 +721,6 @@ namespace IG.Num
         /// the specified output variables.</summary>
         /// <param name="x">First parameter.</param>
         /// <param name="y">Second parameter.</param>
-        /// <param name="z">Third parameter.</param>
         /// <param name="dxx">Component 1-1 of the calculated Hessian.</param>
         /// <param name="dyy">Component 2-2 of the calculated Hessian.</param>
         /// <param name="dxy">Component 1-2 of the calculated Hessian.</param>

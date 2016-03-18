@@ -12,7 +12,7 @@ namespace IG.Num
     /// <summary>Scalar function that is defined as some reference function evaluated at inverse 
     /// affine-trasformed parameters.
     /// This class is typically used to convert scalar functions without affine transformation of coordinates 
-    /// (interface <see cref="IScalafunctionUntransformed"/>) to those that support affine transformation of coordinates.</summary>
+    /// (interface <see cref="IScalarFunctionUntransformed"/>) to those that support affine transformation of coordinates.</summary>
     /// $A Igor xx;
     public class ScalarFunctionTransformed : ScalarFunctionBase,
         IScalarFunction

@@ -50,7 +50,7 @@ namespace IG.Crypto
         private static object _lockStatic = null;
 
         /// <summary>Locking object for static methods and properties of this class.</summary>
-        /// <remarks>Read-only, safely provided on demand (using <see cref="Util.LockGlobal"/> when 
+        /// <remarks>Read-only, safely provided on demand (using <see cref="Util.LockGlobal"/> when created).</remarks>
         public static object LockStatic
         {
             get
@@ -132,7 +132,7 @@ namespace IG.Crypto
 
 
         /// <summary>Returns a <see cref="PasswordAlgorithmType"/> value corresponding to the specified string representation.</summary>
-        /// <param name="flagString">String that represents the <see cref="PasswordAlgorithmType"/> value.</param>
+        /// <param name="typeString">String that represents the <see cref="PasswordAlgorithmType"/> value.</param>
         public static PasswordAlgorithmType GetPasswordAlgorithmType(string typeString)
         {
             if (typeString != null)
@@ -177,7 +177,7 @@ namespace IG.Crypto
 
 
         /// <summary>Returns standard string representation of the specified password generation algoithm.</summary>
-        /// <param name="">Password algorithm type whose string representation is returned.</param>
+        /// <param name="passwordAlgorithmType">Password algorithm type whose string representation is returned.</param>
         public static string PasswordAlgorithmTypeToString(PasswordAlgorithmType passwordAlgorithmType)
         {
             switch (passwordAlgorithmType)
@@ -214,7 +214,7 @@ namespace IG.Crypto
 
         /// <summary>Returns the appropriate password generation algorithm according to the specified algorithm type, or null 
         /// if the type is not recognized or the method is not implemented for that type.</summary>
-        /// <param name="flag">Specification of the password generaion algorithm type.</param>
+        /// <param name="algorithmType">Specification of the password generaion algorithm type.</param>
         public static IG.Crypto.PasswordAlgorithmBase GetPasswordAlgorithm(PasswordAlgorithmType algorithmType)
         {
             switch (algorithmType)
@@ -230,8 +230,8 @@ namespace IG.Crypto
 
         /// <summary>Returns true if the specified password generation algorithm corresponds the type specification, false otherwise.
         /// <para>If the specified algorithm is null or the specified type is unknown then false is returned.</para></summary>
-        /// <param name="flag">Specification of the password derivation nalgorithm type.</param>
         /// <param name="algorithm">Algorithm that is checked for type correctness.</param>
+        /// <param name="algorithmType">Specification of the password derivation nalgorithm type.</param>
         public static bool IsCorrectPasswordAlgorithm(DeriveBytes algorithm, PasswordAlgorithmType algorithmType)
         {
             switch (algorithmType)
@@ -345,7 +345,7 @@ namespace IG.Crypto
 
         /// <summary>Returns length of the hashRet value, in bytes, for the specified hashRet algorithm.
         /// <para>-1 is returned if the length is not known.</para></summary>
-        /// <param name="HashAlgorithmType">Type of the hashing algorithm.</param>
+        /// <param name="hashType">Type of the hashing algorithm.</param>
         public static int GetHashLengthBytes(HashType hashType)
         {
             switch (hashType)
@@ -364,7 +364,7 @@ namespace IG.Crypto
 
         /// <summary>Returns length of the HEXADECIMAL hashRet string for the specified hashRet algorithm.
         /// <para>-1 is returned if the length is not known.</para></summary>
-        /// <param name="HashAlgorithmType">Type of the hashing algorithm.</param>
+        /// <param name="hashType">Type of the hashing algorithm.</param>
         public static int GetHashLengthHex(HashType hashType)
         {
             int length = GetHashLengthBytes(hashType);
@@ -398,7 +398,7 @@ namespace IG.Crypto
 
 
         /// <summary>Returns a <see cref="HashType"/> value corresponding to the specified string representation.</summary>
-        /// <param name="flagString">String that represents the hashRet type.</param>
+        /// <param name="typeString">String that represents the hashRet type.</param>
         public static HashType GetHashType(string typeString)
         {
             if (typeString != null)
@@ -452,7 +452,7 @@ namespace IG.Crypto
 
 
         /// <summary>Returns standard string representation of the specified hashRet type.</summary>
-        /// <param name="HashAlgorithmType">Hash type whose string representation is returned.</param>
+        /// <param name="hashType">Hash type whose string representation is returned.</param>
         public static string HashTypeToString(HashType hashType)
         {
             switch (hashType)
@@ -475,7 +475,7 @@ namespace IG.Crypto
 
         /// <summary>Returns the appropriate hashRet algorithm according to the specified hashRet type, or null 
         /// if the type is not recognized or the method is not implemented for that type.</summary>
-        /// <param name="HashAlgorithmType">Specification of the hashRet algorithm type.</param>
+        /// <param name="hashType">Specification of the hashRet algorithm type.</param>
         public static HashAlgorithm GetHashAlgorithm(HashType hashType)
         {
             switch (hashType)
@@ -495,7 +495,7 @@ namespace IG.Crypto
 
         /// <summary>Returns true if the specified cryptographic hashRet algorithm corresponds the type specification, false otherwise.
         /// <para>If the specified algorithm is null or the specified type is unknown then false is returned.</para></summary>
-        /// <param name="flag">Specification of the cryptographic hashRet algorithm type.</param>
+        /// <param name="algorithmType">Specification of the cryptographic hashRet algorithm type.</param>
         /// <param name="algorithm">Algorithm that is checked for type correctness.</param>
         public static bool IsCorrectHashAlgorithm(HashAlgorithm algorithm, HashType algorithmType)
         {
@@ -523,7 +523,7 @@ namespace IG.Crypto
         /// <para>File must be in the standard format where each line contains a hashRet value and the path to 
         /// the corresponding file separated from hashRet value by one or more spaces.</para>
         /// <para>List is allocated if necessary. Eventual existent pairs on the list are not affected.</para></summary>
-        /// <param name="inputFilePath">Path to the file that is parsed.</param>
+        /// <param name="filePath">Path to the file that is parsed.</param>
         /// <param name="hashList">List to which which parsed pairs {hashRet, inputFilePath} are added in form of arrays of 2 strings.</param>
         /// <remarks><para>Example contents of the file: </para>
         /// <para>595f44fec1e92a71d3e9e77456ba80d1  filetohashA.txt</para>
@@ -642,7 +642,7 @@ namespace IG.Crypto
         /// <summary>Computes and returns the hashRet (in form of byte array) of the specified kind of the specified byte array.
         /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
         /// <param name="bytesToHash">Byte array whose hashRet string is calculated.</param>
-        /// <param name="HashAlgorithmType">Specifies the type of the hashing algorithm to be used.</param>
+        /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static byte[] GetHashBytes(byte[] bytesToHash, HashType hashType, HashAlgorithm cryptoAlgorithm = null)
@@ -667,7 +667,7 @@ namespace IG.Crypto
         /// <summary>Computes and returns the hashRet string of the specified kind of the specified byte array.
         /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
         /// <param name="bytesToHash">Byte array whose hashRet string is calculated.</param>
-        /// <param name="HashAlgorithmType">Specifies the type of the hashing algorithm to be used.</param>
+        /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static string GetHashHex(byte[] bytesToHash, HashType hashType, HashAlgorithm cryptoAlgorithm = null)
@@ -714,10 +714,10 @@ namespace IG.Crypto
         /// <para>Returns true if the hashRet value matches the hashRet value of the byte array, and false otherwise.</para>
         /// </summary>
         /// <param name="bytesToCheck">String whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose correctness is checked.</param>
-        /// <param name="HashAlgorithmType">Type of the hashRet value that is checked.</param>
-        /// <returns>True if the specified hashRet <paramref name="HashValue"/> actually matches the hashRet value
-        /// of the type <paramref name="HashAlgorithmType"/> of the verified string <paramref name="bytesToCheck"/>, or
+        /// <param name="hashValue">Supposed hashRet value whose correctness is checked.</param>
+        /// <param name="hashAlgorithmType">Type of the hashRet value that is checked.</param>
+        /// <returns>True if the specified hashRet <paramref name="hashValue"/> actually matches the hashRet value
+        /// of the type <paramref name="hashAlgorithmType"/> of the verified string <paramref name="bytesToCheck"/>, or
         /// false otherwise.</returns>
         public static bool CheckHashHex(byte[] bytesToCheck, string hashValue, HashType hashAlgorithmType)
         {
@@ -735,7 +735,7 @@ namespace IG.Crypto
         /// supported type of the string.</para>
         /// </summary>
         /// <param name="bytesToCheck">String whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose match with the specified string is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose match with the specified string is checked.</param>
         /// <returns>Type of the hashRet value that matches the specified hashRet value of the specified string, 
         /// or <see cref="HashType.None"/> if the specified hashRet value doesn't match the hashRet value of any
         /// supported type of the specified string.</returns>
@@ -764,7 +764,7 @@ namespace IG.Crypto
         /// <summary>Computes and returns the hashRet string of the specified kind of the specified string.
         /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
         /// <param name="stringToHash">String whose hashRet string is calculated.</param>
-        /// <param name="HashAlgorithmType">Specifies the type of the hashing algorithm to be used.</param>
+        /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
         public static byte[] GetStringHashBytes(string stringToHash, HashType hashType = HashType.Default, HashAlgorithm cryptoAlgorithm = null)
@@ -783,7 +783,7 @@ namespace IG.Crypto
         /// <summary>Computes and returns the hashRet string of the specified kind of the specified string.
         /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
         /// <param name="stringToHash">String whose hashRet string is calculated.</param>
-        /// <param name="HashAlgorithmType">Specifies the type of the hashing algorithm to be used.</param>
+        /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
         public static string GetStringHashHex(string stringToHash, HashType hashType = HashType.Default, HashAlgorithm cryptoAlgorithm = null)
@@ -864,7 +864,7 @@ namespace IG.Crypto
         /// number of repetitions of the salted hashing algoriithm.
         /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
         /// <param name="stringToHash">String whose salted hashRet is to be computed.</param>
-        /// <param name="HashAlgorithmType">Type of hashing algorithm used.</param>
+        /// <param name="hashType">Type of hashing algorithm used.</param>
         /// <param name="salt">Salt string.</param>
         /// <param name="numIterations">Optional number of iterations. If hreater than 0 then hashing algorithm is
         /// reapplied to the salted result of the previous computation for the specified number of time.</param>
@@ -918,7 +918,7 @@ namespace IG.Crypto
         /// number of repetitions of the salted hashing algoriithm.
         /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
         /// <param name="stringToHash">String whose salted hashRet is to be computed.</param>
-        /// <param name="HashAlgorithmType">Type of hashing algorithm used.</param>
+        /// <param name="hashType">Type of hashing algorithm used.</param>
         /// <param name="salt">Salt string.</param>
         /// <param name="numIterations">Optional number of iterations. If hreater than 0 then hashing algorithm is
         /// reapplied to the salted result of the previous computation for the specified number of time.</param>
@@ -1009,11 +1009,11 @@ namespace IG.Crypto
         /// <summary>Chechs the specified type of hashRet value of a string.
         /// <para>Returns true if the hashRet value matches the hashRet value of the string, and false otherwise.</para>
         /// </summary>
-        /// <param name="bytesToCheck">String whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose correctness is checked.</param>
-        /// <param name="HashAlgorithmType">Type of the hashRet value that is checked.</param>
-        /// <returns>True if the specified hashRet <paramref name="HashValue"/> actually matches the hashRet value
-        /// of the type <paramref name="HashAlgorithmType"/> of the verified string <paramref name="bytesToCheck"/>, or
+        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose correctness is checked.</param>
+        /// <param name="hashAlgorithmType">Type of the hashRet value that is checked.</param>
+        /// <returns>True if the specified hashRet <paramref name="hashValue"/> actually matches the hashRet value
+        /// of the type <paramref name="hashAlgorithmType"/> of the verified string <paramref name="stringToCheck"/>, or
         /// false otherwise.</returns>
         public static bool CheckStringHashHex(string stringToCheck, string hashValue, HashType hashAlgorithmType)
         {
@@ -1029,8 +1029,8 @@ namespace IG.Crypto
         /// or <see cref="HashType.None"/> if the specified hashRet value doesn't match the hashRet value of any
         /// supported type of the string.</para>
         /// </summary>
-        /// <param name="bytesToCheck">String whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose match with the specified string is checked.</param>
+        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose match with the specified string is checked.</param>
         /// <returns>Type of the hashRet value that matches the specified hashRet value of the specified string, 
         /// or <see cref="HashType.None"/> if the specified hashRet value doesn't match the hashRet value of any
         /// supported type of the specified string.</returns>
@@ -1071,8 +1071,8 @@ namespace IG.Crypto
         /// of the specified string.
         /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
         /// the string, and false otherwise.</para></summary>
-        /// <param name="bytesToCheck">String whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
+        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
         /// <returns>True if the specified hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckStringHashMd5Hex(string stringToCheck, string hashValue)
         {
@@ -1083,8 +1083,8 @@ namespace IG.Crypto
         /// of the specified string.
         /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
         /// the string, and false otherwise.</para></summary>
-        /// <param name="bytesToCheck">String whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
+        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
         /// <returns>True if the specified hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckStringHashSha1Hex(string stringToCheck, string hashValue)
         {
@@ -1095,8 +1095,8 @@ namespace IG.Crypto
         /// of the specified string.
         /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
         /// the string, and false otherwise.</para></summary>
-        /// <param name="bytesToCheck">String whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
+        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
         /// <returns>True if the specified hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckStringHashSha256Hex(string stringToCheck, string hashValue)
         {
@@ -1107,8 +1107,8 @@ namespace IG.Crypto
         /// of the specified string.
         /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
         /// the string, and false otherwise.</para></summary>
-        /// <param name="bytesToCheck">String whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
+        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
         /// <returns>True if the specified hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckStringHashSha512Hex(string stringToCheck, string hashValue)
         {
@@ -1123,8 +1123,8 @@ namespace IG.Crypto
 
 
         /// <summary>Computes and returns the hashRet (in form of byte array) of specified type of the specified stream.</summary>
-        /// <param name="inputFilePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
-        /// <param name="HashAlgorithmType">Specifies the type of the hashing algorithm to be used.</param>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static byte[] GetFileHashBytes(string filePath, HashType hashType, HashAlgorithm cryptoAlgorithm = null)
@@ -1140,8 +1140,8 @@ namespace IG.Crypto
         }
 
         /// <summary>Computes and returns the hashRet string of specified type of the specified stream.</summary>
-        /// <param name="inputFilePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
-        /// <param name="HashAlgorithmType">Specifies the type of the hashing algorithm to be used.</param>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static string GetFileHashHex(string filePath, HashType hashType, HashAlgorithm cryptoAlgorithm = null)
@@ -1157,7 +1157,7 @@ namespace IG.Crypto
         }
 
         /// <summary>Computes and returns the MD5 hashRet string of the specified stream.</summary>
-        /// <param name="inputFilePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static string GetFileHashMd5Hex(string filePath, HashAlgorithm cryptoAlgorithm = null)
@@ -1173,7 +1173,7 @@ namespace IG.Crypto
         }
 
         /// <summary>Computes and returns the SHA1 hashRet string of the specified stream.</summary>
-        /// <param name="inputFilePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static string GetFileHashSha1Hex(string filePath, HashAlgorithm cryptoAlgorithm = null)
@@ -1189,7 +1189,7 @@ namespace IG.Crypto
         }
 
         /// <summary>Computes and returns the SHA256 hashRet string of the specified stream.</summary>
-        /// <param name="inputFilePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static string GetFileHashSha256Hex(string filePath, HashAlgorithm cryptoAlgorithm = null)
@@ -1205,7 +1205,7 @@ namespace IG.Crypto
         }
 
         /// <summary>Computes and returns the SHA512 hashRet string of the specified stream.</summary>
-        /// <param name="inputFilePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static string GetFileHashSha512Hex(string filePath, HashAlgorithm cryptoAlgorithm = null)
@@ -1224,7 +1224,7 @@ namespace IG.Crypto
 
         /// <summary>Computes and returns the hashRet (in form of byte array) of specified type of the specified stream.</summary>
         /// <param name="stream">Stream whose contents' cryptographic hashRet is calculated.</param>
-        /// <param name="HashAlgorithmType">Type of the hashRet algorithm used.</param>
+        /// <param name="hashType">Type of the hashRet algorithm used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
         public static byte[] GetHashBytes(Stream stream, HashType hashType, HashAlgorithm cryptoAlgorithm = null)
@@ -1243,7 +1243,7 @@ namespace IG.Crypto
 
         /// <summary>Computes and returns the hexadecimal hashRet string of specified type of the specified stream.</summary>
         /// <param name="stream">Stream whose contents' cryptographic hashRet is calculated.</param>
-        /// <param name="HashAlgorithmType">Type of the hashRet algorithm used.</param>
+        /// <param name="hashType">Type of the hashRet algorithm used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
         public static string GetHashHex(Stream stream, HashType hashType, HashAlgorithm cryptoAlgorithm = null)
@@ -1344,11 +1344,12 @@ namespace IG.Crypto
         /// <summary>Chechs the specified type of hashRet value of a file.
         /// <para>Returns true if the specified hashRet value matches the hashRet value of the file, and false otherwise.</para>
         /// </summary>
-        /// <param name="inputFilePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose correctness is checked.</param>
-        /// <param name="HashAlgorithmType">Type of the hashRet value that is checked.</param>
-        /// <returns>True if the specified hashRet <paramref name="HashValue"/> actually matches the hashRet value
-        /// of the type <paramref name="HashAlgorithmType"/> of the verified file <paramref name="inputFilePath"/>, or
+        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose correctness is checked.</param>
+        /// <param name="hashType">Type of the hashRet value that is checked.</param>
+        /// <param name="cryptoAlgorithm">Hasihing algoriithm to be used.</param>
+        /// <returns>True if hashType specified hashRet <paramref name="hashValue"/> actually matches the hashRet value
+        /// of the type <paramref name="hashType"/> of the verified file <paramref name="filePath"/>, or
         /// false otherwise.</returns>
         public static bool CheckFileHashHex(string filePath, string hashValue, HashType hashType, HashAlgorithm cryptoAlgorithm = null)
         {
@@ -1368,8 +1369,8 @@ namespace IG.Crypto
         /// or <see cref="HashType.None"/> if the specified hashRet value doesn't match the hashRet value of any
         /// supported type of the specified file.</para>
         /// </summary>
-        /// <param name="inputFilePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose match with the specified file is checked.</param>
+        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose match with the specified file is checked.</param>
         /// <returns>Type of the hashRet value that matches the specified hashRet value of the specified file, 
         /// or <see cref="HashType.None"/> if the specified hashRet value doesn't match the hashRet value of any
         /// supported type of the specified file.</returns>
@@ -1392,8 +1393,8 @@ namespace IG.Crypto
         /// of the specified file.
         /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
         /// the file, and false otherwise.</para></summary>
-        /// <param name="inputFilePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
+        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
         /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashMd5Hex(string filePath, string hashValue)
         {
@@ -1404,8 +1405,8 @@ namespace IG.Crypto
         /// of the specified file.
         /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
         /// the file, and false otherwise.</para></summary>
-        /// <param name="inputFilePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
+        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
         /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashSha1Hex(string filePath, string hashValue)
         {
@@ -1416,8 +1417,8 @@ namespace IG.Crypto
         /// of the specified file.
         /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
         /// the file, and false otherwise.</para></summary>
-        /// <param name="inputFilePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
+        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
         /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashSha256Hex(string filePath, string hashValue)
         {
@@ -1428,8 +1429,8 @@ namespace IG.Crypto
         /// of the specified file.
         /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
         /// the file, and false otherwise.</para></summary>
-        /// <param name="inputFilePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="HashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
+        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
+        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
         /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashSha512Hex(string filePath, string hashValue)
         {
@@ -1524,7 +1525,7 @@ namespace IG.Crypto
         /// <summary>Returns the <see cref="SymmetricAlgorithmType"/> value corresponding to the specified string.
         /// <para>This function enables selection of algorithms with strings that can have arbitrary capitalization
         /// of their letters, and are thus friendly for user insertion.</para></summary>
-        /// <param name="flagString">String that represents the symmetric encryption algorithm type.</param> 
+        /// <param name="typeString">String that represents the symmetric encryption algorithm type.</param> 
         public static SymmetricAlgorithmType GetSymmetricAlgorithmType(string typeString)
         {
             try
@@ -1582,7 +1583,7 @@ namespace IG.Crypto
         }
 
         /// <summary>Returns standard string representation of the specified symmetric encryption algorithm type.</summary>
-        /// <param name="flag">Symmetric encryption algorithm type whose string representation is returned.</param>
+        /// <param name="algorithmType">Symmetric encryption algorithm type whose string representation is returned.</param>
         public static string SymmetricAlgorithmTypeToString(SymmetricAlgorithmType algorithmType)
         {
             switch (algorithmType)
@@ -1606,7 +1607,7 @@ namespace IG.Crypto
 
         /// <summary>Returns the appropriate symmetric encryption algorithm according to the specified hashRet type, or null 
         /// if the type is not recognized or the method is not implemented for that type.</summary>
-        /// <param name="flag">Specification of the symmetric encryption algorithm type.</param>
+        /// <param name="algorithmType">Specification of the symmetric encryption algorithm type.</param>
         public static SymmetricAlgorithm GetSymmetricEncryptionAlgorithm(SymmetricAlgorithmType algorithmType)
         {
             switch (algorithmType)
@@ -1628,7 +1629,7 @@ namespace IG.Crypto
 
         /// <summary>Returns true if the specified symmetric encryption algorithm corresponds the type specification, false otherwise.
         /// <para>If the specified algorithm is null or the specified type is unknown then false is returned.</para></summary>
-        /// <param name="flag">Specification of the symmetric encryption algorithm type.</param>
+        /// <param name="algorithmType">Specification of the symmetric encryption algorithm type.</param>
         /// <param name="algorithm">Algorithm that is checked for type correctness.</param>
         public static bool IsCorrectSymmetricEncryptionAlgorithm(SymmetricAlgorithm algorithm, SymmetricAlgorithmType algorithmType)
         {
@@ -1942,13 +1943,17 @@ namespace IG.Crypto
         /// <summary>Prepares the symmetric algorithm, initialization vector, and key before encryption or decryption takes place.
         /// <para>Creates the algorithm if necessary, changes algorithm parameters (such as key size) when applicable,
         /// and checks and corrects the key and initialization vector, if necessary.</para></summary>
+        /// <param name="passwordBytes">Password used.</param>
+        /// <param name="passwordSalt">Password salt used.</param>
         /// <param name="key">Key used. Method checks that the key is of correct size and corrects it when necessary.</param>
         /// <param name="IV">Initialization vector used. Method checks that it is consistent with the algorithm's block size 
         /// and corrects it if it is not.</param>
-        /// <param name="flag">Algorithm type. If the algorithm is not specified then it is created anew according 
+        /// <param name="algorithmType">Algorithm type. If the algorithm is not specified then it is created anew according 
         /// to this parameter.</param>
         /// <param name="algorithm">Algorithm used for encryption. If null it is created. If specified then it
-        /// is checked that it corresponds to the type specified by <typeparamref name="flag"/>.</param>
+        /// is checked that it corresponds to the type specified by <paramref name="algorithmType"/>.</param>
+        /// <param name="pwdType">Type of the password algorrithm.</param>
+        /// <param name="pwdNumIterations">Number of iterations for the password transformation algortgm.</param>
         /// <param name="useLargestKey">If true then algorithm parameters are set (if necessary) in such a way that the 
         /// largest hey length supported by the algorithm is used.</param>
         /// <param name="useLargestBlock">If true then algorithm parameters are set (if necessary) in such a way that the 
@@ -1996,17 +2001,17 @@ namespace IG.Crypto
         /// <para>If algorithm is specified then the key and initialization vector can be generated by the algorithm
         /// and retrieved from the algorithm after the call.</para></summary>
         /// <param name="data">Data to be encrypted.</param>
-        /// <param name="key">Secret key used to encrypt the data.
+        /// <param name="passwordBytes">Password used to generate a secred key used to encrypt the data.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
-        /// advised that the vecor is randomly generated for each session or each encryption.
-        /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
+        /// <param name="passwordSalt">Password salt, added to the password when transformed.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
         /// <param name="algorithm">Algoritgm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
         /// <para>If not specified then it is generated anew.</para></param>
-        /// <param name="SaltBytes">Salt that is prepended the data before encryption.</param>
+        /// <param name="saltBytes">Salt that is prepended the data before encryption.</param>
+        /// <param name="pwdType">Type of the algorithm used to transform the password.</param>
+        /// <param name="pwdNumIterations">Number of iteration of the password algoriithm.</param>
         /// <param name="useLargestKey">If true then algorithm is eventually modified in such a way that it uses the largest
         /// possible key size.</param>
         /// <param name="useLargestBlock">If true then algorithm is eventually modified in such a way that it uses the largest
@@ -2035,19 +2040,19 @@ namespace IG.Crypto
         /// <para>If algorithm is specified then the key and initialization vector can be generated by the algorithm
         /// and retrieved from the algorithm after the call.</para></summary>
         /// <param name="data">Data to be decrypted.</param>
-        /// <param name="key">Secret key used to decrypt the data.
+        /// <param name="passwordBytes">Password used to generate a secred key used to encrypt the data.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
-        /// advised that the vecor is randomly generated for each session or each encryption.
-        /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
-        /// <param name="algorithm">Algoritgm used. 
+        /// <param name="passwordSalt">Password salt, added to the password when transformed.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
+        /// <param name="algorithm"> Algoritgm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
         /// <para>If not specified then it is generated anew.</para></param>
+        /// <param name="numSaltBytes">Length of salt, which must be accounted for when decrypting.</param>
+        /// <param name="pwdType">Password algorithm type.</param>
+        /// <param name="pwdNumIterations">Number of iterations performed by the password algorithm.</param>
         /// <param name="useLargestKey">If true then algorithm is eventually modified in such a way that it uses the largest
         /// possible key size.</param>
-        /// <param name="numSaltBytes">Length of salt, which must be accounted for when decrypting.</param>
         /// <param name="useLargestBlock">If true then algorithm is eventually modified in such a way that it uses the largest
         /// possible block size.</param>
         /// <returns>Decrypted data as byte array.</returns>
@@ -2068,12 +2073,14 @@ namespace IG.Crypto
         /// <summary>Encrypts the specified string, using the specified symmetric algorithm, key, and initialization vector,
         /// and returns the ToBase64 string representation of the encrypted bytes.</summary>
         /// <param name="stringToEncrypt">String that is encrypted.</param>
-        /// <param name="key">Secret key used in encryption.</param>
-        /// <param name="initializationVector">Initialization vector used in encryption. Necessary for stronger encryption 
-        /// (othervise repeating input blocks would cause repeating output blocks).</param>
-        /// <param name="flag">Type of the algorithm used.</param>
-        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <param name="flag", or null.</param>
-        /// <param name="SaltBytes">Salt that is prepended the data before encryption.</param>
+        /// <param name="passwordBytes">Password used to generate a secred key used to encrypt the data.
+        /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
+        /// <param name="passwordSalt">Password salt, added to the password when transformed.</param>
+        /// <param name="algorithmType">Type of the algorithm used for enxryption.</param>
+        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <paramref name="algorithmType"></paramref>, or null.</param>
+        /// <param name="saltBytes">Salt that is prepended the data before encryption.</param>
+        /// <param name="pwdType">Password algorithm type.</param>
+        /// <param name="pwdNumIterations">Number of iterations performed by the password algorithm.</param>
         /// <param name="useLargestKey">If true then the algorithm will be modified in such a way that it uses the largest 
         /// possible key for this kind of algorithm.</param>
         /// <param name="useLargestBlock">If true then the algorithm will be modified in such a way that it uses the largest 
@@ -2099,14 +2106,16 @@ namespace IG.Crypto
 
         /// <summary>Derypts the specified string from encryted byte array, using the specified symmetric algorithm, key, and initialization vector.</summary>
         /// <param name="cipherText">Base64 string representation of the byte array containing the encrypted original string.</param>
-        /// <param name="key">Secret key used in encryption.</param>
-        /// <param name="initializationVector">Initialization vector used in encryption. Necessary for stronger encryption 
-        /// (othervise repeating input blocks would cause repeating output blocks).</param>
-        /// <param name="flag">Type of the algorithm used.</param>
-        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <param name="flag", or null.</param>
+        /// <param name="passwordBytes">Password used to generate a secred key used to encrypt the data.
+        /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
+        /// <param name="passwordSalt">Password salt, added to the password when transformed.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
+        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <paramref name="algorithmType"/>, or null.</param>
         /// <param name="numSaltBytes">Length of salt, which must be accounted for when decrypting.</param>
         /// <param name="useLargestKey">If true then the algorithm will be modified in such a way that it uses the largest 
         /// possible key for this kind of algorithm.</param>
+        /// <param name="pwdType">Password algorithm that henerated key from the password.</param>
+        /// <param name="pwdNumIterations">Number fo iteration of the password algorithm.</param>
         /// <param name="useLargestBlock">If true then the algorithm will be modified in such a way that it uses the largest 
         /// possible block for this kind of algorithm.</param>
         /// <returns>Original string, provided that input arguments are correct.</returns>
@@ -2135,20 +2144,20 @@ namespace IG.Crypto
         /// <para>If algorithm is specified then the key and initialization vector can be generated by the algorithm
         /// and retrieved from the algorithm after the call.</para></summary>
         /// <param name="inputFilePath">Path to the input file from which data is encrypted. The file must be exist and  be readable.</param>
-        /// <param name="deletedFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
+        /// <param name="outputFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
         /// wasOverwritten if it already exists.</param>
-        /// <param name="key">Secret key used to encrypt the data.
-        /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
-        /// advised that the vecor is randomly generated for each session or each encryption.
-        /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
+        /// <param name="passwordBytes">Password, as byte array.</param>
+        /// <param name="passwordSalt">Password salt, as byte array.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
         /// <param name="algorithm">Algoritgm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
         /// <para>If not specified then it is generated anew.</para></param>
+        /// <param name="saltBytes">Salt, as byte array.</param>
         /// <param name="bufferSize">Size of the intermediate buffer through which we read from input and write to output stream.
         /// Buffer makes possible to work on very large streams efficiently.</param>
+        /// <param name="pwdType">Password algorithm type.</param>
+        /// <param name="pwdNumIterations">Number of iterations performed by the password algorithm.</param>
         /// <param name="useLargestKey">If true then algorithm is eventually modified in such a way that it uses the largest
         /// possible key size.</param>
         /// <param name="useLargestBlock">If true then algorithm is eventually modified in such a way that it uses the largest
@@ -2179,19 +2188,19 @@ namespace IG.Crypto
         /// <para>If algorithm is specified then the key and initialization vector can be generated by the algorithm
         /// and retrieved from the algorithm after the call.</para></summary>
         /// <param name="inputFilePath">Path to the input file from which data is encrypted. The file must be exist and  be readable.</param>
-        /// <param name="deletedFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
+        /// <param name="outputFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
         /// wasOverwritten if it already exists.</param>
-        /// <param name="key">Secret key used to encrypt the data.
-        /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
-        /// advised that the vecor is randomly generated for each session or each encryption.
-        /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
+        /// <param name="passwordBytes">Password, as byte array.</param>
+        /// <param name="passwordSalt">Password salt, as byte array.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
         /// <param name="algorithm">Algoritgm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
         /// <para>If not specified then it is generated anew.</para></param>
+        /// <param name="numSaltBytes">Length of salt, which must be accounted for when decrypting.</param>
         /// <param name="bufferSize">Size of the intermediate buffer through which we read from input and write to output stream.
+        /// <param name="pwdType">Password algorithm type.</param>
+        /// <param name="pwdNumIterations">Number of iterations performed by the password algorithm.</param>
         /// Buffer makes possible to work on very large streams efficiently.</param>
         /// <param name="useLargestKey">If true then algorithm is eventually modified in such a way that it uses the largest
         /// possible key size.</param>
@@ -2233,10 +2242,10 @@ namespace IG.Crypto
         /// <param name="key">Key used. Method checks that the key is of correct size and corrects it when necessary.</param>
         /// <param name="IV">Initialization vector used. Method checks that it is consistent with the algorithm's block size 
         /// and corrects it if it is not.</param>
-        /// <param name="flag">Algorithm type. If the algorithm is not specified then it is created anew according 
+        /// <param name="algorithmType">Algorithm type. If the algorithm is not specified then it is created anew according 
         /// to this parameter.</param>
         /// <param name="algorithm">Algorithm used for encryption. If null it is created. If specified then it
-        /// is checked that it corresponds to the type specified by <typeparamref name="flag"/>.</param>
+        /// is checked that it corresponds to the type specified by <paramref name="algorithmType"/>.</param>
         /// <param name="useLargestKey">If true then algorithm parameters are set (if necessary) in such a way that the 
         /// largest hey length supported by the algorithm is used.</param>
         /// <param name="useLargestBlock">If true then algorithm parameters are set (if necessary) in such a way that the 
@@ -2322,12 +2331,12 @@ namespace IG.Crypto
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
         /// advised that the vecor is randomly generated for each session or each encryption.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
         /// <param name="algorithm">Algoritgm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
         /// <para>If not specified then it is generated anew.</para></param>
-        /// <param name="SaltBytes">Salt that is prepended the data before encryption.</param>
+        /// <param name="saltBytes">Salt that is prepended the data before encryption.</param>
         /// <param name="useLargestKey">If true then algorithm is eventually modified in such a way that it uses the largest
         /// possible key size.</param>
         /// <param name="useLargestBlock">If true then algorithm is eventually modified in such a way that it uses the largest
@@ -2378,7 +2387,7 @@ namespace IG.Crypto
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
         /// advised that the vecor is randomly generated for each session or each encryption.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
         /// <param name="algorithm">Algoritgm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
@@ -2470,12 +2479,12 @@ namespace IG.Crypto
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
         /// advised that the vecor is randomly generated for each session or each encryption.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
         /// <param name="algorithm">Algoritgm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
         /// <para>If not specified then it is generated anew.</para></param>
-        /// <param name="SaltBytes">Salt that is prepended the data before encryption.</param>
+        /// <param name="saltBytes">Salt that is prepended the data before encryption.</param>
         /// <param name="useLargestKey">If true then algorithm is eventually modified in such a way that it uses the largest
         /// possible key size.</param>
         /// <param name="useLargestBlock">If true then algorithm is eventually modified in such a way that it uses the largest
@@ -2513,7 +2522,7 @@ namespace IG.Crypto
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
         /// advised that the vecor is randomly generated for each session or each encryption.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
         /// <param name="algorithm">Algoritgm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
@@ -2551,9 +2560,9 @@ namespace IG.Crypto
         /// <param name="key">Secret key used in encryption.</param>
         /// <param name="initializationVector">Initialization vector used in encryption. Necessary for stronger encryption 
         /// (othervise repeating input blocks would cause repeating output blocks).</param>
-        /// <param name="flag">Type of the algorithm used.</param>
-        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <param name="flag", or null.</param>
-        /// <param name="SaltBytes">Salt that is prepended the data before encryption.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
+        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <paramref name="algorithmType"/>, or null.</param>
+        /// <param name="saltBytes">Salt that is prepended the data before encryption.</param>
         /// <param name="useLargestKey">If true then the algorithm will be modified in such a way that it uses the largest 
         /// possible key for this kind of algorithm.</param>
         /// <param name="useLargestBlock">If true then the algorithm will be modified in such a way that it uses the largest 
@@ -2575,8 +2584,8 @@ namespace IG.Crypto
         /// <param name="key">Secret key used in encryption.</param>
         /// <param name="initializationVector">Initialization vector used in encryption. Necessary for stronger encryption 
         /// (othervise repeating input blocks would cause repeating output blocks).</param>
-        /// <param name="flag">Type of the algorithm used.</param>
-        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <param name="flag", or null.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
+        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <paramref name="algorithmType"/>, or null.</param>
         /// <param name="numSaltBytes">Length of salt, which must be accounted for when decrypting.</param>
         /// <param name="useLargestKey">If true then the algorithm will be modified in such a way that it uses the largest 
         /// possible key for this kind of algorithm.</param>
@@ -2597,9 +2606,9 @@ namespace IG.Crypto
         /// <param name="key">Secret key used in encryption.</param>
         /// <param name="initializationVector">Initialization vector used in encryption. Necessary for stronger encryption 
         /// (othervise repeating input blocks would cause repeating output blocks).</param>
-        /// <param name="flag">Type of the algorithm used.</param>
-        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <param name="flag", or null.</param>
-        /// <param name="SaltBytes">Salt that is prepended the data before encryption.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
+        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <paramref name="algorithmType"/>, or null.</param>
+        /// <param name="saltBytes">Salt that is prepended the data before encryption.</param>
         /// <param name="useLargestKey">If true then the algorithm will be modified in such a way that it uses the largest 
         /// possible key for this kind of algorithm.</param>
         /// <param name="useLargestBlock">If true then the algorithm will be modified in such a way that it uses the largest 
@@ -2627,8 +2636,8 @@ namespace IG.Crypto
         /// <param name="key">Secret key used in encryption.</param>
         /// <param name="initializationVector">Initialization vector used in encryption. Necessary for stronger encryption 
         /// (othervise repeating input blocks would cause repeating output blocks).</param>
-        /// <param name="flag">Type of the algorithm used.</param>
-        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <param name="flag", or null.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
+        /// <param name="algorithm">Agorithm used for encryption. Must be consistend with <paramref name="algorithmType"/>, or null.</param>
         /// <param name="numSaltBytes">Length of salt, which must be accounted for when decrypting.</param>
         /// <param name="useLargestKey">If true then the algorithm is modified (if necessary) in 
         /// such a way that the largest possible key size is used.</param>
@@ -2673,11 +2682,12 @@ namespace IG.Crypto
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
         /// advised that the vecor is randomly generated for each session or each encryption.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
         /// <param name="algorithm">Algoritgm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
         /// <para>If not specified then it is generated anew.</para></param>
+        /// <param name="saltBytes">Salt added to encrypted data.</param>
         /// <param name="bufferSize">Size of the intermediate buffer through which we read from input and write to output stream.
         /// Buffer makes possible to work on very large streams efficiently.</param>
         /// <param name="useLargestKey">If true then algorithm is eventually modified in such a way that it uses the largest
@@ -2744,11 +2754,12 @@ namespace IG.Crypto
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
         /// advised that the vecor is randomly generated for each session or each encryption.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
-        /// <param name="algorithm">Algoritgm used. 
+        /// <param name="algorithmType">Type of the algorithm used.</param>
+        /// <param name="algorithm">Algorithm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
         /// <para>If not specified then it is generated anew.</para></param>
+        /// <param name="numSaltBytes">Length of the salt that is added to the encrypted data.</param>
         /// <param name="bufferSize">Size of the intermediate buffer through which we read from input and write to output stream.
         /// Buffer makes possible to work on very large streams efficiently.</param>
         /// <param name="useLargestKey">If true then algorithm is eventually modified in such a way that it uses the largest
@@ -2862,18 +2873,19 @@ namespace IG.Crypto
         /// <para>If algorithm is specified then the key and initialization vector can be generated by the algorithm
         /// and retrieved from the algorithm after the call.</para></summary>
         /// <param name="inputFilePath">Path to the input file from which data is encrypted. The file must be exist and  be readable.</param>
-        /// <param name="deletedFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
+        /// <param name="outputFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
         /// wasOverwritten if it already exists.</param>
         /// <param name="key">Secret key used to encrypt the data.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
         /// advised that the vecor is randomly generated for each session or each encryption.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
         /// <param name="algorithm">Algoritgm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
         /// <para>If not specified then it is generated anew.</para></param>
+        /// <param name="saltBytes">Salt that is added to data before encryption.</param>
         /// <param name="bufferSize">Size of the intermediate buffer through which we read from input and write to output stream.
         /// Buffer makes possible to work on very large streams efficiently.</param>
         /// <param name="useLargestKey">If true then algorithm is eventually modified in such a way that it uses the largest
@@ -2909,18 +2921,19 @@ namespace IG.Crypto
         /// <para>If algorithm is specified then the key and initialization vector can be generated by the algorithm
         /// and retrieved from the algorithm after the call.</para></summary>
         /// <param name="inputFilePath">Path to the input file from which data is encrypted. The file must be exist and  be readable.</param>
-        /// <param name="deletedFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
+        /// <param name="outputFilePath">Path to the output file to which encrypted data is written. The file must be writable and will be
         /// wasOverwritten if it already exists.</param>
         /// <param name="key">Secret key used to encrypt the data.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
         /// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
         /// advised that the vecor is randomly generated for each session or each encryption.
         /// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        /// <param name="flag">Type of the algorithm used.</param>
+        /// <param name="algorithmType">Type of the algorithm used.</param>
         /// <param name="algorithm">Algoritgm used. 
         /// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         /// to the specified type.</para>
         /// <para>If not specified then it is generated anew.</para></param>
+        /// <param name="numSaltBytes">Length of the salt that is added to the data befoe encryption.</param>
         /// <param name="bufferSize">Size of the intermediate buffer through which we read from input and write to output stream.
         /// Buffer makes possible to work on very large streams efficiently.</param>
         /// <param name="useLargestKey">If true then algorithm is eventually modified in such a way that it uses the largest
@@ -2973,7 +2986,7 @@ namespace IG.Crypto
         ///// <param name="data"></param>
         ///// <param name="key"></param>
         ///// <param name="IV"></param>
-        ///// <param name="flag"></param>
+        ///// <param name="algorithmType"></param>
         ///// <param name="useLargestKey"></param>
         ///// <param name="useLargestBlock"></param>
         ///// <returns></returns>
@@ -3009,7 +3022,7 @@ namespace IG.Crypto
         ///// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
         ///// advised that the vecor is randomly generated for each session or each encryption.
         ///// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        ///// <param name="flag">Type of the algorithm used.</param>
+        ///// <param name="algorithmType">Type of the algorithm used.</param>
         ///// <param name="algorithm">Algoritgm used. 
         ///// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         ///// to the specified type.</para>
@@ -3109,7 +3122,7 @@ namespace IG.Crypto
         ///// <param name="IV">Initialization vector. It can be public and stored together with encrypted data, but it is
         ///// advised that the vecor is randomly generated for each session or each encryption.
         ///// <para>If not specified but algorithm is specified, it is randomly generated and stored by the algorithm.</para></param>
-        ///// <param name="flag">Type of the algorithm used.</param>
+        ///// <param name="algorithmType">Type of the algorithm used.</param>
         ///// <param name="algorithm">Algoritgm used. 
         ///// <para>If specified then key and IV can be generated and stored by the algorithm. Algorithm type must correspond 
         ///// to the specified type.</para>
@@ -3185,7 +3198,7 @@ namespace IG.Crypto
         ///// <param name="key">Secret key used in encryption.</param>
         ///// <param name="initializationVector">Initialization vector used in encryption. Necessary for stronger encryption 
         ///// (othervise repeating input blocks would cause repeating output blocks).</param>
-        ///// <param name="flag">Type of the algorithm used.</param>
+        ///// <param name="algorithmType">Type of the algorithm used.</param>
         ///// <param name="useLargestKey">If true then the algorithm is modified in such a way that the largest possible key is uesd.</param>
         ///// <param name="useLargestBlock">If true then the algorithm will be modified in such a way that it uses the largest 
         ///// possible block for this kind of algorithm.</param>
@@ -3263,7 +3276,7 @@ namespace IG.Crypto
         ///// <param name="key">Secret key used in encryption.</param>
         ///// <param name="initializationVector">Initialization vector used in encryption. Necessary for stronger encryption 
         ///// (othervise repeating input blocks would cause repeating output blocks).</param>
-        ///// <param name="flag">Type of the algorithm used.</param>
+        ///// <param name="algorithmType">Type of the algorithm used.</param>
         ///// <param name="useLargestKey">If true then the algorithm is modified in such a way that the largest possible key is uesd.</param>
         ///// <param name="useLargestBlock">If true then the algorithm will be modified in such a way that it uses the largest 
         ///// possible block for this kind of algorithm.</param>
@@ -3726,7 +3739,7 @@ namespace IG.Crypto
 
         private static AsymmetricAlgorithmType[] _asymmetricTypes = null;
 
-        /// <summary>Returns all asymmetric encryption algorithm types contained in the enumeration <see cref="AsymAlgorithmType"/></summary>
+        /// <summary>Returns all asymmetric encryption algorithm types contained in the enumeration <see cref="AsymmetricAlgorithmType"/></summary>
         public static AsymmetricAlgorithmType[] GetAsymmetricAlgorithmTypes()
         {
             if (_asymmetricTypes == null)
@@ -3792,7 +3805,7 @@ namespace IG.Crypto
 
 
         /// <summary>Returns standard string representation of the specified asymmetric encryption algorithm type.</summary>
-        /// <param name="flag">Asymmetric encryption algorithm type whose string representation is returned.</param>
+        /// <param name="algorithmType">Asymmetric encryption algorithm type whose string representation is returned.</param>
         public static string AsymmetricAlgorithmTypeToString(AsymmetricAlgorithmType algorithmType)
         {
             switch (algorithmType)
@@ -3810,7 +3823,7 @@ namespace IG.Crypto
 
         /// <summary>Returns the appropriate asymmetric algorithm according to the specified hashRet type, or null 
         /// if the type is not recognized or the method is not implemented for that type.</summary>
-        /// <param name="flag">Specification of the asymmetric encryption algorithm type.</param>
+        /// <param name="algorithmType">Specification of the asymmetric encryption algorithm type.</param>
         public static AsymmetricAlgorithm GetAsymmetricEncryptionAlgorithm(AsymmetricAlgorithmType algorithmType)
         {
             switch (algorithmType)
@@ -3826,7 +3839,7 @@ namespace IG.Crypto
 
         /// <summary>Returns true if the specified asymmetric encryption algorithm corresponds the type specification, false otherwise.
         /// <para>If the specified algorithm is null or the specified type is unknown then false is returned.</para></summary>
-        /// <param name="flag">Specification of the asymmetric encryption algorithm type.</param>
+        /// <param name="algorithmType">Specification of the asymmetric encryption algorithm type.</param>
         /// <param name="algorithm">Algorithm that is checked for type correctness.</param>
         public static bool IsCorrectAsymmetricEncryptionAlgorithm(AsymmetricAlgorithm algorithm, AsymmetricAlgorithmType algorithmType)
         {
@@ -3952,15 +3965,15 @@ namespace IG.Crypto
 
 
         /// <summary>Returns standard string representation of the <see cref="CspProviderFlags"/> enumeration.</summary>
-        /// <param name="flag">Asymmetric encryption algorithm type whose string representation is returned.</param>
-        public static string CspProviderFlagsToString(CspProviderFlags flag)
+        /// <param name="flags">Asymmetric encryption algorithm type whose string representation is returned.</param>
+        public static string CspProviderFlagsToString(CspProviderFlags flags)
         {
-            switch (flag)
+            switch (flags)
             {
                 //case CspProviderFlags.NoFlags:
                 //    return "NoFlags";
                 default:
-                    return flag.ToString();
+                    return flags.ToString();
             }
         }
 
@@ -4092,9 +4105,9 @@ namespace IG.Crypto
         /// that takes its base class) and then string representation is created from thi object,
         /// which offers better access to internal data.</remarks>
         /// <param name="certificate">Certificate whose string representaion is returned.</param>
-        public static string ToString(X509Certificate cert)
+        public static string ToString(X509Certificate certificate)
         {
-            return ToString(new X509Certificate2(cert));
+            return ToString(new X509Certificate2(certificate));
         }
 
 
@@ -4725,10 +4738,7 @@ namespace IG.Crypto
         /// <para>Returns true if the test passes (encrypted and then decrypted bytes equal to original) and false if not.</para>
         /// <para>The specified length must me smaller and equal to the value returned by <see cref="GetMaximalAsymmetricTextLength"/>
         /// for the test to pass (beside the encryption/decryption capability and correctness of operaton).</para></summary>
-        /// <param name="testString">Length of the random byte array to be encrypted and decrypted.
-        /// <para>Must be short enough in order to be suitable for asymmetric encryption / decryption. Maximal length 
-        /// can be obtained by the <see cref="GetMaximalAsymmetricTextLength"/> method.</para>
-        /// <para>If null or empty string then false is returned.</para> </param>
+        /// <param name="length">Length of the random byte array that is encrypted / decrypted.</param>
         /// <param name="algEnc">Asymmetric algorithm object used for encryption (and also for decryption if 
         /// the second algorithm object is not specified).
         /// <para>If null then false is returned.</para></param>
@@ -4815,7 +4825,7 @@ namespace IG.Crypto
         /// obtained. If null then all standard stores are searched for.</param>
         public static AsymmetricAlgorithm GetAsymmetricAlgorithm(AsymmetricAlgorithmType algorithmType,
             string containerName = null, string xmlString = null, CspProviderFlags flags = CspProviderFlags.NoFlags,
-              string certFileName = null, string certName = null, string certStore = null)
+              string certificateFilePath = null, string certificateName = null, string certStore = null)
         {
             CspParameters cspParams = null;
             // Create a new instance of CspParameters.  Pass 
@@ -4853,11 +4863,11 @@ namespace IG.Crypto
                         rsa.PersistKeyInCsp = false;
                     if (!string.IsNullOrEmpty(xmlString))
                         rsa.FromXmlString(xmlString);
-                    else if (!string.IsNullOrEmpty(certFileName))
+                    else if (!string.IsNullOrEmpty(certificateFilePath))
                     {
 
                     }
-                    else if (!string.IsNullOrEmpty(certName))
+                    else if (!string.IsNullOrEmpty(certificateName))
                     {
 
                     }
@@ -4889,7 +4899,7 @@ namespace IG.Crypto
 
 
         /// <summary>Deletes the asymmetric algorithm keys from the specified key container.</summary>
-        /// <param name="flag">Type of the asymmetric algorithm for which the keys are deleted.</param>
+        /// <param name="algorithmType">Type of the asymmetric algorithm for which the keys are deleted.</param>
         /// <param name="containerName">Name of the container from which keys are deleted.</param>
         public static void DeleteKeyInCsp(AsymmetricAlgorithmType algorithmType, string containerName)
         {
@@ -5170,9 +5180,11 @@ namespace IG.Crypto
             else return _igLibLongSaltSuffices[whichSalt];
         }
 
+
+
         /// <summary>Returns the number of standard IGLib salt strings.</summary>
         /// <returns>The number of standard IGLib salt strings.</returns>
-        /// <seealso cref="GetIGLibSalt"/>
+        // /// <seealso cref="GetIGLibSalt"/>
         public static int IgGetNumSaltSuffices()
         { return _igLibLongSaltSuffices.Length; }
 

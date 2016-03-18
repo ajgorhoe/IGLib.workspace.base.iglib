@@ -17,19 +17,19 @@ namespace IG.Lib
     /// AGREEMENTS:
     /// The first argument to initialization and executable method is working directory where
     /// data between different applications is exchanged.
-    /// If overrigding the <see cref="InitializeThis"/>(...) method, call the base class' method first, 
+    /// If overrigding the <see cref="InitializeThis(string[])"/>(...) method, call the base class' method first, 
     /// and keep the agreement that the first argument must be the working directory.
-    /// When implementing the executable (<see cref="RunThis"/>(...)) method, its first argument should also be
+    /// When implementing the executable (see RunThis()) method, its first argument should also be
     /// the working directory (the same as for initialization). This is to enable use of the
     /// class in scenarios where initialization and execution arguments must be the same.</summary>
     /// $A Igor Jul09
     public abstract class LoadableScriptOptBase : LoadableScriptBase,
         ILoadableScript, ILockable
     {
-
+        
         #region Initialization
 
-        /// <summary>Creates the <typeparamref name="LoadableScriptOptBase"/> object.</summary>
+        /// <summary>Creates the <see cref="LoadableScriptOptBase"/> object.</summary>
         public LoadableScriptOptBase(): base()
         {  }
 
@@ -265,14 +265,14 @@ namespace IG.Lib
     }  // class LoadableScriptOptBase
 
 
-    /// <summary>Controllable version of <see cref="LoadableScriptOptBase"/>, implements <see cref="ILoadableScriptC"/></summary>
+    /// <summary>Controllable version of <see cref="LoadableScriptOptBase"/>, implements the <see cref="ILoadableScriptC"/> interface.</summary>
     public abstract class LoadableScriptOptShellBaseControllable : LoadableScriptOptBase,
         ILoadableScriptC, ILockable
     {
                
         #region Initialization
 
-        /// <summary>Creates the <typeparamref name="LoadableScriptOptBase"/> object.</summary>
+        /// <summary>Creates a <see cref="LoadableScriptOptBase"/> object.</summary>
         public LoadableScriptOptShellBaseControllable()
             : base()
         {

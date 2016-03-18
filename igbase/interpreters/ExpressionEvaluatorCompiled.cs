@@ -275,7 +275,7 @@ namespace IG.Lib
         /// <summary>Executes the specified code and returns the result.
         /// Throws exception if errors occur when interpreting code.
         /// After execution, the code is appended to the complete code that has been executed up to this point.</summary>
-        /// <param name="code">Code that is exected by the JavaScript interpreter.</param>
+        /// <param name="inputCode">Code that is exected by the JavaScript interpreter.</param>
         /// <returns>Result of code execution as string.</returns>
         public virtual string Execute(string inputCode)
         {
@@ -431,7 +431,7 @@ The last expression does not need to (but it can) end with semicolon.
         }
 
         /// <summary>Prints the complete code inserter up to this moment.</summary>
-        /// <param name="inputFilePath"></param>
+        /// <param name="filePath"></param>
         /// <param name="append"></param>
         public virtual void SaveCompleteCode(string filePath, bool append)
         {
@@ -468,7 +468,7 @@ The last expression does not need to (but it can) end with semicolon.
 
         /// <summary>Saves or appends to the specified file all valid user definitions added 
         /// to the evaluator up to this point.</summary>
-        /// <param name="inputFilePath">Path to the file that definitions saved to.</param>
+        /// <param name="filePath">Path to the file that definitions saved to.</param>
         /// <param name="append">If true then definitions are appended to the file (old content is preserved).</param>
         public virtual void SaveUserDefinitions(string filePath, bool append)
         {

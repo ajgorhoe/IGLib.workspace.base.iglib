@@ -87,8 +87,8 @@ namespace IG.Script
         private const string FileHelpTestArguments = FileTestArguments + " arg1 arg2 ... : Prints out the arguments of the command.";
 
         /// <summary>Executes embedded application that just prints arguments passed to the application to a console.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
         protected virtual string FileFunctionTestArguments(string appName, string[] args)
         {
@@ -132,8 +132,8 @@ namespace IG.Script
         /// <summary>List of methods used to perform file commmands.</summary>
         protected List<CommandMethod> AppCustomMethods = new List<CommandMethod>();
 
-        /// <summary>Adds a new file system - related embedded application's command (added as sub-command of the base command named <see cref="ConstFile"/>).</summary>
-        /// <param name="AppName">Application name.</param>
+        /// <summary>Adds a new file system - related embedded application's command (added as sub-command of the base command named <see cref="ScriptAppBase.ConstFile"/>).</summary>
+        /// <param name="appName">Application name.</param>
         /// <param name="appMethod">Method used to perform the application.</param>
         /// <param name="appHelp">Eventual help string for the application.</param>
         protected void AddCustomCommand(string appName, CommandMethod appMethod, string appHelp)
@@ -153,8 +153,8 @@ namespace IG.Script
         protected const string CustomHelpPrintArguments = CustomPrintArguments + " arg1 arg2 ... : Prints out the arguments of the command.";
 
         /// <summary>Executes embedded application - writing to the console information about file events for the specified file or directory.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
         protected virtual string CustomFunctionPrintArguments(string appName, string[] args)
         {
@@ -183,7 +183,7 @@ namespace IG.Script
 
 
         /// <summary>Runs a file system related utility (embedded application) according to arguments.</summary>
-        /// <param name="AppArguments">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
+        /// <param name="args">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
         /// arguments are arguments that are used by the embedded application.</param>
         protected virtual string RunAppCustom(string[] args)
         {
@@ -357,10 +357,10 @@ namespace IG.Script
         public const string ConstHelpDataStructures =
 @"Various data structures-related embedded demo applications. 
   Run with the '?' argument to see which applications are available.";
-                    
+
 
         #endregion Commands
-        
+
 
         /// <summary>Adds commands to the internal interpreter.</summary>
         /// <param name="interpreter">Interpreter where commands are executed.</param>
@@ -373,7 +373,7 @@ namespace IG.Script
                 Script_AddRunFileByScriptCommand(interpreter, helpStrings);
             }
             this.Script_AddCommands1(interpreter, helpStrings);
-            
+
 
             Script_AddCommand(interpreter, helpStrings, ConstMyTest, AppMyTest, ConstHelpMyTest);
             Script_AddCommand(interpreter, helpStrings, ConstCustomApp, AppCustomApp, ConstHelpCustomApp);
@@ -386,12 +386,12 @@ namespace IG.Script
             Script_AddCommand(interpreter, helpStrings, ConstDataStructures, AppDataStructures, ConstHelpDataStructures);
         }
 
-        
+
         #region ScriptInterpreter
-        
+
         /// <summary>Name of the command that runs (interprets) the specified command file by the script's interpreter.</summary>
         public const string ConstRunFile = "RunFileByScript";
-        public const string ConstHelpRunFile = 
+        public const string ConstHelpRunFile =
 ConstRunFile + @" commandFile : Runs (interprets) the specified file by the script's interpreter.
   commandFile: path to the command file that is interpreted (usual extension: '.cmd').";
 
@@ -445,9 +445,9 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
                 }
             }
         }
-        
+
         /// <summary>Execution method that Runs the specified command file by the script's interpreter.</summary>
-        /// <param name="AppArguments">Command arguments. Command file path must be the only argument.</param>
+        /// <param name="args">Command arguments. Command file path must be the only argument.</param>
         [Obsolete("The normal interpreter's Run command can now be used instead of this.")]
         protected virtual string AppRunFileByScript(string[] args)
         {
@@ -458,7 +458,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
             if (numArgs < 2)
                 throw new ArgumentException("Command file to be run is not specified.");
             string commandFilePath = args[1];
-            Console.WriteLine(Environment.NewLine 
+            Console.WriteLine(Environment.NewLine
                 + "Running command file " + commandFilePath + " ..." + Environment.NewLine);
             ret = this.RunFileByScript(commandFilePath); // Script_Interpreter.RunFile(commandFilePath);
             Console.WriteLine(Environment.NewLine + "... running command file done." + Environment.NewLine);
@@ -468,7 +468,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
 
         /// <summary>Runs all commands that are written in a file.
         /// Each line of a file is interpreted as a single command, consisting of command name followed by arguments.</summary>
-        /// <param name="inputFilePath">Path to the file containing commands.</param>
+        /// <param name="filePath">Path to the file containing commands.</param>
         /// <returns>Return value of the last command.</returns>
         [Obsolete("The normal interpreter's Run command can now be used instead of this.")]
         public virtual string RunFileByScript(string filePath)
@@ -521,7 +521,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
 
         /// <summary>Test action.</summary>
         /// <param name="arguments">Array of command-line arguments.</param>
-        public string AppMyTest(string[] arguments)
+        public new string AppMyTest(string[] arguments)
         {
             Console.WriteLine();
             Console.WriteLine("MY CUSTOM TEST.");
@@ -533,7 +533,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
         }
 
         /// <summary>Custom application.</summary>
-        public virtual string AppCustomApp(string[] arguments)
+        public override string AppCustomApp(string[] arguments)
         {
             string ret = null;
             Console.WriteLine();
@@ -564,7 +564,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
         protected List<CommandMethod> AppNumericsMethods = new List<CommandMethod>();
 
         /// <summary>Adds a new numerics - related embedded application's command (added as sub-command of the base command named <see cref="ConstNumerics"/>).</summary>
-        /// <param name="AppName">Application name.</param>
+        /// <param name="appName">Application name.</param>
         /// <param name="appMethod">Method used to perform the application.</param>
         /// <param name="appHelp">Eventual help string for the application.</param>
         protected void AddNumericsCommand(string appName, CommandMethod appMethod, string appHelp)
@@ -585,16 +585,16 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
         protected const string NumericsHelpScriptScalarFunction = NumericsScriptScalarFunction + " : Definition of scalar functions by expressions.";
 
         /// <summary>Executes embedded application - testing of definition of scalar function objects through expressions.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string NumericsFunctionScriptScalarFuncitons(string surfaceName, string[] args)
+        protected virtual string NumericsFunctionScriptScalarFuncitons(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
                 numArgs = args.Length;
 
-            Console.WriteLine(Environment.NewLine + "Test of scalar function objects defined through expressions..." 
+            Console.WriteLine(Environment.NewLine + "Test of scalar function objects defined through expressions..."
                 + Environment.NewLine);
 
             ScalarFunctionLoader.Example();
@@ -620,14 +620,14 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
                 if (_appNumericsCommandsInitialized)
                     return;
                 AddNumericsCommand(NumericsScriptScalarFunction, NumericsFunctionScriptScalarFuncitons, NumericsHelpScriptScalarFunction);
-                
+
                 _appFileCommandsInitialized = true;
             }
         }
 
 
         /// <summary>Runs a numerics related utility (embedded application) according to arguments.</summary>
-        /// <param name="AppArguments">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
+        /// <param name="args">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
         /// arguments are arguments that are used by the embedded application.</param>
         protected virtual string RunAppNumerics(string[] args)
         {
@@ -733,7 +733,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
         protected List<CommandMethod> AppFileMethods = new List<CommandMethod>();
 
         /// <summary>Adds a new file system - related embedded application's command (added as sub-command of the base command named <see cref="ConstFile"/>).</summary>
-        /// <param name="AppName">Application name.</param>
+        /// <param name="appName">Application name.</param>
         /// <param name="appMethod">Method used to perform the application.</param>
         /// <param name="appHelp">Eventual help string for the application.</param>
         protected void AddFileCommand(string appName, CommandMethod appMethod, string appHelp)
@@ -754,10 +754,10 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
         protected const string FileHelpLogEvents = FileLogEvents + " FileOrDirectory MaxEvents : Logs file events for the specified file or directory.";
 
         /// <summary>Executes embedded application - writing to the console information about file events for the specified file or directory.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string FileFunctionLogEvents(string surfaceName, string[] args)
+        protected virtual string FileFunctionLogEvents(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -765,7 +765,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
             if (numArgs < 1)
                 throw new ArgumentException("File or Directory path on which file events are printed is not specified.");
             string testFileOrDirectory = null;
-            int numEvents = (int) 1.0e9;   // unlimited
+            int numEvents = (int)1.0e9;   // unlimited
             if (numArgs >= 1)
             {
                 testFileOrDirectory = args[0];
@@ -782,7 +782,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
             Console.WriteLine("Number of events waited for: " + numEvents + ".");
             // WAITING FOR A SPECIFIC NUMBER OF FILE EVENTS TO OCCUR: 
             // Waiting until a specified number fo file events to occur, print information about events:
-            WaitFileEvent.ExampleWaitEvents(testFileOrDirectory, numEvents );
+            WaitFileEvent.ExampleWaitEvents(testFileOrDirectory, numEvents);
             Console.WriteLine();
 
             return null;
@@ -803,10 +803,10 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
         /// <para>The first argument must be path to the file whose creation is waited for.</para>
         /// <para>Optional second argument (boolean) specifies whether function automatically unblocks if the file 
         /// already exists.</para></summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string FileFunctionWaitCreation(string surfaceName, string[] args)
+        protected virtual string FileFunctionWaitCreation(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -814,7 +814,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
             if (numArgs < 1)
                 throw new ArgumentException("Path of the file whose creation is waited for is not specified.");
             string filePath = null;
-            bool returnIfExists  = true;   // return automatically if the file exists
+            bool returnIfExists = true;   // return automatically if the file exists
             if (numArgs >= 1)
             {
                 filePath = args[0];
@@ -841,7 +841,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
                 Console.WriteLine("... file created.");
             } else
             {
-                Console.WriteLine("... finished, file already existed." + Environment.NewLine+Environment.NewLine);
+                Console.WriteLine("... finished, file already existed." + Environment.NewLine + Environment.NewLine);
             }
             return null;
         }
@@ -858,10 +858,10 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
             + "\n" + "  If InitilPath is not specified then the current directory is taken.";
 
         /// <summary>Executes embedded application - writing to the console information about file events for the specified file or directory.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string FileFunctionRelativePath(string surfaceName, string[] args)
+        protected virtual string FileFunctionRelativePath(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -869,7 +869,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
             if (numArgs < 1)
                 throw new ArgumentException("File or Directory path whose relative path should be calculated is not specified.");
             string targetPath = null;
-            string initialPath = "./";  
+            string initialPath = "./";
             if (numArgs >= 1)
             {
                 targetPath = args[0];
@@ -899,10 +899,10 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
             + "\n" + "  If DirectoryPath is not specified then the current directory is taken.";
 
         /// <summary>Executes embedded application - writing to the console information about file events for the specified file or directory.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string FileFunctionStandardPath(string surfaceName, string[] args)
+        protected virtual string FileFunctionStandardPath(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -941,10 +941,10 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
             + "\n" + "  If DirectoryPath is not specified then the path of the current directory is printed.";
 
         /// <summary>Executes embedded application - writing to the console information about file events for the specified file or directory.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string FileFunctionCurrentDirectory(string surfaceName, string[] args)
+        protected virtual string FileFunctionCurrentDirectory(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -965,11 +965,11 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
                 UtilSystem.SetCurrentDirectory(targetPath);
             string currentDirectory = UtilSystem.GetStandardizedDirectoryPath("./");
             if (numArgs >= 1)
-                Console.WriteLine("Current directory was set to: " + Environment.NewLine 
+                Console.WriteLine("Current directory was set to: " + Environment.NewLine
                     + "  \"" + currentDirectory + "\"");
             else
                 Console.WriteLine("Current directory (in quotes): " + Environment.NewLine
-                    + "  \"" + currentDirectory + "\"" );
+                    + "  \"" + currentDirectory + "\"");
             return currentDirectory;
         }
 
@@ -1002,7 +1002,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
 
 
         /// <summary>Runs a file system related utility (embedded application) according to arguments.</summary>
-        /// <param name="AppArguments">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
+        /// <param name="args">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
         /// arguments are arguments that are used by the embedded application.</param>
         protected virtual string RunAppFile(string[] args)
         {
@@ -1089,7 +1089,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
             return ret;
         }  // AppFile
 
-        
+
         #endregion Actions.FileUtilities
 
 
@@ -1107,7 +1107,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
         protected List<CommandMethod> AppCryptoMethods = new List<CommandMethod>();
 
         /// <summary>Adds a new cryptography - related embedded application's command (added as sub-command of the base command named <see cref="ConstCrypto1"/>).</summary>
-        /// <param name="AppName">Application name.</param>
+        /// <param name="appName">Application name.</param>
         /// <param name="appMethod">Method used to perform the application.</param>
         /// <param name="appHelp">Eventual help string for the application.</param>
         protected void AddCryptoCommand(string appName, CommandMethod appMethod, string appHelp)
@@ -1127,7 +1127,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
 
         public const string CryptoGetFileHash = "GetFileHash";
 
-        protected const string CryptoHelpGetFileHash = CryptoGetFileHash + 
+        protected const string CryptoHelpGetFileHash = CryptoGetFileHash +
 @" FilePath <WriteToFile>: Calculates various hash values for the specified file, and eventually saves them to a file.
   FilePath: path to the file whose hash values are calculated.
   WriteToFile (0/1 or on/off or true/false, default false): whether hash values are written to a file. The file
@@ -1136,8 +1136,8 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
 
 
         /// <summary>Executes embedded application - calculation of various hashRet values of a file.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionGetFileHash(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1173,8 +1173,8 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
 
 
         /// <summary>Executes embedded application - calculation AND verification of various hashRet values of a file or a string.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionCheckSum(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1227,8 +1227,8 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
 
         /// <summary>Executes embedded application - symmetric encryption of files, strings, or byte fields
         /// by using the BASIC class of methods.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionEncryptBasic(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1237,8 +1237,8 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
 
         /// <summary>Executes embedded application - symmetric decryption of files, strings, or byte fields
         /// by using the BASIC class of methods.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionDecryptBasic(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1247,8 +1247,8 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
 
         /// <summary>Executes embedded application - symmetric encryption of files, strings, or byte fields
         /// by using the PLAIN class of methods.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionEncryptPlain(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1257,8 +1257,8 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
 
         /// <summary>Executes embedded application - symmetric decryption of files, strings, or byte fields
         /// by using the PLAIN class of methods.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionDecryptPlain(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1290,7 +1290,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
         protected const string CryptoHelpGetSalt = CryptoGetSalt + CryptoHelpGetKeyLastPart;
 
 
-        protected const string CryptoHelpGetKeyLastPart = 
+        protected const string CryptoHelpGetKeyLastPart =
 @" <-t algType> <-pwIt numIt> <-pwlen pwdLength> <-sllen saltLength> <-pw pwd> <-sl salt> 
        <-klen keyLength> <-pwt algType> <keyLength>  ...: 
   Performs time test for the specified type of key generation procedure, with specified number of iterations,
@@ -1326,9 +1326,8 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - generation of secret keys for encryption.</summary>
-        /// <param name="AppName">Name of the embedded application.</summary>
-        /// <param name="">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionGetKey(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1336,9 +1335,8 @@ A number of other options are supported:
         }
 
         /// <summary>Executes embedded application - generation of initialization vectors for encryption.</summary>
-        /// <param name="AppName">Name of the embedded application.</summary>
-        /// <param name="">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionGetInitializationVector(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1346,9 +1344,8 @@ A number of other options are supported:
         }
 
         /// <summary>Executes embedded application - generation of salts for encryption.</summary>
-        /// <param name="AppName">Name of the embedded application.</summary>
-        /// <param name="">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionGetSalt(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1394,8 +1391,8 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - measuring time of password generaton utilities.</summary>
-        /// <param name="AppName">Name of the embedded application.</summary>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionTimeKeyGeneration(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1431,10 +1428,10 @@ A number of other options are supported:
     -bfix and -bfx, -bf64 and -bfi64, -bfi and -bfii, -sf and -sfi
 ";
 
-        
+
         /// <summary>Executes embedded application - conversion between different representations of data.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionConvert(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1461,8 +1458,8 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - printing infomration about the specified asymmetric key.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionAsymKeyInfo(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1486,8 +1483,8 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - printing infomration about the specified certificate store.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionCertStoreInfo(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1513,8 +1510,8 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - printing infomration about the specified certificate.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionCertInfo(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1539,8 +1536,8 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - adding the specified certificate to the specified certificate store.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionAddCertificate(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1564,8 +1561,8 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - removing the certificate from certificate store.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionRemoveCertificate(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1594,8 +1591,8 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - test of asymmetric encrypton.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionAsymTest(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1639,8 +1636,8 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - conversion between different representations of data.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionCleanFiles(string appName, string[] args)
         {
             CryptoManager crypto = new CryptoManager(OutputLevel);
@@ -1680,7 +1677,7 @@ A number of other options are supported:
 
                 AddCryptoCommand(CryptoGetKey, CryptoFunctionGetKey, CryptoHelpGetKey);
                 AddCryptoCommand(CryptoGetInitializationVector, CryptoFunctionGetInitializationVector, CryptoHelpGetInitializationVector);
-                AddCryptoCommand(CryptoGetInitializationVector1, CryptoFunctionGetInitializationVector, 
+                AddCryptoCommand(CryptoGetInitializationVector1, CryptoFunctionGetInitializationVector,
                     CryptoHelpGetInitializationVector1);
                 AddCryptoCommand(CryptoGetSalt, CryptoFunctionGetSalt, CryptoHelpGetSalt);
                 AddCryptoCommand(CryptoTimeKeyGeneration, CryptoFunctionTimeKeyGeneration, CryptoHelpTimeKeyGeneration);
@@ -1703,7 +1700,7 @@ A number of other options are supported:
 
 
         /// <summary>Runs a cryptography related utility (embedded application) according to arguments.</summary>
-        /// <param name="AppArguments">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
+        /// <param name="args">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
         /// arguments are arguments that are used by the embedded application.</param>
         protected virtual string RunAppCrypto(string[] args)
         {
@@ -1808,690 +1805,690 @@ A number of other options are supported:
         #region Actions.CryptoUtilities.OLD
 
 
-        // OLD OLD OLD (TO DELETE LATER)
+        //// OLD OLD OLD (TO DELETE LATER)
 
 
-        /// <summary>Executes embedded application - symmetric encryption of files, strings, or byte fields.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
-        protected virtual string CryptoFunctionEncrypt_OLD_TO_DELETE(string appName, string[] args)
-        {
+        ///// <summary>Executes embedded application - symmetric encryption of files, strings, or byte fields.</summary>
+        ///// <param name="appName">Name of the embedded application.</param>
+        ///// <param name="args">Arguments fo the embedded application's command.</param>
+        //protected virtual string CryptoFunctionEncrypt_OLD_TO_DELETE(string appName, string[] args)
+        //{
 
-            int numArgs = 0;
-            if (args != null)
-                numArgs = args.Length;
-            if (numArgs < 1)
-                throw new ArgumentException("There should be at least 1 argument (file whose hash value is calculated).");
-            SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.Default;
-            PasswordAlgorithmType passwordAlgorithmType = PasswordAlgorithmType.Default;
-            string algorithmTypeString = null;
-            string passwordAlgorithmTypeString = null;
-            bool isBinaryFormatHex = true;
-            bool isBinaryFormatBase64 = false;
+        //    int numArgs = 0;
+        //    if (args != null)
+        //        numArgs = args.Length;
+        //    if (numArgs < 1)
+        //        throw new ArgumentException("There should be at least 1 argument (file whose hash value is calculated).");
+        //    SymmetricAlgorithmType algorithmType = SymmetricAlgorithmType.Default;
+        //    PasswordAlgorithmType passwordAlgorithmType = PasswordAlgorithmType.Default;
+        //    string algorithmTypeString = null;
+        //    string passwordAlgorithmTypeString = null;
+        //    bool isBinaryFormatHex = true;
+        //    bool isBinaryFormatBase64 = false;
 
-            HashType hashType = HashType.Default;
-            string outputPath = null;
-            bool isPasswordRequired = false;
-            bool isSaltRequired = false;
-            string passwordString = null;
-            byte[] passwordBytes = null;
-            string saltString = null;
-            byte[] saltBytes = null;
-            int numPasswordIterations = 0;
-            string hashValue = null;
-            string hashedString = null;
-            List<string> inputFilePaths = new List<string>();
-            bool isDecrypt = false;
-            int numInputFiles = 0;
-            bool isChecked = false;  // hashRet is verified, not calculated
-            bool isByteInput = false;
-            bool isStringInput = false;  // hashRet is calculated for the specified string
-            bool isFileInput = false;
-            string ret = null;
-            List<string> recursivePathList = new List<string>();
-            List<string> recursivePathListByLevels = new List<string>();
-            List<string> recursiveFilePatterns = new List<string>();
-            int recursiveDirectoryLevels = -1;  // infinite number of levels
-            bool isRelativePaths = false;
-            bool isAbsolutePaths = false;
-            bool isForceOverwrites = false;
-            bool isSkipOverwrites = true;
+        //    HashType hashType = HashType.Default;
+        //    string outputPath = null;
+        //    bool isPasswordRequired = false;
+        //    bool isSaltRequired = false;
+        //    string passwordString = null;
+        //    byte[] passwordBytes = null;
+        //    string saltString = null;
+        //    byte[] saltBytes = null;
+        //    int numPasswordIterations = 0;
+        //    string hashValue = null;
+        //    string hashedString = null;
+        //    List<string> inputFilePaths = new List<string>();
+        //    bool isDecrypt = false;
+        //    int numInputFiles = 0;
+        //    bool isChecked = false;  // hashRet is verified, not calculated
+        //    bool isByteInput = false;
+        //    bool isStringInput = false;  // hashRet is calculated for the specified string
+        //    bool isFileInput = false;
+        //    string ret = null;
+        //    List<string> recursivePathList = new List<string>();
+        //    List<string> recursivePathListByLevels = new List<string>();
+        //    List<string> recursiveFilePatterns = new List<string>();
+        //    int recursiveDirectoryLevels = -1;  // infinite number of levels
+        //    bool isRelativePaths = false;
+        //    bool isAbsolutePaths = false;
+        //    bool isForceOverwrites = false;
+        //    bool isSkipOverwrites = true;
 
-            // Parsing of arguments: 
-            if (OutputLevel >= 5)
-            {
-                Console.WriteLine();
-            }
-            for (int whichArg = 0; whichArg < numArgs; ++whichArg)
-            {
-                string arg = args[whichArg];
-                string argLowercase = arg.ToLower();
-                if (OutputLevel >= 5)
-                {
-                    if (whichArg == 0)
-                        Console.WriteLine("Argument No. " + whichArg + " (command name): " + arg);
-                    else
-                        Console.WriteLine("Argument No. " + whichArg + ": " + arg);
-                }
-                //if (whichArg == 0)
-                //    ;  //  arg. No. 0 wasSkipped because it represents command name.
-                // Any argument:
-                // Arguments for modified behavior:
-                else if (argLowercase == CC.ArgCheck || argLowercase == CC.ArgCheck1)
-                {
-                    isChecked = true;
-                }
-                else if (argLowercase == CC.ArgAlgorithmType || argLowercase == CC.ArgAlgorithmType1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by hash type.");
-                    else
-                    {
-                        ++whichArg;
-                        HashType type = UtilCrypto.GetHashType(args[whichArg]);
-                        if (type == HashType.None)
-                        {
-                            ReportError("Unrecognized hash type: " + args[whichArg] + ".");
-                        }
-                        else
-                            hashType = UtilCrypto.GetHashType(args[whichArg]);
-                    }
-                }
-                // ALGORITHM RELATED OPTIONS: 
-                else if (argLowercase == CC.ArgAlgorithmType || argLowercase == CC.ArgAlgorithmType1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by algorithm type.");
-                    else
-                    {
-                        ++whichArg;
-                        if (algorithmTypeString != null)
-                            ReportError("Agorithm type already specified, will be overwritten.");
-                        algorithmTypeString = args[whichArg];
-                    }
-                }
-                else if (argLowercase == CC.ArgPasswordAlgorithmType || argLowercase == CC.ArgPasswordAlgorithmType1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by password algorithm type string.");
-                    else
-                    {
-                        ++whichArg;
-                        if (passwordAlgorithmTypeString != null)
-                            ReportError("Password algorithm type already specified, will be overwritten.");
-                        passwordAlgorithmTypeString = args[whichArg];
-                    }
-                }
+        //    // Parsing of arguments: 
+        //    if (OutputLevel >= 5)
+        //    {
+        //        Console.WriteLine();
+        //    }
+        //    for (int whichArg = 0; whichArg < numArgs; ++whichArg)
+        //    {
+        //        string arg = args[whichArg];
+        //        string argLowercase = arg.ToLower();
+        //        if (OutputLevel >= 5)
+        //        {
+        //            if (whichArg == 0)
+        //                Console.WriteLine("Argument No. " + whichArg + " (command name): " + arg);
+        //            else
+        //                Console.WriteLine("Argument No. " + whichArg + ": " + arg);
+        //        }
+        //        //if (whichArg == 0)
+        //        //    ;  //  arg. No. 0 wasSkipped because it represents command name.
+        //        // Any argument:
+        //        // Arguments for modified behavior:
+        //        else if (argLowercase == CC.ArgCheck || argLowercase == CC.ArgCheck1)
+        //        {
+        //            isChecked = true;
+        //        }
+        //        else if (argLowercase == CC.ArgAlgorithmType || argLowercase == CC.ArgAlgorithmType1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by hash type.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                HashType type = UtilCrypto.GetHashType(args[whichArg]);
+        //                if (type == HashType.None)
+        //                {
+        //                    ReportError("Unrecognized hash type: " + args[whichArg] + ".");
+        //                }
+        //                else
+        //                    hashType = UtilCrypto.GetHashType(args[whichArg]);
+        //            }
+        //        }
+        //        // ALGORITHM RELATED OPTIONS: 
+        //        else if (argLowercase == CC.ArgAlgorithmType || argLowercase == CC.ArgAlgorithmType1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by algorithm type.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                if (algorithmTypeString != null)
+        //                    ReportError("Agorithm type already specified, will be overwritten.");
+        //                algorithmTypeString = args[whichArg];
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgPasswordAlgorithmType || argLowercase == CC.ArgPasswordAlgorithmType1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by password algorithm type string.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                if (passwordAlgorithmTypeString != null)
+        //                    ReportError("Password algorithm type already specified, will be overwritten.");
+        //                passwordAlgorithmTypeString = args[whichArg];
+        //            }
+        //        }
 
-              // FORMAT RELATED OPTIONS
-                else if (argLowercase == CC.ArgBinaryOutputFormatHex || argLowercase == CC.ArgBinaryOutputFormatHex1)
-                {
-                    isBinaryFormatHex = true;
-                    isBinaryFormatBase64 = false;
-                }
-                else if (argLowercase == CC.ArgBinaryOutputFormatBase64 || argLowercase == CC.ArgBinaryOutputFormatBase641)
-                {
-                    isBinaryFormatBase64 = true;
-                    isBinaryFormatHex = false;
-                }
-
-
-                // PASSWORD RELATED OPTIONS
-                else if (argLowercase == CC.ArgPasswordString || argLowercase == CC.ArgPasswordString1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by password string.");
-                    else
-                    {
-                        ++whichArg;
-                        passwordString = args[whichArg];
-                    }
-                }
-                else if (argLowercase == CC.ArgPasswordHexBytes || argLowercase == CC.ArgPasswordHexBytes1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by password bytes in hexadecimall form.");
-                    else
-                    {
-                        ++whichArg;
-                        passwordBytes = Util.FromHexString(args[whichArg]);
-                    }
-                }
-                else if (argLowercase == CC.ArgPasswordBase64Bytes || argLowercase == CC.ArgPasswordBase64Bytes1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by base-64 encoded password bytes.");
-                    else
-                    {
-                        ++whichArg;
-                        passwordBytes = Convert.FromBase64String(args[whichArg]);
-                    }
-                }
-
-                else if (argLowercase == CC.ArgSaltString || argLowercase == CC.ArgSaltString1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by salt string.");
-                    else
-                    {
-                        ++whichArg;
-                        saltString = args[whichArg];
-                    }
-                }
-                else if (argLowercase == CC.ArgSaltHexBytes || argLowercase == CC.ArgSaltHexBytes1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by salt bytes in hexadecimall form.");
-                    else
-                    {
-                        ++whichArg;
-                        saltBytes = Util.FromHexString(args[whichArg]);
-                    }
-                }
-                else if (argLowercase == CC.ArgSaltBase64Bytes || argLowercase == CC.ArgSaltBase64Bytes1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by base-64 encoded salt bytes.");
-                    else
-                    {
-                        ++whichArg;
-                        saltBytes = Convert.FromBase64String(args[whichArg]);
-                    }
-                }
-                else if (argLowercase == CC.ArgPasswordNumIterations || argLowercase == CC.ArgPasswordNumIterations1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by number of iterations in key generation algorithm.");
-                    else
-                    {
-                        ++whichArg;
-                        bool successful = Util.TryParse(args[whichArg], ref numPasswordIterations);
-                        if (!successful)
-                            ReportError("Argument can not be interpreted as integer number of key generation iterations: " + args[whichArg]);
-                    }
-                }
-                // FILE RELATED OPTIONS:
-                else if (argLowercase == CC.ArgOutputFile || argLowercase == CC.ArgOutputFile1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by output file path.");
-                    else
-                    {
-                        ++whichArg;
-                        outputPath = args[whichArg];
-                    }
-                }
-                else if (argLowercase == CC.ArgHashValue || argLowercase == CC.ArgHashValue1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by hash value.");
-                    else
-                    {
-                        ++whichArg;
-                        hashValue = args[whichArg];
-                    }
-                }
-                else if (argLowercase == CC.ArgString || argLowercase == CC.ArgString1)
-                {
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by hashed string.");
-                    else
-                    {
-                        ++whichArg;
-                        hashedString = args[whichArg];
-                        isStringInput = true;
-                    }
-                }
-                else if (argLowercase == CC.ArgPathsAbsolute || argLowercase == CC.ArgPathsAbsolute1)
-                {
-                    isAbsolutePaths = true;
-                }
-                else if (argLowercase == CC.ArgPathsRelative || argLowercase == CC.ArgPathsRelative1)
-                {
-                    isRelativePaths = true;
-                }
-                else if (argLowercase == CC.ArgForceOverwrite || argLowercase == CC.ArgForceOverwrite1)
-                {
-                    isForceOverwrites = true;
-                }
-                else if (argLowercase == CC.ArgSkipOverwrite || argLowercase == CC.ArgSkipOverwrite1)
-                {
-                    isSkipOverwrites = true;
-                }
-                else if (argLowercase == CC.ArgRecursiveDirectory || argLowercase == CC.ArgRecursiveDirectory1)
-                {
-                    // New path for recursive directory listing of input files:
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by a directory path for recursive file search.");
-                    else
-                    {
-                        ++whichArg;
-                        recursivePathList.Add(args[whichArg]);
-                    }
-                }
-                else if (argLowercase == CC.ArgRecursiveDirectoryByLevels || argLowercase == CC.ArgRecursiveDirectoryByLevels1)
-                {
-                    // New file search pattern for recursive directory listing of input files:
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by a directory path for level-sorted recursive file search.");
-                    else
-                    {
-                        ++whichArg;
-                        recursivePathListByLevels.Add(args[whichArg]);
-                    }
-                }
-                else if (argLowercase == CC.ArgRecursiveDirectoryPattern || argLowercase == CC.ArgRecursiveDirectoryPattern1)
-                {
-                    // New file search pattern for recursive directory listing of input files:
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by a file pattern for recursive file search.");
-                    else
-                    {
-                        ++whichArg;
-                        recursiveFilePatterns.Add(args[whichArg]);
-                    }
-                }
-                else if (argLowercase == CC.ArgRecursiveDirectoryLevel || argLowercase == CC.ArgRecursiveDirectoryLevel1)
-                {
-                    // New file search pattern for recursive directory listing of input files:
-                    if (whichArg + 1 >= numArgs)
-                        ReportError("Argument \"" + arg + "\" should be followed by a directory level for recursive file search.");
-                    else
-                    {
-                        ++whichArg;
-                        Util.TryParse(args[whichArg], ref recursiveDirectoryLevels);
-                    }
-                }
-                else
-                {
-                    // Input file arguments:
-                    if (!string.IsNullOrEmpty(arg))
-                    {
-                        if (File.Exists(arg))  // argument represtens a file
-                            inputFilePaths.Add(arg);
-                        else if (Directory.Exists(arg))
-                        {
-                            // argument represents a directory: 
-                            string[] paths = Directory.GetFiles(arg);
-                            foreach (string path in paths)
-                            {
-                                if (File.Exists(path))
-                                {
-                                    inputFilePaths.Add(path);
-                                    // inputFilePaths.Add(UtilSystem.GetRelativePath(".", path));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            string[] paths = Directory.GetFiles(".", arg);
-                            if (paths == null || paths.Length == 0)
-                            {
-                                ReportError("No files or directories correespond to path specification: \"" + arg + "\"");
-                            }
-                            else
-                            {
-                                foreach (string path in paths)
-                                {
-                                    if (File.Exists(path))
-                                    {
-                                        inputFilePaths.Add(path);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (recursivePathList.Count > 0)
-            {
-                int numAdded = UtilSystem.ListFilesRecursively(null, ref recursivePathList, null /*auxlist */, recursiveDirectoryLevels /* numLevels*/,
-                    true /* includeList */, true /* clearOnbeginning */, false /* relativeaths */, false /* listDirectories */,
-                    true /* listFiles */, recursiveFilePatterns);
-                if (recursivePathList.Count > 0)
-                {
-                    foreach (string filePath in recursivePathList)
-                    {
-                        inputFilePaths.Add(filePath);
-                    }
-                }
-                else
-                {
-                    ReportError("No files found recursively.");
-                }
-            }
-            if (recursivePathListByLevels.Count > 0)
-            {
-                int numAdded = UtilSystem.ListFilesByLevels(null, ref recursivePathListByLevels, null /*auxlist */, recursiveDirectoryLevels /* numLevels*/,
-                    true /* includeList */, true /* clearOnbeginning */, false /* relativeaths */, false /* listDirectories */,
-                    true /* listFiles */, recursiveFilePatterns);
-                if (recursivePathListByLevels.Count > 0)
-                {
-                    foreach (string filePath in recursivePathListByLevels)
-                    {
-                        inputFilePaths.Add(filePath);
-                    }
-                }
-                else
-                {
-                    ReportError("No files found recursively.");
-                }
-            }
-            numInputFiles = inputFilePaths.Count;
-            for (int i = 0; i < numInputFiles; ++i)
-            {
-                if (isRelativePaths)
-                    inputFilePaths[i] = UtilSystem.GetRelativePath(".", inputFilePaths[i]);
-                if (isAbsolutePaths)
-                    inputFilePaths[i] = UtilSystem.GetAbsolutePath(inputFilePaths[i]);
-
-            }
-
-            if (algorithmTypeString != null)
-                algorithmType = UtilCrypto.GetSymmetricAlgorithmType(algorithmTypeString);
-            if (passwordAlgorithmTypeString != null)
-                passwordAlgorithmType = UtilCrypto.GetPasswordAlgorithmType(passwordAlgorithmTypeString);
-
-            if (isPasswordRequired && string.IsNullOrEmpty(passwordString) && passwordBytes == null)
-            {
-                UtilConsole.ReadPwd(ref passwordBytes, ref passwordString, "password" /* passwordName */,
-                    false /* isPasswordStringForm */, false /* isPasswordByteform */ , false /* isHexForm */, false /* isBase64*/);
-            }
-            if (isSaltRequired && string.IsNullOrEmpty(saltString) && saltBytes == null)
-            {
-                UtilConsole.ReadPwd(ref saltBytes, ref saltString, "salt" /* passwordName */,
-                    false /* isPasswordStringForm */, false /* isPasswordByteform */ , false /* isHexForm */, false /* isBase64*/);
-            }
+        //      // FORMAT RELATED OPTIONS
+        //        else if (argLowercase == CC.ArgBinaryOutputFormatHex || argLowercase == CC.ArgBinaryOutputFormatHex1)
+        //        {
+        //            isBinaryFormatHex = true;
+        //            isBinaryFormatBase64 = false;
+        //        }
+        //        else if (argLowercase == CC.ArgBinaryOutputFormatBase64 || argLowercase == CC.ArgBinaryOutputFormatBase641)
+        //        {
+        //            isBinaryFormatBase64 = true;
+        //            isBinaryFormatHex = false;
+        //        }
 
 
-            // Action part:
+        //        // PASSWORD RELATED OPTIONS
+        //        else if (argLowercase == CC.ArgPasswordString || argLowercase == CC.ArgPasswordString1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by password string.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                passwordString = args[whichArg];
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgPasswordHexBytes || argLowercase == CC.ArgPasswordHexBytes1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by password bytes in hexadecimall form.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                passwordBytes = Util.FromHexString(args[whichArg]);
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgPasswordBase64Bytes || argLowercase == CC.ArgPasswordBase64Bytes1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by base-64 encoded password bytes.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                passwordBytes = Convert.FromBase64String(args[whichArg]);
+        //            }
+        //        }
+
+        //        else if (argLowercase == CC.ArgSaltString || argLowercase == CC.ArgSaltString1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by salt string.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                saltString = args[whichArg];
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgSaltHexBytes || argLowercase == CC.ArgSaltHexBytes1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by salt bytes in hexadecimall form.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                saltBytes = Util.FromHexString(args[whichArg]);
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgSaltBase64Bytes || argLowercase == CC.ArgSaltBase64Bytes1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by base-64 encoded salt bytes.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                saltBytes = Convert.FromBase64String(args[whichArg]);
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgPasswordNumIterations || argLowercase == CC.ArgPasswordNumIterations1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by number of iterations in key generation algorithm.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                bool successful = Util.TryParse(args[whichArg], ref numPasswordIterations);
+        //                if (!successful)
+        //                    ReportError("Argument can not be interpreted as integer number of key generation iterations: " + args[whichArg]);
+        //            }
+        //        }
+        //        // FILE RELATED OPTIONS:
+        //        else if (argLowercase == CC.ArgOutputFile || argLowercase == CC.ArgOutputFile1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by output file path.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                outputPath = args[whichArg];
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgHashValue || argLowercase == CC.ArgHashValue1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by hash value.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                hashValue = args[whichArg];
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgString || argLowercase == CC.ArgString1)
+        //        {
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by hashed string.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                hashedString = args[whichArg];
+        //                isStringInput = true;
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgPathsAbsolute || argLowercase == CC.ArgPathsAbsolute1)
+        //        {
+        //            isAbsolutePaths = true;
+        //        }
+        //        else if (argLowercase == CC.ArgPathsRelative || argLowercase == CC.ArgPathsRelative1)
+        //        {
+        //            isRelativePaths = true;
+        //        }
+        //        else if (argLowercase == CC.ArgForceOverwrite || argLowercase == CC.ArgForceOverwrite1)
+        //        {
+        //            isForceOverwrites = true;
+        //        }
+        //        else if (argLowercase == CC.ArgSkipOverwrite || argLowercase == CC.ArgSkipOverwrite1)
+        //        {
+        //            isSkipOverwrites = true;
+        //        }
+        //        else if (argLowercase == CC.ArgRecursiveDirectory || argLowercase == CC.ArgRecursiveDirectory1)
+        //        {
+        //            // New path for recursive directory listing of input files:
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by a directory path for recursive file search.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                recursivePathList.Add(args[whichArg]);
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgRecursiveDirectoryByLevels || argLowercase == CC.ArgRecursiveDirectoryByLevels1)
+        //        {
+        //            // New file search pattern for recursive directory listing of input files:
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by a directory path for level-sorted recursive file search.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                recursivePathListByLevels.Add(args[whichArg]);
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgRecursiveDirectoryPattern || argLowercase == CC.ArgRecursiveDirectoryPattern1)
+        //        {
+        //            // New file search pattern for recursive directory listing of input files:
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by a file pattern for recursive file search.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                recursiveFilePatterns.Add(args[whichArg]);
+        //            }
+        //        }
+        //        else if (argLowercase == CC.ArgRecursiveDirectoryLevel || argLowercase == CC.ArgRecursiveDirectoryLevel1)
+        //        {
+        //            // New file search pattern for recursive directory listing of input files:
+        //            if (whichArg + 1 >= numArgs)
+        //                ReportError("Argument \"" + arg + "\" should be followed by a directory level for recursive file search.");
+        //            else
+        //            {
+        //                ++whichArg;
+        //                Util.TryParse(args[whichArg], ref recursiveDirectoryLevels);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // Input file arguments:
+        //            if (!string.IsNullOrEmpty(arg))
+        //            {
+        //                if (File.Exists(arg))  // argument represtens a file
+        //                    inputFilePaths.Add(arg);
+        //                else if (Directory.Exists(arg))
+        //                {
+        //                    // argument represents a directory: 
+        //                    string[] paths = Directory.GetFiles(arg);
+        //                    foreach (string path in paths)
+        //                    {
+        //                        if (File.Exists(path))
+        //                        {
+        //                            inputFilePaths.Add(path);
+        //                            // inputFilePaths.Add(UtilSystem.GetRelativePath(".", path));
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    string[] paths = Directory.GetFiles(".", arg);
+        //                    if (paths == null || paths.Length == 0)
+        //                    {
+        //                        ReportError("No files or directories correespond to path specification: \"" + arg + "\"");
+        //                    }
+        //                    else
+        //                    {
+        //                        foreach (string path in paths)
+        //                        {
+        //                            if (File.Exists(path))
+        //                            {
+        //                                inputFilePaths.Add(path);
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    if (recursivePathList.Count > 0)
+        //    {
+        //        int numAdded = UtilSystem.ListFilesRecursively(null, ref recursivePathList, null /*auxlist */, recursiveDirectoryLevels /* numLevels*/,
+        //            true /* includeList */, true /* clearOnbeginning */, false /* relativeaths */, false /* listDirectories */,
+        //            true /* listFiles */, recursiveFilePatterns);
+        //        if (recursivePathList.Count > 0)
+        //        {
+        //            foreach (string filePath in recursivePathList)
+        //            {
+        //                inputFilePaths.Add(filePath);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            ReportError("No files found recursively.");
+        //        }
+        //    }
+        //    if (recursivePathListByLevels.Count > 0)
+        //    {
+        //        int numAdded = UtilSystem.ListFilesByLevels(null, ref recursivePathListByLevels, null /*auxlist */, recursiveDirectoryLevels /* numLevels*/,
+        //            true /* includeList */, true /* clearOnbeginning */, false /* relativeaths */, false /* listDirectories */,
+        //            true /* listFiles */, recursiveFilePatterns);
+        //        if (recursivePathListByLevels.Count > 0)
+        //        {
+        //            foreach (string filePath in recursivePathListByLevels)
+        //            {
+        //                inputFilePaths.Add(filePath);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            ReportError("No files found recursively.");
+        //        }
+        //    }
+        //    numInputFiles = inputFilePaths.Count;
+        //    for (int i = 0; i < numInputFiles; ++i)
+        //    {
+        //        if (isRelativePaths)
+        //            inputFilePaths[i] = UtilSystem.GetRelativePath(".", inputFilePaths[i]);
+        //        if (isAbsolutePaths)
+        //            inputFilePaths[i] = UtilSystem.GetAbsolutePath(inputFilePaths[i]);
+
+        //    }
+
+        //    if (algorithmTypeString != null)
+        //        algorithmType = UtilCrypto.GetSymmetricAlgorithmType(algorithmTypeString);
+        //    if (passwordAlgorithmTypeString != null)
+        //        passwordAlgorithmType = UtilCrypto.GetPasswordAlgorithmType(passwordAlgorithmTypeString);
+
+        //    if (isPasswordRequired && string.IsNullOrEmpty(passwordString) && passwordBytes == null)
+        //    {
+        //        UtilConsole.ReadPwd(ref passwordBytes, ref passwordString, "password" /* passwordName */,
+        //            false /* isPasswordStringForm */, false /* isPasswordByteform */ , false /* isHexForm */, false /* isBase64*/);
+        //    }
+        //    if (isSaltRequired && string.IsNullOrEmpty(saltString) && saltBytes == null)
+        //    {
+        //        UtilConsole.ReadPwd(ref saltBytes, ref saltString, "salt" /* passwordName */,
+        //            false /* isPasswordStringForm */, false /* isPasswordByteform */ , false /* isHexForm */, false /* isBase64*/);
+        //    }
+
+
+        //    // Action part:
 
 
 
-            if (isStringInput)
-            {
-                // Hash values for STRINGS:
-                if (numInputFiles > 0)
-                    ReportError("Hash files specified while checksum is calculated for a string.");
-                if (isChecked)
-                {
-                    // String hashRet verification:
-                    if (numInputFiles > 0)
-                        ReportError("Redundant specification of hashed files, will not be used.");
-                    if (outputPath != null)
-                        ReportError("Redundant output file specification, not used.");
-                    bool checkPassed = false;
-                    if (string.IsNullOrEmpty(hashValue))
-                    {
-                        ReportError("Hash value to be verified for a string is not specified.");
-                    }
-                    else
-                    {
-                        checkPassed = UtilCrypto.CheckStringHashHex(hashedString, hashValue, hashType);
-                    }
-                    ret = checkPassed.ToString();
-                    if (checkPassed)
-                    {
-                        Console.WriteLine("String " + hashType.ToString() + ": OK.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("String " + hashType.ToString() + ": NOT PASSED!");
-                    }
-                }
-                else
-                {
-                    // String hashRet calculation:
-                    if (hashValue != null)
-                        ReportError("Redundant hash value, not used.");
-                    if (outputPath != null)
-                        ReportError("Writing string hash value to a file is not supported, output file not used.");
-                    ret = UtilCrypto.GetStringHashHex(hashedString, hashType);
-                    Console.WriteLine(hashType.ToString() + ": " + ret);
-                }
-            }
-            else
-            {
-                if (isChecked)
-                {
-                    // File hashRet verification:
-                    if (outputPath != null)
-                        ReportError("Redundant output file specification, not used.");
-                    bool checkPassed = false;
-                    if (hashValue != null)
-                    {
-                        // Verify a single file whose hashRet is specified by command line:
-                        if (numInputFiles < 1)
-                        {
-                            ReportError("No files for verification specified, there should be one file.");
-                            checkPassed = false;
-                            ret = checkPassed.ToString();
-                        }
-                        else
-                        {
-                            if (numInputFiles > 1)
-                                ReportError("More than one file specified for verification, should be one. All will be ckecked.");
-                            bool passedThis = true;
-                            foreach (string filePath in inputFilePaths)
-                            {
-                                try
-                                {
-                                    if (!File.Exists(filePath))
-                                    {
-                                        passedThis = false;
-                                        ReportError("File does not exist: " + filePath);
-                                    }
-                                    else
-                                        if (UtilCrypto.CheckFileHashHex(filePath, hashValue, hashType))
-                                        {
-                                            Console.WriteLine("File " + hashType.ToString() + ": OK.");
-                                        }
-                                        else
-                                        {
-                                            passedThis = false;
-                                            Console.WriteLine("File " + hashType.ToString() + ": NOT PASSED.");
-                                        }
-                                }
-                                catch (Exception ex)
-                                {
-                                    passedThis = false;
-                                    ReportError("Exception thrown: " + ex.Message);
-                                }
-                            }
-                            checkPassed = passedThis;
-                            ret = checkPassed.ToString();
-                        }
-                    }
-                    else
-                    {
-                        // Verification of mutiple file hashes from a file:
-                        bool passedThis = true;
-                        if (outputPath != null)
-                            ReportError("Redundant output file specification, not used.");
-                        if (numInputFiles < 1)
-                        {
-                            ReportError("No files containing hash information are specified.");
-                            passedThis = false;
-                        }
-                        else
-                        {
-                            int numCheckedAll = 0;
-                            int numPassed = 0;
-                            int numNotPassed = 0;
-                            for (int whichInputFile = 0; whichInputFile < numInputFiles; ++whichInputFile)
-                            {
-                                string inputFilePath = inputFilePaths[whichInputFile];
-                                // Read hashRet value / file pairs:
-                                List<string[]> hashList = null;
-                                UtilCrypto.ParseHashFile(inputFilePath, ref hashList);
-                                Console.WriteLine(Environment.NewLine + "From input file " + Path.GetFileName(inputFilePath) + ":");
-                                int numChecked = 0;
-                                if (hashList != null)
-                                    numChecked = hashList.Count;
-                                //if (numChecked == 0)
-                                //{
-                                //    Console.WriteLine("  No entries.");
-                                //} else
-                                {
-                                    foreach (string[] pair in hashList)
-                                    {
-                                        string hash = pair[0];
-                                        string checkedFile = pair[1];
-                                        if (string.IsNullOrEmpty(hash) || string.IsNullOrEmpty(checkedFile))
-                                        {
-                                            if (string.IsNullOrEmpty(hash))
-                                                ReportError("Hash not specified.");
-                                            if (string.IsNullOrEmpty(checkedFile))
-                                                ReportError("FilePath not specified.");
-                                        }
-                                        else
-                                        {
-                                            ++numCheckedAll;
-                                            if (!File.Exists(checkedFile))
-                                            {
-                                                passedThis = false;
-                                                ReportError("File does not exist: " + checkedFile);
-                                                ++numNotPassed;
-                                            }
-                                            else
-                                                if (UtilCrypto.CheckFileHashHex(checkedFile, hash, hashType))
-                                                {
-                                                    Console.WriteLine(hashType.ToString() + " OK: " + checkedFile);
-                                                    ++numPassed;
-                                                }
-                                                else
-                                                {
-                                                    passedThis = false;
-                                                    Console.WriteLine(hashType.ToString() + " NOT PASSED: " + checkedFile);
-                                                    ++numNotPassed;
-                                                }
-                                        }
-                                    }
-                                }
-                            }
-                            if (numCheckedAll < 1)
-                            {
-                                passedThis = false;
-                                Console.WriteLine("No files to check.");
-                            }
-                            else
-                            {
-                                if (numPassed < 1)
-                                    Console.WriteLine("No files passed.");
-                                else if (numNotPassed < 1)
-                                    Console.WriteLine("All files OK.");
-                                else
-                                {
-                                    Console.WriteLine(numPassed.ToString() + " files passed, " + numNotPassed.ToString() + " NOT PASSED.");
-                                }
-                            }
+        //    if (isStringInput)
+        //    {
+        //        // Hash values for STRINGS:
+        //        if (numInputFiles > 0)
+        //            ReportError("Hash files specified while checksum is calculated for a string.");
+        //        if (isChecked)
+        //        {
+        //            // String hashRet verification:
+        //            if (numInputFiles > 0)
+        //                ReportError("Redundant specification of hashed files, will not be used.");
+        //            if (outputPath != null)
+        //                ReportError("Redundant output file specification, not used.");
+        //            bool checkPassed = false;
+        //            if (string.IsNullOrEmpty(hashValue))
+        //            {
+        //                ReportError("Hash value to be verified for a string is not specified.");
+        //            }
+        //            else
+        //            {
+        //                checkPassed = UtilCrypto.CheckStringHashHex(hashedString, hashValue, hashType);
+        //            }
+        //            ret = checkPassed.ToString();
+        //            if (checkPassed)
+        //            {
+        //                Console.WriteLine("String " + hashType.ToString() + ": OK.");
+        //            }
+        //            else
+        //            {
+        //                Console.WriteLine("String " + hashType.ToString() + ": NOT PASSED!");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // String hashRet calculation:
+        //            if (hashValue != null)
+        //                ReportError("Redundant hash value, not used.");
+        //            if (outputPath != null)
+        //                ReportError("Writing string hash value to a file is not supported, output file not used.");
+        //            ret = UtilCrypto.GetStringHashHex(hashedString, hashType);
+        //            Console.WriteLine(hashType.ToString() + ": " + ret);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (isChecked)
+        //        {
+        //            // File hashRet verification:
+        //            if (outputPath != null)
+        //                ReportError("Redundant output file specification, not used.");
+        //            bool checkPassed = false;
+        //            if (hashValue != null)
+        //            {
+        //                // Verify a single file whose hashRet is specified by command line:
+        //                if (numInputFiles < 1)
+        //                {
+        //                    ReportError("No files for verification specified, there should be one file.");
+        //                    checkPassed = false;
+        //                    ret = checkPassed.ToString();
+        //                }
+        //                else
+        //                {
+        //                    if (numInputFiles > 1)
+        //                        ReportError("More than one file specified for verification, should be one. All will be ckecked.");
+        //                    bool passedThis = true;
+        //                    foreach (string filePath in inputFilePaths)
+        //                    {
+        //                        try
+        //                        {
+        //                            if (!File.Exists(filePath))
+        //                            {
+        //                                passedThis = false;
+        //                                ReportError("File does not exist: " + filePath);
+        //                            }
+        //                            else
+        //                                if (UtilCrypto.CheckFileHashHex(filePath, hashValue, hashType))
+        //                                {
+        //                                    Console.WriteLine("File " + hashType.ToString() + ": OK.");
+        //                                }
+        //                                else
+        //                                {
+        //                                    passedThis = false;
+        //                                    Console.WriteLine("File " + hashType.ToString() + ": NOT PASSED.");
+        //                                }
+        //                        }
+        //                        catch (Exception ex)
+        //                        {
+        //                            passedThis = false;
+        //                            ReportError("Exception thrown: " + ex.Message);
+        //                        }
+        //                    }
+        //                    checkPassed = passedThis;
+        //                    ret = checkPassed.ToString();
+        //                }
+        //            }
+        //            else
+        //            {
+        //                // Verification of mutiple file hashes from a file:
+        //                bool passedThis = true;
+        //                if (outputPath != null)
+        //                    ReportError("Redundant output file specification, not used.");
+        //                if (numInputFiles < 1)
+        //                {
+        //                    ReportError("No files containing hash information are specified.");
+        //                    passedThis = false;
+        //                }
+        //                else
+        //                {
+        //                    int numCheckedAll = 0;
+        //                    int numPassed = 0;
+        //                    int numNotPassed = 0;
+        //                    for (int whichInputFile = 0; whichInputFile < numInputFiles; ++whichInputFile)
+        //                    {
+        //                        string inputFilePath = inputFilePaths[whichInputFile];
+        //                        // Read hashRet value / file pairs:
+        //                        List<string[]> hashList = null;
+        //                        UtilCrypto.ParseHashFile(inputFilePath, ref hashList);
+        //                        Console.WriteLine(Environment.NewLine + "From input file " + Path.GetFileName(inputFilePath) + ":");
+        //                        int numChecked = 0;
+        //                        if (hashList != null)
+        //                            numChecked = hashList.Count;
+        //                        //if (numChecked == 0)
+        //                        //{
+        //                        //    Console.WriteLine("  No entries.");
+        //                        //} else
+        //                        {
+        //                            foreach (string[] pair in hashList)
+        //                            {
+        //                                string hash = pair[0];
+        //                                string checkedFile = pair[1];
+        //                                if (string.IsNullOrEmpty(hash) || string.IsNullOrEmpty(checkedFile))
+        //                                {
+        //                                    if (string.IsNullOrEmpty(hash))
+        //                                        ReportError("Hash not specified.");
+        //                                    if (string.IsNullOrEmpty(checkedFile))
+        //                                        ReportError("FilePath not specified.");
+        //                                }
+        //                                else
+        //                                {
+        //                                    ++numCheckedAll;
+        //                                    if (!File.Exists(checkedFile))
+        //                                    {
+        //                                        passedThis = false;
+        //                                        ReportError("File does not exist: " + checkedFile);
+        //                                        ++numNotPassed;
+        //                                    }
+        //                                    else
+        //                                        if (UtilCrypto.CheckFileHashHex(checkedFile, hash, hashType))
+        //                                        {
+        //                                            Console.WriteLine(hashType.ToString() + " OK: " + checkedFile);
+        //                                            ++numPassed;
+        //                                        }
+        //                                        else
+        //                                        {
+        //                                            passedThis = false;
+        //                                            Console.WriteLine(hashType.ToString() + " NOT PASSED: " + checkedFile);
+        //                                            ++numNotPassed;
+        //                                        }
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                    if (numCheckedAll < 1)
+        //                    {
+        //                        passedThis = false;
+        //                        Console.WriteLine("No files to check.");
+        //                    }
+        //                    else
+        //                    {
+        //                        if (numPassed < 1)
+        //                            Console.WriteLine("No files passed.");
+        //                        else if (numNotPassed < 1)
+        //                            Console.WriteLine("All files OK.");
+        //                        else
+        //                        {
+        //                            Console.WriteLine(numPassed.ToString() + " files passed, " + numNotPassed.ToString() + " NOT PASSED.");
+        //                        }
+        //                    }
 
-                        }
-                        checkPassed = passedThis;
-                        ret = checkPassed.ToString();
-                    }
-                    ret = checkPassed.ToString();
-                }
-                else
-                {
-                    ret = null;
-                    // Calculation of one or more file hashes:
+        //                }
+        //                checkPassed = passedThis;
+        //                ret = checkPassed.ToString();
+        //            }
+        //            ret = checkPassed.ToString();
+        //        }
+        //        else
+        //        {
+        //            ret = null;
+        //            // Calculation of one or more file hashes:
 
-                    if (numInputFiles < 1)
-                    {
-                        ReportError("No files to calculate hash values were specified. Nothing to be done.");
-                    }
-                    else
-                    {
-                        List<string[]> hashes = new List<string[]>();
-                        foreach (string filePath in inputFilePaths)
-                        {
-                            if (!File.Exists(filePath))
-                            {
-                                ReportError("File does not exist: " + filePath);
-                            }
-                            else
-                            {
-                                string fileHash = null;
-                                try
-                                {
-                                    fileHash = UtilCrypto.GetFileHashHex(filePath, hashType);
-                                    hashes.Add(new string[] { fileHash, filePath });
-                                    Console.WriteLine(hashType.ToString() + ": " + fileHash + " " + filePath);
-                                }
-                                catch (Exception ex)
-                                {
-                                    ReportError("Exception thrown: " + ex.Message);
-                                }
-                            }
-                        }
-                        if (hashes.Count < 0)
-                        {
-                            ReportError("No file hashes could be calculated correctly.");
-                        }
-                        else
-                        {
-                            if (outputPath != null)
-                            {
-                                // Write file hashes to the output file:
-                                bool doWrite = false;
-                                if (!File.Exists(outputPath))
-                                {
-                                    doWrite = true;
-                                }
-                                else if (isSkipOverwrites)
-                                {
-                                    doWrite = false;
-                                }
-                                else if (isForceOverwrites)
-                                {
-                                    doWrite = true;
-                                }
-                                else
-                                {
-                                    Console.Write(Environment.NewLine
-                                        + "Output file already exists: " + outputPath + Environment.NewLine + Environment.NewLine
-                                        + "Do you want to overwrite the file (0/1)? ");
-                                    UtilConsole.Read(ref doWrite);
-                                    if (doWrite)
-                                        Console.WriteLine(Environment.NewLine + "File will be overwritten." + Environment.NewLine);
-                                    else
-                                        Console.WriteLine(Environment.NewLine + "Writing of hashes to a file skipped." + Environment.NewLine);
-                                }
-                                if (doWrite)
-                                {
-                                    try
-                                    {
-                                        using (StreamWriter hashWriter = new StreamWriter(outputPath, false /* append */, Encoding.UTF8))  // File.CreateText(OutputPath))
-                                        {
-                                            foreach (string[] pair in hashes)
-                                            {
-                                                hashWriter.WriteLine(pair[0] + " " + pair[1]);
-                                            }
-                                        }
-                                        Console.WriteLine("Hashes written to file: " + outputPath);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        ReportError("Exception thrown: " + ex.Message);
-                                    }
-                                }
-                            }
-                        }
-                    }
+        //            if (numInputFiles < 1)
+        //            {
+        //                ReportError("No files to calculate hash values were specified. Nothing to be done.");
+        //            }
+        //            else
+        //            {
+        //                List<string[]> hashes = new List<string[]>();
+        //                foreach (string filePath in inputFilePaths)
+        //                {
+        //                    if (!File.Exists(filePath))
+        //                    {
+        //                        ReportError("File does not exist: " + filePath);
+        //                    }
+        //                    else
+        //                    {
+        //                        string fileHash = null;
+        //                        try
+        //                        {
+        //                            fileHash = UtilCrypto.GetFileHashHex(filePath, hashType);
+        //                            hashes.Add(new string[] { fileHash, filePath });
+        //                            Console.WriteLine(hashType.ToString() + ": " + fileHash + " " + filePath);
+        //                        }
+        //                        catch (Exception ex)
+        //                        {
+        //                            ReportError("Exception thrown: " + ex.Message);
+        //                        }
+        //                    }
+        //                }
+        //                if (hashes.Count < 0)
+        //                {
+        //                    ReportError("No file hashes could be calculated correctly.");
+        //                }
+        //                else
+        //                {
+        //                    if (outputPath != null)
+        //                    {
+        //                        // Write file hashes to the output file:
+        //                        bool doWrite = false;
+        //                        if (!File.Exists(outputPath))
+        //                        {
+        //                            doWrite = true;
+        //                        }
+        //                        else if (isSkipOverwrites)
+        //                        {
+        //                            doWrite = false;
+        //                        }
+        //                        else if (isForceOverwrites)
+        //                        {
+        //                            doWrite = true;
+        //                        }
+        //                        else
+        //                        {
+        //                            Console.Write(Environment.NewLine
+        //                                + "Output file already exists: " + outputPath + Environment.NewLine + Environment.NewLine
+        //                                + "Do you want to overwrite the file (0/1)? ");
+        //                            UtilConsole.Read(ref doWrite);
+        //                            if (doWrite)
+        //                                Console.WriteLine(Environment.NewLine + "File will be overwritten." + Environment.NewLine);
+        //                            else
+        //                                Console.WriteLine(Environment.NewLine + "Writing of hashes to a file skipped." + Environment.NewLine);
+        //                        }
+        //                        if (doWrite)
+        //                        {
+        //                            try
+        //                            {
+        //                                using (StreamWriter hashWriter = new StreamWriter(outputPath, false /* append */, Encoding.UTF8))  // File.CreateText(OutputPath))
+        //                                {
+        //                                    foreach (string[] pair in hashes)
+        //                                    {
+        //                                        hashWriter.WriteLine(pair[0] + " " + pair[1]);
+        //                                    }
+        //                                }
+        //                                Console.WriteLine("Hashes written to file: " + outputPath);
+        //                            }
+        //                            catch (Exception ex)
+        //                            {
+        //                                ReportError("Exception thrown: " + ex.Message);
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
 
-                }
-            }
+        //        }
+        //    }
 
-            return ret;
-        }
+        //    return ret;
+        //}
 
 
 
 
         /// <summary>Executes embedded application - calculation of various hashRet values of a file.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         [Obsolete("Use functions from CryptoManager instead!")]
         protected virtual string CryptoFunctionGetFileHash_OLD_TO_DELETE(string appName, string[] args)
         {
@@ -2597,11 +2594,11 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - calculation AND verification of various hashRet values of a file.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionCheckSum_OLD_TO_DELETE_LATER(string appName, string[] args)
         {
-            
+
             int numArgs = 0;
             if (args != null)
                 numArgs = args.Length;
@@ -2626,7 +2623,7 @@ A number of other options are supported:
             bool isSkipOverwrites = true;
 
             // Parsing of arguments: 
-            if (OutputLevel>=5)
+            if (OutputLevel >= 5)
             {
                 Console.WriteLine();
             }
@@ -2656,7 +2653,7 @@ A number of other options are supported:
                     {
                         ++whichArg;
                         HashType type = UtilCrypto.GetHashType(args[whichArg]);
-                        if (type==HashType.None)
+                        if (type == HashType.None)
                         {
                             ReportError("Unrecognized hash type: " + args[whichArg] + ".");
                         } else
@@ -2691,8 +2688,8 @@ A number of other options are supported:
                         hashedString = args[whichArg];
                         isStringHash = true;
                     }
-                } 
-                
+                }
+
                 // FILE PATHS:
                 else if (argLowercase == CC.ArgPathsAbsolute || argLowercase == CC.ArgPathsAbsolute1)
                 {
@@ -2767,7 +2764,7 @@ A number of other options are supported:
                                 {
                                     inputFilePaths.Add(path);
                                     // inputFilePaths.Add(UtilSystem.GetRelativePath(".", path));
-                                } 
+                                }
                             }
                         } else
                         {
@@ -2822,7 +2819,7 @@ A number of other options are supported:
                 }
             }
             numInputFiles = inputFilePaths.Count;
-            for (int i = 0; i < numInputFiles; ++i )
+            for (int i = 0; i < numInputFiles; ++i)
             {
                 if (isRelativePaths)
                     inputFilePaths[i] = UtilSystem.GetRelativePath(".", inputFilePaths[i]);
@@ -2858,7 +2855,7 @@ A number of other options are supported:
                     {
                         Console.WriteLine("String " + hashType.ToString() + ": NOT PASSED!");
                     }
-                } else 
+                } else
                 {
                     // String hashRet calculation:
                     if (hashValue != null)
@@ -2908,7 +2905,7 @@ A number of other options are supported:
                                         Console.WriteLine("File " + hashType.ToString() + ": NOT PASSED.");
                                     }
                                 }
-                                catch(Exception ex)
+                                catch (Exception ex)
                                 {
                                     passedThis = false;
                                     ReportError("Exception thrown: " + ex.Message);
@@ -2933,7 +2930,7 @@ A number of other options are supported:
                             int numCheckedAll = 0;
                             int numPassed = 0;
                             int numNotPassed = 0;
-                            for (int whichInputFile = 0; whichInputFile<numInputFiles; ++ whichInputFile)
+                            for (int whichInputFile = 0; whichInputFile < numInputFiles; ++whichInputFile)
                             {
                                 string inputFilePath = inputFilePaths[whichInputFile];
                                 // Read hashRet value / file pairs:
@@ -2969,16 +2966,16 @@ A number of other options are supported:
                                                 ++numNotPassed;
                                             } else
                                                 if (UtilCrypto.CheckFileHashHex(checkedFile, hash, hashType))
-                                                {
-                                                    Console.WriteLine(hashType.ToString() + " OK: " + checkedFile);
-                                                    ++numPassed;
-                                                }
-                                                else
-                                                {
-                                                    passedThis = false;
-                                                    Console.WriteLine(hashType.ToString() + " NOT PASSED: " + checkedFile);
-                                                    ++numNotPassed;
-                                                }
+                                            {
+                                                Console.WriteLine(hashType.ToString() + " OK: " + checkedFile);
+                                                ++numPassed;
+                                            }
+                                            else
+                                            {
+                                                passedThis = false;
+                                                Console.WriteLine(hashType.ToString() + " NOT PASSED: " + checkedFile);
+                                                ++numNotPassed;
+                                            }
                                         }
                                     }
                                 }
@@ -2998,7 +2995,7 @@ A number of other options are supported:
                                     Console.WriteLine(numPassed.ToString() + " files passed, " + numNotPassed.ToString() + " NOT PASSED.");
                                 }
                             }
-                            
+
                         }
                         checkPassed = passedThis;
                         ret = checkPassed.ToString();
@@ -3015,7 +3012,7 @@ A number of other options are supported:
                         ReportError("No files to calculate hash values were specified. Nothing to be done.");
                     } else
                     {
-                        List <string[]> hashes = new List<string[]>();
+                        List<string[]> hashes = new List<string[]>();
                         foreach (string filePath in inputFilePaths)
                         {
                             if (!File.Exists(filePath))
@@ -3101,8 +3098,8 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - symmetric encryption of files, strings, or byte fields.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         [Obsolete("USe the appropriate method on the CryptoManager class instead!")]
         protected virtual string CryptoFunctionTimeKeyGeneration_OLD_TO_DELETE_LATER(string appName, string[] args)
         {
@@ -3376,8 +3373,8 @@ A number of other options are supported:
 
 
         /// <summary>Executes embedded application - symmetric encryption of files, strings, or byte fields.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionConvert_OLD_TO_DELETE(string appName, string[] args)
         {
             string ret = null;
@@ -3441,7 +3438,7 @@ A number of other options are supported:
                     isInputString = true;
                 }
 
-                  // TYPE PARAMETERS:
+                // TYPE PARAMETERS:
                 else if (argLowercase == CC.ArgPasswordAlgorithmType || argLowercase == CC.ArgPasswordAlgorithmType1)
                 {
                     // The same as CC.ArgAlgorithmType!
@@ -3584,7 +3581,7 @@ A number of other options are supported:
         protected List<CommandMethod> AppSystemMethods = new List<CommandMethod>();
 
         /// <summary>Adds a new system - related embedded application's command (added as sub-command of the base command named <see cref="ConstSystem"/>).</summary>
-        /// <param name="AppName">Application name.</param>
+        /// <param name="appName">Application name.</param>
         /// <param name="appMethod">Method used to perform the application.</param>
         /// <param name="appHelp">Eventual help string for the application.</param>
         protected void AddSystemCommand(string appName, CommandMethod appMethod, string appHelp)
@@ -3605,10 +3602,10 @@ A number of other options are supported:
         protected const string SystemHelpRuntimeVersion = SystemRuntimeVersion + " : Prints version of the runtime environment that application runs on.";
 
         /// <summary>Executes embedded application - writing to the console and returning version of the runtime that application runs on.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string SystemFunctionRuntimeVersion(string surfaceName, string[] args)
+        protected virtual string SystemFunctionRuntimeVersion(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -3630,10 +3627,10 @@ A number of other options are supported:
         protected const string SystemHelpComputerName = SystemComputerName + " : Prints and returns the current computer name.";
 
         /// <summary>Executes embedded application - writing to the console and returning the current computer name.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string SystemFunctionComputerName(string surfaceName, string[] args)
+        protected virtual string SystemFunctionComputerName(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -3655,10 +3652,10 @@ A number of other options are supported:
         protected const string SystemHelpDomainName = SystemDomainName + " : Prints and returns the current domain name.";
 
         /// <summary>Executes embedded application - writing to the console and returning the current domain name.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string SystemFunctionDomainName(string surfaceName, string[] args)
+        protected virtual string SystemFunctionDomainName(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -3680,10 +3677,10 @@ A number of other options are supported:
         protected const string SystemHelpIpAddress = SystemIpAddress + " : Prints and returns IP address of the current computer.";
 
         /// <summary>Executes embedded application - writing to the console and returning the current IP address.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string SystemFunctionIpAddress(string surfaceName, string[] args)
+        protected virtual string SystemFunctionIpAddress(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -3705,10 +3702,10 @@ A number of other options are supported:
         protected const string SystemHelpUserName = SystemUserName + " : Prints and returns the current user name.";
 
         /// <summary>Executes embedded application - writing to the console and returning the current user name.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string SystemFunctionUserName(string surfaceName, string[] args)
+        protected virtual string SystemFunctionUserName(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -3730,10 +3727,10 @@ A number of other options are supported:
         protected const string SystemHelpSystemInfo = SystemSystemInfo + " : Prints and returns basic system info.";
 
         /// <summary>Executes embedded application - writing to the console and returning the system info.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string SystemFunctionSystemInfo(string surfaceName, string[] args)
+        protected virtual string SystemFunctionSystemInfo(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -3755,10 +3752,10 @@ A number of other options are supported:
         protected const string SystemHelpMACAddress = SystemMACAddress + " : Prints and returns the current domain name.";
 
         /// <summary>Executes embedded application - writing to the console and returning the current domain name.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string SystemFunctionMACAddress(string surfaceName, string[] args)
+        protected virtual string SystemFunctionMACAddress(string appName, string[] args)
         {
             int numArgs = 0;
             if (args != null)
@@ -3783,7 +3780,7 @@ A number of other options are supported:
             {
                 if (_appSystemCommandsInitialized)
                     return;
-                
+
                 AddSystemCommand(SystemRuntimeVersion, SystemFunctionRuntimeVersion, SystemHelpRuntimeVersion);
                 AddSystemCommand(SystemComputerName, SystemFunctionComputerName, SystemHelpComputerName);
                 AddSystemCommand(SystemDomainName, SystemFunctionDomainName, SystemHelpDomainName);
@@ -3797,11 +3794,9 @@ A number of other options are supported:
         }
 
 
-        // DomainName DomainName
-
 
         /// <summary>Runs a file system related utility (embedded application) according to arguments.</summary>
-        /// <param name="AppArguments">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
+        /// <param name="args">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
         /// arguments are arguments that are used by the embedded application.</param>
         protected virtual string RunAppSystem(string[] args)
         {
@@ -3925,10 +3920,10 @@ A number of other options are supported:
         public const string AssemblyInfo1 = "AssemblyInfo";
 
         protected const string AssemblyHelpInfo = AssemblyInfo + " <AssemblyName> : Prints information on the specified assembly."
-            + "\n" + " AssemblyName is not specified then the information on executable assembly is printed.";
+            + "\n" + " AssemblyName: name of the assembly. If not specified then the information on executable assembly is printed.";
 
         protected const string AssemblyHelpInfo1 = AssemblyInfo1 + " <AssemblyName> : Prints information on the specified assembly."
-            + "\n" + " AssemblyName is not specified then the information on executable assembly is printed.";
+            + "\n" + " AssemblyName: name of the assembly. If not specified then the information on executable assembly is printed.";
 
         /// <summary>Executes embedded application - writing to the console information about the specified assembly.</summary>
         /// <param name="appName">Name of the embedded application.</param>
@@ -3966,7 +3961,7 @@ A number of other options are supported:
                     {
                         if (byFileName)
                             throw new InvalidOperationException("Could not find the following assembly neither by name nor by file name: \"" + assemblyName + "\".");
-                        else 
+                        else
                             throw new InvalidOperationException("Could not find the following assembly: \"" + assemblyName + "\".");
                     }
                 }
@@ -3985,6 +3980,138 @@ A number of other options are supported:
         }
 
         #endregion Actions.AssemblyUtilities.Info
+
+
+
+
+        #region Actions.AssemblyUtilities.Resources
+
+        public const string AssemblyResources = "Resources";
+        public const string AssemblyResources1 = "ResourceInfo";
+
+        public const string AssemblyResourcesEmbedded = "ResourcesEmbedded";
+
+        public const string AssemblyResourcesResx = "ResourcesResx";
+
+
+        protected const string AssemblyHelpResources = AssemblyResources + " <AssemblyName> : Prints information on the specified assembliy's resources."
+            + "\n" + " AssemblyName: assembly name. If not specified then the information on executable assembly is printed.";
+
+        protected const string AssemblyHelpResources1 = AssemblyResources1 + " <AssemblyName> : Prints information on the specified assembliy's resources."
+            + "\n" + " AssemblyName: assembly name. If not specified then the information on executable assembly is printed.";
+
+        protected const string AssemblyHelpResourcesEmbedded = AssemblyResourcesEmbedded + " <AssemblyName> : Prints information on the specified assembliy's embedded resources."
+            + "\n" + " AssemblyName: assembly name. If not specified then the information on executable assembly is printed.";
+
+        protected const string AssemblyHelpResourcesResx = AssemblyResourcesResx + " <AssemblyName> : Prints information on the specified assembliy's .resx resources."
+            + "\n" + " AssemblyName: assembly name. If not specified then the information on executable assembly is printed.";
+
+        /// <summary>Executes embedded application - writing to the console information about the specified assembly's embedded resources.</summary>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <returns>A line-separated list of resource identifiers.</returns>
+        protected virtual string AssemblyFunctionResourcesEmbedded(string appName, string[] args)
+        {
+            return AssemblyFunctionResources(appName, args, true /* includeEmbedded */, false /* includeResx */);
+        }
+
+        /// <summary>Executes embedded application - writing to the console information about the specified assembly's 
+        /// resources included through .resx files.</summary>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <returns>A line-separated list of resource identifiers.
+        /// <para>For .resx-included resources, resources have the form resFileName:resName (fully qualified resource file name
+        /// including the .resources extension, plus name of a particular resource).</para></returns>
+        protected virtual string AssemblyFunctionResourcesResx(string appName, string[] args)
+        {
+            return AssemblyFunctionResources(appName, args, false /* includeEmbedded */, true /* includeResx */);
+        }
+
+        /// <summary>Executes embedded application - writing to the console information about the specified assembly's resources.
+        /// <para>Information about embedded resources as well as resources included via .resx file is written.</para></summary>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <returns>A line-separated list of resource identifiers.
+        /// <para>For .resx-included resources, resources have the form resFileName:resName (fully qualified resource file name
+        /// including the .resources extension, plus name of a particular resource).</para></returns>
+        protected virtual string AssemblyFunctionResources(string appName, string[] args)
+        {
+            return AssemblyFunctionResources(appName, args, true /* includeEmbedded */, true /* includeResx */);
+        }
+
+        /// <summary>Executes embedded application - writing to the console information about the specified assembly's resources.</summary>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
+        /// <param name="includeEmbedded">Specifies whether embedded resources are included in the report.</param>
+        /// <param name="includeResx">Specifies whether rerources from .resources files (compiled through .resx filles) are included in the report.</param>
+        /// <returns>A line-separated list of resource identifiers.
+        /// <para>For .resx-included resources, resources have the form resFileName:resName (fully qualified resource file name
+        /// including the .resources extension, plus name of a particular resource).</para></returns>
+        protected virtual string AssemblyFunctionResources(string appName, string[] args, bool includeEmbedded, bool includeResx)
+        {
+            int numArgs = 0;
+            if (args != null)
+                numArgs = args.Length;
+            string assemblyName = null;
+            bool byFileName = true;
+            int outputLevel = 1;
+            if (numArgs >= 1)
+            {
+                assemblyName = args[0];
+                if (string.IsNullOrEmpty(assemblyName))
+                    throw new ArgumentException("Assembly name is not specified properly (null or empty string).");
+                if (numArgs >= 2)
+                {
+                    string strByFileName = args[1];
+                    bool parsed = Util.TryParseBoolean(strByFileName, ref byFileName);
+                    if (!parsed)
+                        throw new ArgumentException("Flag for searching by assembly file names not specified correctly (not a boolean): " + strByFileName + ".");
+                    if (numArgs >= 3)
+                    {
+                        parsed = Util.TryParse(args[2], ref outputLevel);
+                        if (!parsed)
+                            throw new ArgumentException("Output level not specified correctly (not an integer): " + outputLevel);
+                    }
+                }
+            }
+            Assembly assembly = null;
+            if (!string.IsNullOrEmpty(assemblyName))
+            {
+                assembly = UtilSystem.GetAssemblyByName(assemblyName);
+                if (assembly == null)
+                {
+                    if (byFileName)
+                        assembly = UtilSystem.GetAssemblyByFileName(assemblyName);
+                    if (assembly == null)
+                    {
+                        if (byFileName)
+                            throw new InvalidOperationException("Could not find the following assembly neither by name nor by file name: \"" + assemblyName + "\".");
+                        else
+                            throw new InvalidOperationException("Could not find the following assembly: \"" + assemblyName + "\".");
+                    }
+                }
+            } else
+            {
+                assembly = Assembly.GetExecutingAssembly();
+            }
+            if (assembly == null)
+                assembly = UtilSystem.IglibAssembly;
+            if (assembly == null)
+                throw new InvalidOperationException("Could not find the assembly: \"" + assemblyName + "\".");
+            if (numArgs >= 1)
+                Console.WriteLine("Assembly information: " + Environment.NewLine);
+            else
+                Console.WriteLine("IGLib base assembly information: " + Environment.NewLine);
+            // This will produce output on console and string containinng names in separate lines:
+            string info = UtilSystem.GetAssemblyResourcesInfo(assembly, includeEmbedded, includeResx, outputLevel); 
+            return info;
+        }
+
+
+
+        // AssemblyInfo AssemblyInfo AssemblyInfo AssemblyInfo 
+
+        #endregion Actions.AssemblyUtilities.Resources
 
 
 
@@ -4269,7 +4396,13 @@ A number of other options are supported:
                     return;
 
                 AddAssemblyCommand(AssemblyInfo, AssemblyFunctionInfo, AssemblyHelpInfo);
-                AddAssemblyCommand(AssemblyInfo1, AssemblyFunctionInfo, AssemblyHelpInfo1);
+                AddAssemblyCommand(AssemblyInfo1, AssemblyFunctionInfo, AssemblyHelpInfo1); 
+
+                AddAssemblyCommand(AssemblyResources, AssemblyFunctionResources, AssemblyHelpResources);
+                AddAssemblyCommand(AssemblyResources1, AssemblyFunctionResources, AssemblyHelpResources1);
+                AddAssemblyCommand(AssemblyResourcesEmbedded, AssemblyFunctionResourcesEmbedded, AssemblyHelpResourcesEmbedded);
+                AddAssemblyCommand(AssemblyResourcesResx, AssemblyFunctionResourcesResx, AssemblyHelpResourcesResx);
+
                 //AddAssemblyCommand(AssemblyApplicationInfo, AssemblyFunctionApplicationInfo, AssemblyHelpApplicationInfo);
                 //AddAssemblyCommand(AssemblyApplicationInfo1, AssemblyFunctionApplicationInfo, AssemblyHelpApplicationInfo1);
                 AddAssemblyCommand(AssemblyReferenced, AssemblyFunctionReferenced, AssemblyHelpReferenced);
@@ -4394,7 +4527,7 @@ A number of other options are supported:
         protected List<CommandMethod> AppProcessMethods = new List<CommandMethod>();
 
         /// <summary>Adds a new process - related embedded application's command (added as sub-command of the base command named <see cref="ConstProcess"/>).</summary>
-        /// <param name="AppName">Application name.</param>
+        /// <param name="appName">Application name.</param>
         /// <param name="appMethod">Method used to perform the application.</param>
         /// <param name="appHelp">Eventual help string for the application.</param>
         protected void AddProcessCommand(string appName, CommandMethod appMethod, string appHelp)
@@ -4419,10 +4552,10 @@ A number of other options are supported:
     FullName: whether full name must be specified (otherwise substring is enough), default is true.";
 
         /// <summary>Embedded application - lists all processes that satisfy the specified conditions.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of processes.</returns>
-        protected virtual string ProcessFunctionListProcesses(string surfaceName, string[] args)
+        protected virtual string ProcessFunctionListProcesses(string appName, string[] args)
         {
             int numargs = 0;
             if (args != null)
@@ -4505,10 +4638,10 @@ A number of other options are supported:
     FullName: whether full name must be specified (otherwise substring is enough), default is true.";
 
         /// <summary>Embedded application. Lists all running applications sarisfyin specified conditions.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of processes.</returns>
-        protected virtual string ProcessFunctionListApplications(string surfaceName, string[] args)
+        protected virtual string ProcessFunctionListApplications(string appName, string[] args)
         {
             int numargs = 0;
             if (args != null)
@@ -4591,10 +4724,10 @@ A number of other options are supported:
     FullName: whether full name must be specified (otherwise substring is enough), default is false.";
 
         /// <summary>Embedded application. Lists all running applications sarisfyin specified conditions.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of processes.</returns>
-        protected virtual string ProcessFunctionListApplicationsByWindow(string surfaceName, string[] args)
+        protected virtual string ProcessFunctionListApplicationsByWindow(string appName, string[] args)
         {
             int numargs = 0;
             if (args != null)
@@ -4688,10 +4821,10 @@ A number of other options are supported:
     FullName: whether full name must be specified (otherwise substring is enough), default is true.";
 
         /// <summary>Embedded application - kills all processes that satisfy the specified conditions.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of processes.</returns>
-        protected virtual string ProcessFunctionKillProcesses(string surfaceName, string[] args)
+        protected virtual string ProcessFunctionKillProcesses(string appName, string[] args)
         {
             int numargs = 0;
             if (args != null)
@@ -4751,10 +4884,10 @@ A number of other options are supported:
     FullName: whether full name must be specified (otherwise substring is enough), default is true.";
 
         /// <summary>Embedded application. Kills all running applications sarisfyin specified conditions.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of processes.</returns>
-        protected virtual string ProcessFunctionKillApplications(string surfaceName, string[] args)
+        protected virtual string ProcessFunctionKillApplications(string appName, string[] args)
         {
             int numargs = 0;
             if (args != null)
@@ -4814,10 +4947,10 @@ A number of other options are supported:
     FullName: whether full name must be specified (otherwise substring is enough), default is false.";
 
         /// <summary>Embedded application. Kills all running applications sarisfyin specified conditions.</summary>
-        /// <param name="AppName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of processes.</returns>
-        protected virtual string ProcessFunctionKillApplicationsByWindow(string surfaceName, string[] args)
+        protected virtual string ProcessFunctionKillApplicationsByWindow(string appName, string[] args)
         {
             int numargs = 0;
             if (args != null)
@@ -4889,7 +5022,7 @@ A number of other options are supported:
 
 
         /// <summary>Runs a process - related utility (embedded application) according to arguments.</summary>
-        /// <param name="AppArguments">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
+        /// <param name="args">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and teh rest
         /// arguments are arguments that are used by the embedded application.</param>
         protected virtual string RunAppProcess(string[] args)
         {
@@ -4995,7 +5128,7 @@ A number of other options are supported:
 
         /// <summary>Adds a new data structure- related embedded demo application's command (added as 
         /// a sub-command of the base command named <see cref="ConstDataStructures"/>).</summary>
-        /// <param name="AppName">Application name.</param>
+        /// <param name="appName">Application name.</param>
         /// <param name="appMethod">Method used to perform the application.</param>
         /// <param name="appHelp">Eventual help string for the application.</param>
         protected void AddDataStructuresCommand(string appName, CommandMethod appMethod, string appHelp)
@@ -5034,7 +5167,7 @@ A number of other options are supported:
 
 
         /// <summary>Runs a data structures demo - related utility (embedded application) according to arguments.</summary>
-        /// <param name="AppArguments">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and the rest
+        /// <param name="args">Arguments. 0-th argument is the base command name, 1st argument is the embedded application name, and the rest
         /// are arguments that are used by the embedded application.</param>
         protected virtual string RunAppDataStructures(string[] args)
         {
@@ -5180,6 +5313,7 @@ A number of other options are supported:
         /// <summary>Adds a new internal script command under specified name to the internal interpreter of the current 
         /// script object.</summary>
         /// <param name="interpreter">Interpreter on which the command is added.</param>
+        /// <param name="helpStrings">Dictionary of help strings corresponding to commands.</param>
         /// <param name="commandName">Name of the command. <para>Must not be null or empty string.</para></param>
         /// <param name="command">Method that executes the command. <para>Must not be null.</para></param>
         /// <param name="helpString">Help string associated with command, optionsl (can be null).</param>

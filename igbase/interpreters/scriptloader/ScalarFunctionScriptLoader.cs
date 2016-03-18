@@ -167,9 +167,18 @@ namespace IG.Lib
         }
 
 
+        /// <summary>Invalidates function definition. The first subsequent call to <see cref="Function"/> getter will thus 
+        /// recompiile the function befoe returning it.</summary>
+        public void InvalidateFunction()
+        {
+            IsCompiled = false;
+            Function = null;
+        }
+
+
         /// <summary>Sets names used in generated script code.</summary>
         /// <param name="returnedValueName">Name of the variabble that holds returned value in functions in generated script code.</param>
-        /// <param name="FunctionArgumentParametersName">Name of function argument in generated script code.</param>
+        /// <param name="functionArgumentName">Name of function argument in generated script code.</param>
         /// <param name="independentVariableNames">Names of independent variable in generated script code.</param>
         public void SetNames(string returnedValueName, string functionArgumentName, string[] independentVariableNames)
         {
@@ -363,13 +372,16 @@ namespace IG.Lib
             {
                 lock (Lock)
                 {
-                    _numParameters = value;
-                    if (value > 0 && _independentVariableNames != null)
+                    if (_numParameters != value)
                     {
-                        if (_independentVariableNames.Length != value)
-                            IndependentVariableNames = null;
+                        _numParameters = value;
+                        if (value > 0 && _independentVariableNames != null)
+                        {
+                            if (_independentVariableNames.Length != value)
+                                IndependentVariableNames = null;
+                        }
+                        InvalidateFunction();
                     }
-                    
                 }
             }
         }
@@ -396,6 +408,7 @@ namespace IG.Lib
                 }
             }
         }
+
 
         /// <summary>Returns a table of default names of variables (within functions in the loadable scripts) that hold
         /// the independent variables (components of vector of parameters), for the specified number of parameters.</summary>
@@ -454,6 +467,7 @@ namespace IG.Lib
                     _independentVariableNames = value;
                     // Invalidate dependencied:
                     InvalidateDefinitions();
+                    InvalidateFunction();
                 }
             }
         }
@@ -462,21 +476,21 @@ namespace IG.Lib
         public string ValueDefinitionString
         {
             get  { lock (Lock) { return _valueDefinitionString; } }
-            set { lock (Lock) { _valueDefinitionString = value; Code = null; } }
+            set { lock (Lock) { _valueDefinitionString = value; Code = null; InvalidateFunction(); } }
         }
 
         /// <summary>Expressions that defines function gradient components.</summary>
         public string[] GradientDefinitionStrings
         {
             get  { lock (Lock) { return _gradientDefinitionStrings; } }
-            set { lock (Lock) { _gradientDefinitionStrings = value; Code = null; } }
+            set { lock (Lock) { _gradientDefinitionStrings = value; Code = null; InvalidateFunction(); } }
         }
 
         /// <summary>Expressions that define function hessian components.</summary>
         public string[][] HessianDefinitionStrings
         {
             get { lock (Lock) { return _hessianDefinitionStrings; } }
-            set { lock (Lock) { _hessianDefinitionStrings = value; Code = null; } }
+            set { lock (Lock) { _hessianDefinitionStrings = value; Code = null; InvalidateFunction(); } }
         }
 
 
@@ -492,16 +506,19 @@ namespace IG.Lib
             protected set
             {
                 lock (Lock) 
-                { 
-                    _code = value; 
-                    IsCompiled = false; 
+                {
+                    if (value != _code)
+                    {
+                        _code = value;
+                        InvalidateFunction(); // IsCompiled = false;
+                    }
                 }
             }
         }
 
         /// <summary>Saves the generated script code to the specified file.
         /// File is overwritten if it already exists.</summary>
-        /// <param name="inputFilePath">Path to the file where script code is saved.</param>
+        /// <param name="filePath">Path to the file where script code is saved.</param>
         public void SaveCode(string filePath)
         {
             File.WriteAllText(filePath, Code);
@@ -510,7 +527,7 @@ namespace IG.Lib
 
         /// <summary>Appends to the apecified string builder the specified level of indentation.</summary>
         /// <param name="sb">String builder to which indents are appended.</param>
-        /// <param name="numIndente">Number of indents that are appended.</param>
+        /// <param name="numIndent">Number of indents that are appended.</param>
         protected void AppendIndents(StringBuilder sb, int numIndent)
         {
             for (int i = 0; i < numIndent; ++i)
@@ -534,7 +551,7 @@ namespace IG.Lib
         /// <summary>Appends comment that denotes the componenent index.</summary>
         /// <param name="sb">String buider that is used to assemble the compiled script.</param>
         /// <param name="coponentBaseName">Component's base name used in the comment denoting indices.</param>
-        /// <param name="index2">Second component index.</param>
+        /// <param name="index">Component index.</param>
         protected void AppendIndexComment(StringBuilder sb, string coponentBaseName, int index)
         {
             AppendBeginComment(sb);
@@ -587,7 +604,8 @@ namespace IG.Lib
         /// <summary>Appends to the apecified string builder the C# statements that sets the specified variable to the specified value.</summary>
         /// <param name="sb">String builder to which the statement is appended.</param>
         /// <param name="varName">Name of the variable that is set.</param>
-        /// <param name="value">Value that is assigned to the variable.</param>
+        /// <param name="coponentBaseName">Name of the component to be set.</param>
+        /// <param name="values">Value that are assigned to the variable.</param>
         /// <param name="numIndents">Number of indents that are written before code lines.</param>
         protected void AppendSetVariable(StringBuilder sb, string varName, string [] values, string coponentBaseName, int numIndents)
         {
@@ -620,7 +638,8 @@ namespace IG.Lib
         /// <summary>Appends to the apecified string builder the C# statements that sets the specified variable to the specified value.</summary>
         /// <param name="sb">String builder to which the statement is appended.</param>
         /// <param name="varName">Name of the variable that is set.</param>
-        /// <param name="value">Value that is assigned to the variable.</param>
+        /// <param name="values">Value that is assigned to the variable.</param>
+        /// <param name="componentBaseName">Name of the component that is assigned.</param>
         /// <param name="numIndents">Number of indents that are written before code lines.</param>
         protected void AppendSetVariable(StringBuilder sb, string varName, string [][] values, string componentBaseName, int numIndents)
         {
@@ -758,7 +777,7 @@ namespace IG.Lib
         }
 
         /// <summary>Appends to the apecified string builder the C# definition of a function of parameters returning a vector
-        /// throufh <see cref="IVector"/> argument.
+        /// through <see cref="IVector"/> argument.
         /// Function is of form 'protected override double (IVector param, IVector result)'.</summary>
         /// <param name="sb">String builder to which the code (function definition) is appended.</param>
         /// <param name="functionName">Name of the function.</param>
@@ -766,13 +785,13 @@ namespace IG.Lib
         /// <param name="returnedVectorName">Name of the formal vector argument that contains returned values.</param>
         /// <param name="numIndents">Number of indents that are prepended before code lines.</param>
         private void AppendFunctonDefinition(StringBuilder sb, string functionName, string[][] definitionStrings, 
-            string returnedMatrixName, int numIndents)
+            string returnedVectorName, int numIndents)
         {
             if (definitionStrings != null)
             {
                 AppendIndents(sb, numIndents);
                 sb.AppendLine("public override void " + functionName + "(IVector " + this.FunctionArgumentParametersName +
-                    ", IMatrix " + returnedMatrixName + ")");
+                    ", IMatrix " + returnedVectorName + ")");
                 AppendIndents(sb, numIndents);
                 sb.AppendLine("{");
                 for (int i = 0; i < NumParameters; ++i)
@@ -796,7 +815,7 @@ namespace IG.Lib
                         AppendIndents(sb, numIndents + 1);
                         sb.AppendLine(ReturnedValueName + " = zero + " + defStr + ";");
                         AppendIndents(sb, numIndents + 1);
-                        sb.AppendLine(returnedMatrixName + "[" + i + ", " + j + "] = (double) " + ReturnedValueName + ";");
+                        sb.AppendLine(returnedVectorName + "[" + i + ", " + j + "] = (double) " + ReturnedValueName + ";");
                     }
                 }
                 AppendIndents(sb, numIndents);
@@ -1002,7 +1021,7 @@ namespace IG.Script
         /// <summary>Returns an instance of a scalar function created by the current loader.
         /// <para>Loader provides a property through which a scalar function created on demand can be accessed. If compiled scripts the invalid
         /// (e.g. when some contents are changed) the function will be created anew at next access, so it is always consistent with the loader data.</para></summary>
-        /// <remarks>As alternative, the scalar function can be created by the <see cref="CreateScalarFunction"/> call, but this call creates a neew 
+        /// <remarks>As alternative, the scalar function can be created by the CreateScalarFunction call, but this call creates a neew 
         /// object every time. This property creates a single function that can be used by anoone using this property.</remarks>
         public LoadableScalarFunctionBase Function
         {

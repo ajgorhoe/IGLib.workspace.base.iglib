@@ -62,7 +62,6 @@ namespace IG.Num
         /// Array of elements is allocated.</summary>
         /// <param name="dimx">First dimension of the field (number of grid nodes in the first direction).</param>
         /// <param name="dimy">Second dimension of the field.</param>
-        /// <param name="dimz">Third dimension of the field.</param>
         /// <param name="fieldName">Name of the field.</param>
         /// <param name="fieldDescription">Field description.</param>
         /// <param name="minx">Minimal value of x coordinate of the generated grid.</param>
@@ -89,17 +88,15 @@ namespace IG.Num
         /// grid obtained by transformation of co-ordinates of a regular equidistant grid. Array of 
         /// elements is allocated.</summary>
         /// <param name="dimx">First dimension of the field (number of grid nodes in the first direction).</param>
-        /// <param name="dimy">Second dimension of the field.</param>
-        /// <param name="dimz">Third dimension of the field.</param>
         /// <param name="fieldName">Name of the field.</param>
         /// <param name="fieldDescription">Field description.</param>
         /// <param name="minxRef">Minimal value of x coordinate of the generated grid.</param>
         /// <param name="maxxRef">Maximal value of x coordinate of the generated grid.</param>
-        /// <param name="minyRef">Minimal value of y coordinate of the generated grid.</param>
-        /// <param name="maxyRef">Maximal value of y coordinate of the generated grid.</param>
         /// <param name="fx">Function that maps node coordinates of the reference grid to the first 
         /// node coordinates of the actual grid.</param>
         /// <param name="fy">Function that maps node coordinates of the reference grid to the second 
+        /// node coordinates of the actual grid.</param>
+        /// <param name="fz">Function that maps node coordinates of the reference grid to the third 
         /// node coordinates of the actual grid.</param>
         public UnstructuredMesh1d2d(int dimx,
                 string fieldName, string fieldDescription,
@@ -120,10 +117,9 @@ namespace IG.Num
 
         /// <summary>Generates an (unconnected) unstructured grid of nodes based on a 1D regular grid 
         /// with grid directions parallel to coordinate axes and equidistant nodes in all directions.</summary>
+        /// <param name="dimx">Dimension (number of points) along generation direction.</param>
         /// <param name="minxRef">Minimal value of x coordinate of the generated grid.</param>
         /// <param name="maxxRef">Maximal value of x coordinate of the generated grid.</param>
-        /// <param name="minyRef">Minimal value of y coordinate of the generated grid.</param>
-        /// <param name="maxyRef">Maximal value of y coordinate of the generated grid.</param>
         public void GenerateCoordinates(
             int dimx,
             double minxRef, double maxxRef)
@@ -139,10 +135,9 @@ namespace IG.Num
         /// in terms of three scalar functions of 3 variables.
         /// <para>Coordinates are obtained by mapping individual coordinates of a regular equidistant grid
         /// from the reference system.</para></summary>
+        /// <param name="dimx">Dimension (number of points) in the generation direction.</param>
         /// <param name="minxRef">Lower bound for the first parameter in the reference coordinate system.</param>
         /// <param name="maxxRef">Upper bound for the first parameter in the reference coordinate system.</param>
-        /// <param name="minyRef">Lower bound for the second parameter in the reference coordinate system.</param>
-        /// <param name="maxyRef">Upper bound for the second parameter in the reference coordinate system.</param>
         /// <param name="fx">Function that maps node coordinates of the reference grid to the first 
         /// node coordinates of the actual grid.</param>
         /// <param name="fy">Function that maps node coordinates of the reference grid to the second 

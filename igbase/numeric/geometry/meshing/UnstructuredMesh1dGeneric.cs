@@ -10,7 +10,7 @@ namespace IG.Num
 
 
     /// <summary>Generic 1D unstructured mesh with collections of named scalar, vector, tensor and index fields.
-    /// <para>Mesh contains geometry (inherited from <see cref="UnstructuredMeshGeometry1d"/>) and collection of index, scalar,
+    /// <para>Mesh contains geometry (inherited from <see cref="UnstructuredMeshGeometry1d{ TCoord}"/>) and collection of index, scalar,
     /// vector and tensor fields.</para>
     /// <para>Fields are created on demand (lazy evaluation).</para></summary>
     /// <typeparam name="TCoord">Type of coordinates for description of mesh geometry.</typeparam>
@@ -34,7 +34,7 @@ namespace IG.Num
         /// <summary>Constructs a new empty unstructured mesh (no elements contained) with no name and no description.</summary>
         public UnstructuredMesh1d()
             : this(0, null, null)
-        { }
+        {   }
 
         /// <summary>Creates a new unstructured mesh with the specified number of elements.</summary>
         /// <param name="numElements">Number of elements of the coordinate field.</param>
@@ -170,7 +170,7 @@ namespace IG.Num
 
         /// <summary>Adds the specified index field to the collection of index fields under the specified name.
         /// <para>If the field already has a name then its name is replaced by the specified name, 
-        /// unless the specified name is null.</summary>
+        /// unless the specified name is null.</para></summary>
         /// <param name="field">Field to be added to the collection.</param>
         /// <param name="name">Name under which the field is added to the collection.</param>
         public void AddIndexField(TIndexField field, string name)
@@ -325,7 +325,7 @@ namespace IG.Num
 
         /// <summary>Adds the specified scalar field to the collection of scalar fields under the specified name.
         /// <para>If the field already has a name then its name is replaced by the specified name, 
-        /// unless the specified name is null.</summary>
+        /// unless the specified name is null.</para></summary>
         /// <param name="field">Field to be added to the collection.</param>
         /// <param name="name">Name under which the field is added to the collection.</param>
         public void AddScalarField(TScalarField field, string name)
@@ -480,7 +480,7 @@ namespace IG.Num
 
         /// <summary>Adds the specified vector field to the collection of vector fields under the specified name.
         /// <para>If the field already has a name then its name is replaced by the specified name, 
-        /// unless the specified name is null.</summary>
+        /// unless the specified name is null.</para></summary>
         /// <param name="field">Field to be added to the collection.</param>
         /// <param name="name">Name under which the field is added to the collection.</param>
         public void AddVectorField(TVectorField field, string name)
@@ -635,7 +635,7 @@ namespace IG.Num
 
         /// <summary>Adds the specified tensor field to the collection of tensor fields under the specified name.
         /// <para>If the field already has a name then its name is replaced by the specified name, 
-        /// unless the specified name is null.</summary>
+        /// unless the specified name is null.</para></summary>
         /// <param name="field">Field to be added to the collection.</param>
         /// <param name="name">Name under which the field is added to the collection.</param>
         public void AddTensorField(TTensorField field, string name)

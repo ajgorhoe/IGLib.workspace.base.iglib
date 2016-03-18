@@ -89,7 +89,7 @@ namespace IG.Lib
 
         /// <summary>Loads data store'result XML Doc from an XML string.</summary>
         /// <param name="str">XML string from which XML is loaded.</param>
-        /// <param name="forceoverwrite">If true then the file is loaded also if the data has been modified but not saved.</param>
+        /// <param name="loadifnotnull">If true then the file is loaded also if the data has been modified but not saved.</param>
         public void LoadFromString(string str, bool loadifnotnull)
         {
             if (string.IsNullOrEmpty(str))
@@ -374,7 +374,6 @@ namespace IG.Lib
 
         /// <summary>Returns the first ELEMENT node in the current XML document
         /// that satisfies the specified XPath expression.</summary>
-        /// <param name="basenode">Root node of the XML sub-tree in which _gridCoordinates are searched for.</param>
         /// <param name="xpath">The XPath expression used for selection of the node.</param>
         /// <returns>The first node that satisfies the XPath expression.</returns>
         public XmlElement GetElement(string xpath)
@@ -384,7 +383,6 @@ namespace IG.Lib
 
         /// <summary>Returns the (first) text node of the first element node in the current document
         /// that satisfies the specified XPath expression.</summary>
-        /// <param name="basenode">Root node of the XML sub-tree in which _gridCoordinates are searched for.</param>
         /// <param name="xpath">The XPath expression used for selection of the node.</param>
         /// <returns>The first node that satisfies the XPath expression.</returns>
         public XmlNode GetTextNode(string xpath)
@@ -394,7 +392,6 @@ namespace IG.Lib
 
         /// <summary>Returns value of the (first) text node of the first element node in current document
         /// that satisfies the specified XPath expression.</summary>
-        /// <param name="basenode">Root node of the XML sub-tree in which _gridCoordinates are searched for.</param>
         /// <param name="xpath">The XPath expression used for selection of the node.</param>
         /// <returns>The first node that satisfies the XPath expression.</returns>
         public string GetValue(string xpath)
@@ -464,7 +461,7 @@ namespace IG.Lib
 
     
 
-    /// <summary>Supplemental basic XML node & document manipulation utilities.
+    /// <summary>Supplemental basic XML node and document manipulation utilities.
     /// Contains some useful static methods for XML manipulation.</summary>
     public class Xml
     {
@@ -1000,6 +997,7 @@ namespace IG.Lib
         /// <summary>Returns the namespace URI associated with a specific prefix that applies to
         /// the specified Xml document.</summary>
         /// <param name="doc">Xml document to which namespace URI applies.</param>
+        /// <param name="prefix">Prefix.</param>
         /// <returns>The namespace URI if found, null otherwise.</returns>
         public static string GetNameSpaceUri(XmlDocument doc, string prefix)
         {
@@ -1015,6 +1013,7 @@ namespace IG.Lib
         /// <summary>Returns the namespace URI associated with a specific prefix that applies to
         /// the specified Xml document.</summary>
         /// <param name="node">Xml node to which namespace URI applies.</param>
+        /// <param name="prefix">Prefix.</param>
         /// <returns>The namespace URI if found, null otherwise.</returns>
         public static string GetNameSpaceUri(XmlNode node, string prefix)
         {
@@ -1670,7 +1669,6 @@ namespace IG.Lib
 
         /// <summary>Marks the current state of the XmlParser. The mark set is not named.
         /// Position is stored on a stack such that previous stored positions can be restored, either in a reverse way.</summary>
-        /// <param name="name">Name assigned to the mark.</param>
         public void SetMark()
         {
             SetMark(null);
@@ -1701,7 +1699,7 @@ namespace IG.Lib
         /// If required then the last mark is removed from the list.</summary>
         /// <param name="removemarks">If true then all marks from the specified one on (inclusively) are removed.</param>
         /// <returns>The current node after operation or null if there is no valid last mark.</returns>
-        public XmlNode GoToMark(bool removemark)
+        public XmlNode GoToMark(bool removemarks)
         {
             XmlNode ret = null;
             try
@@ -1710,7 +1708,7 @@ namespace IG.Lib
                 if (marks.Count > 0)
                 {
                     mark = marks[marks.Count - 1];  // marks.Last();
-                    if (removemark)
+                    if (removemarks)
                     {
                         marks.RemoveAt(marks.Count);
                     }
@@ -1764,7 +1762,6 @@ namespace IG.Lib
         /// <summary>Restores the parser state to the state contained in the last mark. The current node after operation
         /// is returned, or null if there are no marks. 
         /// The last mark is LEFT on the list.</summary>
-        /// <param name="removemarks">If true then all marks from the specified one on (inclusively) are removed.</param>
         /// <returns>The current node after operation or null if there is no valid last mark.</returns>
         public XmlNode GoToMark()
         {

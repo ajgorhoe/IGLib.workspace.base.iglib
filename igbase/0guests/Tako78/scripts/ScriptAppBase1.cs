@@ -59,8 +59,8 @@ namespace IG.Script
         protected const string DataStructuresHelpTestCsvApp = DataStructuresTestCsvApp + " : Runs the CSV simple demo application.";
 
         /// <summary>Executes embedded application - demo application for demonstration of work with CSVs.</summary>
-        /// <param name="appName111tionName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.</param>
         /// <returns>Number of arguments passed.</returns>
         protected virtual string DataStructuresFunctionTestCsvApp(string appName, string[] args)
         {
@@ -95,9 +95,9 @@ namespace IG.Script
     when the workspaceprojects directory is defined (define its path with  the WORKSPACE 
     system variable!).";
 
-        /// <summary>Executes embedded application - test of writing sampled data definition & data in CSV format.</summary>
-        /// <param name="appName111tionName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.
+        /// <summary>Executes embedded application - test of writing sampled data definition and data in CSV format.</summary>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="args">Arguments fo the embedded application's command.
         /// <para>1st argument: path to the data definition file in JSON.</para>
         /// <para>2nd argument: path to the data file in JSON.</para>
         /// <para>3rd argument: path to the output file where data in CSV is written.</para>
@@ -275,9 +275,9 @@ namespace IG.Script
     when the workspaceprojects directory is defined (define its path with  the WORKSPACE 
     system variable!).";
 
-        /// <summary>Executes embedded application - test of writing sampled data definition & data in CSV format.</summary>
-        /// <param name="appName111tionName">Name of the embedded application.</param>
-        /// <param name="AppArguments">Arguments fo the embedded application's command.
+        /// <summary>Executes embedded application - test of writing sampled data definition and data in CSV format.</summary>
+        /// <param name="appName">Name of the embedded application.</param>
+        /// <param name="appArgs">Arguments fo the embedded application's command.
         /// <para>1st argument: path to CSV file that contains definitions and data to be read.</para>
         /// <para>2nd argument: path to the file where the read-in definitions and data will be written (in CSV).</para>
         /// <para>3rd argument: if true then key and data are in the same row when writing the data.</para>
@@ -285,11 +285,11 @@ namespace IG.Script
         /// <para>All arguments are optional. Relative paths are considered relative to the .../workspaceprojects/00tests/data/sampleddata 
         /// directory if the workspaceprojects directory can be determined (define the WORKSPACE variable for this).</para></param>
         /// <returns>Number of arguments passed.</returns>
-        protected virtual string DataStructuresFunctionTestCsvReadDefinitionAndData(string appName, string[] args)
+        protected virtual string DataStructuresFunctionTestCsvReadDefinitionAndData(string appName, string[] appArgs)
         {
             int numArgs = 0;
-            if (args != null)
-                numArgs = args.Length;
+            if (appArgs != null)
+                numArgs = appArgs.Length;
             Console.WriteLine(Environment.NewLine + Environment.NewLine
                 + "Runnning test: writing data definition & sampled data in CSV ..." + Environment.NewLine);
             string projectsDir = UtilSystem.GetWorkspaceProjectsDirectoryPath();
@@ -331,7 +331,7 @@ namespace IG.Script
             string path;
             if (numArgs >= 1)
             {
-                path = args[0];
+                path = appArgs[0];
                 if (!string.IsNullOrEmpty(path))
                 {
                     inputPath = path;
@@ -341,7 +341,7 @@ namespace IG.Script
             }
             if (numArgs >= 2)
             {
-                path = args[1];
+                path = appArgs[1];
                 if (!string.IsNullOrEmpty(path))
                 {
                     outputPath = path;
@@ -351,13 +351,13 @@ namespace IG.Script
             }
             if (numArgs >= 3)
             {
-                if (!string.IsNullOrEmpty(args[2]))
-                    keyAndDataInSameRow = Util.ParseBoolean(args[2]);
+                if (!string.IsNullOrEmpty(appArgs[2]))
+                    keyAndDataInSameRow = Util.ParseBoolean(appArgs[2]);
             }
             if (numArgs >= 4)
             {
-                if (!string.IsNullOrEmpty(args[3]))
-                    indentation = int.Parse(args[3]);
+                if (!string.IsNullOrEmpty(appArgs[3]))
+                    indentation = int.Parse(appArgs[3]);
             }
             if (string.IsNullOrEmpty(inputPath) || !File.Exists(inputPath))
             {

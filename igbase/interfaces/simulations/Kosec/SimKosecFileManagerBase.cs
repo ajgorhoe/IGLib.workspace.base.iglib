@@ -733,7 +733,6 @@ namespace IG.Num
         }
 
         /// <summary>Finds and returns the specified deefault input value definition. <seealso cref="GetDefinition"/></summary>
-        /// <param name="list">List that is searched for the specified definition.</param>
         /// <param name="id">ID of the definiton. If less or equal to 0 then definition is searched only 
         /// by field name.</param>
         /// <param name="name">Field name that it searched for. If <paramref name="id"/> is greater than 0
@@ -802,7 +801,6 @@ namespace IG.Num
         }
 
         /// <summary>Finds and returns the specified optimization parameter definition. <seealso cref="GetDefinition"/></summary>
-        /// <param name="list">List that is searched for the specified definition.</param>
         /// <param name="id">ID of the definiton. If less or equal to 0 then definition is searched only 
         /// by field name.</param>
         /// <param name="name">Field name that it searched for. If <paramref name="id"/> is greater than 0
@@ -819,7 +817,7 @@ namespace IG.Num
         /// the current contents of simulation input, according to the definition of direct 
         /// mapping between this parameter and scalar input field value.
         /// If mapping is not defined for the component specified then null is returned.
-        /// Returned value is obtained by <see cref="GetInputFieldValue"/>.</summary>
+        /// Returned value is obtained by GetInputFieldValue.</summary>
         /// <param name="which">Specifies which optimization parameter is returned.</param>
         /// <returns>Value of the specified input (optimization) parameter if direct mapping 
         /// between that parameter and a scalar simulation input field is defined, or null if such 
@@ -848,7 +846,7 @@ namespace IG.Num
         /// Those components for which direct mapping between a specific input parameter and
         /// scalar input field in simulation input is not defined, are not obtained and stored
         /// in vector components (i.e., eventual previous values are preserved). 
-        /// Returned value is obtained by <see cref="GetInputFieldValue"/>.</summary>
+        /// Returned value is obtained by GetInputFieldValue.</summary>
         /// <param name="param">Vector of parameters that are provided.</param>
         public void GetOptimizationParametersDefinedFromInput(IVector param)
         {
@@ -1353,7 +1351,7 @@ namespace IG.Num
 
 
         /// <summary>Writes optimization input parameters to the standard location.</summary>
-        /// <param name="outputValues">Parameters to be written.</param>
+        /// <param name="inputParameters">Parameters to be written.</param>
         public virtual void WriteInputParameters(IVector inputParameters)
         {
             lock (Lock)
@@ -1379,12 +1377,12 @@ namespace IG.Num
             }
         }
 
-        /// <summary>Deletes the output files. 
+        /// <summary>Deletes the output files.</summary>
         /// <para>It is recommendable to delete simulation output before running simulation.
         /// In this way, one would know if the simulation program has been broken because the
         /// output file would not exist or would be corrupted (otherwise, one could simply read 
         /// the output file genenerated in some previout run, without noticing that something
-        /// is wrong).</summary>
+        /// is wrong).</para>
         public virtual void DeleteOutputFiles()
         {
             lock (Lock)
@@ -1593,7 +1591,7 @@ namespace IG.Num
 
 
         /// <summary>Writes data about the current object to console.
-        /// Normally, <see cref="toString"/>() will be used for that, but sometimed this
+        /// Normally, <see cref="ToString"/>() will be used for that, but sometimed this
         /// method is used because it is more suitable for debugging.</summary>
         public void WriteToConsole()
         {

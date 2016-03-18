@@ -151,7 +151,7 @@ namespace IG.Num
 
         /// <summary>Sets the optimization data where information about optimization problem and algorithm parameters
         /// can be obtained.</summary>
-        /// <param name="data"></param>
+        /// <param name="results">object on which results are set.</param>
         public virtual void SetOptimizationResults(IOptimizationResults results)
         {
 

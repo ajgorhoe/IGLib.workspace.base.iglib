@@ -19,7 +19,7 @@ namespace IG.Lib
 
         /// <summary>Runs the specified command with specified name, installed on the current application object.</summary>
         /// <param name="commandThread">Commandline interpreter thread in which command is executed.</param>
-        /// <param name="AppName">Command name.</param>
+        /// <param name="commandName">Command name.</param>
         /// <param name="commandArguments">Command arguments.</param>
         /// <remarks>This command overrides the original Run commands in such a way that it treats script commands differently form 
         /// the original interpreter commands.
@@ -66,7 +66,7 @@ namespace IG.Lib
 
 
         /// <summary>Returns true if the specified command is script command (i.e. its first argument is command-name and it is run
-        /// through the <see cref="Script_CommandAdapter"/> object).</summary>
+        /// through the <see cref="LoadableScriptBase.Script_CommandAdapter"/> object).</summary>
         /// <param name="commandName">Name of the command that is queried.</param>
         /// <remarks><para>A command is considered script command if it is contained on the <see cref="Script_CommandHelpStrings"/> list.</para></remarks>
         public virtual bool Script_ContainsScriptCommand(string commandName)
@@ -177,7 +177,7 @@ namespace IG.Lib
 
         /// <summary>Delegate for internal command methods.</summary>
         /// <param name="commandName">Name of the internal command.</param>
-        /// <param name="AppArguments">Arguments to the command.</param>
+        /// <param name="args">Arguments to the command.</param>
         /// <returns></returns>
         protected delegate string CommandMethod(string commandName, string[] args);
 
@@ -413,7 +413,7 @@ namespace IG.Lib
         public const string ConstHelpDefaultUniversal = "?";
 
         /// <summary>Prints help.</summary>
-        /// <param name="commands">Arguments.</param>
+        /// <param name="arguments">Arguments.</param>
         /// <returns>null.</returns>
         protected virtual string Script_CommandHelp(string[] arguments)
         {
@@ -434,7 +434,7 @@ namespace IG.Lib
         public const string ConstDefaultTestScrip = "TestScript";
 
         /// <summary>Prints help.</summary>
-        /// <param name="commands">Arguments.</param>
+        /// <param name="arguments">Arguments.</param>
         /// <returns>null.</returns>
         protected virtual string Script_CommandTestScript(string[] arguments)
         {
@@ -470,17 +470,16 @@ namespace IG.Lib
             }
         }
 
-        /// <summary>Delegate for commands that are installed on script's internal interpreter (property <see cref="Interpreter"/>).
+        /// <summary>Delegate for commands that are installed on script's internal interpreter (property <see cref="Script_Interpreter"/>).
         /// <para>These methods only take command arguments as parameters, and the first argument is
         /// usually name under which command is installed.</para></summary>
-        /// <param name="interpreter">Interpreter on which commad is run. 
-        /// <param name="AppArguments">Command arguments. The first argument is internal script's command name.</param>
+        /// <param name="args">Command arguments. The first argument is internal script's command name.</param>
         /// <returns>Command's return value.</returns>
         public delegate string Script_CommandDelegate(string[] args);
 
         /// <summary>Adapts that converts internal script commands (delegate of type <see cref="Script_CommandDelegate"/>) to interpreter commands.
         /// <para>This adapter enables definition of script internal commands in a simple form and installation of them
-        /// on internal interpreter, which requires command delegate of type <see cref=""/>.</para></summary>
+        /// on internal interpreter, which requires command delegate of type ....</para></summary>
         public class Script_CommandAdapter
         {
             private Script_CommandAdapter() { }  // prevent argument-less execution.
@@ -570,6 +569,7 @@ namespace IG.Lib
         /// <summary>Adds a new internal script command under specified name to the internal interpreter of the current 
         /// script object.</summary>
         /// <param name="interpreter">Interpreter on which the command is added.</param>
+        /// <param name="helpStrings">Dictionary containing help strings corresponding to interpreter commands.</param>
         /// <param name="commandName">Name of the command. <para>Must not be null or empty string.</para></param>
         /// <param name="command">Method that executes the command. <para>Must not be null.</para></param>
         /// <param name="helpString">Help string associated with command, optionsl (can be null).</param>
@@ -647,7 +647,6 @@ namespace IG.Lib
 
         /// <summary>Removes the specified internal script command from the internal interpreter of the current 
         /// scripting object.</summary>
-        /// <param name="interpreter">Interpreter on which the command is removed.</param>
         /// <param name="commandName">Name of the command. <para>Must not be null or empty string.</para></param>
         public virtual void Script_RemoveCommand(string commandName)
         {
@@ -670,8 +669,6 @@ namespace IG.Lib
 
         /// <summary>Removes ALL internal script commands from the internal interpreter of the current 
         /// scripting object.</summary>
-        /// <param name="interpreter">Interpreter on which the command is removed.</param>
-        /// <param name="commandName">Name of the command. <para>Must not be null or empty string.</para></param>
         public virtual void Script_RemoveAllCommands()
         {
             try
@@ -736,7 +733,7 @@ namespace IG.Lib
         /// <summary>Runs internal script command.</summary>
         /// <param name="commandName">Name of the command</param>
         /// <param name="otherArguments">The remainind command arguments (without a name). 
-        /// <para>Name is prepended to arguments before the script is run.</para></returns>
+        /// <para>Name is prepended to arguments before the script is run.</para></param>
         /// <exception cref="ArgumentException">When argumens or command are not specified or command is not known.</exception>
         public string Script_Run(string commandName, params string[] otherArguments)
         {

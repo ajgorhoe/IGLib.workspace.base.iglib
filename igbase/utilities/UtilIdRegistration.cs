@@ -18,7 +18,6 @@ namespace IG.Lib
     /// <summary>Objects of this type have a unique ID (unique for all objects of a given type)
     /// and can be registered in the register of existent objects of the specified type.
     /// Implementation notes: 
-    /// Use an object of <typeparamref name="RegisterableGenerator"/>.ProxyRegisterable as proxy object to implement functionality.
     /// Registerable.Example contains an example of how to do that, or can even be inherited
     /// to provide all functionality automatically (but this may not be feasible because multiple 
     /// inheritance is not supported, and our class already inherits form another one).</summary>

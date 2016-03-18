@@ -60,13 +60,13 @@ namespace IG.Lib
         private HtmlWriter() { }
         
         /// <summary>Creates a new HTML generator and connests it with the specified file.</summary>
-        /// <param name="inputFilePath">Path to the HTML file that is created.</param>
+        /// <param name="filePath">Path to the HTML file that is created.</param>
         public HtmlWriter(string filePath): this(filePath, null)
         {  }
 
         
         /// <summary>Creates a new HTML generator and connests it with the specified file.</summary>
-        /// <param name="inputFilePath">Path to the HTML file that is created.</param>
+        /// <param name="filePath">Path to the HTML file that is created.</param>
         /// <param name="cssPath">Path (usually relative) to the CSS (Cascading Style Sheets) file.</param>
         public HtmlWriter(string filePath, string cssPath)
         {
@@ -343,7 +343,7 @@ namespace IG.Lib
 
 
         /// <summary>Wirtes the meta tag with specified pairs of field names and corresponding values.
-        /// <para>Must be called within the method for writing document head.</para><</summary>
+        /// <para>Must be called within the method for writing document head.</para></summary>
         /// <param name="attributeNameValuePairs">Pairs of attribute names and values that will comprise the meta tag.</param>
         protected virtual void WriteMetaTagGeneral(params string[] attributeNameValuePairs)
         {
@@ -532,9 +532,6 @@ namespace IG.Lib
 
         /// <summary>Adds the specified tag containing the specified text to the document.</summary>
         /// <param name="tagName">Tag name.</param>
-        /// <param name="text">Tag text.</param>
-        /// <param name="withLineBreak">Whether line break is added or not.</param>
-        /// <param name="attributeNameValuePairs">Pairs of attribute names and values that will be added to the tag.</param>
         public void EndTag(string tagName)
         {
             --IndentLevel;
@@ -743,7 +740,7 @@ namespace IG.Lib
             AddHeading4(headingText, null /* attributeNameValuePairs */);;
         }
 
-        
+
 
         /// <summary>Adds a linked image to the HTML document with specified custom size different than the
         /// original size.
@@ -752,9 +749,8 @@ namespace IG.Lib
         /// <param name="imageLink">Link to the image. Must not be null or empty string.</param>
         /// <param name="altText">Alternative text to be displayed when image is not shown.</param>
         /// <param name="captionText">Text below the image.</param>
-        /// <param name="width">Width of the image in pixels. Takes effect when <param name="definsSize"=true.</param>
-        /// <param name="height">Width of the image in pixels. Takes effect when <param name="definsSize"=true.</param>
-        /// <param name="defineSize">Whether size (in pixels) of the displayed image is defined or not.</param>
+        /// <param name="width">Width of the image in pixels. Takes effect when size is defined.</param>
+        /// <param name="height">Height of the image in pixels. Takes effect when size is defined.</param>
         /// <param name="originalWidth">Original image width. Must be specified only if the ratio is constrained
         /// (i.e. if <paramref name="constrainRatio"/> = true)</param>
         /// <param name="originalHeight">Original image height. Must be specified only if the ratio is constrained
@@ -813,8 +809,8 @@ namespace IG.Lib
         /// <param name="imageLink">Link to the image. Must not be null or empty string.</param>
         /// <param name="altText">Alternative text to be displayed when image is not shown.</param>
         /// <param name="captionText">Text below the image.</param>
-        /// <param name="width">Width of the image in pixels. Takes effect when <param name="definsSize"=true.</param>
-        /// <param name="height">Width of the image in pixels. Takes effect when <param name="definsSize"=true.</param>
+        /// <param name="width">Width of the image in pixels. Takes effect when <paramref name="defineSize"/>=true.</param>
+        /// <param name="height">Width of the image in pixels. Takes effect when <paramref name="defineSize"/>=true.</param>
         /// <param name="defineSize">Whether size (in pixels) of the displayed image is defined or not.</param>
         public void AddImage(string imageLink, string altText, string captionText, int width, int height, bool defineSize)
         {
@@ -876,9 +872,9 @@ namespace IG.Lib
         }
 
         /// <summary>Does the job of freeing resources. 
-        /// <para></para>This method can be  eventually overridden in derived classes (if they use other 
+        /// <para>This method can be  eventually overridden in derived classes (if they use other 
         /// resources that must be freed - in addition to such resources of the current class).
-        /// In the case of overriding this method, you should usually call the base.<see cref="Dispose"/>(<paramref name="disposing"/>).
+        /// In the case of overriding this method, you should usually call the base. See <paramref name="disposing"/>.
         /// in the overriding method.</para></summary>
         /// <param name="disposing">Tells whether the method has been called form Dispose() method.</param>
         protected virtual void Dispose(bool disposing)

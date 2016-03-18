@@ -353,7 +353,7 @@ namespace IG.Lib
 
         /// <summary>Saves the generated script code to the specified file.
         /// File is overwritten if it already exists.</summary>
-        /// <param name="inputFilePath">Path to the file where script code is saved.</param>
+        /// <param name="filePath">Path to the file where script code is saved.</param>
         public void SaveCode(string filePath)
         {
             File.WriteAllText(filePath, Code);
@@ -362,7 +362,7 @@ namespace IG.Lib
 
         /// <summary>Appends to the apecified string builder the specified level of indentation.</summary>
         /// <param name="sb">String builder to which indents are appended.</param>
-        /// <param name="numIndente">Number of indents that are appended.</param>
+        /// <param name="numIndent">Number of indents that are appended.</param>
         private void AppendIndents(StringBuilder sb, int numIndent)
         {
             for (int i = 0; i < numIndent; ++i)

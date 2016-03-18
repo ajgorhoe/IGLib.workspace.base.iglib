@@ -22,7 +22,7 @@ namespace IG.Lib
 {
 
     // REMRKS:
-    // Almost always base class for DTOS will be SerializationDtoBase<Type>
+    // Almost always base class for DTOS will be SerializationDtoBase(Type)
     // instead of SerializationDtoBase<Type, BaseType>. Use of class with different BaseType
     // can save some work in the case of inheritance, but requires much more expertise, and
     // pay-off is in most cases too small.
@@ -34,15 +34,15 @@ namespace IG.Lib
     /// across platforms, or simply stored in files for future use.
     /// </summary>
     /// <typeparam name="Type">Type for which DTO is used.</typeparam>
-    /// <seealso cref="SerializationDtoBase<Type, Type>"/>
+    /// <seealso cref="SerializationDtoBase{Type, BaseType}"/>
     /// <remarks>There is an agreement that all derived classes must have a public argument-less (default) constructor.
     /// Generic classes are usually not used for serialization/deserialization. Only derived types 
     /// where both type parameters are fixed are normally used for this purpos.
-    /// This class is essentially equal to SerializationDtoBase<Type, BaseType> where BaseType is the same
+    /// This class is essentially equal to <see cref="SerializationDtoBase{Type, BaseType}"/>  where BaseType is the same
     /// as Type.
     /// IMPORTANT:
     /// This class does not have base type specified, i.e. it is used for situation where actual object type is not
-    /// sidtinguished from base type. Base type in the variant with two types (<see cref="SerializationDtoBase<Type, BaseType>"/>)
+    /// sidtinguished from base type. Base type in the variant with two types (<see cref="SerializationDtoBase{Type, BaseType}"/>)
     /// is used just occasionally because of the benefit of defining copying operation only for base type and use it for different
     /// derived types. </remarks>
     /// $A Igor Jun09;
@@ -97,7 +97,7 @@ namespace IG.Lib
     /// deserialization of state of various kinds of objects that need to be transfered between applications,
     /// across platforms, or simply stored in files for future use.
     /// WARNING:
-    /// In most cases ISerializationDto<Type> will be used. Different BaseType and Type are used only in 
+    /// In most cases <see cref="ISerializationDto{Type}"/> will be used. Different BaseType and Type are used only in 
     /// relatively rare cases where different derived types all have the same data that is copied to DTO. 
     /// Otherwise the advantage of this can not be used because of single inheritance.
     /// </summary>
@@ -151,7 +151,7 @@ namespace IG.Lib
 
         #region AuxiliaryStaticCopyMethods
 
-        /// <summary>Replacement for <see cref="CopyToObject<DtoType>"/> for cases where object can not be passed by reference.
+        /// <summary>Replacement for <see cref="CopyToObject"/> for cases where object can not be passed by reference.
         /// The returned object must be assigned to object (property, list element, etc.) to which object state is copied.</summary>
         public static ObjectType CopyToObjectReturned<DtoType, ObjectType>(DtoType dto, ObjectType obj)
             where DtoType : class, ISerializationDtoAux<ObjectType>, new()
@@ -163,7 +163,8 @@ namespace IG.Lib
 
 
         /// <summary>Copies object state form the specified DTO (data transfer object) to the specified object.</summary>
-        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase<Type, BaseType>"/>
+        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase{Type, BaseType}"/>
+        /// <typeparam name="ObjectType">Object type.</typeparam>
         /// and must have a public argumentlsee constructor.</typeparam>
         /// <param name="dto">Data transfer object (DTO) from which data is copied.</param>
         /// <param name="obj">Object to which data is copied.</param>
@@ -180,7 +181,7 @@ namespace IG.Lib
         }
 
 
-        /// <summary>Replacement for <see cref="CopyObjectFromObject<DtoType>"/> for cases where object can not be passed by reference.
+        /// <summary>Replacement for <see cref="CopyFromObject"/> for cases where object can not be passed by reference.
         /// The returned object must be assigned to object (property, list element, etc.) to which object state is copied.</summary>
         public static DtoType CopyFromObjectReturned<DtoType, ObjectType>(ObjectType obj, DtoType dto)
             where DtoType : class, ISerializationDtoAux<ObjectType>, new()
@@ -192,10 +193,9 @@ namespace IG.Lib
 
 
         /// <summary>Copies object state form the specified object to the corresponding DTO (data transfer object).</summary>
-        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase<Type, BaseType>"/>
-        /// and must have a public argumentlsee constructor.</summary>
-        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase<Type, BaseType>"/>
+        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase{Type, BaseType}"/>
         /// and must have a public argumentlsee constructor.</typeparam>
+        /// <typeparam name="ObjectType">Type of the object.</typeparam>
         /// <param name="obj">Object from which data is copied.</param>
         /// <param name="dto">Data transfer object (DTO) to which data is copied.</param>
         public static void CopyFromObject<DtoType, ObjectType>(ObjectType obj, ref DtoType dto)
@@ -227,8 +227,9 @@ namespace IG.Lib
 
 
         /// <summary>Copies array of DTOs (Data Transfer Objects) to an array of appropriate objects.</summary>
-        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase<Type, BaseType>"/>
+        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase{Type, BaseType}"/>
         /// and must have a public argumentlsee constructor.</typeparam>
+        /// <typeparam name="ObjectType">Object type.</typeparam>
         /// <param name="tabDto">Table of DTOs from which data (object states) is copied.</param>
         /// <param name="tabObj">Table of objects to which data (object states) is copied.</param>
         public static void CopyArrayToObject<DtoType, ObjectType>(DtoType[] tabDto, ref ObjectType[] tabObj)
@@ -273,8 +274,9 @@ namespace IG.Lib
         }
 
         /// <summary>Copies array of objects to an array of DTOs.</summary>
-        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase<Type, BaseType>"/>
+        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase{Type, BaseType}"/>
         /// and must have a public argumentlsee constructor.</typeparam>
+        /// <typeparam name="ObjectType">Object type.</typeparam>
         /// <param name="tabObj">Table of objects from which data (object states) is copied.</param>
         /// <param name="tabDto">Table of DTOs to which data (object states) is copied.</param>
         public static void CopyArrayFromObject<DtoType, ObjectType>(ObjectType[] tabObj, ref DtoType[] tabDto)
@@ -319,10 +321,11 @@ namespace IG.Lib
         }
 
         /// <summary>Copies array of DTOs (Data Transfer Objects) to a list of appropriate objects.</summary>
-        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase<Type, BaseType>"/>
+        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase{Type, BaseType}"/>
+        /// <typeparam name="ObjectType">Object type.</typeparam>
         /// and must have a public argumentlsee constructor.</typeparam>
         /// <param name="tabDto">Table of DTOs from which data (object states) is copied.</param>
-        /// <param name="tabObj">List of objects to which data (object states) is copied.</param>
+        /// <param name="listObj">List of objects to which data (object states) is copied.</param>
         public static void CopyListToObject<DtoType, ObjectType>(DtoType[] tabDto, ref List<ObjectType> listObj)
             where DtoType : class, ISerializationDtoAux<ObjectType>, new()
             where ObjectType : class
@@ -366,8 +369,9 @@ namespace IG.Lib
         }
 
         /// <summary>Copies array of objects to a list of DTOs.</summary>
-        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase<Type, BaseType>"/>
+        /// <typeparam name="DtoType">Type of the DTO, must inherit from <see cref="SerializationDtoBase{Type, BaseType}"/>
         /// and must have a public argumentlsee constructor.</typeparam>
+        /// <typeparam name="ObjectType">Object type.</typeparam>
         /// <param name="tabObj">List of objects from which data (object states) is copied.</param>
         /// <param name="tabDto">Table of DTOs to which data (object states) is copied.</param>
         /// <remarks>Parameter <paramref name="tabDto"/> is an array because DTOs are normally not put into lists
@@ -412,15 +416,15 @@ namespace IG.Lib
     /// across platforms, or simply stored in files for future use.
     /// </summary>
     /// <typeparam name="Type">Type for which DTO is used.</typeparam>
-    /// <seealso cref="SerializationDtoBase<Type, Type>"/>
+    /// <seealso cref="SerializationDtoBase{Type, Type}"/>
     /// <remarks>There is an agreement that all derived classes must have a public argument-less (default) constructor.
     /// Generic classes are usually not used for serialization/deserialization. Only derived types 
     /// where both type parameters are fixed are normally used for this purpos.
-    /// This class is essentially equal to SerializationDtoBase<Type, BaseType> where BaseType is the same
+    /// This class is essentially equal to SerializationDtoBase{Type, BaseType} where BaseType is the same
     /// as Type.
     /// IMPORTANT:
     /// This class does not have base type specified, i.e. it is used for situation where actual object type is not
-    /// sidtinguished from base type. Base type in the variant with two types (<see cref="SerializationDtoBase<Type, BaseType>"/>)
+    /// sidtinguished from base type. Base type in the variant with two types (<see cref="SerializationDtoBase{Type, BaseType}"/>)
     /// is used just occasionally because of the benefit of defining copying operation only for base type and use it for different
     /// derived types. </remarks>
     /// $A Igor Jun09;
@@ -772,8 +776,8 @@ namespace IG.Lib
 
 
         /// <summary></summary>
-        /// <typeparam name="Type">Type for which DTO is used.</typeparam>
-        /// <seealso cref="SerializationDtoBase<Type, Type>"/>
+        /// <typeparam name="CommonType">Type for which DTO is used.</typeparam>
+        /// <seealso cref="SerializationDtoBase{Type, Type}"/>
         /// $A Igor Jun09;
         public abstract class SerializationDtoTyped<CommonType> : SerializationDtoTypedBase<CommonType, CommonType>,
                 ISerializationDto<CommonType>, ILockable

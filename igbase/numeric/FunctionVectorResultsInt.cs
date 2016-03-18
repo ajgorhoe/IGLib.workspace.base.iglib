@@ -15,7 +15,7 @@ namespace IG.Num
     /// error codes, and flags indicating what has actually been calculated).
     /// REMARKS:
     ///   Property CopyReferences specifies whether only references are copied when individial object
-    /// fields are assigned & set (when the property is true), or values are actually copied
+    /// fields are assigned and set (when the property is true), or values are actually copied
     /// (when false - deep copy). Each setter method also has the variant that always copies only
     /// the reference (function name appended by "Reference"). This makes possible to avoid duplication
     /// of allocated data and also to avoid having different data with the same references.
@@ -66,12 +66,12 @@ namespace IG.Num
 
         /// <summary>Sets the vector of optimization parameters.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetParametersReference(IVector reference);
 
         /// <summary>Returns specific optimization parameter.
         /// Throws exception if not defined or index out of bounds.</summary>
-        /// <param name="iindex">Index of parameter to be returned (counting from 0).</param>
+        /// <param name="index">Index of parameter to be returned (counting from 0).</param>
         double GetParameter(int index);
 
         /// <summary>Sets the specified optimization parameter.</summary>
@@ -102,7 +102,7 @@ namespace IG.Num
 
         /// <summary>Sets the list of function values.
         /// Only the list reference is copied.</summary>
-        /// <param name="values">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetValuesReference(List<double> reference);
 
         /// <summary>Returns the specified function value.</summary>
@@ -131,7 +131,7 @@ namespace IG.Num
 
         /// <summary>Sets function gradients.
         /// Only the list reference is copied.</summary>
-        /// <param name="values">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetGradientsReference(List<IVector> reference);
 
         /// <summary>Returns the gradient of the specified function.</summary>
@@ -152,7 +152,7 @@ namespace IG.Num
         /// <summary>Sets the specified function gradient.
         /// Only the reference is copied.</summary>
         /// <param name="which">Specifies which function to take (couonted from 0).</param>
-        /// <param name="value">Gradient reference to be assigned.</param>
+        /// <param name="reference">Gradient reference to be assigned.</param>
         void SetGradientReference(int which, IVector reference);
 
         /// <summary>Sets the specified fuction gradient component.</summary>
@@ -178,7 +178,7 @@ namespace IG.Num
 
         /// <summary>Sets functios' Hessians.
         /// Only the list reference is copied.</summary>
-        /// <param name="values">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetHessiansReference(List<IMatrix> reference);
 
         /// <summary>Returns Hessian of the specified function.</summary>
@@ -200,13 +200,14 @@ namespace IG.Num
         /// <summary>Sets the specified function's Hessian.
         /// Only the reference is copied.</summary>
         /// <param name="which">Specifies which function it applies to (counting from 0).</param>
-        /// <param name="value">Hessian matrix reference to be assigned.</param>
+        /// <param name="reference">Hessian matrix reference to be assigned.</param>
         void SetHessianReference(int which, IMatrix reference);
 
         /// <summary>Sets the specified component of the specified function's Hessian.</summary>
         /// <param name="which">Specifies which function it applies to (counting from 0).</param>
         /// <param name="rowIndex">Row index of the component (counting from 0).</param>
         /// <param name="columnIndex">Column index of the component (counting from 0).</param>
+        /// <param name="value">Value assigned to the specified Hessian component.</param>
         void SetHessian(int which, int rowIndex, int columnIndex, double value);
 
         #endregion Results
@@ -305,7 +306,7 @@ namespace IG.Num
 
 
         /// <summary>Copies data from another vector function results.</summary>
-        /// <param name="res">Vector function results which data is copied from.</param>
+        /// <param name="results">Vector function results which data is copied from.</param>
         void Copy(IVectorFunctionResults results);
 
         /// <summary>Returns an exact deep copy of the current object.</summary>

@@ -240,8 +240,8 @@ namespace IG.Lib
 
         /// <summary>Changes message separator for the current object.
         /// <para>This setter method is provided in order to keep the <see cref="MessageSeparator"/> setter protected.</para></summary>
-        /// <param name="messagePrefix">New message separator must not be a separator or a white space character.</param>
-        public void SetMessageSeparator(char messageSeparator)
+        /// <param name="messageSeparator">New message separator must not be a separator or a white space character.</param>
+        public void messageSeparator(char messageSeparator)
         {
             MessageSeparator = messageSeparator;
         }
@@ -274,7 +274,7 @@ namespace IG.Lib
 
         /// <summary>Changes message false separator for the current object.
         /// <para>This setter method is provided in order to keep the <see cref="MessageFalseSeparator"/> setter protected.</para></summary>
-        /// <param name="messagePrefix">New message false separator must not be a separator or a white space character.</param>
+        /// <param name="messageFalseSeparator">New message false separator must not be a separator or a white space character.</param>
         public void SetMessageFalseSeparator(char messageFalseSeparator)
         {
             MessageFalseSeparator = messageFalseSeparator;
@@ -347,6 +347,7 @@ namespace IG.Lib
         /// is the same as message prefix. In this way the string can be distinguished form a message and can be correctly decoded
         /// on the other side of the communication pipeline (simply by removng the false separator).</para></summary>
         /// <param name="originalResponseOrRequestString">Original response string that is sent to the other side.</param>
+        /// <param name="multiLine">Specifies whether request or response, respectively, can be a multiline string.</param>
         /// <returns>The created request string that can be distinguished form a command.</returns>
         public string CreateResponseOrRequestString(string originalResponseOrRequestString, bool multiLine)
         {
@@ -411,7 +412,7 @@ namespace IG.Lib
         /// prefix and separator) and message arguments.</summary>
         /// <param name="outputStream">Stream where the message is written to.</param>
         /// <param name="message">Message name. The name is decorated with prefix and separator when message is written to a stream.</param>
-        /// <param name="AppArguments">Arguments of the message. Can be null for message without arguments.</param>
+        /// <param name="args">Arguments of the message. Can be null for message without arguments.</param>
         public void WriteMessage(StreamWriter outputStream, string message, string[] args)
         {
             if (message.Contains('\n'))

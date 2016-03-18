@@ -890,15 +890,17 @@ namespace IG.Num
         }  // TestComputationalTimesLdlt_Base()
 
         #endregion IgBase
-  
+
 
         #endregion Static
 
         #region ExamplesMathNetNumerics
 
         /// <summary>Example of how to use LU decomposition from Math.NET numerics.</summary>
-        /// <seealso cref="http://en.wikipedia.org/wiki/LU_decomposition">LU decomposition</seealso>
-        /// <seealso cref="http://en.wikipedia.org/wiki/Invertible_matrix">Invertible matrix</seealso>
+        /// <remarks>
+        /// <para>See also: </para>
+        /// <para>LU decomposition: http://en.wikipedia.org/wiki/LU_decomposition </para>
+        /// <para>Invertible matrix: http://en.wikipedia.org/wiki/Invertible_matrix </para></remarks>
         public static void ExampleMathNetNumericsLU()
         {
             // Format matrix output to console
@@ -966,7 +968,7 @@ namespace IG.Num
 
 
         /// <summary>Example of how to use QR decomposition from Math.NET numerics.</summary>
-        /// <seealso cref="http://en.wikipedia.org/wiki/QR_decomposition">QR decomposition</seealso>
+        /// <remarks> http://en.wikipedia.org/wiki/QR_decomposition QR decomposition </remarks>
         public static void ExampleMathNetNumericsQR()
         {
             // Format matrix output to console
@@ -1032,7 +1034,7 @@ namespace IG.Num
 
 
         /// <summary>Example of how to use EVD (eigenvalue decomposition) from Math.NET Numerics.</summary>
-        /// <seealso cref="http://en.wikipedia.org/wiki/Eigenvalue,_eigenvector_and_eigenspace">EVD decomposition</seealso>
+        /// <remarks> http://en.wikipedia.org/wiki/Eigenvalue,_eigenvector_and_eigenspace EVD decomposition</remarks>
         public static void ExampleMathNetNumericsEVD()
         {
             // Format matrix output to console
@@ -1154,7 +1156,7 @@ namespace IG.Num
         } // ExampleEVD()
 
         /// <summary>Example of how to use SVD ( singular value decomposition) from Math.NET numerics.</summary>
-        /// <seealso cref="http://en.wikipedia.org/wiki/Singular_value_decomposition">SVD decomposition</seealso>
+        /// <remarks> http://en.wikipedia.org/wiki/Singular_value_decomposition SVD decomposition</remarks>
         public static void ExampleMathNetNumericsSVD()
         {
             // Format matrix output to console
@@ -1270,7 +1272,7 @@ namespace IG.Num
 
 
         /// <summary>Example of how to use Choleski decomposition from Math.NET Numerics.</summary>
-        /// <seealso cref="http://en.wikipedia.org/wiki/Cholesky_decomposition">Cholesky decomposition</seealso>
+        /// <remarks> http://en.wikipedia.org/wiki/Cholesky_decomposition </remarks> 
         public static void ExampleMathNetNumericsCholesky()
         {
             // Format matrix output to console

@@ -16,7 +16,7 @@ namespace IG.Num
     /// Passes direct analysis request to the server and gets analysis results from it.</summary>
     /// <remarks>WARNING:
     /// This module is taken from Dragonfly opt. server and adapted for purpose of some
-    /// projects. If necessary to further develop, synchronize (& possibly merge) with
+    /// projects. If necessary to further develop, synchronize (and possibly merge) with
     /// Dragonfly, otherwise there will be problems with consistent development of both branches.
     /// WARNING:
     /// Only a part of file analysis client is taken from Dragonfly, be careful with sync. (the best
@@ -45,12 +45,12 @@ namespace IG.Num
 
         #region ThreadLocking
 
-        private object _mainLock = new object();
+        //private object _mainLock = new object();
 
-        /// <summary>This object's central lock object to be used by other object.
-        /// Do not use this object for locking in class' methods, for this you should use 
-        /// InternalLock.</summary>
-        public object Lock { get { return _mainLock; } }
+        ///// <summary>This object's central lock object to be used by other object.
+        ///// Do not use this object for locking in class' methods, for this you should use 
+        ///// InternalLock.</summary>
+        //public object Lock { get { return _mainLock; } }
 
         //private object _internalLock = new object();
 

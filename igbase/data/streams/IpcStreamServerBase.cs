@@ -25,7 +25,6 @@ public abstract class IpcStreamServerBase : IpcStreamClientServerBase2, ILockabl
 
 
     /// <summary>Waits until a client connects to the specified server pipe.</summary>
-    /// <param name="pipe">Pipe that waits for connection to be established.</param>
     protected abstract void WaitForConnection();
 
 
@@ -270,8 +269,8 @@ public abstract class IpcStreamServerBase : IpcStreamClientServerBase2, ILockabl
         }
     }
 
-    /// <summary>Sends the response (i.e., the <see cref="ResponseString"/>) back to the client.</summary>
-    protected virtual void SendResponse()
+        /// <summary>Sends the response (i.e., the <see cref="IpcStreamClientServerBase2.ResponseString"/>) back to the client.</summary>
+        protected virtual void SendResponse()
     {
         SendResponse(this.ResponseString);
     }

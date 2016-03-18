@@ -18,8 +18,6 @@ namespace IG.Num
 
     /// <summary>Cloud of points where each poinr is represented by the <see cref="IVector"/> object, contains a list
     /// of containers of vector objects that include point coordinates.</summary>
-    /// <typeparam name="PointContainerType">Type of point link that is used by point container.</typeparam>
-    /// <typeparam name="PointType">Type of objects that include point coordinates.</typeparam>
     /// $A Igor Sep08 May09 Dec11;
     public class PointCloudVector : PointCloud<PointContainerVector, IVector>, ILockable
     {
@@ -72,7 +70,6 @@ namespace IG.Num
 
     /// <summary>Container class that contains a single vector point plus all the data that are necessary for searching
     /// and re-connecting operations on points.</summary>
-    /// <typeparam name="PointType">Type of the vector enclosed in this container class to represent a point in space.</typeparam>
     /// $A Igor Sep08 May09 Dec11;
     public class PointContainerVector : PointContainer<PointContainerVector, IVector>,
         IPointContainer<IVector>, ILockable
@@ -116,8 +113,6 @@ namespace IG.Num
         /// <summary>Constructs a new comparer according to input distance to a reference poiont (type <see cref="IVector"/>).</summary>
         /// <param name="referencePoint">Reference point. Training elements are compared by their distance to this point.</param>
         /// <param name="distanceFunction">Delegate used for calculation of distance between two points.</param>
-        /// <param name="immutable">If true then a copy of the reference point is stored internally rather than just 
-        /// its reference, so it can not be changed.</param>
         public DistanceComparerVector(PointContainerVector referencePoint, DistanceDelegate<IVector> distanceFunction) :
             this(referencePoint, distanceFunction, null /* lengthScales */)
         { }
@@ -127,8 +122,6 @@ namespace IG.Num
         /// <param name="distanceFunction">Delegate used for calculation of distance between two points.</param>
         /// <param name="lengthScales">Vector of legth scales that defines how different co-ordinates are scaled by
         /// when calculating distances (this applies to the default length calculation function, ).</param>
-        /// <param name="immutable">If true then a copy of the reference point is stored internally rather than just 
-        /// its reference, so it can not be changed.</param>
         public DistanceComparerVector(PointContainerVector referencePoint, DistanceDelegate<IVector> distanceFunction,
                 IVector lengthScales)
             : base(referencePoint, distanceFunction, lengthScales)

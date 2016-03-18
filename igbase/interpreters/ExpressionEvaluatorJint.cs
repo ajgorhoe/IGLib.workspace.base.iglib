@@ -167,7 +167,7 @@ namespace IG.Lib
         /// <summary>Executes the specified code and returns the result.
         /// Throws exception if errors occur when interpreting code.
         /// After execution, the code is appended to the complete code that has been executed up to this point.</summary>
-        /// <param name="code">Code that is exected by the JavaScript interpreter.</param>
+        /// <param name="inputCode">Code that is exected by the JavaScript interpreter.</param>
         /// <returns>Result of code execution as string.</returns>
         public override string Execute(string inputCode)
         {

@@ -65,7 +65,7 @@ namespace IG.Num
         }
 
         /// <summary>Initializes components of a 3D matrix with components of the specified matrix.</summary>
-        /// <param name="v">Matrix whose components are copied to the initialized matrix.</param>
+        /// <param name="m">Matrix whose components are copied to the initialized matrix.</param>
         public Matrix3d(mat3 m)
         { _m=m; }
 
@@ -208,8 +208,6 @@ namespace IG.Num
 
 
         /// <summary>Creates a d1*d2 identity matrix.</summary>
-        /// <param name="d1">Number of rows.</param>
-        /// <param name="d2">Number of columns.</param>
         /// <returns>An d1*d2 matrix with ones on the diagonal and zeros elsewhere.</returns>
         public static Matrix3d Identity()
         {
@@ -223,16 +221,12 @@ namespace IG.Num
 
 
         /// <summary>Creates a 3D matrix filled with 0.</summary>
-        /// <param name="d1">Number of rows.</param>
-        /// <param name="d2">Number of columns.</param>
         public static Matrix3d Zeros()
         {
             return new Matrix3d(0.0);
         }
 
        /// <summary>Creates a 3D matrix filled with 1.</summary>
-        /// <param name="d1">Number of rows.</param>
-        /// <param name="d2">Number of columns.</param>
         public static Matrix3d Ones()
         {
             return new Matrix3d(1.0);
@@ -240,8 +234,6 @@ namespace IG.Num
 
         /// <summary>Creates a new diagonal d1*d2 matrix based on the diagonal vector.</summary>
         /// <param name="diagonalVector">The values of the matrix diagonal.</param>
-        /// <param name="d1">Number of rows.</param>
-        /// <param name="d2">Number of columns.</param>
         /// <returns>A d1*d2 matrix with the values from the diagonal vector on the diagonal and zeros elsewhere.</returns>
         public static Matrix3d Diagonal(IVector diagonalVector)
         {
@@ -370,6 +362,7 @@ namespace IG.Num
 
         /// <summary>Index operator.</summary>
         /// <param name="i">Component index.</param>
+        /// <param name="j">Component index.</param>
         /// <returns>The specified component of a 3D vector.</returns>
         public override double this[int i, int j]
         {
@@ -583,7 +576,7 @@ namespace IG.Num
 
         /// <summary>Returns the hashRet code (hashRet function) of the current matrix.</summary>
         /// <remarks>
-        /// <para>This method calls the <see cref="MatrixBase.GetHashCode"/> to calculate the 
+        /// <para>This method calls the <see cref="MatrixBase.GetHashCode()"/> to calculate the 
         /// hashRet code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
         /// <para>Two matrices that have the same dimensions and equal elements will produce the same hashRet codes.</para>
         /// <para>Probability that two different matrices will produce the same hashRet code is small but it exists.</para>
@@ -597,9 +590,9 @@ namespace IG.Num
         /// <summary>Returns a value indicating whether the specified object is equal to the current matrix.
         /// <para>True is returned if the object is a non-null matrix (i.e. it implements the <see cref="IMatrix"/>
         /// interface), and has the same dimension and equal elements as the current matrix.</para></summary>
-        /// <remarks>This method calls the <see cref="MatrixBase.Equals"/> to obtain the returned value, which is
+        /// <remarks>This method calls the <see cref="MatrixBase.Equals(object)"/> to obtain the returned value, which is
         /// standard for all implementations of the <see cref="IMatrix"/> interface.
-        /// <para>Overrides the <see cref="object.Equals"/> method.</para></remarks>
+        /// <para>Overrides the <see cref="object.Equals(object)"/> method.</para></remarks>
         public override bool Equals(Object obj)
         {
             return MatrixBase.Equals(this, obj as IMatrix);
@@ -729,7 +722,7 @@ namespace IG.Num
         { return new Matrix3d(m); }
 
         /// <summary>Negates the specified 3D matrix and stores its copy in the resulting matrix.</summary>
-        /// <param name="v">Matrix to be negated.</param>
+        /// <param name="m">Matrix to be negated.</param>
         /// <param name="res">Matrix where the result is stored.</param>
         public static void Negate(Matrix3d m, ref Matrix3d res)
         {

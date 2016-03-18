@@ -28,7 +28,7 @@ namespace IG.Neural
 
         /// <summary>Nonstruct a new file manager for neural approximation file client/server 
         /// that operates in the specified directory.</summary>
-        /// <param name="directoryPath">Operation directory for data & message exchange through files.</param>
+        /// <param name="directoryPath">Operation directory for data and message exchange through files.</param>
         public NeuraApproximationFileManager(string directoryPath)
         {
             this.DataDirectory = directoryPath;
@@ -118,7 +118,7 @@ namespace IG.Neural
 
         // FILE SYSTEM LOCKING:
 
-        private string _LockFileMutex = NeuralFileConst.LockFileMutex;
+        // private string _LockFileMutex = NeuralFileConst.LockFileMutex;
 
         
         // DATA EXCHANGE FILES:
@@ -722,7 +722,7 @@ namespace IG.Neural
         /// to the specified file.</summary>
         /// <param name="inputFilePath">Path to the JSON file where input parameters are read from.
         /// The file pointed at must exist.</param>
-        /// <param name="deletedFilePath">Path of a file where the calculated approximated values are written to.
+        /// <param name="outputFilePath">Path of a file where the calculated approximated values are written to.
         /// It can be null or empty string, in this case parameters are not written to a file (but they are still 
         /// output on console).</param>
         public virtual void ClientTestCalculateApproximation(string inputFilePath, string outputFilePath)
@@ -807,7 +807,7 @@ namespace IG.Neural
 
         /// <summary>Constructs a new file manager for mapping approximation file client/server 
         /// that operates in the specified directory.</summary>
-        /// <param name="directoryPath">Operation directory for data & message exchange through files.</param>
+        /// <param name="directoryPath">Operation directory for data and message exchange through files.</param>
         /// $A Igor Jul, tako78 Jul
         public MappingApproximationFileManager(string directoryPath)
             : base(directoryPath)
@@ -1150,6 +1150,7 @@ namespace IG.Neural
         /// $A tako78 Jul.21
         public void ClearMessages()
         {
+            // TODO: check what should really be done here! Should it be an override or new function? Should it call base class' function?
             ClearFunctionInputReady();
             ClearFunctionOutputReady();
         }
@@ -1194,7 +1195,7 @@ namespace IG.Neural
         }
 
         /// <summary>Loads the definition data from the file at standard location.</summary>
-        /// <param name="trainedNetwork">Object where the loaded neural network approximator is stored.</param>
+        /// <param name="definitionData">Object where the definition data is stored.</param>
         /// $A tako78 Jul.21
         public virtual void LoadDataDefinition(ref InputOutputDataDefiniton definitionData)
         {
@@ -1202,7 +1203,7 @@ namespace IG.Neural
         }
 
         /// <summary>Loads the mapping definition data from the file at standard location.</summary>
-        /// <param name="trainedNetwork">Object where the loaded neural network approximator is stored.</param>
+        /// <param name="mappingDefinition">Object where the mapping definition is stored.</param>
         /// $A tako78 Jul.21
         public virtual void LoadMappingDefinition(ref MappingDefinition mappingDefinition)
         {
@@ -1220,9 +1221,9 @@ namespace IG.Neural
         /// input parameters are read from a specified function JSON file with reduced input parameters, 
         /// copies to specified JSON file with total inputs and calculated output values are written 
         /// to the specified file.</summary>
-        /// <param name="inputFilePath">Path to the JSON file where input parameters are read from.
+        /// <param name="functionInputFilePath">Path to the JSON file where input parameters are read from.
         /// The file pointed at must exist.</param>
-        /// <param name="deletedFilePath">Path of a file where the calculated approximated values are written to.
+        /// <param name="functionOutputFilePath">Path of a file where the calculated approximated values are written to.
         /// It can be null or empty string, in this case parameters are not written to a file (but they are still 
         /// output on console).</param>
         /// $A tako78 Jul;

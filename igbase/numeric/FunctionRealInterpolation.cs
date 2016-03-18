@@ -58,7 +58,6 @@ namespace IG.Num
         ///   Zero - returns a zero.
         ///   HasZero - either the function has a zero or not.
         ///   </summary>
-        /// </summary>
         public class Linear : RealFunction
         {
 
@@ -276,6 +275,8 @@ namespace IG.Num
         /// <param name="y1">Value at the first point.</param>
         /// <param name="x2">Abscissa of the second point.</param>
         /// <param name="y2">Value at the second point.</param>
+        /// <param name="x3">Abscissa of the third point.</param>
+        /// <param name="y3">Value at the third point.</param>
         public static Quadratic GetQuadraticInterpolation(double x1, double y1, 
             double x2, double y2, double x3, double y3)
         {
@@ -342,7 +343,6 @@ namespace IG.Num
         ///   NumZeros - 0, 1 or 2, returns number of zeros.
         ///   HasZero - either the function has a zero or not.
         ///   </summary>
-        /// </summary>
         public class Quadratic : RealFunction
         {
 
@@ -813,6 +813,8 @@ namespace IG.Num
         /// <param name="y2">Value at the second point.</param>
         /// <param name="x3">Abscissa of the third point.</param>
         /// <param name="y3">Value at the third point.</param>
+        /// <param name="x4">Abscissa of the fourth point.</param>
+        /// <param name="y4">Value at the fifth point.</param>
         public static Cubic GetCubicInterpolation(double x1, double y1,
             double x2, double y2, double x3, double y3, double x4, double y4)
         {
@@ -858,7 +860,6 @@ namespace IG.Num
         ///   Min - returns function's strict minimum.
         ///   Max - returns function's strict maximum.
         ///   </summary>
-        /// </summary>
         public class Cubic : RealFunction, IRealFunction, ILockable
         {
 

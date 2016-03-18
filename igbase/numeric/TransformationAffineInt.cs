@@ -114,12 +114,12 @@ namespace IG.Num
 
         /// <summary>Backward transforms gradient (or other covariant vector) from the transformed to the reference space.</summary>
         /// <param name="transformed">Transformed gradient-like vector.</param>
-        /// <param name="original">Vector where resulting backward transformed vector is stored.</param>
+        /// <param name="result">Vector where resulting backward transformed vector is stored.</param>
         void TransformBackGradientPlain(IVector transformed, IVector result);
 
         /// <summary>Backward transforms gradient (or other covariant vector) from the transformed to the reference space.</summary>
         /// <param name="transformed">Transformed gradient-like vector.</param>
-        /// <param name="original">Vector where resulting backward transformed vector is stored.</param>
+        /// <param name="result">Vector where resulting backward transformed vector is stored.</param>
         void TransformBackGradient(IVector transformed, ref IVector result);
 
         #endregion GradientTransformatioon
@@ -140,12 +140,12 @@ namespace IG.Num
 
         /// <summary>Backward transforms Hessian (or other covariant matrix) from the transformed to the reference space.</summary>
         /// <param name="transformed">Matrix in transformed coordinates.</param>
-        /// <param name="original">Matrix where resulting backward-transformed matrix is stored.</param>
+        /// <param name="result">Matrix where resulting backward-transformed matrix is stored.</param>
         void TransformBackHessianPlain(IMatrix transformed, IMatrix result);
 
         /// <summary>Backward transforms Hessian (or other covariant matrix) from the transformed to the reference space.</summary>
         /// <param name="transformed">Matrix in transformed coordinates.</param>
-        /// <param name="original">Matrix where resulting backward-transformed matrix is stored. Allocated/reallocated if necessary.</param>
+        /// <param name="result">Matrix where resulting backward-transformed matrix is stored. Allocated/reallocated if necessary.</param>
         void TransformBackHessian(IMatrix transformed, ref IMatrix result);
         #endregion HessianTransformation
 

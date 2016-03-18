@@ -153,9 +153,9 @@ namespace IG.Num
 
         /// <summary>Solves the system of linear equations with the specified right-hand sides and the current matrix 
         /// decomposition by using the Math.Net Numerics library, and returns the result in Math.Net matrix form.</summary>
-        /// <param name="righthandSides">Vector of right-hand sides of the linear equations to be solved.</param>
+        /// <param name="rightHandSides">Vector of right-hand sides of the linear equations to be solved.</param>
         /// <returns>The Math.Net Numerics vector whose columns contains solutions to the systems of linear equations whose 
-        /// right-hand sides are specified by yhe <paramref name="righthandSides"/> parameter.</returns>
+        /// right-hand sides are specified by yhe <paramref name="rightHandSides"/> parameter.</returns>
         protected virtual VectorBase_MathNetNumerics SolveMathNetNumerics(IVector rightHandSides)
         {
             lock (Lock)
@@ -503,9 +503,9 @@ namespace IG.Num
 
         /// <summary>Solves the system of linear equations with the specified right-hand sides and the current matrix 
         /// decomposition by using the Math.Net Numerics library, and returns the result in Math.Net matrix form.</summary>
-        /// <param name="righthandSides">Vector of right-hand sides of the linear equations to be solved.</param>
+        /// <param name="rightHandSides">Vector of right-hand sides of the linear equations to be solved.</param>
         /// <returns>The Math.Net Numerics vector whose columns contains solutions to the systems of linear equations whose 
-        /// right-hand sides are specified by yhe <paramref name="righthandSides"/> parameter.</returns>
+        /// right-hand sides are specified by yhe <paramref name="rightHandSides"/> parameter.</returns>
         protected override VectorBase_MathNetNumerics SolveMathNetNumerics(IVector rightHandSides)
         {
             lock (Lock)
@@ -756,9 +756,9 @@ namespace IG.Num
 
         /// <summary>Solves the system of linear equations with the specified right-hand sides and the current matrix 
         /// decomposition by using the Math.Net Numerics library, and returns the result in Math.Net matrix form.</summary>
-        /// <param name="righthandSides">Vector of right-hand sides of the linear equations to be solved.</param>
+        /// <param name="rightHandSides">Vector of right-hand sides of the linear equations to be solved.</param>
         /// <returns>The Math.Net Numerics vector whose columns contains solutions to the systems of linear equations whose 
-        /// right-hand sides are specified by yhe <paramref name="righthandSides"/> parameter.</returns>
+        /// right-hand sides are specified by yhe <paramref name="rightHandSides"/> parameter.</returns>
         protected override VectorBase_MathNetNumerics SolveMathNetNumerics(IVector rightHandSides)
         {
             lock (Lock)
@@ -1009,9 +1009,9 @@ namespace IG.Num
 
         /// <summary>Solves the system of linear equations with the specified right-hand sides and the current matrix 
         /// decomposition by using the Math.Net Numerics library, and returns the result in Math.Net matrix form.</summary>
-        /// <param name="righthandSides">Vector of right-hand sides of the linear equations to be solved.</param>
+        /// <param name="rightHandSides">Vector of right-hand sides of the linear equations to be solved.</param>
         /// <returns>The Math.Net Numerics vector whose columns contains solutions to the systems of linear equations whose 
-        /// right-hand sides are specified by yhe <paramref name="righthandSides"/> parameter.</returns>
+        /// right-hand sides are specified by yhe <paramref name="rightHandSides"/> parameter.</returns>
         protected override VectorBase_MathNetNumerics SolveMathNetNumerics(IVector rightHandSides)
         {
             lock (Lock)
@@ -1098,7 +1098,7 @@ namespace IG.Num
     /// <summary>Eigenvalue decomposition of a matrix.
     /// <para>Calculates eigenvectors and eigenvalues of a real matrix.</para>
     /// <para>Objects of this class are immutable. Decomposition is calculated at initialization,
-    /// and the decomposed matrix can not be replaced later.</para><summary>
+    /// and the decomposed matrix can not be replaced later.</para></summary>
     /// <remarks>
     /// If A is symmetric, then A = V*D*V' where the eigenvalue matrix D is
     /// diagonal and the eigenvector matrix V is orthogonal.
@@ -1300,9 +1300,9 @@ namespace IG.Num
 
         /// <summary>Solves the system of linear equations with the specified right-hand sides and the current matrix 
         /// decomposition by using the Math.Net Numerics library, and returns the result in Math.Net matrix form.</summary>
-        /// <param name="righthandSides">Vector of right-hand sides of the linear equations to be solved.</param>
+        /// <param name="rightHandSides">Vector of right-hand sides of the linear equations to be solved.</param>
         /// <returns>The Math.Net Numerics vector whose columns contains solutions to the systems of linear equations whose 
-        /// right-hand sides are specified by yhe <paramref name="righthandSides"/> parameter.</returns>
+        /// right-hand sides are specified by yhe <paramref name="rightHandSides"/> parameter.</returns>
         protected override VectorBase_MathNetNumerics SolveMathNetNumerics(IVector rightHandSides)
         {
             lock (Lock)
@@ -1389,7 +1389,7 @@ namespace IG.Num
     /// <summary>Singular value decomposition of a matrix.
     /// <para>Calculates eigenvectors and eigenvalues of a real matrix.</para>
     /// <para>Objects of this class are immutable. Decomposition is calculated at initialization,
-    /// and the decomposed matrix can not be replaced later.</para><summary>
+    /// and the decomposed matrix can not be replaced later.</para></summary>
     /// <remarks><para>
     /// Suppose M is an m-by-n matrix whose entries are real numbers. 
     /// Then there exists a factorization of the form M = UΣVT where:
@@ -1596,9 +1596,9 @@ namespace IG.Num
 
         /// <summary>Solves the system of linear equations with the specified right-hand sides and the current matrix 
         /// decomposition by using the Math.Net Numerics library, and returns the result in Math.Net matrix form.</summary>
-        /// <param name="righthandSides">Vector of right-hand sides of the linear equations to be solved.</param>
+        /// <param name="rightHandSides">Vector of right-hand sides of the linear equations to be solved.</param>
         /// <returns>The Math.Net Numerics vector whose columns contains solutions to the systems of linear equations whose 
-        /// right-hand sides are specified by yhe <paramref name="righthandSides"/> parameter.</returns>
+        /// right-hand sides are specified by yhe <paramref name="rightHandSides"/> parameter.</returns>
         protected override VectorBase_MathNetNumerics SolveMathNetNumerics(IVector rightHandSides)
         {
             lock (Lock)

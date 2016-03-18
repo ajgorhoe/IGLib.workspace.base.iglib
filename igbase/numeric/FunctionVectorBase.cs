@@ -49,7 +49,7 @@ namespace IG.Num
 
         /// <summary>Performs evaluation of requwester function results and writes them
         /// to the provided data structure.</summary>
-        /// <param name="analysisData">Data structure where request parameters are
+        /// <param name="evaluationData">Data structure where request parameters are
         /// obtained and where results are written.</param>
         public abstract override void Evaluate(IVectorFunctionResults evaluationData);
 
@@ -287,9 +287,9 @@ namespace IG.Num
 
         /// <summary>Performs evaluation of requwester function results and writes them
         /// to the provided data structure.
-        /// Uses Evaluate(IVector, ref bool, ref List<double>, ref bool, ref List<IVector>, ref bool, ref List<IMatrix>)
+        /// Uses Evaluate(IVector, ref bool, ref List{double}, ref bool, ref List{IVector}, ref bool, ref List{IMatrix})
         /// to do the job.</summary>
-        /// <param name="analysisData">Data structure where request parameters are
+        /// <param name="evaluationData">Data structure where request parameters are
         /// obtained and where results are written.</param>
         public override void Evaluate(IVectorFunctionResults evaluationData)
         {
@@ -410,7 +410,7 @@ namespace IG.Num
             if (numFunc <= 0)
                 throw new InvalidOperationException("Vector function in inconsystent state: number of functions is 0.");
             IVectorFunctionResults results = null;
-            results = ResultsStore.GetEligible();
+            results = ResultsStore.TryGet();
             if (results == null)
                 results = new VectorFunctionResults();
             results.NumFunctions = numFunc;

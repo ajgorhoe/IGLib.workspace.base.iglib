@@ -109,9 +109,6 @@ namespace IG.Num
 
     }  // interface IScalarFunctionUntransformed
 
-
-
-
-
+    
 
 }

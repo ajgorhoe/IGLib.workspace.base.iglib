@@ -49,7 +49,7 @@ namespace IG.Lib.Copy
         /// <param name="requestEnd">Line that ends each request. If null or empty string then the requests are single line.</param>
         /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
         /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
-        /// i.e. <see cref="DefaultErrorBegin"/></param>
+        /// i.e. DefaultErrorBegin.</param>
         /// <param name="startImmediately">If true then server is started immediately after created.</param>
         public NamedPipeServerBase(string pipeName, string requestEnd, string responseEnd, string errorBegin,
             bool startImmediately = true):
@@ -191,7 +191,6 @@ namespace IG.Lib.Copy
 
 
         /// <summary>Waits until a client connects to the specified server pipe.</summary>
-        /// <param name="pipe">Pipe that waits for connection to be established.</param>
         protected override void WaitForConnection()
         {
             WaitForConnection(ServerPipe);
@@ -407,7 +406,7 @@ namespace IG.Lib.Copy
         /// <param name="requestEnd">Line that ends each request. If null or empty string then the requests are single line.</param>
         /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
         /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
-        /// i.e. <see cref="DefaultErrorBegin"/></param>
+        /// i.e. DefaultErrorBegin</param>
         public NamedPipeClientBase(string pipeName, string serverAddress, string requestEnd, string responseEnd, string errorBegin):
             this(pipeName, serverAddress)
         {

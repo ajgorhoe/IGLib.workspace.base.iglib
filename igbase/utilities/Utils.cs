@@ -1,4 +1,5 @@
-﻿// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+﻿
+// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 using System;
 using System.Collections.Generic;
@@ -604,7 +605,6 @@ namespace IG.Lib
         /// <typeparam name="T">Type of the list element, must be a reference type.</typeparam>
         /// <param name="list">List to be allocated. </param>
         /// <param name="count">Number of elements list will contain after operation.</param>
-        /// capacity exceeds the specified number  of elements.</param>
         /// $A Igor Apr10;
         public static void ResizeListRefType<T>(ref List<T> list, int count) where T : class
         {
@@ -843,8 +843,6 @@ namespace IG.Lib
         /// <typeparam name="T">Type of list elements.</typeparam>
         /// <param name="sortedList">List that is searched for the element. List must be sorted according to the specified comparison function.</param>
         /// <param name="searchedElement">Element that is searched for.</param>
-        /// <param name="from">Index of the first element in the searched range.</param>
-        /// <param name="to">Index of the last element in the searched range.</param>
         /// <param name="comparison">Comparison function (delegate) according to which the list is sorted.</param>
         /// <returns>Index of the searched element in the list, if there exist an element (within the search range)
         /// that is equal to the search element according to the comparison delegate, or a binary complement of the 
@@ -1142,7 +1140,7 @@ namespace IG.Lib
 
         /// <summary>Returns size of a value of some specific value type, in bytes.</summary> 
         /// <remarks>See also: http://stackoverflow.com/questions/16519200/size-of-struct-with-generic-type-fields </remarks>
-        /// <param name="obj">Value whose size is returned.</param>
+        /// <param name="t">Type of the value whose size is to be returned.</param>
         public static int SizeOf(Type t)
         {
             if (t == null) throw new ArgumentNullException("t");
@@ -1221,7 +1219,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1236,7 +1234,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also 
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also 
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1245,7 +1243,7 @@ namespace IG.Lib
         {
             int size = SizeOf(val);
             if (startIndex < 0)
-                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + ".");
+                throw new ArgumentException("Starting index should be greater or equal to 0. Provided: " + startIndex + "."); 
             if (bytes == null)
                 throw new ArgumentException("Array of bytes to store the value is not specified (null reference).");
             if (bytes.Length < startIndex + size)
@@ -1272,7 +1270,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1287,7 +1285,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1319,7 +1317,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1334,7 +1332,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1365,7 +1363,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1380,7 +1378,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1411,7 +1409,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1426,7 +1424,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1458,7 +1456,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1473,7 +1471,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1504,7 +1502,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1519,7 +1517,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1550,7 +1548,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1565,7 +1563,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1596,7 +1594,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1611,7 +1609,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[string])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1642,7 +1640,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1657,7 +1655,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1688,7 +1686,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1703,7 +1701,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1730,7 +1728,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to byte array.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored. Allocated/reallocated if null or the current size does not 
@@ -1745,7 +1743,7 @@ namespace IG.Lib
 
         /// <summary>Converts a value to sequence of bytes and stores these bytes int the specified byte array at the specified position.</summary>
         /// <remarks>Bytes are stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given values produce the same byte arrays on all machines, regardless of endianness.</remarks>
         /// <param name="val">Value to be converted to byte array.</param>
         /// <param name="bytes">Byte array where converted vlaue is stored.</param>
@@ -1776,7 +1774,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         /// <param name="val">Variable where the extracted value is stored.</param>
@@ -1813,7 +1811,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.
         /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -1827,7 +1825,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         /// <param name="val">Variable where the extracted value is stored.</param>
@@ -1864,7 +1862,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.
         /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -1879,7 +1877,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         /// <param name="val">Variable where the extracted value is stored.</param>
@@ -1916,7 +1914,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.
         /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -1931,7 +1929,7 @@ namespace IG.Lib
 
         ///// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         ///// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        ///// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        ///// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         ///// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         ///// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         ///// <param name="val">Variable where the extracted value is stored.</param>
@@ -1970,7 +1968,7 @@ namespace IG.Lib
 
         ///// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         ///// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        ///// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        ///// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         ///// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         ///// <param name="bytes">Bytes array where value to be extracted is stored.
         ///// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -1986,7 +1984,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         /// <param name="val">Variable where the extracted value is stored.</param>
@@ -2023,7 +2021,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.
         /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -2037,7 +2035,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         /// <param name="val">Variable where the extracted value is stored.</param>
@@ -2074,7 +2072,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.
         /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -2088,7 +2086,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         /// <param name="val">Variable where the extracted value is stored.</param>
@@ -2125,7 +2123,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.
         /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -2139,7 +2137,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         /// <param name="val">Variable where the extracted value is stored.</param>
@@ -2176,7 +2174,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.
         /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -2190,7 +2188,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         /// <param name="val">Variable where the extracted value is stored.</param>
@@ -2227,7 +2225,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.
         /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -2241,7 +2239,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         /// <param name="val">Variable where the extracted value is stored.</param>
@@ -2278,7 +2276,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.
         /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -2292,7 +2290,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         /// <param name="val">Variable where the extracted value is stored.</param>
@@ -2330,7 +2328,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.
         /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -2344,7 +2342,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.</param>
         /// <param name="val">Variable where the extracted value is stored.</param>
@@ -2381,7 +2379,7 @@ namespace IG.Lib
 
         /// <summary>Extracts the value stored in a byte array in the big-endian order.</summary>
         /// <remarks>Bytes must be stored in big-endian order ("network byte order") where most significant byte comes first. 
-        /// This is compatible with the <see cref="Util.ToHexString(byte[])"/> method and also
+        /// This is compatible with the <see cref="Util.ToHexString(byte[], string)"/> method and also
         /// guarantees that given bytes produce the same value on all machines, regardless of endianness.</remarks>
         /// <param name="bytes">Bytes array where value to be extracted is stored.
         /// <para>Length of the byte array can be larger than the smallest possible (with respect to <paramref name="startIndex"/> and
@@ -2585,8 +2583,7 @@ namespace IG.Lib
         /// <summary>Returns a string representing the specified list in long form.
         /// Count property (i.e. number of elements in collection) is also printed.
         /// Works on all collections, including lists and arrays.</summary>
-        /// <typeparam name="T">Type of list elements.</typeparam>
-        /// <param name="list">List to be converted to srting.</param>
+        /// <param name="collection">Collection to be converted to srting.</param>
         /// <param name="addNewlines">If true then a newline is added before each element printed.</param>
         /// <param name="numIndent">Number of spaces aded before each element.</param>
         public static string CollectionToStringLong(System.Collections.ICollection collection, bool addNewlines,
@@ -2604,8 +2601,7 @@ namespace IG.Lib
         /// Count property (i.e. number of elements in collection) is also printed.
         /// Works on all collections, including lists and arrays.
         /// A  newline and two spaces are added before each element printed.</summary>
-        /// <typeparam name="T">Type of list elements.</typeparam>
-        /// <param name="list">List to be converted to srting.</param>
+        /// <param name="collection">Collection to be converted to srting.</param>
         public static string CollectionToStringLong(System.Collections.ICollection collection)
         {
             return CollectionToStringLong(collection, true, 2);
@@ -2801,7 +2797,6 @@ namespace IG.Lib
         /// <para>This works for simple types, for complex types deserialization must be used.</para></summary>
         /// <param name="strValue">String to be converted to other type.</param>
         /// <param name="propertyType">Type of the entity to be parsed from a string.</param>
-        /// <param name="cultureInfo">Culture info used in conversion.</param>
         /// <returns>Object of the specified type converted form a string.</returns>
         public static object Parse(string strValue, Type propertyType)
         {
@@ -2950,7 +2945,7 @@ namespace IG.Lib
         /// <para><see cref="ThreadPriority.BelowNormal"/>: "1", "belownormal", "low"</para>
         /// <para><see cref="ThreadPriority.Normal"/>: "2", "normal"</para>
         /// <para><see cref="ThreadPriority.AboveNormal"/>: "3", "abovenormal", "high"</para>
-        /// <para><see cref="ThreadPriority."/>: "4", "Highest", "realtime"</para>
+        /// <para><see cref="ThreadPriority.Highest"/>: "4", "Highest", "realtime"</para>
         /// </summary>
         /// <param name="str">String representation of a <see cref="ThreadPriority"/> value to be parsed.</param>
         /// <returns>The <see cref="ThreadPriority"/> value represented by the specified string.</returns>
@@ -2963,7 +2958,7 @@ namespace IG.Lib
             {
                 value = (ThreadPriority)Enum.Parse(typeof(ThreadPriority), str, true /* ignoreCase */);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 if (string.IsNullOrEmpty(str))
                     throw;
@@ -3020,7 +3015,6 @@ namespace IG.Lib
         /// <summary>Converts the specified XML document to string, eventually with human readable indentation
         /// and newlines added. The stirng representation is returned.</summary>
         /// <param name="doc">XML documennt to be converted to a string.</param>
-        /// <param name="indent">"</param>
         /// <param name="indentCahrs">String used for indentation (default is string containing two space characters). 
         /// Default is two space characters. If null or empty srting then no indentation id used.</param>
         /// <param name="newlineChars">Character used for newlines. If null then <see cref="Environment.NewLine"/> is used.</param>

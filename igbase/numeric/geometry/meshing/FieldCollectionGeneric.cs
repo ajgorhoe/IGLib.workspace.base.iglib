@@ -10,7 +10,7 @@ namespace IG.Num
 
     /// <summary>Collection of structured 3D fields of the same type.  Fields are identified by their names.
     /// <para>In principle, contained fields can be of different dimensions.</para></summary>
-    /// <typeparam name="TField">Type of fields contained in the collection. Must be a 3D structured field (<see cref="StructuredField3d<TElement>"/>).</typeparam>
+    /// <typeparam name="TField">Type of fields contained in the collection. Must be a 3D structured field (<see cref="StructuredField3d{TElement}"/>).</typeparam>
     /// <typeparam name="TElement">Type of elements of the fields that can be contained in the collection.</typeparam>
     /// <remarks>Completely generic definition was introduced in 2009.
     /// Before that, several types were used for specific field collections.</remarks>
@@ -72,7 +72,7 @@ namespace IG.Num
 
     /// <summary>Collection of structured 2D fields of the same type.  Fields are identified by their names.
     /// <para>In principle, contained fields can be of different dimensions.</para></summary>
-    /// <typeparam name="TField">Type of fields contained in the collection. Must be a 2D structured field (<see cref="StructuredField2d<TElement>"/>).</typeparam>
+    /// <typeparam name="TField">Type of fields contained in the collection. Must be a 2D structured field (<see cref="StructuredField2d{TElement}"/>).</typeparam>
     /// <typeparam name="TElement">Type of elements of the fields that can be contained in the collection.</typeparam>
     /// <remarks>Completely generic definition was introduced in 2009.
     /// Before that, several types were used for specific field collections.</remarks>
@@ -258,7 +258,7 @@ namespace IG.Num
 
         /// <summary>Adds the specified to the collection under a specified name.
         /// <para>If the field already has a name then its name is replaced by the specified name, 
-        /// unlsee the specified name is null.</summary>
+        /// unlsee the specified name is null.</para></summary>
         /// <param name="field">Field to be added to the collection.</param>
         /// <param name="name">Name under which the field is added to the current collection.</param>
         public void AddField(TField field, string name)

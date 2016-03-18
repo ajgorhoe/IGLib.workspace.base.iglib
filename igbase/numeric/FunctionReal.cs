@@ -114,7 +114,7 @@ namespace IG.Num
         /// <param name="from">Left interval bound.</param>
         /// <param name="to">Right interval bound.</param>
         /// <param name="numPoints">Number of points in which the function is calculated.</param>
-        /// <param name="printSecondDerivatives">Whether to print the second derivatives.</param>
+        /// <param name="printDerivatives">Whether to print the  derivatives.</param>
         void Tabulate(double from, double to, int numPoints, bool printDerivatives);
 
         /// <summary>Tabulates the current function and eventually its first and second derivatives 
@@ -285,7 +285,7 @@ namespace IG.Num
         /// <param name="from">Left interval bound.</param>
         /// <param name="to">Right interval bound.</param>
         /// <param name="numPoints">Number of points in which the function is calculated.</param>
-        /// <param name="printSecondDerivatives">Whether to print the second derivatives.</param>
+        /// <param name="printDerivatives">Whether to print the  derivatives.</param>
         public void Tabulate(double from, double to, int numPoints, bool printDerivatives)
         {
             Tabulate(from, to, numPoints, true, true /* printSecondDerivatives */);
@@ -398,7 +398,7 @@ namespace IG.Num
         /// is written.</summary>
         /// <param name="from">Lower bound of the interval where tests are performed.</param>
         /// <param name="to">Upper bound of the interval where tests are performed.</param>
-        /// <param name="numSamples">Number of points for which evaluations and comparisons are performed.</param>
+        /// <param name="numProbes">Number of points for which evaluations and comparisons are performed.</param>
         /// <param name="stepSize">Step size used for numerical integration and differentiation.</param>
         /// <param name="tolerance">Absolute tolarence for match between analytical and numeriacl values
         /// (visible notification is launched whenever difference is larger than tolerance).</param>
@@ -579,10 +579,6 @@ namespace IG.Num
         /// valu.</summary>
         /// <param name="valueDelegate">Delegate that calculates funciton value.
         /// If null then the function does not have value defined.</param>
-        /// <param name="derivativeDelegate">Delegate that calculates function derivative.
-        /// If null then the function does not have derivative defined.</param>
-        /// <param name="secondDerivativeDelegate">Delegate that calculates function second derivative.
-        /// If null then the function does not have second derivative defined.</param>
         public RealFunction(DlgFunctionValue valueDelegate): 
             this(valueDelegate, null, null, null, null, null)
         { }
@@ -594,8 +590,6 @@ namespace IG.Num
         /// If null then the function does not have value defined.</param>
         /// <param name="derivativeDelegate">Delegate that calculates function derivative.
         /// If null then the function does not have derivative defined.</param>
-        /// <param name="secondDerivativeDelegate">Delegate that calculates function second derivative.
-        /// If null then the function does not have second derivative defined.</param>
         public RealFunction(DlgFunctionValue valueDelegate, DlgFunctionValue derivativeDelegate) :
             this(valueDelegate, derivativeDelegate, null, null, null, null)
         { }
@@ -700,16 +694,6 @@ namespace IG.Num
 
 
         #region Data
-
-        private string _name, _description;
-
-        /// <summary>Returns a code name of the function (not necessarily unique).</summary>
-        public override string Name
-        { get { return _name; }  protected internal set { _name = value; } }
-
-        /// <summary>Returns a short description of the function (not necessarily unique).</summary>
-        public override string Description
-        { get { return _description; } protected internal set { _description = value; } }
 
         // Delegates for different tasks:
 

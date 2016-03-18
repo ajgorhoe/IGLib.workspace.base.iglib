@@ -293,7 +293,7 @@ namespace IG.Num
         /// <para>Vector x is changed during operation, but is set to initial value before function returns (unless an exception is thrown).</para>
         /// </summary>
         /// <param name="x">Point (vector of parameters) at which gradient is calculated.</param>
-        /// <param name="stepSizes">Step size for numerical differentiation (the same in all directions).</param>
+        /// <param name="stepSize">Step size for numerical differentiation (the same in all directions).</param>
         /// <param name="gradient">Vector where the calculated gradient is stored.</param>
         /// TODO: When NumericalDerivativePlain is tested enough, replace this function in sulch a way
         /// that stepSize is used directly in a copy of that function (currently a vetor of step sizes is created where each component holds the same step size.)
@@ -364,7 +364,7 @@ namespace IG.Num
         /// <para>Vector x is changed during operation, but is set to initial value before function returns (unless an exception is thrown).</para>
         /// </summary>
         /// <param name="x">Point (vector of parameters) at which gradient is calculated.</param>
-        /// <param name="stepSizes">Step size for numerical differentiation (the same in all directions).</param>
+        /// <param name="stepSize">Step size for numerical differentiation (the same in all directions).</param>
         /// <param name="gradient">Vector where the calculated gradient is stored.</param>
         /// TODO: When NumericalDerivativePlain is tested enough, replace this function in sulch a way
         /// that stepSize is used directly in a copy of that function (currently a vetor of step sizes is created where each component holds the same step size.)
@@ -486,6 +486,7 @@ namespace IG.Num
         /// REMARK: Vector x is changed during operation, but is set to initial value before function returns (unless an exception is thrown).</summary>
         /// <param name="x">Point (vector of parameters) at which derivative is calculated.</param>
         /// <param name="aux1">Auxiliary storage vector, must be of the same dimension as vector of parameters.</param>
+        /// <param name="aux2">Another auxiliary storage vector, must be of the same dimension as vector of parameters.</param>
         /// <param name="stepSizes">Step size for numerical differentiation.</param>
         /// <param name="hessian">Matrix where calculated second derivatives (function Hessian) are stored.</param>
         public virtual void NumericalHessianCentralPlain(IVector x, IVector stepSizes,
@@ -500,6 +501,7 @@ namespace IG.Num
         /// REMARK: Vector x is changed during operation, but is set to initial value before function returns (unless an exception is thrown).</summary>
         /// <param name="x">Point (vector of parameters) at which derivative is calculated.</param>
         /// <param name="aux1">Auxiliary storage vector, must be of the same dimension as vector of parameters.</param>
+        /// <param name="aux2">Another auxiliary storage vector, must be of the same dimension as vector of parameters.</param>
         /// <param name="stepSizes">Step size for numerical differentiation.</param>
         /// <param name="hessian">Matrix where calculated second derivatives (function Hessian) are stored.</param>
         public virtual void NumericalHessianCentral(IVector x, IVector stepSizes,
@@ -634,6 +636,7 @@ namespace IG.Num
         /// <remarks>
         /// TODO: When NumericalSecondDerivativePlain is tested enough, replace this function in sulch a way
         /// that stepSize is used directly in a copy of that function (currently a vetor of step sizes is created where each component holds the same step size.)
+        /// </remarks>
         public virtual void NumericalHessianCentral(IVector x, double stepSize,
             ref IVector aux1, ref IVector aux2, ref IMatrix hessian, bool useAnalyticalGradient)
         {

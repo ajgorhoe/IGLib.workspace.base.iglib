@@ -119,8 +119,8 @@ namespace IG.Lib
         protected bool
             _running = false,   // tells whether timer is running or not 
             _used = false,      // tells whether timer has been used after creation or after last  reset
-            _measureTime = true,     // tells whether wallclock time is measured 
-            _measureCpuTime = true;  // tells whether CPU time is measured 
+            _measureTime = true,     // tells whether wallclock time is measured by the current stopwatch
+            _measureCpuTime = true;  // tells whether CPU time is measured by the current stopwatch
 
         #region Auxiliary
 
@@ -158,7 +158,7 @@ namespace IG.Lib
             get { lock (_lock) { return _running; } }
         }
 
-        /// <summary>Starts the timer (the elapsed time & CPU time are measured since this moment). 
+        /// <summary>Starts the timer (the elapsed time and CPU time are measured since this moment). 
         /// If the timer is already running then exception is thrown.</summary>
         public void Start()
         {
@@ -215,7 +215,7 @@ namespace IG.Lib
             {
                 _running = _used = false;
                 _totalTime = _totalCpuTime = 0.0;
-                _measureTime = _measureCpuTime = false;
+                // _measureTime = _measureCpuTime = false;
                 SetTimeStamp();
             }
         }
@@ -423,6 +423,7 @@ namespace IG.Lib
 
         #endregion  // Properties
 
+
         #region Examples
 
         /// <summary>Example of using the stopwatch.</summary>
@@ -465,9 +466,6 @@ namespace IG.Lib
         }
 
         #endregion Examples
-
-
-
 
 
 

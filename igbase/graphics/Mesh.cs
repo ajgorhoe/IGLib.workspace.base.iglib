@@ -109,7 +109,7 @@ namespace IG.Gr
         /// <summary>Sets coordinates of the specified grid point to the provided values.
         /// Indices run contiguously from 0 on (they do not correspond to node numbers, which can be arbitrarily arranged).</summary>
         /// <param name="i">Zero-based (contiguous) index of the grid point.</param>
-        /// <param name="coordinate">Co-ordinates that are assigned to the grid point.</param>
+        /// <param name="coordinates">Co-ordinates that are assigned to the grid point.</param>
         /// <returns></returns>
         public virtual void SetGridCoordinate(int i, vec3 coordinates)
         {
@@ -175,8 +175,8 @@ namespace IG.Gr
 
         /// <summary>Constructs a structured surface mesh in 3 dimensions.
         /// Grid co-ordinates are initialized to 0.</summary>
-        /// <param name="numx">Number of points in the first grid direction.</param>
-        /// <param name="numy">Number of points in the second grid direction.</param>
+        /// <param name="num1">Number of points in the first grid direction.</param>
+        /// <param name="num2">Number of points in the second grid direction.</param>
         public StructuredSurfaceMesh3D(int num1, int num2)
         {
             _numx = num1;

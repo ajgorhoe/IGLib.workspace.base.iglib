@@ -15,7 +15,7 @@ namespace IG.Num
     /// <summary>Base class for CSV (comma separated files) representation, importer and exporter of sampled data and 
     /// data definitions.</summary>
     /// $A Igo Oct08 Jul13;
-    public class SampledDataCsv: StringTable
+    public class SampledDataCsv : StringTable
     {
 
         #region Construction
@@ -286,6 +286,20 @@ namespace IG.Num
             }
         }
 
+        private static string _defaultKeyNumSamplingPoints = "NumSamplingPoints";
+
+        /// <summary>Default key for introduction of number of sampling points of input and output data elements.</summary>
+        public static string DefaultKeyNumSamplingPoints
+        {
+            get { return _defaultKeyNumSamplingPoints; }
+            protected set
+            {
+                if (!UtilStr.IsVariableName(value))
+                    throw new ArgumentException("A default keyword for number of sampling points must be a legal variable name.");
+                _defaultKeyNumSamplingPoints = value;
+            }
+        }
+
         private static string _defaultKeyTargetValues = "TargetValues";
 
         /// <summary>Default key for introduction of target values of input and output data elements.</summary>
@@ -315,7 +329,7 @@ namespace IG.Num
             }
         }
 
-        
+
 
         #endregion Keys.Default
 
@@ -328,7 +342,7 @@ namespace IG.Num
         public bool IsKeysCaseSensitive
         {
             get { lock (Lock) { return _isKeysCaseSensitive; } }
-            set { lock(Lock) { _isKeysCaseSensitive = value; } }
+            set { lock (Lock) { _isKeysCaseSensitive = value; } }
         }
 
         /// <summary>Returns true if the specified string represents the specified keyword.
@@ -385,6 +399,7 @@ namespace IG.Num
                 || IsKeyScalingLengths(str)
                 || IsKeyDefaultValues(str)
                 || IsKeyDiscretizationSteps(str)
+                || IsKeyNumSamplingPoints(str)
                 || IsKeyTargetValues(str)
                 || IsKeyOptimizationIndices(str)
                 );
@@ -799,6 +814,33 @@ namespace IG.Num
                 }
             }
         }
+
+        protected string _keyNumSamplingPoints = DefaultKeyNumSamplingPoints;
+
+        /// <summary>A keyword string that introduces variable discretization steps in the CSV file containing sampled data 
+        /// and / or data definitions.</summary>
+        public string KeyNumSamplingPoints
+        {
+            get { lock (Lock) { return _keyNumSamplingPoints; } }
+            protected set
+            {
+                lock (Lock)
+                {
+                    if (!UtilStr.IsVariableName(value))
+                        throw new ArgumentException("A keyword for number of sampling points must be a legal variable name.");
+                    _keyNumSamplingPoints = value;
+                }
+            }
+        }
+
+
+        /// <summary>Whether the specified string is a keyword introducing variable for number of sampling points.</summary>
+        /// <param name="str">String that is checked.</param>
+        public bool IsKeyNumSamplingPoints(string str)
+        {
+            return IsKey(str, KeyNumSamplingPoints);
+        }
+
 
         /// <summary>Whether the specified string is a keyword introducing variable discretization steps.</summary>
         /// <param name="str">String that is checked.</param>
@@ -1722,6 +1764,39 @@ namespace IG.Num
                     ++CurrentRow;
                     CurrentColumn = 0;
                 }
+
+                if (DataDefinition.IsAnyNumSamplingPointsDefined())
+                {
+                    // Store element's number of sampling points:
+                    this[CurrentRow, 0] = KeyNumSamplingPoints;
+                    if (!KeyAndDataInSameRow)
+                        ++CurrentRow;
+                    CurrentColumn = Indentation + 0;
+                    for (int i = 0; i < DataDefinition.InputLength; ++i)
+                    {
+                        InputElementDefinition def = DataDefinition.GetInputElement(i);
+                        if (def != null)
+                        {
+                            if (def.NumSamplingPoints > 0)
+                                this[CurrentRow, CurrentColumn] = def.NumSamplingPoints.ToString();
+                        }
+                        ++CurrentColumn;
+                    }
+                    for (int i = 0; i < DataDefinition.OutputLength; ++i)
+                    {
+                        //OutputElementDefinition def = DataDefinition.GetOutputElement(i);
+                        //if (def != null)
+                        //{
+                        //    if (def.NumSamplingPoints>0)
+                        //        this[CurrentRow, CurrentColumn] = def.NumSamplingPoints.ToString();
+                        //}
+                        ++CurrentColumn;
+                    }
+                    ++CurrentRow;
+                    CurrentColumn = 0;
+                }
+
+
                 if (DataDefinition.IsAnyTargetValueDefined())
                 {
                     // Store element target values:
@@ -1879,7 +1954,7 @@ namespace IG.Num
 
         /// <summary>Saves data definitions to the specified file.
         /// <para>The file is overridden if it already exists.</para></summary>
-        /// <param name="inputFilePath">Path to the file where data definitions are stored.</param>
+        /// <param name="filePath">Path to the file where data definitions are stored.</param>
         public void SaveDefinition(string filePath)
         {
             lock (Lock)
@@ -1892,7 +1967,7 @@ namespace IG.Num
 
         /// <summary>Saves sampled data to the specified file.
         /// <para>The file is overridden if it already exists.</para></summary>
-        /// <param name="inputFilePath">Path to the file where data is stored.</param>
+        /// <param name="filePath">Path to the file where data is stored.</param>
         public void SaveData(string filePath)
         {
             lock (Lock)
@@ -1905,7 +1980,7 @@ namespace IG.Num
 
         /// <summary>Saves data definitions AND sampled data to the specified file.
         /// <para>The file is overridden if it already exists.</para></summary>
-        /// <param name="inputFilePath">Path to the file where data is stored.</param>
+        /// <param name="filePath">Path to the file where data is stored.</param>
         public void SaveDefinitionAndData(string filePath)
         {
             lock (Lock)
@@ -2016,7 +2091,7 @@ namespace IG.Num
         /// <param name="keyColumn">Column number of the cell containing the key that introduces the data.</param>
         /// <param name="row">Variable where row number of the cell where data begins is stored.</param>
         /// <param name="column">Variable where column number of the cell where data begins is stored.</param>
-        /// <exception cref="">When the first data cell could not be located.</exception>
+        /// <exception cref="InvalidDataException">When the first data cell could not be located.</exception>
         protected void FindFirstDataCell(int keyRow, int keyColumn, out int row, out int column)
         {
             lock (Lock)
@@ -2041,7 +2116,7 @@ namespace IG.Num
         /// the key that introduces the data is located at (<see cref="CurrentRow"/>, <see cref="CurrentColumn"/>).</summary>
         /// <param name="row">Variable where row number of the cell where data begins is stored.</param>
         /// <param name="column">Variable where column number of the cell where data begins is stored.</param>
-        /// <exception cref="">When the first data cell could not be located.</exception>
+        /// <exception cref="InvalidDataException">When the first data cell could not be located.</exception>
         protected void FindFirstDataCell(out int row, out int column)
         {
             FindFirstDataCell(CurrentRow, CurrentColumn, out row, out column);
@@ -2138,10 +2213,6 @@ namespace IG.Num
         }
 
         /// <summary>Extracts information about data columns from the data.</summary>
-        /// <param name="keyRow">Row of the cell that contains the key that introduces the data from
-        /// which information is extracted.</param>
-        /// <param name="keyColumn">Column of the cell that contains the key that introduces the data from
-        /// which information is extracted.</param>
         /// <param name="isDouble">Whether data elements are real numbers (e.g. of type double).</param>
         /// <param name="isInt">Whether data elements are integer numbers.</param>
         /// <remarks><para>For tis method in order to work, data must be defined for all input and output
@@ -2810,6 +2881,38 @@ namespace IG.Num
             }
         }  // ReadElementDiscretizationSteps()
 
+        /// <summary>Reads numberr of sampling points of input data elements from the CSV, from the current position on (inclusively).</summary>
+        /// <remarks>After successful execution, the current cell is set just after the last read position.</remarks>
+        protected void ReadElementNumSamplingPoints()
+        {
+            lock (Lock)
+            {
+                ReadDoubleData(ref AuxDoubleArray);
+                for (int inputElementIndex = 0; inputElementIndex < InputLength; ++inputElementIndex)
+                {
+                    InputElementDefinition def = GetInputElementDefinition(inputElementIndex);
+                    if (!double.IsNaN(AuxIntArray[inputElementIndex]))
+                    {
+                        def.NumSamplingPoints = AuxIntArray[inputElementIndex];
+                    } else
+                        def.NumSamplingPoints = 0;
+                }
+                // Output elements do not hava NumSamplingPoints property.
+                for (int outputElementIndex = 0; outputElementIndex < OutputLength; ++outputElementIndex)
+                {
+                    //OutputElementDefinition def = GetOutputElementDefinition(outputElementIndex);
+                    //def.NumSamplingPoints = AuxIntArray[InputLength + outputElementIndex];
+                    int val = AuxIntArray[InputLength + outputElementIndex];
+                    if (!double.IsNaN(val) && val != 0)
+                    {
+                        throw new InvalidDataException("Invalid data at data column No. " + (InputLength + outputElementIndex) + 
+                            ": Number of sampling points can not be defined for output elements.");
+                        //def.NumSamplingPoints = true;
+                    }
+                }
+            }
+        }  // ReadElementNumSamplingPoints()
+
         /// <summary>Reads target values of input and output data elements from the CSV, from the current position on (inclusively).</summary>
         /// <remarks>After successful execution, the current cell is set just after the last read position.</remarks>
         protected void ReadElementTargetValues()
@@ -3013,6 +3116,10 @@ namespace IG.Num
                     {
                         ReadElementDiscretizationSteps();
                     }
+                    else if (IsKeyNumSamplingPoints(this[CurrentRow, CurrentColumn]))
+                    {
+                        ReadElementNumSamplingPoints();
+                    }
                     else if (IsKeyTargetValues(this[CurrentRow, CurrentColumn]))
                     {
                         ReadElementTargetValues();
@@ -3047,7 +3154,6 @@ namespace IG.Num
         /// <summary>Restores data definition from the data table.
         /// Position is reset before the operation begins.
         /// <para>Data definition is assigned to the <see cref="DataDefinition"/> property.</para></summary>
-        /// <param name="resetPosition">Whether position is reset before the restoration begins.</param>
         public void RestoreDefinition()
         {
             RestoreDefinition(true /* resetPosition */);
@@ -3213,7 +3319,6 @@ namespace IG.Num
         /// <summary>Restores sampled data definition from the data table.
         /// Position is reset before the operation begins.
         /// <para>Data is assigned to the <see cref="SampledData"/> property.</para></summary>
-        /// <param name="resetPosition">Whether position is reset before the restoration begins.</param>
         public void RestoreData()
         {
             RestoreData(true /* resetPosition */);
@@ -3248,7 +3353,7 @@ namespace IG.Num
 
         /// <summary>Loads data definition form the specified CSV file.
         /// <para>Data definition is assigned to the <see cref="DataDefinition"/> property.</para></summary>
-        /// <param name="inputFilePath">Path to the file where data definition is read from.</param>
+        /// <param name="filePath">Path to the file where data definition is read from.</param>
         public void LoadDefinition(string filePath)
         {
             this.LoadCsv(filePath);
@@ -3258,7 +3363,7 @@ namespace IG.Num
 
         /// <summary>Loads sampled data form the specified CSV file.
         /// <para>Data is assigned to the <see cref="SampledData"/> property.</para></summary>
-        /// <param name="inputFilePath">Path to the file where data definition is read from.</param>
+        /// <param name="filePath">Path to the file where data definition is read from.</param>
         public void LoadData(string filePath)
         {
             this.LoadCsv(filePath);
@@ -3267,9 +3372,9 @@ namespace IG.Num
 
 
         /// <summary>Loads data definition AND sampled data form the specified CSV file.
-        /// <para>Data definition is assigned to the <see cref="DataDefinition"/> property.</para></summary>
+        /// <para>Data definition is assigned to the <see cref="DataDefinition"/> property.</para>
         /// <para>Data is assigned to the <see cref="SampledData"/> property.</para></summary>
-        /// <param name="inputFilePath">Path to the file where data definition is read from.</param>
+        /// <param name="filePath">Path to the file where data definition is read from.</param>
         public void LoadDefinitionAndData(string filePath)
         {
             this.LoadCsv(filePath);

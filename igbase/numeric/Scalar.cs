@@ -141,7 +141,7 @@ namespace IG.Num
 
 
         /// <summary>Compare this Scalar with another Scalar.</summary>
-        /// <param name="s">The scalar to compare with.</param>
+        /// <param name="other">The scalar to compare with.</param>
         public int CompareTo(Scalar other) { return Value.CompareTo(other); }
 
         #endregion  // Equality_Comparison_Hashing
@@ -246,7 +246,6 @@ namespace IG.Num
         /// <param name="result">Output parameter returning the scalar that was read.</param>
         /// <param name="str">String from which the scalar is read.</param>
         /// <param name="startpos">Starting position from which scalar is searched for.</param>
-        /// at the starting position.</param>
         /// <returns>Position right after the read scalar, or -1 if reading was not successful.</returns>
         public static int Read(ref Scalar result, string str, int startpos)
         {
@@ -295,6 +294,7 @@ namespace IG.Num
         /// Leading and trailing spaces are ignored, but other characters are not.
         /// false is returned if parsing was not successful, but no exception is thrown in this case.</summary>
         /// <param name="str">String that is parsed.</param>
+        /// <param name="result">Variable where result of the operation is stored.</param>
         /// <returns>True if parsing was successful (and the scalar was actually read), false otherwise.</returns>
         public static bool TryParse(string str, ref Scalar result)
         {
@@ -331,10 +331,8 @@ namespace IG.Num
 
         /// <summary>Reads in the value from a string, starting at a specified position and skipping any leading spaces. 
         /// Returns the position of the first character after the read scalar (or -1 if reading failed) and outputs the read scalar.</summary>
-        /// <param name="result">Output parameter returning the scalar that was read.</param>
         /// <param name="str">String from which the scalar is read.</param>
         /// <param name="startpos">Starting position from which scalar is searched for.</param>
-        /// at the starting position.</param>
         /// <returns>Position right after the read scalar, or -1 if reading was not successful.</returns>
         public int Read(string str, int startpos)
         {
@@ -507,7 +505,7 @@ namespace IG.Num
 
 
         /// <summary>Compare this Counter with another Counter.</summary>
-        /// <param name="s">The counter to compare with.</param>
+        /// <param name="other">The counter to compare with.</param>
         public int CompareTo(Counter other) { return Value.CompareTo(other); }
 
         #endregion  // Equality_Comparison_Hashing
@@ -612,7 +610,6 @@ namespace IG.Num
         /// <param name="result">Output parameter returning the counter that was read.</param>
         /// <param name="str">String from which the counter is read.</param>
         /// <param name="startpos">Starting position from which counter is searched for.</param>
-        /// at the starting position.</param>
         /// <returns>Position right after the read counter, or -1 if reading was not successful.</returns>
         public static int Read(ref Counter result, string str, int startpos)
         {
@@ -661,6 +658,7 @@ namespace IG.Num
         /// Leading and trailing spaces are ignored, but other characters are not.
         /// false is returned if parsing was not successful, but no exception is thrown in this case.</summary>
         /// <param name="str">String that is parsed.</param>
+        /// <param name="result">Variable where result is stored.</param>
         /// <returns>True if parsing was successful (and the counter was actually read), false otherwise.</returns>
         public static bool TryParse(string str, ref Counter result)
         {
@@ -697,10 +695,8 @@ namespace IG.Num
 
         /// <summary>Reads in the value from a string, starting at a specified position and skipping any leading spaces. 
         /// Returns the position of the first character after the read counter (or -1 if reading failed) and outputs the read counter.</summary>
-        /// <param name="result">Output parameter returning the counter that was read.</param>
         /// <param name="str">String from which the counter is read.</param>
         /// <param name="startpos">Starting position from which counter is searched for.</param>
-        /// at the starting position.</param>
         /// <returns>Position right after the read counter, or -1 if reading was not successful.</returns>
         public int Read(string str, int startpos)
         {

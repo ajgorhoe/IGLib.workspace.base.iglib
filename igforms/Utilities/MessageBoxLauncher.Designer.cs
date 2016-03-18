@@ -34,7 +34,7 @@ namespace IG.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BrowserSimpleWindow));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BrowserSimpleForm));
 
             this.grpIcons = new System.Windows.Forms.GroupBox();
             this.rbQuestion = new System.Windows.Forms.RadioButton();
@@ -460,6 +460,7 @@ namespace IG.Forms
             this.Controls.Add(this.grpIcons);
             this.Name = "MessageBoxLauncher";
             this.Text = "Message Box Demo";
+            this.Icon = IG.Forms.Properties.Resources.ig;
             this.Load += new System.EventHandler(this.MessageBoxLauncher_Load);
             this.grpIcons.ResumeLayout(false);
             this.grpIcons.PerformLayout();
@@ -475,8 +476,7 @@ namespace IG.Forms
             this.grpDirOpen.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            
         }
 
         #endregion

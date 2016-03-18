@@ -57,12 +57,12 @@ namespace IG.Num
 
         /// <summary>Sets the vector of optimization parameters.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetParametersReference(IVector reference);
 
         /// <summary>Returns specific optimization parameter.
         /// Throws exception if not defined or index out of bounds.</summary>
-        /// <param name="iindex">Index of parameter to be returned (counting from 0).</param>
+        /// <param name="index">Index of parameter to be returned (counting from 0).</param>
         double GetParameter(int index);
 
         /// <summary>Sets the specified optimization parameter.</summary>
@@ -81,7 +81,7 @@ namespace IG.Num
         /// <summary>Value of the function.</summary>
         double Value { get; set; }
 
-        /// <summary>Returns the value of the function./summary>
+        /// <summary>Returns the value of the function.</summary>
         double GetValue();
 
         /// <summary>Sets the value of the function.</summary>
@@ -105,7 +105,7 @@ namespace IG.Num
 
         /// <summary>Sets the function gradient.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetGradientReference(IVector reference);
 
         /// <summary>Returns the specified component of the function gradient.</summary>
@@ -134,7 +134,7 @@ namespace IG.Num
 
         /// <summary>Sets the functions' Hessian.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         void SetHessianReference(IMatrix reference);
 
         /// <summary>Returns the specified component of the function;s Hessian.</summary>
@@ -228,7 +228,7 @@ namespace IG.Num
 
 
         /// <summary>Copies data from another analysis results.</summary>
-        /// <param name="res">Analysis results which data is copied from.</param>
+        /// <param name="results">Analysis results which data is copied from.</param>
         void Copy(IScalarFunctionResults results);
 
         /// <summary>Returns an exact deep copy of the current object.</summary>

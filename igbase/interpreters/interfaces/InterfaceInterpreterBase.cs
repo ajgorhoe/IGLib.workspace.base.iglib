@@ -542,7 +542,7 @@ namespace IG.Lib
 
 
         /// <summary>Appends a variable reference to the contents of the interpreter command file.</summary>
-        /// <param name="value">Name of the variable whose reference is appended.</param>
+        /// <param name="variableName">Name of the variable whose reference is appended.</param>
         protected virtual void AppendCommandVariableReference(string variableName)
         {
             lock (Lock)
@@ -554,7 +554,7 @@ namespace IG.Lib
         }
 
         /// <summary>Appends a variable reference to the current argument block.</summary>
-        /// <param name="value">Name of the variable whose reference is appended.</param>
+        /// <param name="variableName">Name of the variable whose reference is appended.</param>
         public virtual void AppendCommandArgumentVariableReference(string variableName)
         {
             lock (Lock)

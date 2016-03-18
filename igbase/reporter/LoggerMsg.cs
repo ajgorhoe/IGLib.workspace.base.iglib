@@ -442,7 +442,7 @@ namespace IG.Lib
         /// <summary>Prints an short report corresponding to the specified log record
         /// to the specified StringBuilder. Auxiliary methof used to generate various 
         /// condensed reports without using a separate reporter.</summary>
-        /// <param name="log">Log record whose information is printed.</param>
+        /// <param name="logRecord">Log record whose information is printed.</param>
         /// <param name="sb">StringBuilder to which information is printed.</param>
         /// <param name="printDecoration">Whethr a decoration is printed around the report 
         /// (indicates e.g. type of the reported log record - Error, Warning, Info)</param>
@@ -523,7 +523,6 @@ namespace IG.Lib
         /// <summary>Returns a stirng that contains reports for all logs contained in the logger.
         /// Reporting level is Info.
         /// Decorations are printed around reports. A newline is printed after each report.</summary>
-        /// <param name="level">Reporting level, logs whose level is greater than prescribed level are not printed.</param>
         public string GetReport()
         {
             return GetReport(ReportLevel.Info, true /* printDecorations */, true /* newLinesAfter */);

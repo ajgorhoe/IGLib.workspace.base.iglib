@@ -139,15 +139,15 @@ namespace IG.Lib
 
 
         /// <summary>Execute performance test with specified measurement duration.</summary>
-        /// <param name="requestedTime">Requested (approximate) duration of the test.</param>
+        /// <param name="requestedDuration">Requested (approximate) duration of the test.</param>
         /// <param name="data">Output structure that returns the performance data.</param>
-        public void TestPerformance(double testDuration, out ThreadPerformanceData data)
+        public void TestPerformance(double requestedDuration, out ThreadPerformanceData data)
         {
             int numCycles = 0;
             int numIt = 0;
             double cyclesLeft = 0;  // estimated number of cycles yet to be performed in order to reach the requested measurement time
             double prevCycles = 0;  // previous number of cycles
-            double timeLeft = testDuration;
+            double timeLeft = requestedDuration;
             double timePortion = 0.0;
             double CPS = RefCyclesPerSecond;  // current cycles per second
             double cyclesFactor = 0.05;
@@ -187,8 +187,8 @@ namespace IG.Lib
                     CPS = RefCyclesPerSecond;
                 else
                     CPS = numCycles / t.TotalTime;  // improve estimation of cycles per second
-                timeLeft = testDuration - t.TotalTime;
-                timePortion = 1.0 - (timeLeft / testDuration);  // portion of time spent w.r. prescribed duration
+                timeLeft = requestedDuration - t.TotalTime;
+                timePortion = 1.0 - (timeLeft / requestedDuration);  // portion of time spent w.r. prescribed duration
                 cyclesLeft = CPS * timeLeft;  // estimation of number of cycles needed to reach the requested duration
                 cyclesFactor = 1.0;
                 if (timePortion < 0.05)
@@ -216,16 +216,16 @@ namespace IG.Lib
         }
 
         /// <summary>Execute performance test with specified measurement duration.</summary>
-        /// <param name="requestedTime">Requested (approximate) duration of the test.</param>
+        /// <param name="requestedDuration">Requested (approximate) duration of the test.</param>
         /// <param name="cyclesPerSec">Returns number of cycles per second, which is the relevant
         /// performance measure for the current thread.</param>
         /// <param name="performanceRatio">Returns ratio between CPU time and clock time spen for the test.
         /// This is a measure of how much the CPU is loaded (smaller the value, more it is loaded).</param>
-        public void TestPerformance(double testDuration, out double cyclesPerSec,
+        public void TestPerformance(double requestedDuration, out double cyclesPerSec,
             out double performanceRatio)
         {
             ThreadPerformanceData data;
-            TestPerformance(testDuration, out data);
+            TestPerformance(requestedDuration, out data);
             cyclesPerSec = data.CyclesPerSecond;
             performanceRatio = data.PerformanceRatio;
         }
@@ -233,11 +233,11 @@ namespace IG.Lib
         /// <summary>Execute performance test with specified measurement duration, and
         /// returns the measured number of standard cycles performed per second (which is the
         /// relevant performance measure).</summary>
-        /// <param name="requestedTime">Requested (approximate) duration of the test.</param>
-        public double TestPerformance(double testDuration)
+        /// <param name="requestedDuration">Requested (approximate) duration of the test.</param>
+        public double TestPerformance(double requestedDuration)
         {
             ThreadPerformanceData data;
-            TestPerformance(testDuration, out data);
+            TestPerformance(requestedDuration, out data);
             return data.CyclesPerSecond;
         }
 

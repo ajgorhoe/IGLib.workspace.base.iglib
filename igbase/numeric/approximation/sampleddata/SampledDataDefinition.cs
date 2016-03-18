@@ -45,8 +45,6 @@ namespace IG.Num
         { }
 
         /// <summary>Constructor. Element index is unknown.</summary>
-        /// <param name="elementIndex">Index of the input or output data element specified by the current definision.
-        /// If less than 0 is specified then it is considered that element index is not known or defined in the current context.</param>
         /// <param name="name">Element name.
         /// Should comply with conventions for valid variable names in languages C++, C# and Java.</param>
         /// <param name="title">Short descriptive title (like name, but can contain spaces and special characters).</param>
@@ -55,8 +53,6 @@ namespace IG.Num
         { }
 
         /// <summary>Constructor. Element index is unknown.</summary>
-        /// <param name="elementIndex">Index of the input or output data element specified by the current definision.
-        /// If less than 0 is specified then it is considered that element index is not known or defined in the current context.</param>
         /// <param name="name">Element name.
         /// Should comply with conventions for valid variable names in languages C++, C# and Java.</param>
         /// <param name="title">Short descriptive title (like name, but can contain spaces and special characters).</param>
@@ -360,7 +356,7 @@ namespace IG.Num
         public override string ToString()
         {
             return
-                "Output element:" + Environment.NewLine +
+                // "Output element:" + Environment.NewLine +
                 "  Element index: " + ElementIndex + Environment.NewLine +
                 "  Name: " + Name + Environment.NewLine +
                 "  Description: " + Description + Environment.NewLine;
@@ -383,7 +379,7 @@ namespace IG.Num
         /// Should comply with conventions for valid variable names in languages C++, C# and Java.</param>
         /// <param name="title">Short descriptive title (like name, but can contain spaces and special characters).</param>
         /// <param name="description">Element description. Can be an arbvitrary string.</param>
-        public InputElementDefinition(int elementIndex, string name, string title, string description) :
+        public InputElementDefinition(int elementIndex, string name = null, string title = null, string description = null) :
             base(elementIndex, name, title, description)
         { }
 
@@ -395,8 +391,6 @@ namespace IG.Num
         { }
 
         /// <summary>Constructor. Element index is unknown.</summary>
-        /// <param name="elementIndex">Index of the input or output data element specified by the current definision.
-        /// If less than 0 is specified then it is considered that element index is not known or defined in the current context.</param>
         /// <param name="name">Element name.
         /// Should comply with conventions for valid variable names in languages C++, C# and Java.</param>
         /// <param name="title">Short descriptive title (like name, but can contain spaces and special characters).</param>
@@ -405,8 +399,6 @@ namespace IG.Num
         { }
 
         /// <summary>Constructor. Element index is unknown.</summary>
-        /// <param name="elementIndex">Index of the input or output data element specified by the current definision.
-        /// If less than 0 is specified then it is considered that element index is not known or defined in the current context.</param>
         /// <param name="name">Element name.
         /// Should comply with conventions for valid variable names in languages C++, C# and Java.</param>
         /// <param name="title">Short descriptive title (like name, but can contain spaces and special characters).</param>
@@ -428,6 +420,8 @@ namespace IG.Num
         protected int _optimizationIndex;
 
         protected double _discretizationStep = 0.0;  // Required by IJS
+
+        protected int _numSamplingPoints = 10;
 
         /// <summary>Flag indicating whether default value is defined for the input parameter 
         /// described by the current eleemnt description.</summary>
@@ -454,6 +448,11 @@ namespace IG.Num
         /// <remarks>This field was required by the Jozef Stefan optimization group.</remarks>
         public virtual double DiscretizationStep
         { get { return _discretizationStep; } set { _discretizationStep = value; } }
+
+
+        /// <summary>Number of sampling points along the correspoinding input parameter.</summary>
+        public virtual int NumSamplingPoints
+        { get { return _numSamplingPoints; } set { _numSamplingPoints = value; } }
 
         #endregion Data
 
@@ -484,6 +483,7 @@ namespace IG.Num
                 copy.OptimizationIndexSpecified = original.OptimizationIndexSpecified;
                 copy.OptimizationIndex = original.OptimizationIndex;
                 copy.DiscretizationStep = original.DiscretizationStep;
+                copy.NumSamplingPoints = original.NumSamplingPoints;
              }
         }
 
@@ -510,12 +510,14 @@ namespace IG.Num
         public override string ToString()
         {
             return
-                "Output element:" + Environment.NewLine +
-                "  Element index: " + ElementIndex + Environment.NewLine +
+                // "Input element:" + Environment.NewLine +
+                "  Input element index: " + ElementIndex + Environment.NewLine +
                 "  Name: " + Name + Environment.NewLine +
+                "  Title: " + Title + Environment.NewLine +
                 "  Description: " + Description +
-                "  Default value: " + DefaultValue + Environment.NewLine +
-                "  Bounds: [" + MinimalValue + ", " + MaximalValue + "]" + Environment.NewLine;
+                "  Default value: " + DefaultValue.ToString() + (DefaultValueDefined? "" : " - not defined.") + Environment.NewLine +
+                "  Bounds: [" + MinimalValue + ", " + MaximalValue + "]" + (BoundsDefined? "" : " - not defined.") + Environment.NewLine +
+                "  Num. Sampling points: " + NumSamplingPoints + Environment.NewLine;
         }
 
 
@@ -536,7 +538,7 @@ namespace IG.Num
         /// Should comply with conventions for valid variable names in languages C++, C# and Java.</param>
         /// <param name="title">Short descriptive title (like name, but can contain spaces and special characters).</param>
         /// <param name="description">Element description. Can be an arbvitrary string.</param>
-        public OutputElementDefinition(int elementIndex, string name, string title, string description) :
+        public OutputElementDefinition(int elementIndex, string name = null, string title = null, string description = null) :
             base(elementIndex, name, title, description)
         { }
 
@@ -548,8 +550,6 @@ namespace IG.Num
         { }
 
         /// <summary>Constructor. Element index is unknown.</summary>
-        /// <param name="elementIndex">Index of the input or output data element specified by the current definision.
-        /// If less than 0 is specified then it is considered that element index is not known or defined in the current context.</param>
         /// <param name="name">Element name.
         /// Should comply with conventions for valid variable names in languages C++, C# and Java.</param>
         /// <param name="title">Short descriptive title (like name, but can contain spaces and special characters).</param>
@@ -558,8 +558,6 @@ namespace IG.Num
         { }
 
         /// <summary>Constructor. Element index is unknown.</summary>
-        /// <param name="elementIndex">Index of the input or output data element specified by the current definision.
-        /// If less than 0 is specified then it is considered that element index is not known or defined in the current context.</param>
         /// <param name="name">Element name.
         /// Should comply with conventions for valid variable names in languages C++, C# and Java.</param>
         /// <param name="title">Short descriptive title (like name, but can contain spaces and special characters).</param>
@@ -624,10 +622,12 @@ namespace IG.Num
         public override string ToString()
         {
             return
-                "Output element:" + Environment.NewLine +
-                "  Element index: " + ElementIndex + Environment.NewLine +
+                //"Output element:" + Environment.NewLine +
+                "  Output Element index: " + ElementIndex + Environment.NewLine +
                 "  Name: " + Name + Environment.NewLine +
-                "  Description: " + Description + Environment.NewLine;
+                "  Title: " + Title + Environment.NewLine +
+                "  Description: " + Description + Environment.NewLine +
+                "  Bounds: [" + MinimalValue + ", " + MaximalValue + "]" + (BoundsDefined ? "" : " - not defined.") + Environment.NewLine;
         }
 
     } // class OutputElementDefinition
@@ -671,6 +671,7 @@ namespace IG.Num
             get { return _description; }
             set { _description = value; }
         }
+
 
 
         /// <summary>Gets number of input parameters.</summary>
@@ -717,10 +718,13 @@ namespace IG.Num
 
         /// <summary>Adds the specified input element definition to the list of input element definitions.</summary>
         /// <param name="element">Input element to be added.</param>
-        public virtual void AddInputElement(InputElementDefinition element)
+        /// <param name="assignIndex">If true then element index is automatically assigned to the element.</param>
+        public virtual void AddInputElement(InputElementDefinition element, bool assignIndex = false)
         {
             if (element == null)
                 throw new ArgumentNullException("Input element definition to be added is not specified (null reference).");
+            if (assignIndex)
+                element.ElementIndex = _input.Count;
             _input.Add(element);
         }
 
@@ -817,10 +821,13 @@ namespace IG.Num
 
         /// <summary>Adds the specified output element definition to the list of output element definitionss.</summary>
         /// <param name="element">Output element to be added.</param>
-        public virtual void AddOutputElement(OutputElementDefinition element)
+        /// <param name="assignIndex">If true then element index is automatically assigned to the element.</param>
+        public virtual void AddOutputElement(OutputElementDefinition element, bool assignIndex = false)
         {
             if (element == null)
                 throw new ArgumentNullException("Output element definition to be added is not specified (null reference).");
+            if (assignIndex)
+                element.ElementIndex = _output.Count;
             _output.Add(element);
         }
 
@@ -1117,6 +1124,47 @@ namespace IG.Num
             return (IsAnyInputDiscretizationStepDefined() || IsAnyOutputDiscretizationStepDefined());
         }
 
+
+
+        /// <summary>Returns a value indicating whether any input element has NumSamplingPoints property defined.</summary>
+        public virtual bool IsAnyInputNumSamplingPointsDefined()
+        {
+            for (int i = 0; i < InputLength; ++i)
+            {
+                InputElementDefinition def = GetInputElement(i);
+                if (def != null)
+                {
+                    if (def.NumSamplingPoints > 0)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>Returns a value indicating whether any output element has NumSamplingPoints property defined.</summary>
+        public virtual bool IsAnyOutputNumSamplingPointsDefined()
+        {
+            return false;   // Output elements can not have NumSamplingPoints step defined.
+            //for (int i = 0; i < OutputLength; ++i)
+            //{
+            //    OutputElementDefinition def = GetOutputElement(i);
+            //    if (def != null)
+            //    {
+            //        if (def.NumSamplingPoints > 0)
+            //            return true;
+            //    }
+            //}
+            //return false;
+        }
+
+        /// <summary>Returns a value indicating whether any element (either input or output) has NumSamplingPoints property defined.</summary>
+        public virtual bool IsAnyNumSamplingPointsDefined()
+        {
+            return (IsAnyInputNumSamplingPointsDefined() || IsAnyOutputNumSamplingPointsDefined());
+        }
+
+
+
         // Name Name Name 
 
         /// <summary>Returns a value indicating whether any input element has bounds defined.</summary>
@@ -1354,28 +1402,246 @@ namespace IG.Num
 
         #region StaticMethods
 
+        private static string _defaultInputElementNameBase = "InputParameter";
 
-        /// <summary>Saves input/output data definition to the specified JSON file.
-        /// File is owerwritten if it exists.</summary>
-        /// <param name="dataDef">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file where training data is saved.</param>
-        public static void SaveJson(InputOutputDataDefiniton dataDef, string filePath)
+        /// <summary>Default name base for input data elements.
+        /// <para>When set, the value must be a legal variable name in languages like C#, which is checked by <see cref="UtilStr.IsVariableName(string)"/> function.</para>
+        /// <para>Initially set to "InputParameter" but can be changed programatically.</para></summary>
+        public static string DefaultInputElementNameBase
         {
-            InputOutputDataDefinitonDto dtoOriginal = new InputOutputDataDefinitonDto();
-            dtoOriginal.CopyFrom(dataDef);
-            ISerializer serializer = new SerializerJson();
-            serializer.Serialize<InputOutputDataDefinitonDto>(dtoOriginal, filePath);
+            get { return _defaultInputElementNameBase; }
+            set
+            {
+                if (value != _defaultInputElementNameBase)
+                {
+                    if (!UtilStr.IsVariableName(value))
+                        throw new ArgumentException("Specified default base of input data element name \""+ value + "\" is not a legal variable name.");
+                    _defaultInputElementNameBase = value;
+                }
+            }
         }
 
-        /// <summary>Restores input/output data definition from the specified file in JSON format.</summary>
-        /// <param name="inputFilePath">File from which training data is restored.</param>
-        /// <param name="dataDefRestored">Narual networ approximator's definition data that is restored by deserialization.</param>
-        public static void LoadJson(string filePath, ref InputOutputDataDefiniton dataDefRestored)
+        private static string _defaultOutputElementNameBase = "OutputValue";
+
+        /// <summary>Default name base for output data elements.
+        /// <para>When set, the value must be a legal variable name in languages like C#, which is checked by <see cref="UtilStr.IsVariableName(string)"/> function.</para>
+        /// <para>Initially set to "OutputValue" but can be changed programatically.</para></summary>
+        public static string DefaultOutputElementNameBase
         {
-            ISerializer serializer = new SerializerJson();
-            InputOutputDataDefinitonDto dtoRestored = serializer.DeserializeFile<InputOutputDataDefinitonDto>(filePath);
-            dataDefRestored = new InputOutputDataDefiniton();
-            dtoRestored.CopyTo(ref dataDefRestored);
+            get { return _defaultOutputElementNameBase; }
+            set
+            {
+                if (value != _defaultOutputElementNameBase)
+                {
+                    if (!UtilStr.IsVariableName(value))
+                        throw new ArgumentException("Specified default base of output data element name \""+ value + "\" is not a legal variable name.");
+                    _defaultOutputElementNameBase = value;
+                }
+            }
+        }
+
+
+        private static int _defaultElementNameNumDigits = 2;
+
+        /// <summary>Default number of digits in generated input or output data element names (this refers to digits appended to name base).
+        /// <para>When set, it must be greater than 0.</para>
+        /// <para>Initially set to 2 but can be changed programatically.</para></summary>
+        public static int DefaultElementNameNumDigits
+        {
+            get { return _defaultElementNameNumDigits; }
+            set
+            {
+                if (value != _defaultElementNameNumDigits)
+                {
+                    if (value < 1)
+                        throw new ArgumentException("Specified default number of digits in element data name " + value + " is not greater than 0.");
+                    _defaultElementNameNumDigits = value;
+                }
+            }
+        }
+
+        private static int _defaultElementNameStatingIndex = 0;
+
+        /// <summary>Default starting index in generated input or output data element names (this refers to digits appended to name base).
+        /// <para>When set, it must be greater or equal than 0.</para>
+        /// <para>Initially set to 0 but can be changed programatically.</para></summary>
+        public static int DefaultElementNameStartingIndex
+        {
+            get { return _defaultElementNameStatingIndex; }
+            set
+            {
+                if (value != _defaultElementNameStatingIndex)
+                {
+                    if (value < 0)
+                        throw new ArgumentException("Specified default starting index in element data name " + value + " is not greater or equal to 0.");
+                    _defaultElementNameStatingIndex = value;
+                }
+            }
+        }
+
+
+
+        /// <summary>Retuns a base string, number of digits and number starting index for generation of data definition input element names, which it tries to infer from the specified definition data.
+        /// <para>If inference was impossible then values are returned.</para>
+        /// <para>The returned data is helpful in generation of names for new data elements.</para></summary>
+        /// <param name="nameBase">Variable where name base is stored. If it can not be inferred from <paramref name="def"/> then default is stored 
+        /// (property <see cref="InputOutputDataDefiniton.DefaultInputElementNameBase"/>).</param>
+        /// <param name="numDigits">Variable where number of digits in element names is stored. If it can not be inferred from <paramref name="def"/> then default is stored 
+        /// (property <see cref="InputOutputDataDefiniton.DefaultElementNameNumDigits"/>).</param>
+        /// <param name="startingIndex">Variable where number of digits in element names is stored. If it can not be inferred from <paramref name="def"/> then default is stored 
+        /// (property <see cref="InputOutputDataDefiniton.DefaultElementNameStartingIndex"/>).</param>
+        /// <param name="def">Definition data from which name is inferred.
+        /// <para>Can be null (in which case inference is skipped and default values returned).</para></param>
+        /// <param name="checkLegalVAriableName">Indicates whether inferrence is only performed using legal variable names of existing elements, as defined by <see cref="UtilStr.IsVariableName(string)"/>  method.</param>
+        public static void GetInputElementNameParameters(out string nameBase, out int numDigits, out int startingIndex, InputOutputDataDefiniton def = null, bool checkLegalVAriableName = true)
+        {
+            GetElementNameParameters(false /* outputElements */, out nameBase, out numDigits, out startingIndex, def, checkLegalVAriableName);
+        }
+
+        /// <summary>Retuns a base string, number of digits and number starting index for generation of data definition input element names, which it tries to infer from the specified definition data.
+        /// <para>If inference was impossible then values are returned.</para>
+        /// <para>The returned data is helpful in generation of names for new data elements.</para></summary>
+        /// <param name="nameBase">Variable where name base is stored. If it can not be inferred from <paramref name="def"/> then default is stored 
+        /// (property <see cref="InputOutputDataDefiniton.DefaultInputElementNameBase"/>).</param>
+        /// <param name="numDigits">Variable where number of digits in element names is stored. If it can not be inferred from <paramref name="def"/> then default is stored 
+        /// (property <see cref="InputOutputDataDefiniton.DefaultElementNameNumDigits"/>).</param>
+        /// <param name="startingIndex">Variable where number of digits in element names is stored. If it can not be inferred from <paramref name="def"/> then default is stored 
+        /// (property <see cref="InputOutputDataDefiniton.DefaultElementNameStartingIndex"/>).</param>
+        /// <param name="def">Definition data from which name is inferred.
+        /// <para>Can be null (in which case inference is skipped and default values returned).</para></param>
+        /// <param name="checkLegalVAriableName">Indicates whether inferrence is only performed using legal variable names of existing elements, as defined by <see cref="UtilStr.IsVariableName(string)"/>  method.</param>
+        public static void GetOutputElementNameParameters(out string nameBase, out int numDigits, out int startingIndex, InputOutputDataDefiniton def = null, bool checkLegalVAriableName = true)
+        {
+            GetElementNameParameters(true /* outputElements */, out nameBase, out numDigits, out startingIndex, def, checkLegalVAriableName);
+        }
+
+
+        /// <summary>Retuns a base string, number of digits and number starting index for generation of data definition input or output element names, which it tries to infer from the specified definition data.
+        /// <para>If inference was impossible then values are returned.</para>
+        /// <para>The returned data is helpful in generation of names for new data elements.</para></summary>
+        /// <param name="outputElements">Indicates whether name generation parameters are obtained for output elements (if false then input elements are considered instead).</param>
+        /// <param name="nameBase">Variable where name base is stored. If it can not be inferred from <paramref name="def"/> then default is stored 
+        /// (property <see cref="InputOutputDataDefiniton.DefaultInputElementNameBase"/>).</param>
+        /// <param name="numDigits">Variable where number of digits in element names is stored. If it can not be inferred from <paramref name="def"/> then default is stored 
+        /// (property <see cref="InputOutputDataDefiniton.DefaultElementNameNumDigits"/>).</param>
+        /// <param name="startingIndex">Variable where number of digits in element names is stored. If it can not be inferred from <paramref name="def"/> then default is stored 
+        /// (property <see cref="InputOutputDataDefiniton.DefaultElementNameStartingIndex"/>).</param>
+        /// <param name="def">Definition data from which name is inferred.
+        /// <para>Can be null (in which case inference is skipped and default values returned).</para></param>
+        /// <param name="checkLegalVAriableName">Indicates whether inferrence is only performed using legal variable names of existing elements, as defined by <see cref="UtilStr.IsVariableName(string)"/>  method.</param>
+        protected static void GetElementNameParameters(bool outputElements, out string nameBase, out int numDigits, out int startingIndex, InputOutputDataDefiniton def = null, bool checkLegalVAriableName = true)
+        {
+            if (outputElements)
+                nameBase = DefaultOutputElementNameBase;
+            else
+                nameBase = DefaultInputElementNameBase;
+            numDigits = DefaultElementNameNumDigits;
+            startingIndex = DefaultElementNameStartingIndex;
+            bool baseEstablished = false;
+            bool numDigitsEstablished = false;
+            bool startingIndexEstablished = false;
+            if (def != null)
+            {
+                int numElements = 0;
+                if (outputElements)
+                    numElements = def.OutputLength;
+                else
+                    numElements = def.InputLength;
+                for (int whichElement = 0; whichElement < numElements && !(baseEstablished && numDigitsEstablished && startingIndexEstablished); ++whichElement)
+                {
+                    InputOutputElementDefinition elDef = null;
+                    if (outputElements)
+                        def.GetOutputElement(whichElement);
+                    else
+                        def.GetInputElement(whichElement);
+                    if (elDef != null)
+                    {
+                        string name = elDef.Name;
+                        if (UtilStr.IsVariableName(name) || (!checkLegalVAriableName && !string.IsNullOrEmpty(name)) ) // !string.IsNullOrEmpty(name))
+                        {
+                            int len = name.Length;
+                            int numDigitsCurrent = 0;
+                            for (int whichDigit = 0; whichDigit < len; ++ whichDigit)
+                            {
+                                char ch = name[len - 1 - whichDigit];
+                                if (char.IsDigit(ch))
+                                {
+                                    ++numDigitsCurrent;
+                                }
+                            }
+                            if (numDigitsCurrent < len || !checkLegalVAriableName)
+                            {
+                                string nameBaseCurrent = name.Substring(0, len - numDigitsCurrent);
+                                if (UtilStr.IsVariableName(nameBaseCurrent) || (!checkLegalVAriableName) )
+                                {
+                                    if (!baseEstablished)
+                                    {
+                                        if (UtilStr.IsVariableName(nameBaseCurrent) || (!checkLegalVAriableName && !string.IsNullOrEmpty(nameBaseCurrent)) )
+                                        {
+                                            nameBase = nameBaseCurrent;
+                                            baseEstablished = true;
+                                        }
+                                    }
+                                    if (numDigitsCurrent > 0 && !(numDigitsEstablished && startingIndexEstablished))
+                                    {
+                                        numDigits = numDigitsCurrent;
+                                        numDigitsEstablished = true;
+                                        string digitString = name.Substring(len - numDigitsCurrent, numDigitsCurrent);
+                                        int indexValue = 0;
+                                        bool parsed = int.TryParse(digitString, out indexValue);
+                                        if (parsed)
+                                        {
+                                            startingIndex = indexValue - whichElement;
+                                            startingIndexEstablished = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>Generates and returns name of the input data element with the specified index. 
+        /// <para>Existing data definition may be eventually used to infer generation parameters (base name, number of digits appended to base name as index, and starting index).</para></summary>
+        /// <param name="elementIndex">Index of the element wose name is generated.</param>
+        /// <param name="def">Model definition data used to infer parameters of name generation. 
+        /// <para>If specified then base name, number of appended digita and starting index are inferred from this data.</para>
+        /// <para>Otherwise, default values are taken (i.e. <see cref="DefaultInputElementNameBase"/>, <see cref="DefaultElementNameNumDigits"/>, <see cref="DefaultElementNameStartingIndex"/>).</para> </param>
+        /// <param name="checkLegalVAriableName">If true (which is default) then parameters are only infered from those names in the existing data definition (if specified)
+        /// that satisfy variable name rules in programming languages such as C++, Java or C#.</param>
+        /// <returns></returns>
+        public static string CreateInputElementName(int elementIndex, InputOutputDataDefiniton def = null, bool checkLegalVAriableName = true)
+        {
+            if (elementIndex < 0)
+                throw new ArgumentException("Input data element index must be greater or equal to 0. Specified: " + elementIndex + ".");
+            string nameBase;
+            int numDigits;
+            int startingIndex;
+            GetInputElementNameParameters(out nameBase, out numDigits, out startingIndex, def, checkLegalVAriableName);
+            return nameBase + (elementIndex + startingIndex).ToString(new string('0',numDigits));  // new string(...) creates format specification - string with as many '0'-s as digits appended
+        }
+
+        /// <summary>Generates and returns name of the output data element with the specified index. 
+        /// <para>Existing data definition may be eventually used to infer generation parameters (base name, number of digits appended to base name as index, and starting index).</para></summary>
+        /// <param name="elementIndex">Index of the element wose name is generated.</param>
+        /// <param name="def">Model definition data used to infer parameters of name generation. 
+        /// <para>If specified then base name, number of appended digita and starting index are inferred from this data.</para>
+        /// <para>Otherwise, default values are taken (i.e. <see cref="DefaultOutputElementNameBase"/>, <see cref="DefaultElementNameNumDigits"/>, <see cref="DefaultElementNameStartingIndex"/>).</para> </param>
+        /// <param name="checkLegalVAriableName">If true (which is default) then parameters are only infered from those names in the existing data definition (if specified)
+        /// that satisfy variable name rules in programming languages such as C++, Java or C#.</param>
+        /// <returns></returns>
+        public static string CreateOutputElementName(int elementIndex, InputOutputDataDefiniton def = null, bool checkLegalVAriableName = true)
+        {
+            if (elementIndex < 0)
+                throw new ArgumentException("Output data element index must be greater or equal to 0. Specified: " + elementIndex + ".");
+            string nameBase;
+            int numDigits;
+            int startingIndex;
+            GetOutputElementNameParameters(out nameBase, out numDigits, out startingIndex, def, checkLegalVAriableName);
+            return nameBase + (elementIndex + startingIndex).ToString(new string('0',numDigits));  // new string(...) creates format specification - string with as many '0'-s as digits appended
         }
 
 
@@ -1400,6 +1666,102 @@ namespace IG.Num
                 ret.AddOutputElement(outputElement);
             }
             return ret;
+        }
+
+
+        /// <summary>Creates and returns definition a new definition data with specified dimensions of input and otput spaces
+        /// (domains and codomains in case of functions) and eventually assigns names and descriptions to input and
+        /// output elements.
+        /// <para>Default values for parameters are such that meaningful data is generated by default (apart from
+        /// <paramref name="assignNames"/> and <paramref name="assignDescriptions"/>).</para></summary>
+        /// <param name="inputLength">Number of input parameters.</param>
+        /// <param name="outputLength">Number of outpput values.</param>
+        /// <param name="assignNames">Whether names are assigned to elements. Default is false.</param>
+        /// <param name="assignDescriptions">Whether descriptions are assigned (default is false).</param>
+        /// <param name="inputNameBase">Base for input parameters names. If null (which is default) or empty string then <see cref="DefaultInputElementNameBase"/> is taken.</param>
+        /// <param name="outputNameBase">Base for output values names. If null (which is default) or empty string then <see cref="DefaultOutputElementNameBase"/> is taken.</param>
+        /// <param name="numNameDigits">Number of digits incorporated into names. If less than 1 (default is -1) then <see cref="DefaultElementNameNumDigits"/> is taken.</param>
+        /// <param name="startIndex">Number where digits appended to variable names start. If less than 0 (default is -1) then <see cref="DefaultElementNameStartingIndex"/> is taken.
+        /// <para>If descriptions are also generated then this also applies to them.</para></param>
+        /// <param name="digitSeparator">Separator that is printed between element's name base and digit (when specified).</param>
+        /// <param name="inputDescriptionBase">Base for input element description, to which sequential number is added.</param>
+        /// <param name="outputDescriptionBase">Base for output element description, to which sequential number is added.</param>
+        /// <param name="digitSeparatorDescriptions">Separator that separates (when specified) description base and number.</param>
+        /// <param name="descriptionsEnd">Final part that comes after the sequential number, with which description is 
+        /// ended (when specified)</param>
+        public static InputOutputDataDefiniton Create(int inputLength, int outputLength,
+            bool assignNames = false, bool assignDescriptions = false, string inputNameBase = null , 
+            string outputNameBase = null, int numNameDigits = -1, int startIndex = -1, string digitSeparator = "_", 
+            string inputDescriptionBase = "Input parameter No. ",  string outputDescriptionBase = "Output value No. ", 
+            string digitSeparatorDescriptions = "", string descriptionsEnd = ".")
+        {
+            if (string.IsNullOrEmpty(inputNameBase))
+                inputNameBase = DefaultInputElementNameBase;
+            if (string.IsNullOrEmpty(outputNameBase))
+                outputNameBase = DefaultOutputElementNameBase;
+            if (numNameDigits < 1)
+                numNameDigits = DefaultElementNameNumDigits;
+            if (startIndex < 0)
+                startIndex = DefaultElementNameStartingIndex;
+            InputOutputDataDefiniton ret = new InputOutputDataDefiniton();
+            string digitFormatString = new string('0', numNameDigits);
+            for (int i = 0; i < inputLength; ++i)
+            {
+                InputElementDefinition inputElement = new InputElementDefinition(i, null, null);
+                if (assignNames)
+                {
+                    inputElement.Name = inputNameBase + digitSeparator + (startIndex + i).ToString(digitFormatString);
+                    inputElement.Title = inputElement.Name;
+                }
+                if (assignDescriptions)
+                {
+                    inputElement.Description = inputDescriptionBase + digitSeparatorDescriptions +
+                        (startIndex + i).ToString() + descriptionsEnd;
+                }
+                ret.AddInputElement(inputElement, true /* assign element index */);
+            }
+            for (int i = 0; i < outputLength; ++i)
+            {
+
+                OutputElementDefinition outputElement = new OutputElementDefinition("");
+                if (assignNames)
+                {
+                    outputElement.Name = outputNameBase + digitSeparator + (startIndex + i).ToString(digitFormatString);
+                    outputElement.Title = outputElement.Name;
+                }
+                if (assignDescriptions)
+                {
+                    outputElement.Description = outputDescriptionBase + digitSeparatorDescriptions +
+                        (startIndex + i).ToString() + descriptionsEnd;
+                }
+                ret.AddOutputElement(outputElement, true /* assign element index */);
+            }
+            return ret;
+        }
+
+
+
+        /// <summary>Saves input/output data definition to the specified JSON file.
+        /// File is owerwritten if it exists.</summary>
+        /// <param name="dataDef">Object that is saved to a file.</param>
+        /// <param name="filePath">Path to the file where training data is saved.</param>
+        public static void SaveJson(InputOutputDataDefiniton dataDef, string filePath)
+        {
+            InputOutputDataDefinitonDto dtoOriginal = new InputOutputDataDefinitonDto();
+            dtoOriginal.CopyFrom(dataDef);
+            ISerializer serializer = new SerializerJson();
+            serializer.Serialize<InputOutputDataDefinitonDto>(dtoOriginal, filePath);
+        }
+
+        /// <summary>Restores input/output data definition from the specified file in JSON format.</summary>
+        /// <param name="filePath">File from which training data is restored.</param>
+        /// <param name="dataDefRestored">Narual networ approximator's definition data that is restored by deserialization.</param>
+        public static void LoadJson(string filePath, ref InputOutputDataDefiniton dataDefRestored)
+        {
+            ISerializer serializer = new SerializerJson();
+            InputOutputDataDefinitonDto dtoRestored = serializer.DeserializeFile<InputOutputDataDefinitonDto>(filePath);
+            dataDefRestored = new InputOutputDataDefiniton();
+            dtoRestored.CopyTo(ref dataDefRestored);
         }
 
         /// <summary>Suplements the specified data definition object with information that is extracted
@@ -1619,7 +1981,6 @@ namespace IG.Num
         }
 
 
-
         /// <summary>Copies data from one data definition to another.</summary>
         /// <param name="original">Source object that data is copied from.</param>
         /// <param name="copy">Object to which data is copied.</param>
@@ -1679,6 +2040,10 @@ namespace IG.Num
                 sb.AppendLine("There is no input data definition.");
             else
             {
+                sb.AppendLine("Number of input elements:  " + InputLength);
+                sb.AppendLine("Number of output elements: " + OutputLength);
+                sb.AppendLine();
+
                 sb.AppendLine("Input data: ");
                 for (int i = 0; i < InputElementList.Count; ++i)
                 {

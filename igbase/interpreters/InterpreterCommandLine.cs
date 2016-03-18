@@ -267,10 +267,6 @@ namespace IG.Lib
         /// If the command with the specified name already exists then the command is replaced.</summary>
         /// <param name="commandName">Command name through which interpreter will be able to invoke the command.</param>
         /// <param name="command">Command to be added to the interpreter.</param>
-        /// <param name="referenceDescription">Description of command reference (data structure that includes
-        /// the command, interpreter where command is installed, and name under which command is registered 
-        /// on the interpretere). These data are used in order to know when command is not referenced any more,
-        /// so its finalization block can be performed.</param>
         public override void AddCommand(string commandName, CommandLine command)
         {
             AddCommand(commandName, command, null);

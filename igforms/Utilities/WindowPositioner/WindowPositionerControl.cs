@@ -20,6 +20,7 @@ namespace IG.Forms
     public partial class WindowPositionerControl : UserControl
     {
 
+
         /// <summary>Constructs a new positioner form with undefined positioner, positioned window and master window.</summary>
         public WindowPositionerControl(): this(null /* positioner */, null /* positionedWindow */, null /* masterWindow */)
         {  }
@@ -278,9 +279,9 @@ namespace IG.Forms
 
         public void MakeWindowsVisible()
         {
-            try { MasterWindow.Activate(); UtilForms.BlinkForm(MasterWindow); }
+            try { MasterWindow.Activate(); UtilForms.BlinkControl(MasterWindow); }
             catch { }
-            try { Window.Activate(); UtilForms.BlinkForm(Window); }
+            try { Window.Activate(); UtilForms.BlinkControl(Window); }
             catch { }
             this.Focus();
         }
@@ -340,7 +341,7 @@ namespace IG.Forms
                 val = 0.001;
                 if (Positioner != null)
                     val = Positioner.MovementPauseSeconds;
-                UtilForms.BlinkForm(txtPause);
+                UtilForms.BlinkControl(txtPause);
                 txtPause.Text = val.ToString();
             }
         }

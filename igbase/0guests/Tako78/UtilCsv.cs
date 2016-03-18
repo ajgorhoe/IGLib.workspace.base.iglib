@@ -138,7 +138,7 @@ namespace IG.Lib
         }
 
         /// <summary>Converts a CSV string to a 2D jagged array of string values and returns it.
-        /// Constant <see cref="UtilStr.DefaultCsvSeparator"/>) is assumed to be a separator in the CSV format.</summary>
+        /// Constant <see cref="UtilCsv.DefaultCsvSeparator"/>) is assumed to be a separator in the CSV format.</summary>
         /// <param name="csvString">A CSV string representing data in CSV format.</param>
         /// <returns>A 2D jagged array that contains a table of string cell values of the CSV string that is parsed.
         /// Each Subarray contains a single row of cells values.</returns>
@@ -146,12 +146,12 @@ namespace IG.Lib
         public static string[][] FromCsvString(string csvString)
         {
             return FromCsvString(csvString, DefaultCsvSeparator /* separator */);
-        }
+        } 
 
         /// <summary>Converts a CSV string to a 2D jagged array of string values and returns it.</summary>
         /// <param name="csvString">A CSV string representing data in CSV format.</param>
         /// <param name="separator">Separator that is used in CSV format (usually , or ;).
-        /// If null or empty string then Constant <see cref="UtilStr.DefaultCsvSeparator"/> is taken.</param>
+        /// If null or empty string then Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is taken.</param>
         /// <returns>A 2D jagged array that contains a table of string cell values of the CSV string that is parsed.
         /// Each Subarray contains a single row of cells values.</returns>
         /// $A Igor Oct08;
@@ -276,7 +276,7 @@ namespace IG.Lib
         /// <summary>Convertsa a 2D jagged array of string values to a string in CSV format.</summary>
         /// <param name="values">dD table of string values that are written in CSV format.</param>
         /// <param name="separator">Separator that is used to separate cell values.
-        /// If null or empty string then Constant <see cref="UtilStr.DefaultCsvSeparator"/> is taken.</param>
+        /// If null or empty string then Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is taken.</param>
         /// <remarks>If the value of any cell contains separators then it is embedded
         /// in double quotes.</remarks>
         /// $A Igor Oct08;
@@ -322,7 +322,7 @@ namespace IG.Lib
         /// <param name="values">a 2D jagged array of string values that is converted to a
         /// string.</param>
         /// <param name="valueSeparator">Separator that separates individual values in a row.
-        /// If not specified then Constant <see cref="UtilStr.DefaultCsvSeparator"/> is taken.</param>
+        /// If not specified then Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is taken.</param>
         /// <returns>String containing values in double quotes, separated by commas and 
         /// arrays of values separated by newlines, that can, for example, be printed to 
         /// a console. An additional newline is added after the last array of values.</returns>
@@ -353,8 +353,8 @@ namespace IG.Lib
         } // TableToString(values)
 
         /// <summary>Reads contents of a CSV file and returns a 2D jagged array of strigg values contained in the file.</summary>
-        /// <param name="inputFilePath">Path to the CSV file that is read and parsed.</param>
-        /// <param name="separator">Separator that is used in the CSV file. If not specified (null or empty string) then Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed.</param>
+        /// <param name="filePath">Path to the CSV file that is read and parsed.</param>
+        /// <param name="separator">Separator that is used in the CSV file. If not specified (null or empty string) then Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is assumed.</param>
         /// <returns>A 2D jagged array that contains a table of string cell values of the CSV string that is parsed.
         /// Each Subarray contains a single row of cells values.</returns>
         /// $A Igor Oct08;
@@ -375,8 +375,8 @@ namespace IG.Lib
         }
 
         /// <summary>Reads contents of a CSV file and returns a 2D jagged array of strigg values contained in the file.
-        /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed as separator in the CSV file.</summary>
-        /// <param name="inputFilePath">Path to the CSV file that is read and parsed.</param>
+        /// Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is assumed as separator in the CSV file.</summary>
+        /// <param name="filePath">Path to the CSV file that is read and parsed.</param>
         /// <returns>A 2D jagged array that contains a table of string cell values of the CSV string that is parsed.
         /// Each Subarray contains a single row of cells values.</returns>
         /// $A Igor Oct08;
@@ -386,7 +386,7 @@ namespace IG.Lib
         }
 
         /// <summary>Saves a 2D jagged array of string cell values into a CSV file.</summary>
-        /// <param name="inputFilePath">Path to the file into which contents is written.</param>
+        /// <param name="filePath">Path to the file into which contents is written.</param>
         /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
         /// <param name="separator">Separator that is used in CSV format.</param>
         /// <param name="append">If true then the CSV string is appended to the existent file if 
@@ -406,7 +406,7 @@ namespace IG.Lib
 
         /// <summary>Saves a 2D jagged array of string cell values into a CSV file.
         /// If the file already exists then its contents are overwritten.</summary>
-        /// <param name="inputFilePath">Path to the file into which contents is written.</param>
+        /// <param name="filePath">Path to the file into which contents is written.</param>
         /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
         /// <param name="separator">Separator that is used in CSV format.</param>
         /// $A Igor Oct08;
@@ -416,9 +416,11 @@ namespace IG.Lib
         }
 
         /// <summary>Saves a 2D jagged array of string cell values into a CSV file.
-        /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
-        /// <param name="inputFilePath">Path to the file into which contents is written.</param>
+        /// Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
+        /// <param name="filePath">Path to the file into which contents is written.</param>
         /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
+        /// <param name="append">If true then the CSV string is appended to the existent file if 
+        /// the file already exists. Otherwise, existend files are overwritten.</param>
         public static void SaveCsv(string filePath, string[][] values, bool append)
         {
             SaveCsv(filePath, values, DefaultCsvSeparator /* separator */, append);
@@ -426,8 +428,8 @@ namespace IG.Lib
 
         /// <summary>Saves a 2D jagged array of string cell values into a CSV file.
         /// If the file already exists then its contents are overwritten.
-        /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
-        /// <param name="inputFilePath">Path to the file into which contents is written.</param>
+        /// Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
+        /// <param name="filePath">Path to the file into which contents is written.</param>
         /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
         /// $A Igor Oct08;
         public static void SaveCsv(string filePath, string[][] values)
@@ -442,7 +444,7 @@ namespace IG.Lib
         /// <param name="values">Original 2D jagged array of values arranged by rows, which is converted to
         /// a CSV string and back.</param>
         /// <param name="separator">Separator that is used in CSV format (usually this will be "," or ";", sometimes "\t").
-        /// If not specified (null or empty string) then the Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed.</param>
+        /// If not specified (null or empty string) then the Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is assumed.</param>
         /// <param name="printResults">If true then detailed results of the test are printed to a console, 
         /// indicating all individual differences between the original and restored data. It is also indicated
         /// whether the individual differences are considered errors (if not then a string describing a difference

@@ -93,6 +93,7 @@ namespace IG.Lib
         /// <param name="number">Output parameter returning the number that was read.</param>
         /// <param name="str">String from which the number is read.</param>
         /// <param name="startpos">Starting position from which the number is searched for.</param>
+        /// <param name="skipspaces">Wheather spaces should be skipped.</param>
         /// <returns></returns>
         public static int ReadInteger(ref int number, string str, int startpos, bool skipspaces)
         {
@@ -181,7 +182,7 @@ namespace IG.Lib
 
         /// <summary>Returns index of the first character in str after the representation of an integer number.</summary>
         /// <param name="str">String that is parsed.</param>
-        /// <param name="startpos">Position where search begins (counted from 0).</param>
+        /// <param name="beginpos">Position where search begins (counted from 0).</param>
         /// <param name="skipspaces">Indicates whether to skip the eventual leading whitespaces.</param>
         /// <param name="failiffloatingpoint">If true then method fails if there is a floating point number representation.
         /// If false then the position of the decimal point is returned.</param>
@@ -238,7 +239,7 @@ namespace IG.Lib
         /// <summary>Returns index of the first character in str after the representation of an integer number.
         /// Leading whitespace characters are ignored, i.e. number is looked for after all space characters.</summary>
         /// <param name="str">String that is parsed.</param>
-        /// <param name="startpos">Position where search begins (counted from 0).</param>
+        /// <param name="beginpos">Position where search begins (counted from 0).</param>
         /// <param name="skipspaces">Indicates whether to skip leading spaces.</param>
         /// <returns>Index of the first character in string after the integer number representation (count form 0).
         /// -1 is returned if string is empty, if initial position is out of range or if there is no number
@@ -252,8 +253,7 @@ namespace IG.Lib
         /// <summary>Returns index of the first character in str after the representation of an integer number.
         /// Leading whitespace characters are ignored, i.e. number is looked for after all space characters.</summary>
         /// <param name="str">String that is parsed.</param>
-        /// <param name="startpos">Position where search begins.</param>
-        /// <param name="skipspaces">Indicates whether to skip leading spaces.</param>
+        /// <param name="beginpos">Position where search begins.</param>
         /// <returns>Index of the first character in string after the integer number representation (count form 0).
         /// -1 is returned if string is empty, if initial position is out of range or if there is no number
         /// representation at the beginning of the string, or if there is a floating point number representation.</returns>
@@ -267,7 +267,7 @@ namespace IG.Lib
         /// <summary>Returns index of the first character in str after the representation of a number 
         /// (either floating point or integer).</summary>
         /// <param name="str">String that is parsed.</param>
-        /// <param name="startpos">Position where search begins (counted from 0).</param>
+        /// <param name="beginpos">Position where search begins (counted from 0).</param>
         /// <param name="skipspaces">Indicates whether to skip the eventual leading whitespaces.</param>
         /// <returns>Index of the first character in string after the number representation (count form 0).
         /// -1 is returned if string is empty, if initial position is out of range or if there is no number
@@ -380,7 +380,7 @@ namespace IG.Lib
         /// <summary>Returns index of the first character in str after the representation of a number 
         /// (either floating point or integer).</summary>
         /// <param name="str">String that is parsed.</param>
-        /// <param name="startpos">Position where search begins (counted from 0).</param>
+        /// <param name="beginpos">Position where search begins (counted from 0).</param>
         /// <returns>Index of the first character in string after the number representation (count form 0).
         /// -1 is returned if string is empty, if initial position is out of range or if there is no number
         /// representation at the beginning of the string (after leading spaces).</returns>
@@ -578,7 +578,7 @@ namespace IG.Lib
         /// open and close brackets and the current messagelevel.
         /// Nesting messagelevel begins with 0 and is increased with every open bracked and decreased with any closed bracket.</summary>
         /// <param name="str">String that is parsed.</param>
-        /// <param name="startpos">Position where search begins (counted from 0).</param>
+        /// <param name="beginpos">Position where search begins (counted from 0).</param>
         /// <param name="open">The opening bracket.</param>
         /// <param name="close">The closing bracket.</param>
         /// <param name="targetlevel">Level that must be reached. Can be either a positive or negative integer.

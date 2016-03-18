@@ -206,7 +206,7 @@ namespace IG.Num
 
         /// <summary>Returns a string valued hashRet function of the current vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
-        /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString"/> method.
+        /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString()"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific vector.</remarks>
         /// <seealso cref="Util.GetHashFunctionString"/>
         string GetHashFunctionString();
@@ -864,7 +864,7 @@ namespace IG.Num
 
         /// <summary>Returns the hashRet code (hashRet function) of the current vector.</summary>
         /// <remarks>
-        /// <para>This method calls the <see cref="VectorBase.GetHashCode"/> to calculate the 
+        /// <para>This method calls the <see cref="VectorBase.GetHashCode()"/> to calculate the 
         /// hashRet code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
         /// <para>Two vectors that have the same dimensions and equal elements will produce the same hashRet codes.</para>
         /// <para>Probability that two different vectors will produce the same hashRet code is small but it exists.</para>
@@ -878,9 +878,9 @@ namespace IG.Num
         /// <summary>Returns a value indicating whether the specified object is equal to the current vector.
         /// <para>True is returned if the object is a non-null vector (i.e. it implements the <see cref="IVector"/>
         /// interface), and has the same dimension and equal elements as the current vector.</para></summary>
-        /// <remarks>This method calls the <see cref="VectorBase.Equals"/> to obtain the returned value, which is
+        /// <remarks>This method calls the <see cref="VectorBase.Equals(object)"/> to obtain the returned value, which is
         /// standard for all implementations of the <see cref="IVector"/> interface.
-        /// <para>Overrides the <see cref="object.Equals"/> method.</para></remarks>
+        /// <para>Overrides the <see cref="object.Equals(object)"/> method.</para></remarks>
         public override bool Equals(Object obj)
         {
             return VectorBase.Equals(this, obj as IVector);
@@ -896,7 +896,7 @@ namespace IG.Num
 
         /// <summary>Returns a string valued hashRet function of the current vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
-        /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString"/> method.
+        /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString()"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific vector.</remarks>
         /// <seealso cref="Util.GetHashFunctionString"/>
         public string GetHashFunctionString()
@@ -1064,7 +1064,7 @@ namespace IG.Num
         /// <param name="vec">Vector that is resized.</param>
         /// <param name = "template">Vector that is taken as template (for type of a newly created vector or for dimension if
         /// it is not specified).</param>
-        /// <param name="dimenson">If greater than 0 then it specifies the dimension to which vector is resized.</param>
+        /// <param name="dimension">If greater than 0 then it specifies the dimension to which vector is resized.</param>
         public static void Resize(ref IVector vec, IVector template, int dimension)
         {
             if (dimension <= 0)
@@ -1094,7 +1094,7 @@ namespace IG.Num
         /// WARNING: 
         /// If the vector is initially null then the type of the newly created vector is Vector.</summary>
         /// <param name="vec">Vector that is resized.</param>
-        /// <param name="dimenson">Dimension to which vector is resized (if less or equal to 0 then exception is thrown).</param>
+        /// <param name="dimension">Dimension to which vector is resized (if less or equal to 0 then exception is thrown).</param>
         public static void Resize(ref IVector vec, int dimension)
         {
             if (dimension <= 0)
@@ -1608,8 +1608,8 @@ namespace IG.Num
         /// <summary>Addition of a scalar to all components of a vector.
         /// This is a plain version of the method that does not perform any consistency checks.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar to be added).</param>
         /// <param name="result">Result.</param>
         public static void ArrayAddPlain(IVector a, double scal, IVector result)
         {
@@ -1620,8 +1620,8 @@ namespace IG.Num
 
         /// <summary>Addition of a scalar to all components of a vector.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar to be added).</param>
         /// <param name="result">Result.</param>
         public static void ArrayAdd(IVector a, double scal, IVector result)
         {
@@ -1640,8 +1640,8 @@ namespace IG.Num
 
         /// <summary>Addition of a scalar to all components of a vector.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void ArrayAdd(IVector a, double scal, ref IVector result)
         {
@@ -1659,8 +1659,8 @@ namespace IG.Num
         /// <summary>Subtraction of a scalar from all components of a vector.
         /// This is a plain version of the method that does not perform any consistency checks.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void ArraySubtractPlain(IVector a, double scal, IVector result)
         {
@@ -1671,8 +1671,8 @@ namespace IG.Num
 
         /// <summary>Subtraction of a scalar from all components of a vector.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void ArraySubtract(IVector a, double scal, IVector result)
         {
@@ -1691,8 +1691,8 @@ namespace IG.Num
 
         /// <summary>Subtraction of a scalar to all components of a vector.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void ArraySubtract(IVector a, double scal, ref IVector result)
         {
@@ -1710,8 +1710,8 @@ namespace IG.Num
         /// <summary>Multiplication of a vector by a scalar.
         /// This is a plain version of the method that does not perform any consistency checks.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void MultiplyPlain(IVector a, double scal, IVector result)
         {
@@ -1722,8 +1722,8 @@ namespace IG.Num
 
         /// <summary>Multiplication of a vector by a scalar.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void Multiply(IVector a, double scal, IVector result)
         {
@@ -1742,8 +1742,8 @@ namespace IG.Num
 
         /// <summary>Multiplication of a vector by a scalar.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void Multiply(IVector a, double scal, ref IVector result)
         {
@@ -1761,8 +1761,8 @@ namespace IG.Num
         /// <summary>Multiplication of a vector by a scalar.
         /// This is a plain version of the method that does not perform any consistency checks.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void ScalePlain(IVector a, double scal, IVector result)
         {
@@ -1773,8 +1773,8 @@ namespace IG.Num
 
         /// <summary>Multiplication of a vector by a scalar.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void Scale(IVector a, double scal, IVector result)
         {
@@ -1793,8 +1793,8 @@ namespace IG.Num
 
         /// <summary>Multiplication of a vector by a scalar.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void Scale(IVector a, double scal, ref IVector result)
         {
@@ -1812,8 +1812,8 @@ namespace IG.Num
         /// <summary>Division of a vector by a scalar.
         /// This is a plain version of the method that does not perform any consistency checks.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void DividePlain(IVector a, double scal, IVector result)
         {
@@ -1824,8 +1824,8 @@ namespace IG.Num
 
         /// <summary>Division of a vector by a scalar.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void Divide(IVector a, double scal, IVector result)
         {
@@ -1844,8 +1844,8 @@ namespace IG.Num
 
         /// <summary>Division of a vector by a scalar.
         /// Vector operand must be defined (non-null).</summary>
-        /// <param name="v1">First operand (vector).</param>
-        /// <param name="d">Second operand (scalar).</param>
+        /// <param name="a">First operand (vector).</param>
+        /// <param name="scal">Second operand (scalar).</param>
         /// <param name="result">Result.</param>
         public static void Divide(IVector a, double scal, ref IVector result)
         {
@@ -1867,7 +1867,7 @@ namespace IG.Num
         #region Static.Products
 
         /// <summary>Scalar product of teo vectors.
-        /// This is a plain version of the method that does not perform any consistency checks.<summary>
+        /// This is a plain version of the method that does not perform any consistency checks.</summary>
         /// <param name="a">First operand (vector).</param>
         /// <param name="b">Second operand (vector).</param>
         /// <returns>Scalar product of operands.</returns>
@@ -1880,7 +1880,7 @@ namespace IG.Num
             return ret;
         }
 
-        /// <summary>Scalar product of teo vectors.<summary>
+        /// <summary>Scalar product of teo vectors.</summary>
         /// <param name="a">First operand (vector).</param>
         /// <param name="b">Second operand (vector).</param>
         /// <returns>Scalar product of operands.</returns>
@@ -2664,7 +2664,7 @@ namespace IG.Num
 
         /// <summary>Performs a test of Gramm-Schmidt orthogonalization on a set of random vectors.</summary>
         /// <param name="dim">dimension of vectors to be orthogonalized.</param>
-        /// <param name="numGenerations">Nomber of repetitions (how many times the procedure is repeated).</param>
+        /// <param name="numRepetitions">Nomber of repetitions (how many times the procedure is repeated).</param>
         /// <param name="tol">Tolerance for zero length of resulting vectors.</param>
         /// <param name="outputLevel">Level of output.</param>
         /// <param name="randomGenerator">Random generator used.</param>
@@ -2974,7 +2974,7 @@ namespace IG.Num
         /// <summary>Saves (serializes) the specified vector to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="vec">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file in which object is is saved.</param>
+        /// <param name="filePath">Path to the file in which object is is saved.</param>
         public static void SaveJson(IVector vec, string filePath)
         {
             SaveJson(vec, filePath, false /* append */ );
@@ -2984,7 +2984,7 @@ namespace IG.Num
         /// If the file already exists, contents either overwrites the file or is appended at the end, 
         /// dependent on the value of the append flag.</summary>
         /// <param name="vec">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file in which object is saved.</param>
+        /// <param name="filePath">Path to the file in which object is saved.</param>
         /// <param name="append">Specifies whether serialized data is appended at the end of the file
         /// in the case that the file already exists.</param>
         public static void SaveJson(IVector vec, string filePath, bool append)
@@ -2996,7 +2996,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores (deserializes) a vector from the specified file in JSON format.</summary>
-        /// <param name="inputFilePath">File from which object is restored.</param>
+        /// <param name="filePath">File from which object is restored.</param>
         /// <param name="vecRestored">Object that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref IVector vecRestored)
         {
@@ -3008,10 +3008,9 @@ namespace IG.Num
 
         /// <summary>Saves the specified vector to a CSV file.
         /// It the specified file already exists then it is overwritten.
-        /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is used as separator.</summary>
+        /// Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is used as separator.</summary>
         /// <param name="vec">Vector to be stored to a file.</param>
-        /// <param name="inputFilePath">Path of the file to which vector is stored.</param>
-        /// <param name="separator">Separator used in the CSV file.</param>
+        /// <param name="filePath">Path of the file to which vector is stored.</param>
         public static void SaveCsv(IVector vec, string filePath)
         {
             SaveCsv(vec, filePath, UtilStr.DefaultCsvSeparator /* separator */, false /* append */);
@@ -3020,7 +3019,7 @@ namespace IG.Num
         /// <summary>Saves the specified vector to a CSV file.
         /// It the specified file already exists then it is overwritten.</summary>
         /// <param name="vec">Vector to be stored to a file.</param>
-        /// <param name="inputFilePath">Path of the file to which vector is stored.</param>
+        /// <param name="filePath">Path of the file to which vector is stored.</param>
         /// <param name="separator">Separator used in the CSV file.</param>
         public static void SaveCsv(IVector vec, string filePath, string separator)
         {
@@ -3028,9 +3027,9 @@ namespace IG.Num
         }
 
         /// <summary>Saves the specified vector to a CSV file.
-        /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is used as separator in CSV.</summary>
+        /// Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is used as separator in CSV.</summary>
         /// <param name="vec">Vector to be stored to a file.</param>
-        /// <param name="inputFilePath">Path of the file to which vector is stored.</param>
+        /// <param name="filePath">Path of the file to which vector is stored.</param>
         /// <param name="append">Specifies whether the data is appended at the end of the file
         /// in the case that the ifle already exists.</param>
         public static void SaveCsv(IVector vec, string filePath, bool append)
@@ -3040,7 +3039,7 @@ namespace IG.Num
 
         /// <summary>Saves the specified vector to a CSV file.</summary>
         /// <param name="vec">Vector to be stored to a file.</param>
-        /// <param name="inputFilePath">Path of the file to which vector is stored.</param>
+        /// <param name="filePath">Path of the file to which vector is stored.</param>
         /// <param name="separator">Separator used in the CSV file.</param>
         /// <param name="append">Specifies whether the data is appended at the end of the file
         /// in the case that the ifle already exists.</param>
@@ -3059,11 +3058,10 @@ namespace IG.Num
         }
 
         /// <summary>Reads a vector from a CSV file.
-        /// Constant <see cref="Str.DefaultCsvSeparator"/> is used as separator in CSV file.
+        /// Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is used as separator in CSV file.
         /// If there are no components then a null vector is returned by this method (no exceptions thrown).
         /// If there are more than one rows in the CSV file then vector is read from the first row.</summary>
-        /// <param name="inputFilePath">Path to the file that contains a vector in CSV format.</summary>
-        /// <param name="inputFilePath">Path to the file that vector is read form.</param>
+        /// <param name="filePath">Path to the file that contains a vector in CSV format.</param>
         /// <param name="vecRestored">Vector object where the read-in vector is stored.</param>
         public static void LoadCsv(string filePath, ref IVector vecRestored)
         {
@@ -3073,7 +3071,7 @@ namespace IG.Num
         /// <summary>Reads a vector written in CSV format from a file.
         /// If there are no components then a null vector is returned by this method (no exceptions thrown).
         /// If there are more than one rows in the CSV file then vector is read from the first row.</summary>
-        /// <param name="inputFilePath">Path to the file that contains a vector in CSV format.</param>
+        /// <param name="filePath">Path to the file that contains a vector in CSV format.</param>
         /// <param name="separator">Separator that is used to separate values in a row in the CSV file.</param>
         /// <param name="vecRestored">Vector object where the read-in vector is stored.</param>
         public static void LoadCsv(string filePath, string separator, ref IVector vecRestored)
@@ -3105,9 +3103,9 @@ namespace IG.Num
 
 
         /// <summary>Reads a vector from the specified row of a CSV file.
-        /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is used as CSV separator.
+        /// Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is used as CSV separator.
         /// If the specified row does not exisist in the file then exception is thrown.</summary>
-        /// <param name="inputFilePath">Path to the file that contains a vector in CSV format.</param>
+        /// <param name="filePath">Path to the file that contains a vector in CSV format.</param>
         /// <param name="rowNum">Number of the row from which the vector is read.</param>
         /// <param name="vecRestored">Vector object where the read-in vector is stored.</param>
         public static void LoadCsv(string filePath, int rowNum, ref IVector vecRestored)
@@ -3117,7 +3115,7 @@ namespace IG.Num
 
         /// <summary>Reads a vector from the specified row of a CSV file.
         /// If the specified row does not exisist in the file then exception is thrown.</summary>
-        /// <param name="inputFilePath">Path to the file that contains a vector in CSV format.</param>
+        /// <param name="filePath">Path to the file that contains a vector in CSV format.</param>
         /// <param name="rowNum">Number of the row from which the vector is read.</param>
         /// <param name="separator">Separator that is used to separate values in a row in the CSV file.</param>
         /// <param name="vecRestored">Vector object where the read-in vector is stored.</param>
@@ -3170,7 +3168,6 @@ namespace IG.Num
 
         /// <summary>Returns a string representation of the current vector in a standard IGLib form, with the specified  
         /// format for elements of the vector.</summary>
-        /// <param name="vec">Vector whose string representation is returned.</param>
         /// <param name="elementFormat">Format specification for printing individual element.</param>
         public virtual string ToString(string elementFormat)
         {
@@ -3180,11 +3177,10 @@ namespace IG.Num
         /// <summary>Returns a string representation of the current vector in a standard IGLib form
         /// (Mathematica-like format but with C representation of numbers), with the specified  
         /// format for elements of the vector.</summary>
-        /// <param name="vec">Vector whose string representation is returned.</param>
         /// <param name="elementFormat">Format specification for printing individual element.</param>
         public virtual string ToStringMath(string elementFormat)
         {
-            return ToStringMath(this, elementFormat);
+            return ToStringMath(this, elementFormat); 
         }
 
 

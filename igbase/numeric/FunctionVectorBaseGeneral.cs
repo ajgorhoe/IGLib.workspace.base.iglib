@@ -12,7 +12,7 @@ namespace IG.Num
 
 
     /// <summary>Base class for VectorFunctionBase and VectorFunctionBaseComponentwise.
-    /// In general, use <typeparamref name="VectorFunctionBase"/> and <typeparamref name="VectorFunctionBase"/>
+    /// In general, use <see name="VectorFunctionBase"/> and <see name="VectorFunctionBaseComponentwise"/>
     /// in order to derive from.
     /// </summary>
     /// $A Igor xx May10 Dec10;
@@ -22,8 +22,7 @@ namespace IG.Num
 
         public VectorFunctionBaseGeneral()
         {
-            ResultsStore = 
-            new VectorFunctionBase.ObjectStoreResults(this);
+            // ResultsStore = new VectorFunctionBase.ObjectStoreResults(this);
         }
 
         #region Data
@@ -73,6 +72,22 @@ namespace IG.Num
             }
             protected internal set { _description = value; }
         }
+
+
+        // TODO: 
+        // Find proper handlng (public/private) for NumParameters and NumValues! If not settable then exceptions will be thrown!
+
+        /// <summary>Sets number of parameters of the current vector function to the specified value.</summary>
+        /// <param name="num">Number of parameters.</param>
+        public void SetNumParameters(int num)
+        { NumParameters = num; }
+
+        /// <summary>Sets number of values of the vector function to the specified value.</summary>
+        /// <param name="num"></param>
+        public void SetNumValues (int num)
+        { NumValues = num; }
+
+
 
         /// <summary>Gets number of parameters of the current vector function
         /// (-1 for not defined, in case that function works with different 
@@ -134,7 +149,7 @@ namespace IG.Num
 
         /// <summary>Performs evaluation of requwester function results and writes them
         /// to the provided data structure.</summary>
-        /// <param name="analysisData">Data structure where request parameters are
+        /// <param name="evaluationData">Data structure where request parameters are
         /// obtained and where results are written.</param>
         public abstract void Evaluate(IVectorFunctionResults evaluationData);
 
@@ -402,7 +417,7 @@ namespace IG.Num
         /// <param name="evaluationData">Data used for evaluation that also contains parameters
         /// (in evaluationData.Parameters)</param>
         /// <param name="coefficients">Coefficients of linear combination.</param>
-        /// <param name="rowNum">Row number of the returned component.</parparam>
+        /// <param name="rowNum">Row number of the returned component.</param>
         /// <param name="columnNum">Column number of the returned component.</param>
         public double LinearCombinationSecondDerivative(IVectorFunctionResults evaluationData, 
             IVector coefficients, int rowNum, int columnNum)
@@ -500,7 +515,7 @@ namespace IG.Num
         /// contained in this vector function, with specified coefficients at specified parameters.</summary>
         /// <param name="parameters">Parameters where functions are evaluated.</param>
         /// <param name="coefficients">Coefficients of linear combination.</param>
-        /// <param name="rowNum">Row number of the returned component.</parparam>
+        /// <param name="rowNum">Row number of the returned component.</param>
         /// <param name="columnNum">Column number of the returned component.</param>
         public double LinearCombinationSecondDerivative(IVector parameters,
             IVector coefficients, int rowNum, int columnNum)
@@ -519,6 +534,7 @@ namespace IG.Num
 
         #region ResultStore
 
+        /// <summary>Storage for <see cref="IVectorFunctionResults"/> objects.</summary>
         protected class ObjectStoreResults : ObjectStore<IVectorFunctionResults>,
                 IObjectStore<IVectorFunctionResults>
         {
@@ -531,9 +547,17 @@ namespace IG.Num
 
             protected IVectorFunction _vecfunc;
 
+
+
             protected override IVectorFunctionResults TryGetNew()
             {
-                return new VectorFunctionResults(_vecfunc.NumParameters, _vecfunc.NumValues);
+                // Only generate new vector function results if the current function has specified dimension of input and output space:
+                if (_vecfunc.NumParameters > 0 && _vecfunc.NumValues > 0)
+                {
+                    return new VectorFunctionResults(_vecfunc.NumParameters, _vecfunc.NumValues);
+                }
+                else
+                    return null;
             }
 
             public override bool  TryStore(IVectorFunctionResults obj)
@@ -546,10 +570,27 @@ namespace IG.Num
             }
 
         }
-  
+
+
+        private volatile VectorFunctionBase.ObjectStoreResults _resultStore;
 
         /// <summary>Store of result objects for reuse.</summary>
-        protected VectorFunctionBase.ObjectStoreResults ResultsStore;
+        protected VectorFunctionBase.ObjectStoreResults ResultsStore
+        {
+            get {
+                if (_resultStore == null)
+                {
+                    lock(Lock)
+                    {
+                        if (_resultStore == null)
+                            _resultStore = new VectorFunctionBase.ObjectStoreResults(this);
+                    }
+                }
+                return _resultStore;
+            }
+        }
+
+
 
 
         #endregion ResultStore
@@ -561,9 +602,9 @@ namespace IG.Num
         // TODO: implement this!
         /// <summary>Calculates numerical derivative of this function. Central difference formula is used.</summary>
         /// <param name="x">Point at which derivative is calculated.</param>
-        /// <param name="stepsize">Step size.</param>
-        /// <returns>Numerical derivative.</returns>
-        public virtual void NumericalDerivative(IVector x, IVector stepSizes, ref List<IVector> derivative)
+        /// <param name="stepSize">Step size.</param>
+        /// <param name="derivative">Numerical derivative.</param>
+        public virtual void NumericalDerivative(IVector x, IVector stepSize, ref List<IVector> derivative)
         {
             // return Numeric.DerivativeCD(Value, x, stepsize);
             throw new NotSupportedException("Function " + Name + ": Evaluation of second order derivative is not supported.");
@@ -572,7 +613,8 @@ namespace IG.Num
         // TODO: implement this!
         /// <summary>Calculates numerical second order derivative of this function. Central difference formula is used.</summary>
         /// <param name="x">Point at which second order derivative is calculated.</param>
-        /// <param name="stepsize">Step size.</param>
+        /// <param name="stepsizes">Step size.</param>
+        /// <param name="secondDerivatives">List of vectrs where the calculated second derivatives are stored.</param>
         /// <returns>Numerical derivative.</returns>
         public virtual void NumericalSecondDerivative(IVector x, IVector stepsizes, ref List<IVector> secondDerivatives)
         {
@@ -595,7 +637,7 @@ namespace IG.Num
         //{
         //}
 
-        #endregion Testing
+        #endregion Testing 
 
 
     }

@@ -180,7 +180,6 @@ namespace IG.Lib
         /// <summary>Creates and returns a new script obect of the specified type.
         /// <para>null is returned if the oject can not be created (but no exception is thrown).</para></summary>
         /// <param name="scriptClassFullName">Full name of the script class whose object is created.</param>
-        /// <param name="outputLevel">Level of output to console.</param>
         public static ILoadableScript CreateScriptObject(string scriptClassFullName)
         {
             return CreateScriptObject(scriptClassFullName, 0);
@@ -522,6 +521,7 @@ namespace " + ClassNamespace + @"
         /// Name must directly follow the keyword with only blank characters between them, and it end at the first
         /// character that is not alphanumeric and is also not contained in the specified string of allowed characters.</summary>
         /// <param name="code">String in which the specified name is searched for.</param>
+        /// <param name="keyword">Keyword.</param>
         /// <param name="allowedCharacters">Eventual string arguments that contains characters that are allowed beside the alphanumeric
         /// characters.</param>
         /// <returns>Name that follows the specified keyword.</returns>
@@ -1545,7 +1545,7 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Creates and returns a loadable script object form code.</summary>
         /// <param name="code">Code that contains class definition and is dynamically compiled.</param>
-        /// <param name="classFillName">Name of the class containing loadable script code.</param>
+        /// <param name="className">Name of the class containing loadable script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object.</param>
         public ILoadableScript CreateObjectFromCode(string code, string className, string[] initializationArguments)
         {
@@ -1572,7 +1572,7 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Creates and runs a loadable script object form code.</summary>
         /// <param name="code">Code that contains class definition and is dynamically compiled.</param>
-        /// <param name="classFillName">Name of the class containing loadable script code.</param>
+        /// <param name="className">Name of the class containing loadable script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object.</param>
         /// <param name="runArguments">Arguments passed to the execution method of the loadable script.</param>
         public string RunCode(string code, string className, 
@@ -1601,7 +1601,7 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Runs a loadable script object form code.</summary>
         /// <param name="code">Code that contains class definition and is dynamically compiled.</param>
-        /// <param name="classFillName">Name of the class containing loadable script code.</param>
+        /// <param name="className">Name of the class containing loadable script code.</param>
         /// <param name="initializationAndRunArguments">Arguments used both for initialization of 
         /// the loadable script object and as parameters of the executable method..</param>
         public string RunCode(string code, string className, 
@@ -1632,7 +1632,7 @@ namespace " + ClassNamespace + @"
         // Create loadable scripr objects form files:
 
         /// <summary>Returns contents of the specified file.</summary>
-        /// <param name="inputFilePath">Path to the file.</param>
+        /// <param name="filePath">Path to the file.</param>
         /// <returns>Full contents of the file as string.</returns>
         public static string GetFileContents(string filePath)
         {
@@ -1649,8 +1649,8 @@ namespace " + ClassNamespace + @"
         }
 
         /// <summary>Loads loadable script code form the specified file.</summary>
-        /// <param name="inputFilePath">Path to the file that contains script code.</param>
-        /// <param name="classFillName">Name of the class that is contained in the code and 
+        /// <param name="filePath">Path to the file that contains script code.</param>
+        /// <param name="className">Name of the class that is contained in the code and 
         /// embeds loadable script that can be executed.</param>
         public void LoadFile(string filePath, string className)
         {
@@ -1660,7 +1660,7 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Loads loadable script code form a file. 
         /// Name of the class is extracted from the file contents.</summary>
-        /// <param name="inputFilePath">Path to the file that contains script code.</param>
+        /// <param name="filePath">Path to the file that contains script code.</param>
         public void LoadFile(string filePath)
         {
             string code = GetFileContents(filePath);
@@ -1668,8 +1668,8 @@ namespace " + ClassNamespace + @"
         }
 
         /// <summary>Creates and returns a loadable script object form a file containing its code.</summary>
-        /// <param name="inputFilePath">Path to the file that contains script code.</param>
-        /// <param name="classFillName">Name of the class containing class definition for loadable script objects.</param>
+        /// <param name="filePath">Path to the file that contains script code.</param>
+        /// <param name="className">Name of the class containing class definition for loadable script objects.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object.</param>
         public ILoadableScript CreateObjectFromFile(string filePath, string className, string[] initializationArguments)
         {
@@ -1683,7 +1683,7 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Creates and returns a loadable script object form code.
         /// Class name is extracted from code.</summary>
-        /// <param name="inputFilePath">Path to the file that contains script code.</param>
+        /// <param name="filePath">Path to the file that contains script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object.</param>
         public ILoadableScript CreateObjectFromFile(string filePath, string[] initializationArguments)
         {
@@ -1698,8 +1698,8 @@ namespace " + ClassNamespace + @"
 
         /// <summary>Executes a loadable script form a file. The file must contain definition of the loadable 
         /// script class that is used to instantiate an object and execute it.</summary>
-        /// <param name="inputFilePath">Path to the file that contains script code.</param>
-        /// <param name="classFillName">Name of the class containing loadable script code.</param>
+        /// <param name="filePath">Path to the file that contains script code.</param>
+        /// <param name="className">Name of the class containing loadable script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object.</param>
         /// <param name="runArguments">Arguments passed to the execution mathod of the loadable script.</param>
         public string RunFile(string filePath, string className,
@@ -1716,7 +1716,7 @@ namespace " + ClassNamespace + @"
         /// <summary>Executes a loadable script form a file. The file must contain definition of the loadable 
         /// script class that is used to instantiate an object and execute it.
         /// Class name is extracted from code.</summary>
-        /// <param name="inputFilePath">Path to the file that contains script code.</param>
+        /// <param name="filePath">Path to the file that contains script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object.</param>
         /// <param name="runArguments">Arguments passed to the execution mathod of the loadable script.</param>
         public string RunFile(string filePath, string[] initializationArguments, string[] runArguments)
@@ -1733,8 +1733,8 @@ namespace " + ClassNamespace + @"
         /// script class that is used to instantiate an object and execute it. 
         /// The same arguments are taken for initialization of the loadable script object and for execution
         /// of the script.</summary>
-        /// <param name="inputFilePath">Path to the file that contains script code.</param>
-        /// <param name="classFillName">Name of the class containing loadable script code.</param>
+        /// <param name="filePath">Path to the file that contains script code.</param>
+        /// <param name="className">Name of the class containing loadable script code.</param>
         /// <param name="initializationAndRunArguments">Arguments used both for initialization of 
         /// the loadable script object and as parameters of the executable method.</param>
         public string RunFile(string filePath, string className,
@@ -1753,8 +1753,7 @@ namespace " + ClassNamespace + @"
         /// The same arguments are taken for initialization of the loadable script object and for execution
         /// of the script.
         /// Class name is extracted from code.</summary>
-        /// <param name="inputFilePath">Path to the file that contains script code.</param>
-        /// <param name="classFillName">Name of the class containing loadable script code.</param>
+        /// <param name="filePath">Path to the file that contains script code.</param>
         /// <param name="initializationAndRunArguments">Arguments used both for initialization of 
         /// the loadable script object and as parameters of the executable method.</param>
         public string RunFile(string filePath, string[] initializationAndRunArguments)

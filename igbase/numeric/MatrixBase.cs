@@ -296,6 +296,7 @@ namespace IG.Num
         /// Rows and elements are printed in comma separated lists in curly brackets.
         /// Extension nethod for IMatrix interface.</summary>
         /// <param name="mat">Matrix whose string representation is returned.</param>
+        /// <param name="elementFormat">Format specification for individual elemeents.</param>
         public static string ToStringNewlines(IMatrix mat, string elementFormat)
         {
             return MatrixBase.ToStringNewlines(mat, elementFormat);
@@ -4384,7 +4385,7 @@ namespace IG.Num
 
         /// <summary>Divides matrix by scalar and stores the result in the specified result matrix.
         /// This operation can be performed in place.
-        /// WARNING: dimensions of matrices must match, otherwise an exception is thrown.
+        /// WARNING: dimensions of matrices must match, otherwise an exception is thrown.</summary>
         /// <param name="a">First operand.</param>
         /// <param name="b">Second operand.</param>
         /// <param name="result">Matrix where the result is stored. Dimensions must match dimensions of operands.</param>
@@ -5058,7 +5059,7 @@ namespace IG.Num
         /// <summary>Saves (serializes) the specified matrix to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="mat">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file in which object is is saved.</param>
+        /// <param name="filePath">Path to the file in which object is is saved.</param>
         public static void SaveJson(IMatrix mat, string filePath)
         {
             SaveJson(mat, filePath, false /* append */ );
@@ -5066,7 +5067,7 @@ namespace IG.Num
 
         /// <summary>Saves (serializes) the specified matrix to the specified JSON file.</summary>
         /// <param name="mat">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file in which object is is saved.</param>
+        /// <param name="filePath">Path to the file in which object is is saved.</param>
         /// <param name="append">Specifies whether serialized data is appended at the end of the file
         /// in the case that the file already exists.</param>
         public static void SaveJson(IMatrix mat, string filePath, bool append)
@@ -5078,7 +5079,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores (deserializes) a matrix object from the specified file in JSON format.</summary>
-        /// <param name="inputFilePath">File from which object data is restored.</param>
+        /// <param name="filePath">File from which object data is restored.</param>
         /// <param name="matRestored">Object that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref IMatrix matRestored)
         {
@@ -5723,7 +5724,7 @@ namespace IG.Num
         /// Calculation times and error extents are measured and reported (if specified).
         /// <para>If relative errors are below the specified tolerance, true is returned, otherwise false is returned.</para></summary>
         /// <param name="dim">Dimension of the problems generated for tests.</param>
-        /// <param name="numGenerations">Number of repetitions of the tests. If greater than 1 then tests are repeated
+        /// <param name="numRepetitions">Number of repetitions of the tests. If greater than 1 then tests are repeated
         /// with inputs generated anew each time.</param>
         /// <param name="tol">Tolerance on relative errors of test results.</param>
         /// <param name="outputLevel">Level of output. If 0 then no reports are launched to the console.</param>
@@ -5731,7 +5732,7 @@ namespace IG.Num
         /// <param name="A">System matrix used in the test. If specified (i.e., not null) then this matrix is LU decomposed and
         /// used in the first repetition of tests instead of a randomly generated matrix. In this case, its dimension
         /// overrides (when not the same) the specified dimension <paramref name="dim"/> of test matrices and vectors.
-        /// If there are more than one repetitions (parameter <paramref name="numGenerations"/>) then subsequent repetitions
+        /// If there are more than one repetitions (parameter <paramref name="numRepetitions"/>) then subsequent repetitions
         /// still use randomly generated inputs. If specified (i.e., not null) then this vector is  used in the first repetition 
         /// of tests instead of a a randomly generated vector. Similar rules apply as for <paramref name="A"/>.</param>
         /// <param name="b">Vector of right-hand sides used in the test.</param>
@@ -6353,7 +6354,7 @@ namespace IG.Num
         /// Calculation times and error extents are measured and reported (if specified).
         /// <para>If relative errors are below the specified tolerance, true is returned, otherwise false is returned.</para></summary>
         /// <param name="dim">Dimension of the problems generated for tests.</param>
-        /// <param name="numGenerations">Number of repetitions of the tests. If greater than 1 then tests are repeated
+        /// <param name="numRepetitions">Number of repetitions of the tests. If greater than 1 then tests are repeated
         /// with inputs generated anew each time.</param>
         /// <param name="tol">Tolerance on relative errors of test results.</param>
         /// <param name="outputLevel">Level of output. If 0 then no reports are launched to the console.</param>
@@ -6361,7 +6362,7 @@ namespace IG.Num
         /// <param name="A">System matrix used in the test. If specified (i.e., not null) then this matrix is LDLT decomposed and
         /// used in the first repetition of tests instead of a randomly generated matrix. In this case, its dimension
         /// overrides (when not the same) the specified dimension <paramref name="dim"/> of test matrices and vectors.
-        /// If there are more than one repetitions (parameter <paramref name="numGenerations"/>) then subsequent repetitions
+        /// If there are more than one repetitions (parameter <paramref name="numRepetitions"/>) then subsequent repetitions
         /// still use randomly generated inputs. If specified (i.e., not null) then this vector is  used in the first repetition 
         /// of tests instead of a a randomly generated vector. Similar rules apply as for <paramref name="A"/>.</param>
         /// <param name="b">Vector of right-hand sides used in the test.</param>
@@ -6860,7 +6861,7 @@ namespace IG.Num
         /// Calculation times and error extents are measured and reported (if specified so).
         /// <para>If relative errors are below the specified tolerance, true is returned, otherwise false is returned.</para></summary>
         /// <param name="dim">Dimension of the problems generated for tests.</param>
-        /// <param name="numGenerations">Number of repetitions of the tests. If greater than 1 then tests are repeated
+        /// <param name="numRepetitions">Number of repetitions of the tests. If greater than 1 then tests are repeated
         /// with inputs generated anew each time.</param>
         /// <param name="tol">Tolerance on relative errors of test results.</param>
         /// <param name="outputLevel">Level of output. If 0 then no reports are launched to the console.</param>
@@ -6868,7 +6869,7 @@ namespace IG.Num
         /// <param name="A">System matrix used in the test. If specified (i.e., not null) then this matrix is Cholesky decomposed and
         /// used in the first repetition of tests instead of a randomly generated matrix. In this case, its dimension
         /// overrides (when not the same) the specified dimension <paramref name="dim"/> of test matrices and vectors.
-        /// If there are more than one repetitions (parameter <paramref name="numGenerations"/>) then subsequent repetitions
+        /// If there are more than one repetitions (parameter <paramref name="numRepetitions"/>) then subsequent repetitions
         /// still use randomly generated inputs. If specified (i.e., not null) then this vector is  used in the first repetition 
         /// of tests instead of a a randomly generated vector. Similar rules apply as for <paramref name="A"/>.</param>
         /// <param name="b">Vector of right-hand sides used in the test.</param>
@@ -7393,7 +7394,9 @@ namespace IG.Num
         }
 
         /// <summary>Calculates inverse of the matrix from its specified LDLT decomposition.</summary>
-        /// <param name="ldltMatrix">Matrix containing the LDLT decomposition of the original matrix (with partial pivoting).</param>
+        /// <param name="factorQ">Matrix containing the Q factor of the QR decomposition of the original matrix.</param>
+        /// <param name="factorR">Matrix containing the R factor of the QR decomposition of the original matrix.</param>
+        /// <param name="auxB">Auxiliary vector of the same dimension as dimensions of the decomposed matrix.</param>
         /// <param name="auxX">Another auxiliary vector of the same dimension as dimensions of the decomposed matrix.
         /// Reallocated if necessary.</param>
         /// <param name="res">Matrix where result will be stored. Reallocated if necessary.</param>

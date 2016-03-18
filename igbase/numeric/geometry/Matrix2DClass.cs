@@ -66,7 +66,7 @@ namespace IG.Num
         }
 
         /// <summary>Initializes components of a 2D matrix with components of the specified matrix.</summary>
-        /// <param name="v">Matrix whose components are copied to the initialized matrix.</param>
+        /// <param name="m">Matrix whose components are copied to the initialized matrix.</param>
         public Matrix2d(mat2 m)
         { _m=m; }
 
@@ -207,8 +207,6 @@ namespace IG.Num
 
 
         /// <summary>Creates a d1*d2 identity matrix.</summary>
-        /// <param name="d1">Number of rows.</param>
-        /// <param name="d2">Number of columns.</param>
         /// <returns>An d1*d2 matrix with ones on the diagonal and zeros elsewhere.</returns>
         public static Matrix2d Identity()
         {
@@ -222,16 +220,12 @@ namespace IG.Num
 
 
         /// <summary>Creates a 2D matrix filled with 0.</summary>
-        /// <param name="d1">Number of rows.</param>
-        /// <param name="d2">Number of columns.</param>
         public static Matrix2d Zeros()
         {
             return new Matrix2d(0.0);
         }
 
        /// <summary>Creates a 2D matrix filled with 1.</summary>
-        /// <param name="d1">Number of rows.</param>
-        /// <param name="d2">Number of columns.</param>
         public static Matrix2d Ones()
         {
             return new Matrix2d(1.0);
@@ -239,9 +233,7 @@ namespace IG.Num
 
         /// <summary>Creates a new diagonal d1*d2 matrix based on the diagonal vector.</summary>
         /// <param name="diagonalVector">The values of the matrix diagonal.</param>
-        /// <param name="d1">Number of rows.</param>
-        /// <param name="d2">Number of columns.</param>
-        /// <returns>A d1*d2 matrix with the values from the diagonal vector on the diagonal and zeros elsewhere.</returns>
+        /// <returns>A 2x2 matrix with the values from the diagonal vector on the diagonal and zeros elsewhere.</returns>
         public static Matrix2d Diagonal(IVector diagonalVector)
         {
             if (diagonalVector == null)
@@ -335,8 +327,9 @@ namespace IG.Num
 
 
         /// <summary>Index operator.</summary>
-        /// <param name="i">Component index.</param>
-        /// <returns>The specified component of a 2D vector.</returns>
+        /// <param name="i">First index of matrix element.</param>
+        /// <param name="j">Second index of matrix element.</param>
+        /// <returns>The specified component of a 2D matrix.</returns>
         public override double this[int i, int j]
         {
             get
@@ -506,7 +499,7 @@ namespace IG.Num
 
         /// <summary>Returns the hashRet code (hashRet function) of the current matrix.</summary>
         /// <remarks>
-        /// <para>This method calls the <see cref="MatrixBase.GetHashCode"/> to calculate the 
+        /// <para>This method calls the <see cref="MatrixBase.GetHashCode()"/> to calculate the 
         /// hashRet code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
         /// <para>Two matrices that have the same dimensions and equal elements will produce the same hashRet codes.</para>
         /// <para>Probability that two different matrices will produce the same hashRet code is small but it exists.</para>
@@ -520,9 +513,9 @@ namespace IG.Num
         /// <summary>Returns a value indicating whether the specified object is equal to the current matrix.
         /// <para>True is returned if the object is a non-null matrix (i.e. it implements the <see cref="IMatrix"/>
         /// interface), and has the same dimension and equal elements as the current matrix.</para></summary>
-        /// <remarks>This method calls the <see cref="MatrixBase.Equals"/> to obtain the returned value, which is
+        /// <remarks>This method calls the <see cref="MatrixBase.Equals(object)"/> to obtain the returned value, which is
         /// standard for all implementations of the <see cref="IMatrix"/> interface.
-        /// <para>Overrides the <see cref="object.Equals"/> method.</para></remarks>
+        /// <para>Overrides the <see cref="object.Equals(object)"/> method.</para></remarks>
         public override bool Equals(Object obj)
         {
             return MatrixBase.Equals(this, obj as IMatrix);
@@ -654,7 +647,7 @@ namespace IG.Num
         { return new Matrix2d(m); }
 
         /// <summary>Negates the specified 2D matrix and stores its copy in the resulting matrix.</summary>
-        /// <param name="v">Matrix to be negated.</param>
+        /// <param name="m">Matrix to be negated.</param>
         /// <param name="res">Matrix where the result is stored.</param>
         public static void Negate(Matrix2d m, ref Matrix2d res)
         {

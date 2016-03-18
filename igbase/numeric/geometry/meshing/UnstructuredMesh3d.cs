@@ -127,6 +127,9 @@ namespace IG.Num
 
         /// <summary>Generates an (unconnected) unstructured grid of nodes based on a 3D regular grid 
         /// with grid directions parallel to coordinate axes and equidistant nodes in all directions.</summary>
+        /// <param name="dimx">First dimension (number of points generated in the first tirection).</param>
+        /// <param name="dimy">First dimension (number of points generated in the second tirection).</param>
+        /// <param name="dimz">First dimension (number of points generated in the third tirection).</param>
         /// <param name="minxRef">Minimal value of x coordinate of the generated grid.</param>
         /// <param name="maxxRef">Maximal value of x coordinate of the generated grid.</param>
         /// <param name="minyRef">Minimal value of y coordinate of the generated grid.</param>
@@ -152,6 +155,9 @@ namespace IG.Num
         /// in terms of three scalar functions of 3 variables.
         /// <para>Coordinates are obtained by mapping individual coordinates of a regular equidistant grid
         /// from the reference system.</para></summary>
+        /// <param name="dimx">First dimension (number of points generated in the first tirection).</param>
+        /// <param name="dimy">First dimension (number of points generated in the second tirection).</param>
+        /// <param name="dimz">First dimension (number of points generated in the third tirection).</param>
         /// <param name="minxRef">Lower bound for the first parameter in the reference coordinate system.</param>
         /// <param name="maxxRef">Upper bound for the first parameter in the reference coordinate system.</param>
         /// <param name="minyRef">Lower bound for the second parameter in the reference coordinate system.</param>

@@ -680,10 +680,10 @@ namespace IG.Lib
 
 
         /// <summary>Reads a password, a key, or any other key - related string form the console.
-        /// <par>Password can be either a string, or a hexadecimal or base-64 encoded sequence of bytes.</par><
-        /// <para>If not clear from parameters, user is asked what form of password will be provided.</para>/summary>
-        /// <param name="PasswordBytes">Here password in byte form is written (in this case, <paramref name="PasswordBytes"/> is cleared).</param>
-        /// <param name="PasswordString">Here password in string form is written (in this case, <paramref name="PasswordString"/> is cleared).</param>
+        /// <para>Password can be either a string, or a hexadecimal or base-64 encoded sequence of bytes.</para>
+        /// <para>If not clear from parameters, user is asked what form of password will be provided.</para></summary>
+        /// <param name="passwordBytes">Here password in byte form is written (in this case, <paramref name="passwordString"/> is cleared).</param>
+        /// <param name="passwordString">Here password in string form is written (in this case, <paramref name="passwordBytes"/> is cleared).</param>
         /// <param name="passwordName">Name of the inserted key item (such as "password", "salt", "key"). 
         /// Used in user prompts.</param>
         /// <param name="isStringForm">If true then a key in string form must be inserted.</param>

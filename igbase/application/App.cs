@@ -264,7 +264,7 @@ namespace IG.Lib
         }
 
         /// <summary>Sets command-line arguments of the application.</summary>
-        /// <param name="AppArguments">Command-line arguments to be set.</param>
+        /// <param name="args">Command-line arguments to be set.</param>
         public void SetCommandlineArguments(string[] args)
         {
             CommandlineArguments = args;
@@ -284,7 +284,7 @@ namespace IG.Lib
         /// <para>This method should be overrideden in derived classes and executed somewhere in the application 
         /// (possibly in the initialization part).</para>
         /// <para>Base class' <see cref="ParseCommandlineArguments"/> should be called in the overridden methods.</para></summary>
-        /// <param name="AppArguments">Command line arguments.</param>
+        /// <param name="args">Command line arguments.</param>
         public virtual void ParseCommandlineArguments(string[] args)
         {
             this.CommandlineArguments = args;

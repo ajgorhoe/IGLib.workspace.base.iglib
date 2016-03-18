@@ -23,7 +23,7 @@ namespace IG.Num
 
         /// <summary>Constructor. Creates a new radial function without specifying coordinate transformation.</summary>
         /// <param name="function">A real-valued function of one parameter that defined the radial function.</param>
-        /// <param name="transformation">Affine transformation of coordinates.
+        /// <param name="transf">Affine transformation of coordinates.
         /// Actual function is calculated as some reference function evaluated at inverse affine transformed parameters.
         /// If null then transformation is not applied.</param>
         public ScalarFunctionRadial(IRealFunction function, IAffineTransformation transf)
@@ -114,7 +114,7 @@ namespace IG.Num
         }
 
        /// <summary>Returns the first derivative of this function at the specified parameter.</summary>
-        /// <param name="parameters">Vector of parameters where derivatives are evaluated.</param>
+        /// <param name="x">Vector of parameters where derivatives are evaluated.</param>
         /// <param name="gradient">Vector where first derivatives (gradient) are stored.</param>
         public override void ReferenceGradientPlain(IVector x, IVector gradient)
         {
@@ -145,7 +145,7 @@ namespace IG.Num
 
 
         /// <summary>Returns the second derivative (Hessian) of this function at the specified arameter.</summary>
-        /// <param name="parameters">Vector of parameters where derivatives are evaluated.</param>
+        /// <param name="x">Vector of parameters where derivatives are evaluated.</param>
         /// <param name="hessian">Matrix where second derivatives (Hessian) are stored.</param>
         public override void ReferenceHessianPlain(IVector x, IMatrix hessian)
         {
@@ -221,11 +221,11 @@ namespace IG.Num
             : base(null, null, null)
         { }
 
-        
+
         /// <summary>Constructor. Creates a new radial scalar function without specifying coordinate transformation.</summary>
         /// <param name="function">A real-valued function of one parameter that defined the radial function.</param>
         /// <param name="parameters">Parameters that define the function out of a parametric family of functions.</param>
-        /// <param name="transformation">Affine transformation of coordinates.
+        /// <param name="transf">Affine transformation of coordinates.
         /// Actual function is calculated as some reference function evaluated at inverse affine transformed parameters.
         /// If null then transformation is not applied.</param>
         public ScalarFunctionRadialOneParametric(IRealFunctionOneParametric function, IVector parameters, IAffineTransformation transf): 
@@ -238,7 +238,7 @@ namespace IG.Num
 
         /// <summary>Constructor. Creates a new parameterized radial scalar function without specifying coordinate transformation.</summary>
         /// <param name="function">A real-valued function of one parameter that defined the radial function.</param>
-        /// <param name="transformation">Affine transformation of coordinates.
+        /// <param name="transf">Affine transformation of coordinates.
         /// Actual function is calculated as some reference function evaluated at inverse affine transformed parameters.
         /// If null then transformation is not applied.</param>
         public ScalarFunctionRadialOneParametric(IRealFunctionOneParametric function, IAffineTransformation transf): 
@@ -399,7 +399,7 @@ namespace IG.Num
         /// <summary>Constructor. Creates a new radial scalar function without specifying coordinate transformation.</summary>
         /// <param name="function">A real-valued function of one parameter that defined the radial function.</param>
         /// <param name="parameters">Parameters that define the function out of a parametric family of functions.</param>
-        /// <param name="transformation">Affine transformation of coordinates.
+        /// <param name="transf">Affine transformation of coordinates.
         /// Actual function is calculated as some reference function evaluated at inverse affine transformed parameters.
         /// If null then transformation is not applied.</param>
         public ScalarFunctionRadialParametric(IRealFunctionParametric function, IVector parameters, IAffineTransformation transf) : 
@@ -412,7 +412,7 @@ namespace IG.Num
 
         /// <summary>Constructor. Creates a new parameterized radial scalar function without specifying coordinate transformation.</summary>
         /// <param name="function">A real-valued function of one parameter that defined the radial function.</param>
-        /// <param name="transformation">Affine transformation of coordinates.
+        /// <param name="transf">Affine transformation of coordinates.
         /// Actual function is calculated as some reference function evaluated at inverse affine transformed parameters.
         /// If null then transformation is not applied.</param>
         public ScalarFunctionRadialParametric(IRealFunctionParametric function, IAffineTransformation transf) : 

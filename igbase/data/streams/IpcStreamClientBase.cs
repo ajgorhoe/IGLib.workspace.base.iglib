@@ -137,7 +137,7 @@ namespace IG.Lib
         }
 
 
-        /// <summary>Sends the current request string (the <see cref="RequestString"/> property) to the 
+        /// <summary>Sends the current request string (the <see cref="IpcStreamClientServerBase2.RequestString"/> property) to the 
         /// server through a named pipe.</summary>
         protected virtual void SendRequest()
         {

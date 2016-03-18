@@ -548,7 +548,7 @@ namespace IG.Neural
 
 
     /// <summary>Definition of input and output data mapping.
-    /// Contains Mapped and Original Index, descriptiove information about individual eleemnts of input and output and default valuess.
+    /// Contains Mapped and Original Index, descriptiove information about individual eleemnts of input and output and default valuess.</summary>
     /// $A Igor Jul 19; tako78 Jul 19
     public class MappingDefinition
     {
@@ -869,7 +869,7 @@ namespace IG.Neural
         /// <summary>Saves mapping data definition to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="mapDataDef">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file where data is saved.</param>
+        /// <param name="filePath">Path to the file where data is saved.</param>
         /// $A Igor Jul 19; tako78 Jul 19
         public static void SaveJson(MappingDefinition mapDataDef, string filePath)
         {
@@ -880,7 +880,7 @@ namespace IG.Neural
         }
 
         /// <summary>Restores mapping data definition from the specified file in JSON format.</summary>
-        /// <param name="inputFilePath">File from which training data is restored.</param>
+        /// <param name="filePath">File from which training data is restored.</param>
         /// <param name="mapDataDefRestored">Mapping definition data that is restored by deserialization.</param>
         /// $A Igor Jul 19; tako78 Jul 19
         public static void LoadJson(string filePath, ref MappingDefinition mapDataDefRestored)
@@ -1015,6 +1015,7 @@ namespace IG.Neural
         /// </summary>
         /// <param name="mappingDefinitionFilePath">JSON file containing data that defines how input and output mappings are performed.
         /// If null then identity mapping is performed.</param>
+        /// <param name="dataDefinitionPath">JSON file containing data definitions.</param>
         /// <exception cref="NotImplementedException">When file path is not specified or file does not exist.</exception>
         /// $A Igor Jul 19; tako78 Jul 19
         public DataMapperSimple(string mappingDefinitionFilePath, string dataDefinitionPath)
@@ -1100,7 +1101,7 @@ namespace IG.Neural
 
 
         /// <summary>Transfer elements from reducedInput vector to original output vector using mapping data for reference.
-        /// Elements that are not defined in reducedInput vector are copied from definitiondata.
+        /// Elements that are not defined in reducedInput vector are copied from definitiondata.</summary>
         /// <param name="reducedInput">Reduced elements.</param>
         /// <param name="originalInput">Original elements for neural network testing.</param>
         /// $A Igor Jul 19; tako78 Jul 19
@@ -1169,7 +1170,7 @@ namespace IG.Neural
 
 
         /// <summary>Transfer elements from originalOutput vector to original output vector using mapping data for reference.
-        /// Only defined elements are copied in reducedOutput vector.
+        /// Only defined elements are copied in reducedOutput vector.</summary>
         /// <param name="originalOutput">Original elements from neural network.</param>
         /// <param name="reducedOutput">Reduced elements.</param>
         /// $A Igor Jul 19; tako78 Jul 19
@@ -1180,7 +1181,7 @@ namespace IG.Neural
                 base.MapOutput(originalOutput, ref reducedOutput);  // identity map
             } else
             {
-                int definitionDataOutputLenght = 0;
+                int definitionDataOutputLenght = 0; 
                 int mappingOutputDataLenght = 0;
                 bool checkOutputNameConsistencyFlag = false;
                 bool checkOutputUniquenessFlag = true;

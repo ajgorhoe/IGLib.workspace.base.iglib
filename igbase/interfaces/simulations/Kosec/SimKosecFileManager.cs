@@ -123,9 +123,9 @@ namespace IG.Num
         /// <para>The latter are eventually used when for each input (optimization) parameter
         /// there exists a field that corresponds to that parameter. Many times this is not true because a single optimization
         /// parameters can affect a whole set of input fields.</para>
-        /// <para>When running simulator by calling <see cref="CalculateVectorResponse"/>, input is prepared in 
+        /// <para>When running simulator by calling CalculateVectorResponse, input is prepared in 
         /// the following order: First default parameters are set, then automatic mappings are performed (if any are defined)
-        /// and finally the manual mappings are performed by calling <see cref="UpdateInputParametersManual"/>, thus
+        /// and finally the manual mappings are performed by calling UpdateInputParametersManual, thus
         /// manually defined parameter mapping overrides all others when defined.</para></summary>
         protected override void InstallInputMappings()
         {
@@ -267,7 +267,7 @@ namespace IG.Num
         /// This method must be overridden in derived concrete classes.
         /// Only mappings form input parameters to simulation input that are manually defined must 
         /// be performed by this function, since automatic mappings are already included in functions
-        /// such as <see cref="WriteInputParameters"/>.</summary>
+        /// such as "WriteInputParameters".</summary>
         /// <param name="inputParameters">Vector of input (optimization) parameter values to be set.</param>
         protected override void UpdateInputParametersManual(IVector inputParameters)
         {
@@ -356,7 +356,7 @@ namespace IG.Num
         /// This method must be overridden in derived concrete classes.
         /// Only mappings form input parameters to simulation input that are manually defined must 
         /// be performed by this function, since automatic mappings are already included in functions
-        /// such as <see cref="WriteInputParameters"/>.</summary>
+        /// such as WriteInputParameters".</summary>
         /// <param name="inputParameters">Vector of input (optimization) parameter values to be set.</param>
         protected override void UpdateInputParametersManual(IVector inputParameters)
         {

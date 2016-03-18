@@ -40,7 +40,7 @@ namespace IG.Num
 
        /// <summary>Constructs a vector from aanother array.</summary>
        /// <param name="vec">Vector whose components are copied to the current vector.</param>
-       /// <seealso cref="Create"/>
+       /// <seealso cref="Create(double[])"/>
        public Vector(IVector vec)
        {
            if (vec == null)
@@ -110,6 +110,7 @@ namespace IG.Num
             if (length <= 0)
                 throw new ArgumentException("Vector creation: list of components contains no values; can not create a vector with dimensionality 0.");
             _length = length;
+            _elements = new double[_length];
             for (int i = 0; i < length; ++i)
                 _elements[i] = components[i];
         }
@@ -128,6 +129,7 @@ namespace IG.Num
             _length = length;
             if (copyElements)
             {
+                _elements = new double[_length];
                 for (int i = 0; i < length; ++i)
                     _elements[i] = components[i];
             }
@@ -156,7 +158,7 @@ namespace IG.Num
 
         /// <summary>Constructs a vector from a 1-D array, directly using the provided array as internal data structure.</summary>
         /// <param name="vec">One-dimensional array of doubles.</param>
-        /// <seealso cref="Create"/>
+        /// <seealso cref="Create(double[])"/>
         public Vector(VectorBase_MathNetNumerics vec) 
         {
             if (vec==null)
@@ -633,7 +635,7 @@ namespace IG.Num
 
         /// <summary>Returns the hashRet code (hashRet function) of the current vector.</summary>
         /// <remarks>
-        /// <para>This method calls the <see cref="VectorBase.GetHashCode"/> to calculate the 
+        /// <para>This method calls the <see cref="VectorBase.GetHashCode()"/> to calculate the 
         /// hashRet code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
         /// <para>Two vectors that have the same dimensions and equal elements will produce the same hashRet codes.</para>
         /// <para>Probability that two different vectors will produce the same hashRet code is small but it exists.</para>
@@ -647,9 +649,9 @@ namespace IG.Num
         /// <summary>Returns a value indicating whether the specified object is equal to the current vector.
         /// <para>True is returned if the object is a non-null vector (i.e. it implements the <see cref="IVector"/>
         /// interface), and has the same dimension and equal elements as the current vector.</para></summary>
-        /// <remarks>This method calls the <see cref="VectorBase.Equals"/> to obtain the returned value, which is
+        /// <remarks>This method calls the <see cref="VectorBase.Equals(object)"/> to obtain the returned value, which is
         /// standard for all implementations of the <see cref="IVector"/> interface.
-        /// <para>Overrides the <see cref="object.Equals"/> method.</para></remarks>
+        /// <para>Overrides the <see cref="object.Equals(object)"/> method.</para></remarks>
         public override bool Equals(Object obj)
         {
             return VectorBase.Equals(this, obj as IVector);

@@ -16,17 +16,17 @@ namespace IG.Num
 
 
 
-        /// <summary>Example 2 component vector function of 2 variables.
-        /// The first component is the Rosenbrock function and the secont 
+        /// <summary>Example - 2 component vector function of 2 variables.
+        /// The first component is the Rosenbrock function and the second 
         /// component is a radially symmetric paraboloid with radius 2 of the
         /// zero contour, centered at coordinate origin.</summary>
         /// $A Igor May10 Dec10;
-        public class RosenBrockAndCircle: VectorFunctionBase, IVectorFunction
+        public class RosenrockAndCircle: VectorFunctionBase, IVectorFunction
         {
 
             #region Construction
 
-            public RosenBrockAndCircle()
+            public RosenrockAndCircle()
                 : base()
             {
                 ValueDefined = true;
@@ -55,13 +55,13 @@ namespace IG.Num
             protected double R0Square = 4;
 
             /// <summary>The second component of the current vector function.</summary>
-            protected IScalarFunction F1; 
+            protected IScalarFunction F1;
 
-            
+
 
             /// <summary>Performs evaluation of requwester function results and writes them
             /// to the provided data structure.</summary>
-            /// <param name="analysisData">Data structure where request parameters are
+            /// <param name="evaluationData">Data structure where request parameters are
             /// obtained and where results are written.</param>
             public override void Evaluate(IVectorFunctionResults evaluationData)
             {

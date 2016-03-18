@@ -32,13 +32,13 @@ namespace IG.Lib
         /// If the specified file exists then it is overwritten.</summary>
         /// <typeparam name="T">Type of the object to be serialized.</typeparam>
         /// <param name="serializedObject">Object to be serialized.</param>
-        /// <param name="inputFilePath">Path to the file that serialized object is written to.</param>
+        /// <param name="filePath">Path to the file that serialized object is written to.</param>
         void Serialize<T>(T serializedObject, string filePath);
 
         /// <summary>Serializes the specified object and outputs it to a file.</summary>
         /// <typeparam name="T">Type of the object to be serialized.</typeparam>
         /// <param name="serializedObject">Object to be serialized.</param>
-        /// <param name="inputFilePath">Path to the file that serialized object is written to.</param>
+        /// <param name="filePath">Path to the file that serialized object is written to.</param>
         /// <param name="append">If true then the generated contents is appended to a file.</param>
         void Serialize<T>(T serializedObject, string filePath, bool append);
 
@@ -68,7 +68,7 @@ namespace IG.Lib
 
         /// <summary>Deserializes an object from JSON - serialized file and returns it.</summary>
         /// <typeparam name="T">Type of the deserialized object.</typeparam>
-        /// <param name="inputFilePath">Path to thefile. File must contain the appropriately serialized 
+        /// <param name="filePath">Path to thefile. File must contain the appropriately serialized 
         /// object of the correct type.</param>
         /// <returns>Object deserialized from the file.</returns>
         T DeserializeFile<T>(string filePath);
@@ -101,7 +101,7 @@ namespace IG.Lib
         /// If the specified file exists then it is overwritten.</summary>
         /// <typeparam name="T">Type of the object to be serialized.</typeparam>
         /// <param name="serializedObject">Object to be serialized.</param>
-        /// <param name="inputFilePath">Path to the file that serialized object is written to.</param>
+        /// <param name="filePath">Path to the file that serialized object is written to.</param>
         public void Serialize<T>(T serializedObject, string filePath)
         {
             Serialize<T>(serializedObject, filePath, false /* append */);
@@ -110,7 +110,7 @@ namespace IG.Lib
         /// <summary>Serializes the specified object and outputs it to a file.</summary>
         /// <typeparam name="T">Type of the object to be serialized.</typeparam>
         /// <param name="serializedObject">Object to be serialized.</param>
-        /// <param name="inputFilePath">Path to the file that serialized object is written to.</param>
+        /// <param name="filePath">Path to the file that serialized object is written to.</param>
         /// <param name="append">If true then the generated contents is appended to a file.</param>
         public void Serialize<T>(T serializedObject, string filePath, bool append)
         {
@@ -174,7 +174,7 @@ namespace IG.Lib
 
         /// <summary>Deserializes an object from JSON - serialized file and returns it.</summary>
         /// <typeparam name="T">Type of the deserialized object.</typeparam>
-        /// <param name="inputFilePath">Path to thefile. File must contain the appropriately serialized 
+        /// <param name="filePath">Path to thefile. File must contain the appropriately serialized 
         /// object of the correct type.</param>
         /// <returns>Object deserialized from the file.</returns>
         public T DeserializeFile<T>(string filePath)
@@ -264,13 +264,13 @@ namespace IG.Lib
         /// <typeparam name="Type">Type of the object to be serialized/deserialized through corresponding DTO.</typeparam>
         /// <param name="serializer">Serialization helper object that is used for serialization.</param>
         /// <param name="serializedObject">Object to be serialized.</param>
-        /// <param name="inputFilePath">Name of the file to which serialized object si written.
+        /// <param name="filePath">Name of the file to which serialized object si written.
         /// Another file is created in the same directory for storing deserialized/serialized object.</param>
-        /// <paparam name="firstStep">If false then the first step is not performed (serialization to a file).
+        /// <param name="firstStep">If false then the first step is not performed (serialization to a file).
         /// This is useful if we already have a file with serialized object, and we would like to change it 
         /// ans observe how changes are reflected in the second file where deserialized/serialized object
-        /// is stored.</paparam>
-        /// <param name="firstStep">If false then the second step is not (deserialization/serialization) performed.</param>
+        /// is stored.</param>
+        /// <param name="secondStep">If false then the second step is not (deserialization/serialization) performed.</param>
         public static void TestSerializationDto<TypeDto, Type>(ISerializer serializer,
             Type serializedObject, string filePath, bool firstStep, bool secondStep)
             where Type : class
@@ -306,13 +306,14 @@ namespace IG.Lib
         /// initialized throug Type and VaseType.</typeparam>
         /// <param name="serializer">Serialization helper object that is used for serialization.</param>
         /// <param name="serializedObject">Object to be serialized.</param>
-        /// <param name="inputFilePath">Name of the file to which serialized object is written.
+        /// <param name="filePath">Name of the file to which serialized object is written.
         /// Another file is created in the same directory for storing deserialized/serialized object.</param>
         /// <paparam name="firstStep">If false then the first step is not performed (serialization to a file).
         /// This is useful if we already have a file with serialized object, and we would like to change it 
         /// ans observe how changes are reflected in the second file where deserialized/serialized object
         /// is stored.</paparam>
         /// <param name="firstStep">If false then the second step is not (deserialization/serialization) performed.</param>
+        /// <param name="secondStep">If false then the second step is not (deserialization/serialization) performed.</param>
         public static void TestSerializationDto<TypeDto, Type, BaseType>(ISerializer serializer,
             Type serializedObject, string filePath, bool firstStep, bool secondStep)
             where BaseType : class
@@ -389,7 +390,7 @@ namespace IG.Lib
         /// <typeparam name="SerializationTestClass">Declared type of the object to be serialized.</typeparam>
         /// <param name="serializer">Serialization helper object that is used for serialization.</param>
         /// <param name="serObject">Object to be serialized.</param>
-        /// <param name="inputFilePath">Name of the file to which serialized object si written.
+        /// <param name="filePath">Name of the file to which serialized object si written.
         /// Another file is created in the same directory for storing deserialized/serialized object.</param>
         public static void TestSerialization<SerializationTestClass>(ISerializer serializer,
             SerializationTestClass serObject, string filePath)
@@ -407,13 +408,14 @@ namespace IG.Lib
         /// Usually, TypeSer will be a type that implements ISerializer.</typeparam>
         /// <param name="serializer">Serialization helper object that is used for serialization.</param>
         /// <param name="serObject">Object to be serialized.</param>
-        /// <param name="inputFilePath">Name of the file to which serialized object si written.
+        /// <param name="filePath">Name of the file to which serialized object si written.
         /// Another file is created in the same directory for storing deserialized/serialized object.</param>
         /// <paparam name="firstStep">If false then the first step is not performed (serialization to a file).
         /// This is useful if we already have a file with serialized object, and we would like to change it 
         /// ans observe how changes are reflected in the second file where deserialized/serialized object
         /// is stored.</paparam>
         /// <param name="firstStep">If false then the second step is not (deserialization/serialization) performed.</param>
+        /// <param name="secondStep">If false then the second step is not (deserialization/serialization) performed.</param>
         public static void TestSerialization<TypeSer>(ISerializer serializer, 
             TypeSer serObject, string filePath, bool firstStep, bool secondStep)
         {
@@ -461,7 +463,7 @@ namespace IG.Lib
         /// then deserializes it (instantiates a new object for the stored record), 
         /// and serializes that object and writes it into another file in the same directory,
         /// with a modified name. Both files can then be compared in order to see if something was lost.</summary>
-        /// <param name="inputFilePath">Name of the file to which serialized object si written.
+        /// <param name="filePath">Name of the file to which serialized object si written.
         /// Another file is created in the same directory for storing deserialized/serialized object.</param>
         /// <param name="serObject">>Object to be serialized.</param>
         public static void TestSerializationJSON(string filePath, object serObject)
@@ -477,7 +479,7 @@ namespace IG.Lib
         /// then deserializes it (instantiates a new object for the stored record), 
         /// and serializes that object and writes it into another file in the same directory,
         /// with a modified name. Both files can then be compared in order to see if something was lost.</summary>
-        /// <param name="inputFilePath">Path of te basic file used for saving a serialized object.</param>
+        /// <param name="filePath">Path of te basic file used for saving a serialized object.</param>
         public static void TestSerializationJSON(string filePath)
         {
             // Craate a test object to be serialized: 

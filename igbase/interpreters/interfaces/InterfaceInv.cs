@@ -278,7 +278,7 @@ namespace IG.Lib
         }
 
         /// <summary>Interprets a file.</summary>
-        /// <param name="message">Path to the file that will be interpreted.</param>
+        /// <param name="filePath">Path to the file that will be interpreted.</param>
         public virtual void Interpret(string filePath)
         {
             StartCommand(CmdNameInterpret);
@@ -493,6 +493,10 @@ namespace IG.Lib
 
         /// <summary>Command - runs a direct analysis at the specified parameters, with specified calculation flags.</summary>
         /// <param name="param">Vector of parameters.</param>
+        /// <param name="calcobj">Whether value of the objective function should be calculated.</param>
+        /// <param name="calcconstr">Whether values of constraint functions should be calculated.</param>
+        /// <param name="calcgradobj">Whether objective function gradients should b ecalculated.</param>
+        /// <param name="calcgradconstr">Whether constraint function gradients should be evaluated.</param>
         public virtual void Analyse(IVector param, bool calcobj, bool calcconstr, bool calcgradobj, bool calcgradconstr)
         {
             StartCommand(CmdNameAnalyse);

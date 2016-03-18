@@ -57,9 +57,10 @@ namespace IG.Lib
 
     // Delegate types:
 
-    /// <summary>Reports an error.</summary>
+    /// <summary>Launches a message (report) about some event.</summary>
     /// <param name="reporter">Reference to the reporter class where all other necessary data is fond.
     /// In particular, the Obj member contains a user-set object reference used by the delegate functions.</param>
+    /// <param name="messagetype">Type of the message to be launched.</param>
     /// <param name="errorlocation">User-defined string containing (sometimes supplemental to the Exception object) specification of error location
     /// (e.g. a class or module name)</param>
     /// <param name="errormessage">User-provided string containing (sometimes supplemental to the Exception object) error description.</param>
@@ -69,20 +70,20 @@ namespace IG.Lib
     /// <summary>Assembles the error location desctiption.</summary>
     /// <param name="reporter">Reference to the reporter class where all other necessary data is fond.
     /// In particular, the Obj member contains a user-set object reference used by the delegate functions.</param>
+    /// <param name="messagetype">Type of the message to be launched.</param>
     /// <param name="location">User-provided string containing (sometimes supplemental to the Exception object) specification of error location
     /// (e.g. a class or module name)</param>
     /// <param name="ex">Exception to be reported.</param>
-    /// <param name="DebugMode">A flag indicating whether the debug mode reporting (usually more verbose) is performed.</param>
     /// <returns>A string describing error location.</returns>
     public delegate string ReportLocationDelegate(ReporterBase reporter, ReportType messagetype,
                 string location, Exception ex);
 
     /// <summary>Assembles error description (without any decoration, this is added by talling methods).</summary>
     /// <param name="reporter">Reference to the reporter class where all other necessary data is fond.
+    /// <param name="messagetype">Type of the message to be launched.</param>
     /// In particular, the Obj member contains a user-set object reference used by the delegate functions.</param>
     /// <param name="basicmessage">User-provided string containing (sometimes supplemental to the Exception object) error description.</param>
     /// <param name="ex">Exception to be reported.</param>
-    /// <param name="DebugMode">>A flag indicating whether the debug mode reporting (usually more verbose) is performed.</param>
     /// <returns>Error description string (error message).</returns>
     public delegate string ReportMessageDelegate(ReporterBase reporter, ReportType messagetype,
                 string basicmessage, Exception ex);
@@ -93,6 +94,7 @@ namespace IG.Lib
     /// <param name="reporter">Reference to the reporter class where all other necessary data is fond.
     /// In particular, the Obj member contains a user-set object reference used by the delegate functions.
     /// This object should be used with special care within reserve reporting functions because it may be corrupted.</param>
+    /// <param name="messagetype">Type of the message to be launched.</param>
     /// <param name="location">User-provided string containing (sometimes supplemental to the Exception object) specification of error location
     /// (e.g. a class or module name)</param>
     /// <param name="message">User-provided string containing (sometimes supplemental to the Exception object) error description.</param>
@@ -175,13 +177,13 @@ namespace IG.Lib
         bool SetTextWriter(TextWriter writer, bool writeintro, bool disposewriter);
 
         /// <summary>Creates a TextWriter upon the stream and sets it as the text writer to which reporting is also performed.</summary>
-        /// <param name="writer">Stream to which reporting will be performed.</param>
+        /// <param name="stream">Stream to which reporting will be performed.</param>
         /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
         bool SetTextWriter(Stream stream);
 
         /// <summary>Creates a TextWriter upon the stream and sets it as the basic TextWriter to which reporting is 
         /// performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -190,7 +192,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter upon the stream and sets it as the basic TextWriter to which reporting is 
         /// performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -269,13 +271,13 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter from the stream and adds it to the list of TextWriters on which
         /// reporting is also performed.</summary>
-        /// <param name="writer">Stream to which reporting will be performed.</param>
+        /// <param name="stream">Stream to which reporting will be performed.</param>
         /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
         bool AddTextWriter(Stream stream);
 
         /// <summary>Creates a TextWriter from the stream and adds it to the list of TextWriters on which
         /// reporting is also performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -284,7 +286,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter from the stream and adds it to the list of TextWriters on which
         /// reporting is also performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -479,13 +481,13 @@ namespace IG.Lib
         bool SetTextLogger(TextWriter writer, bool writeintro, bool disposewriter);
 
         /// <summary>Creates a TextLogger upon the stream and sets it as the text writer to which reporting is also performed.</summary>
-        /// <param name="writer">Stream to which reporting will be performed.</param>
+        /// <param name="stream">Stream to which reporting will be performed.</param>
         /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
         bool SetTextLogger(Stream stream);
 
         /// <summary>Creates a TextLogger upon the stream and sets it as the basic TextLogger to which reporting is 
         /// performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -494,7 +496,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextLogger upon the stream and sets it as the basic TextLogger to which reporting is 
         /// performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -573,13 +575,13 @@ namespace IG.Lib
 
         /// <summary>Creates a TextLogger from the stream and adds it to the list of TextLoggers on which
         /// reporting is also performed.</summary>
-        /// <param name="writer">Stream to which reporting will be performed.</param>
+        /// <param name="stream">Stream to which reporting will be performed.</param>
         /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
         bool AddTextLogger(Stream stream);
 
         /// <summary>Creates a TextLogger from the stream and adds it to the list of TextLoggers on which
         /// reporting is also performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -588,7 +590,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextLogger from the stream and adds it to the list of TextLoggers on which
         /// reporting is also performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -1695,8 +1697,8 @@ namespace IG.Lib
         /// Original message is appended to <paramref name="messageaddition"/>.
         /// The created exception does not have an inner exception.</summary>
         /// <param name="ex">Exception whose revised version is created.</param>
-        /// <param name="messageaddition">String that is prepended to the old message (when <paramref name="keepmessage"/> is true)
-        /// or forms the new message of the exception (when <paramref name="keepmessage"/> is false)</param>
+        /// <param name="messageaddition">String that is prepended to the old message
+        /// or forms the new message of the exception.</param>
         /// <param name="newtype">Type of the returned exception. If the parameter is null then the type will be Exception.</param>
         public static Exception ReviseException(Exception ex, string messageaddition, Type newtype)
         {
@@ -1973,7 +1975,7 @@ namespace IG.Lib
         protected const string KeyPrefix = "ReporterMsg";
 
         /// <summary>Returns a full keyroot of a specific configuration item with a reporter name specified.</summary>
-        /// <param name="groupname">User - defined name of a reporter where settings are set. 
+        /// <param name="reportername">User - defined name of a reporter where settings are set. 
         /// If null then the key will apply to all reporters.</param>
         /// <param name="keyroot">Reduced keyroot name (without decorations).</param>
         /// <returns>The composed as it appears in the application configuration file.</returns>
@@ -1992,7 +1994,8 @@ namespace IG.Lib
 
         /// <summary>Reads a string value from the application configuration file (e.g. app.config) and assigns it to the specified parameter
         /// of the reporter.</summary>
-        /// <param name="groupname">A name that makes possible to apply different groups of settings to different reporters.</param>
+        /// <param name="reportername">User - defined name of a reporter where settings are set. 
+        /// If null then the key will apply to all reporters.</param>
         /// <param name="keyroot">Agreed name of the parameter to be assigned.</param>
         /// <param name="value">Reference to the variable to which the read-in value is assigned in the case that it is defined.
         /// If the given key is not defined in the configuration file then the variable is not affected.</param>
@@ -2014,7 +2017,8 @@ namespace IG.Lib
 
         /// <summary>Reads a character value from the application configuration file (e.g. app.config) and assigns it to the specified parameter
         /// of the reporter.</summary>
-        /// <param name="groupname">A name that makes possible to apply different groups of settings to different reporters.</param>
+        /// <param name="reportername">User - defined name of a reporter where settings are set. 
+        /// If null then the key will apply to all reporters.</param>
         /// <param name="keyroot">Agreed name of the parameter to be assigned.</param>
         /// <param name="value">Reference to the variable to which the read-in value is assigned in the case that it is defined.
         /// If the given key is not defined in the configuration file then the variable is not affected.</param>
@@ -2036,7 +2040,8 @@ namespace IG.Lib
 
         /// <summary>Reads a list of characters from the application configuration file (e.g. app.config) and assigns it to the specified parameter
         /// of the reporter.</summary>
-        /// <param name="groupname">A name that makes possible to apply different groups of settings to different reporters.</param>
+        /// <param name="reportername">User - defined name of a reporter where settings are set. 
+        /// If null then the key will apply to all reporters.</param>
         /// <param name="keyroot">Agreed name of the parameter to be assigned.</param>
         /// <param name="value">Reference to the variable to which the read-in value is assigned in the case that it is defined.
         /// If the given key is not defined in the configuration file then the variable is not affected.</param>
@@ -2058,7 +2063,8 @@ namespace IG.Lib
 
         /// <summary>Reads an integer value from the application configuration file (e.g. app.config) and assigns it to the specified parameter
         /// of the reporter.</summary>
-        /// <param name="groupname">A name that makes possible to apply different groups of settings to different reporters.</param>
+        /// <param name="reportername">User - defined name of a reporter where settings are set. 
+        /// If null then the key will apply to all reporters.</param>
         /// <param name="keyroot">Agreed name of the parameter to be assigned.</param>
         /// <param name="value">Reference to the variable to which the read-in value is assigned in the case that it is defined.
         /// If the given key is not defined in the configuration file then the variable is not affected.</param>
@@ -2080,7 +2086,8 @@ namespace IG.Lib
 
         /// <summary>Reads a numeric value from the application configuration file (e.g. app.config) and assigns it to the specified parameter
         /// of the reporter.</summary>
-        /// <param name="groupname">A name that makes possible to apply different groups of settings to different reporters.</param>
+        /// <param name="reportername">User - defined name of a reporter where settings are set. 
+        /// If null then the key will apply to all reporters.</param>
         /// <param name="keyroot">Agreed name of the parameter to be assigned.</param>
         /// <param name="value">Reference to the variable to which the read-in value is assigned in the case that it is defined.
         /// If the given key is not defined in the configuration file then the variable is not affected.</param>
@@ -2102,7 +2109,8 @@ namespace IG.Lib
 
         /// <summary>Reads a boolean value from the application configuration file (e.g. app.config) and assigns it to the specified parameter
         /// of the reporter.</summary>
-        /// <param name="groupname">A name that makes possible to apply different groups of settings to different reporters.</param>
+        /// <param name="reportername">User - defined name of a reporter where settings are set. 
+        /// If null then the key will apply to all reporters.</param>
         /// <param name="keyroot">Agreed name of the parameter to be assigned.</param>
         /// <param name="value">Reference to the variable to which the read-in value is assigned in the case that it is defined.
         /// If the given key is not defined in the configuration file then the variable is not affected.</param>
@@ -2124,7 +2132,8 @@ namespace IG.Lib
 
         /// <summary>Reads a ReportLevel enumeration value from the application configuration file (e.g. app.config) and assigns it to the specified parameter
         /// of the reporter.</summary>
-        /// <param name="groupname">A name that makes possible to apply different groups of settings to different reporters.</param>
+        /// <param name="reportername">User - defined name of a reporter where settings are set. 
+        /// If null then the key will apply to all reporters.</param>
         /// <param name="keyroot">Agreed name of the parameter to be assigned.</param>
         /// <param name="value">Reference to the variable to which the read-in value is assigned in the case that it is defined.
         /// If the given key is not defined in the configuration file then the variable is not affected.</param>
@@ -2784,7 +2793,7 @@ namespace IG.Lib
 
         /// <summary>Returns the System.Diagnostics.EventLogEntryType value corresponding to the given ReportType.
         /// Remark: FailureAudit and SuccessAudit can not be generated because they don't have representation in ReportType.</summary>
-        /// <param name="level">ReportType value to be converted.</param>
+        /// <param name="rt">ReportType value to be converted.</param>
         /// <returns>Converted value of type EventLogEntryType.</returns>
         public static EventLogEntryType ReportType2EventLogEntryType(ReportType rt)
         {
@@ -2809,7 +2818,7 @@ namespace IG.Lib
 
         /// <summary>Returns the ReportType value corresponding to the given System.Diagnostics.EventLogEntryType.
         /// Remark: FailureAudit and SuccessAudit do not have representation in ReportType and are mapped to Error and Warning, respectively.</summary>
-        /// <param name="level">EventLogEntryType value to be converted.</param>
+        /// <param name="el">EventLogEntryType value to be converted.</param>
         /// <returns>Converted value of type ReportType.</returns>
         public static ReportType EventLogEntryType2ReportType(EventLogEntryType el)
         {
@@ -2854,7 +2863,7 @@ namespace IG.Lib
         }
 
         /// <summary>Returns the ReportLevel value corresponding to the given System.Diagnostics.TraceLevel.</summary>
-        /// <param name="level">TraceLevel value to be converted.</param>
+        /// <param name="tl">TraceLevel value to be converted.</param>
         /// <returns>Converted value of type ReportLevel.</returns>
         public static ReportLevel TraceLevel2ReportLevel(TraceLevel tl)
         {
@@ -3430,7 +3439,7 @@ namespace IG.Lib
         /// performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
         /// <param name="tw">Textwriter that is updated.</param>
         /// <param name="disptw">Reference to the dispose flag that is also remembered.</param>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -3587,7 +3596,7 @@ namespace IG.Lib
 
             /// <summary>Creates a TextWriter upon the stream and sets it as the basic TextWriter to which reporting is 
             /// performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-            /// <param name="writer">Textwriter to which reporting will be performed.</param>
+            /// <param name="stream">Textwriter to which reporting will be performed.</param>
             /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
             /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
             /// is used, taking into account the introtext and programname properties.</param>
@@ -3997,7 +4006,7 @@ namespace IG.Lib
 
 
         /// <summary>Creates a TextWriter upon the stream and sets it as the text writer to which reporting is also performed.</summary>
-        /// <param name="writer">Stream to which reporting will be performed.</param>
+        /// <param name="stream">Stream to which reporting will be performed.</param>
         /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
         public bool SetTextWriter(Stream stream)
         // $A Igor Dec08;
@@ -4010,7 +4019,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter upon the stream and sets it as the basic TextWriter to which reporting is 
         /// performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -4027,7 +4036,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter upon the stream and sets it as the basic TextWriter to which reporting is 
         /// performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -4164,7 +4173,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter from the stream and adds it to the list of TextWriters on which
         /// reporting is also performed.</summary>
-        /// <param name="writer">Stream to which reporting will be performed.</param>
+        /// <param name="stream">Stream to which reporting will be performed.</param>
         /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
         public bool AddTextWriter(Stream stream)
         // $A Igor Dec08;
@@ -4177,7 +4186,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter from the stream and adds it to the list of TextWriters on which
         /// reporting is also performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -4193,7 +4202,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter from the stream and adds it to the list of TextWriters on which
         /// reporting is also performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -5001,7 +5010,7 @@ namespace IG.Lib
 
         /// <summary>Creates a TextWriter from the stream and adds it to the list of TextWriters on which
         /// reporting is also performed. Overrides the writeintro property by the 'writeintro' argument.</summary>
-        /// <param name="writer">Textwriter to which reporting will be performed.</param>
+        /// <param name="stream">Textwriter to which reporting will be performed.</param>
         /// <param name="writeintro">Overrides the class' writeintro property (if true then introductory text is
         /// printed, regardless of the value of the property). If the introductory text is printed then the standard method
         /// is used, taking into account the introtext and programname properties.</param>
@@ -5638,6 +5647,7 @@ namespace IG.Lib
 
         /// <summary>Formats a one-line message for tracing output.</summary>
         /// <param name="depth">Indentation level.</param>
+        /// <param name="initialindent">Initial indent.</param>
         /// <param name="indentincrement">Indentation spacing.</param>
         /// <param name="indentchar">Indentation character.</param>
         /// <param name="type">Type of the message.</param>
@@ -5927,7 +5937,7 @@ namespace IG.Lib
         {
             try
             {
-                if (string.IsNullOrEmpty(ex.Message))
+                if (ex == null || string.IsNullOrEmpty(ex.Message))
                     return location;
                 else
                 {
@@ -5981,7 +5991,8 @@ namespace IG.Lib
         /// <summary>Default function function for assembling reserve error reporting message.
         /// This is put outside the DefaultReserveReportError() method such that the same assembly
         /// method can be used in different systems. 
-        /// The method is considered bulletproof.</param>
+        /// The method is considered bulletproof.</summary>
+        /// <param name="reporter">Rporter to which message is passed.</param>
         /// <param name="messagetype">Level of the message (Error, Warning,Info, etc.)</param>
         /// <param name="location">Location string as passed to the error reporting function that has thrown an exception.</param>
         /// <param name="message">Error message string as passed to the error reporting function that has thrown an exception.</param>
@@ -6213,6 +6224,36 @@ namespace IG.Lib
             catch { }
             return ret;
         }
+
+
+        /// <summary>Returns an error string that concisely describes information contained in the specific exception
+        /// (including location where exception was thrown, and its message).</summary>
+        /// <param name="e">Exception from which information is extracted and represented as string.</param>
+        public static string GetErorString(Exception e)
+        {
+            string errstr = "", functionname = null, filename = null;
+            int line = -1, column = -1;
+            System.Diagnostics.StackTrace trace = null;
+            try
+            {
+                // Extract info about error location:
+                trace = new System.Diagnostics.StackTrace(e, true);
+                functionname = trace.GetFrame(0).GetMethod().Name;
+                filename = trace.GetFrame(0).GetFileName();
+                line = trace.GetFrame(0).GetFileLineNumber();
+                column = trace.GetFrame(0).GetFileColumnNumber();
+                errstr += "Error in " + functionname +
+                    "\n  < " + filename +
+                    " (" + line.ToString() +
+                    ", " + column.ToString() +
+                    ") >: \n\n";
+                errstr += e.Message;
+            }
+            catch { }
+            return errstr;
+        }
+
+
 
         #endregion Error_Auxiliary  // Auxiliary methods, default methods to assign to delegates, etc.
 

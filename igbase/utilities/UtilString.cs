@@ -134,6 +134,7 @@ namespace IG.Lib
 
         /// <summary>Returns a string array of parameters represented by the specified comma separated list in string form.</summary>
         /// <param name="linesString">List of parameters in string form, comma separated and with possible whitespaces between them.</param>
+        /// <param name="doTrim">Specifies whether parameter names should be trimmed.</param>
         public static string[] GetLines(string linesString, bool doTrim = true)
         {
             if (linesString == null)
@@ -241,7 +242,7 @@ namespace IG.Lib
         /// command can be obtained simply as the first string in the returned array.</summary>
         /// <param name="commandLine">Command line that is split to individual arguments.
         /// Command line can also contain a command, which is treated equally.</param>
-        /// <param name="ReturnedString">List in which the parsed arguments are stored.</param>
+        /// <param name="ret">List in which the parsed arguments are stored.</param>
         public static void GetArguments(string commandLine, ref List<string> ret)
         {
             List<string> aux = null;
@@ -256,7 +257,7 @@ namespace IG.Lib
         /// command can be obtained simply as the first string in the returned array.</summary>
         /// <param name="commandLine">Command line that is split to individual arguments.
         /// Command line can also contain a command, which is treated equally.</param>
-        /// <param name="ReturnedString">List in which the parsed arguments are stored.</param>
+        /// <param name="ret">List in which the parsed arguments are stored.</param>
         /// <param name="aux">Auxiliary list for storing intermediate results.</param>
         private static void GetArguments(string commandLine, ref List<string> ret, ref List<string> aux)
         {
@@ -496,7 +497,6 @@ namespace IG.Lib
         /// It can be specified that the first character is a letter.</summary>
         /// <param name="length">Length of the string.</param>
         /// <param name="firstletter">If true then first character of the generated string will be a letter.</param>
-        /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
         /// <param name="rndgen">Random generator used. If null or unspecified then global random generator is used.</param>
         /// <returns>The generated random string.</returns>
         public static string RandomString(int length, bool firstletter, IRandomGenerator rndgen = null)
@@ -799,12 +799,12 @@ namespace IG.Lib
 
 
         #endregion TypeConversions
-       
+
 
         #region FileOperations
 
         /// <summary>Loads complete file contents into a stiring and returnes that string.</summary>
-        /// <param name="inputFilePath">Path to the file that is red into a string.</param>
+        /// <param name="filePath">Path to the file that is red into a string.</param>
         public static string Load(string filePath)
         {
             string ret = null;
@@ -817,7 +817,7 @@ namespace IG.Lib
 
 
         /// <summary>Loads complete file contents into the specified stiring.</summary>
-        /// <param name="inputFilePath">Path to the file that is red into a string.</param>
+        /// <param name="filePath">Path to the file that is red into a string.</param>
         /// <param name="readString">String variable where file contents is stored.</param>
         public static void Load(string filePath, ref string readString)
         {
@@ -829,7 +829,7 @@ namespace IG.Lib
         /// If the specified file does not exists then it is created anew if possible. 
         /// A boolean argument specifis whether to overwrite existing files or to append the string at the end of the file.</summary>
         /// <param name="str">String to be saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file where string is to be saved.</param>
+        /// <param name="filePath">Path to the file where string is to be saved.</param>
         /// <param name="append">If true then the string is appended at the end of the file in the case that the file already exists.
         /// If false then the file is overwritten in the case taht it already exists.</param>
         public static void Save(string str, string filePath, bool append)
@@ -844,7 +844,7 @@ namespace IG.Lib
         /// If the file already exists then is content is overwritten.
         /// If the file does not yet exist then it is created anew.</summary>
         /// <param name="str">String to be written to a file.</param>
-        /// <param name="inputFilePath">Path to the file where string is written.</param>
+        /// <param name="filePath">Path to the file where string is written.</param>
         public static void Save(string str, string filePath)
         { Save(str, filePath, false /* append */ ); }
 
@@ -852,7 +852,7 @@ namespace IG.Lib
         /// If the file already exists then string is appended at the end of the current file contents.
         /// If the file does not yet exist then it is created anew.</summary>
         /// <param name="str">String to be written to a file.</param>
-        /// <param name="inputFilePath">Path to the file where string is written.</param>
+        /// <param name="filePath">Path to the file where string is written.</param>
         public static void Append(string str, string filePath)
         { Save(str, filePath, true /* append */ ); }
 

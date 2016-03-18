@@ -195,7 +195,7 @@ namespace IG.Num
 
         /// <summary>Distance comparer of the current point cloud object.
         /// <para>Getter has lazy evaluation (The default distance comparer is created the first time when needed
-        /// by the <see cref="CreateDefaultDistanceComparer"/> mathod if distance comparer has not ben set before).</para></summary>
+        /// by the CreateDefaultDistanceComparer(...) mathod if distance comparer has not ben set before).</para></summary>
         public DistanceComparer<PointContainerType, PointType> DistanceComparer
         {
             get {
@@ -239,7 +239,7 @@ namespace IG.Num
         /// <param name="point">Point to be wrapped.</param>
         public abstract PointContainerType CreatePointContainer(PointType point);
 
-        /// <summary>Creates and returns a new point container that wraps a newly created point with the specified coordinates.
+        /// <summary>Creates and returns a new point container that wraps a newly created point with the specified coordinates.</summary>
         /// <param name="coordinates">Coordinates of the embedded point type. A copy of this vector is normally created
         /// to hold coordinates within the point, because the caller is allowed to modify coordinates on the vector.</param>
         public virtual PointContainerType CreatePointContainerFromCoordinates(IVector coordinates)
@@ -395,6 +395,7 @@ namespace IG.Num
         /// from the cloud.
         /// <para>Object's internal random generator is used to create random co-ordinates. This random
         /// generator can be set through the <see cref="Rand"/> property.</para></summary>
+        /// <param name="numPoints">Number of points in the cloud.</param>
         /// <param name="bounds">Bounds (inclusive) on co-ordinates of the generated points.</param>
         public void GenerateRandomCloud(int numPoints, IBoundingBox bounds)
         {
@@ -411,6 +412,7 @@ namespace IG.Num
         /// from the cloud.
         /// <para>Object's internal random generator is used to create random co-ordinates. This random
         /// generator can be set through the <see cref="Rand"/> property.</para></summary>
+        /// <param name="numPoints">Number of points in the cloud.</param>
         /// <param name="spaceDimension">Dimension of generated point.</param>
         /// <param name="minCoordinateValues">Minimal value of co-ordinates (inclusive).</param>
         /// <param name="maxCoordinateValues">Maximal value of co-ordinates (inclusive).</param>
@@ -428,6 +430,7 @@ namespace IG.Num
         /// and incorporates them into the current point cloud. Eventual existent points are removed from the cloud.
         /// <para>Object's internal random generator is used to create random co-ordinates. This random
         /// generator can be set through the <see cref="Rand"/> property.</para></summary>
+        /// <param name="numPoints">Number of points in the cloud.</param>
         /// <param name="spaceDimension">Dimension of generated point.</param>
         public void GenerateRandomCloud(int numPoints, int spaceDimension)
         {
@@ -758,7 +761,6 @@ namespace IG.Num
         /// <para>Result of this test can give some rough feeling about filling of space (but very rough 
         /// because anisotropy can not be detected in this way).</para></summary>
         /// <param name="numClosestPoints">Number of closest points that are written.</param>
-        /// <param name="includeVerificationPoints">Whether verification points are included or not.</param>
         /// <param name="printByComponents">If true then results are also printed by components.</param>
         /// <param name="referencePoints">Points that are checked for closest data points contained in the specified 
         /// list of points.</param>
@@ -782,7 +784,6 @@ namespace IG.Num
         /// <para>Result of this test can give some rough feeling about filling of space (but very rough 
         /// because anisotropy can not be detected in this way).</para></summary>
         /// <param name="numClosestPoints">Number of closest points that are written.</param>
-        /// <param name="includeVerificationPoints">Whether verification points are included or not.</param>
         /// <param name="printByComponents">If true then results are also printed by components.</param>
         /// <param name="printIndividualPointsComp">If true then individual components of differences are printed for
         /// individual points (otherwise, they are only printed in statistics).</param>
@@ -986,9 +987,8 @@ namespace IG.Num
         /// <para>Result of this test can give some rough feeling about filling of space (but very rough 
         /// because anisotropy can not be detected in this way).</para></summary>
         /// <param name="numClosestPoints">Number of closest points that are written.</param>
-        /// <param name="includeVerificationPoints">Whether verification points are included or not.</param>
         /// <param name="printByComponents">If true then results are also printed by components.</param>
-        /// <param name="printIndividualPoints">If true then individual components of differences are printed for
+        /// <param name="printIndividualPointsComp">If true then individual components of differences are printed.</param>
         /// <param name="points">Points that are checked for closest trainnig data points.</param>
         /// <param name="comparerInput">Comparer object that calculates distance between points and compares
         /// compares points according to their distance to a reference point.</param>

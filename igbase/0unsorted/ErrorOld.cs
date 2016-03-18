@@ -93,6 +93,7 @@ namespace IG.Lib.Old
     /// <summary>Reports an error.</summary>
     /// <param name="reporter">Reference to the reporter class where all s necessary data is fond.
     /// In particular, the Obj member contains a user-set object reference used by the delegate functions.</param>
+    /// <param name="messagetype">Type of the message that is launched.</param>
     /// <param name="errorlocation">User-defined string containing (sometimes supplemental to the Exception object) specification of error location
     /// (e.g. a class or module name)</param>
     /// <param name="errormessage">User-provided string containing (sometimes supplemental to the Exception object) error description.</param>
@@ -102,10 +103,10 @@ namespace IG.Lib.Old
     /// <summary>Assembles the error location desctiption.</summary>
     /// <param name="reporter">Reference to the reporter class where all s necessary data is fond.
     /// In particular, the Obj member contains a user-set object reference used by the delegate functions.</param>
+    /// <param name="messagetype">Type of the message that is launched.</param>
     /// <param name="location">User-provided string containing (sometimes supplemental to the Exception object) specification of error location
     /// (e.g. a class or module name)</param>
     /// <param name="ex">Exception to be reported.</param>
-    /// <param name="DebugMode">A flag indicating whether the debug mode reporting (usually more verbose) is performed.</param>
     /// <returns>A string describing error location.</returns>
     public delegate string ReportLocationDelegate(Reporter reporter, ReportType messagetype,
                 string location, Exception ex);
@@ -113,10 +114,9 @@ namespace IG.Lib.Old
     /// <summary>Assembles error description (without any decoration, this is added by talling methods).</summary>
     /// <param name="reporter">Reference to the reporter class where all s necessary data is fond.
     /// In particular, the Obj member contains a user-set object reference used by the delegate functions.</param>
+    /// <param name="messagetype">Type of the message that is launched.</param>
     /// <param name="basicmessage">User-provided string containing (sometimes supplemental to the Exception object) error description.</param>
     /// <param name="ex">Exception to be reported.</param>
-    /// <param name="DebugMode">>A flag indicating whether the debug mode reporting (usually more verbose) is performed.</param>
-    /// <returns>Error description string (error message).</returns>
     public delegate string ReportMessageDelegate(Reporter reporter, ReportType messagetype,
                 string basicmessage, Exception ex);
 
@@ -126,6 +126,7 @@ namespace IG.Lib.Old
     /// <param name="reporter">Reference to the reporter class where all s necessary data is fond.
     /// In particular, the Obj member contains a user-set object reference used by the delegate functions.
     /// This object should be used with special care within reserve reporting functions because it may be corrupted.</param>
+    /// <param name="messagetype">Type of the message that is launched.</param>
     /// <param name="location">User-provided string containing (sometimes supplemental to the Exception object) specification of error location
     /// (e.g. a class or module name)</param>
     /// <param name="message">User-provided string containing (sometimes supplemental to the Exception object) error description.</param>
@@ -257,15 +258,15 @@ namespace IG.Lib.Old
 
         #region TraceSwitch
 
-        /// <summary>Returns the System.Diagnostics.EventLogEntryType value corresponding to the given ReportType.
+        /// <summary>Returns the System.Diagnostics.EventLogEntryType value corresponding to the given <see cref="ReportType"/>.
         /// Remark: FailureAudit and SuccessAudit can not be generated because they don't have representation in ReportType.</summary>
-        /// <param name="level">ReportType value to be converted.</param>
+        /// <param name="rt">Type of the report that is launched.</param>
         /// <returns>Converted value of type EventLogEntryType.</returns>
         EventLogEntryType ReportType2EventLogEntryType(ReportType rt);
 
         /// <summary>Returns the ReportType value corresponding to the given System.Diagnostics.EventLogEntryType.
         /// Remark: FailureAudit and SuccessAudit do not have representation in ReportType and are mapped to Error and Warning, respectively.</summary>
-        /// <param name="level">EventLogEntryType value to be converted.</param>
+        /// <param name="el">Type of the event log entry.</param>
         /// <returns>Converted value of type ReportType.</returns>
         ReportType EventLogEntryType2ReportType(EventLogEntryType el);
 
@@ -282,7 +283,7 @@ namespace IG.Lib.Old
         /// <summary>Returns the ReportLevel value corresponding to the given System.Diagnostics.TraceLevel.</summary>
         /// <param name="level">TraceLevel value to be converted.</param>
         /// <returns>Converted value of type ReportLevel.</returns>
-        ReportLevel TraceLevel2ReportLevel(TraceLevel tl);
+        ReportLevel TraceLevel2ReportLevel(TraceLevel level);
 
 
         /// <summary>Gets or sets the TraceSwitch that is synchronized with ReportingLevel.
@@ -1011,7 +1012,7 @@ namespace IG.Lib.Old
 
         /// <summary>Returns the System.Diagnostics.EventLogEntryType value corresponding to the given ReportType.
         /// Remark: FailureAudit and SuccessAudit can not be generated because they don't have representation in ReportType.</summary>
-        /// <param name="level">ReportType value to be converted.</param>
+        /// <param name="rt">Type of the report.</param>
         /// <returns>Converted value of type EventLogEntryType.</returns>
         public virtual EventLogEntryType ReportType2EventLogEntryType(ReportType rt)
         {
@@ -1038,9 +1039,9 @@ namespace IG.Lib.Old
         /// Remark: FailureAudit and SuccessAudit do not have representation in ReportType and are mapped to Error and Warning, respectively.</summary>
         /// <param name="level">EventLogEntryType value to be converted.</param>
         /// <returns>Converted value of type ReportType.</returns>
-        public virtual ReportType EventLogEntryType2ReportType(EventLogEntryType el)
+        public virtual ReportType EventLogEntryType2ReportType(EventLogEntryType level)
         {
-            switch (el)
+            switch (level)
             {
                 case EventLogEntryType.Error:
                     return ReportType.Error;
@@ -1083,9 +1084,9 @@ namespace IG.Lib.Old
         /// <summary>Returns the ReportLevel value corresponding to the given System.Diagnostics.TraceLevel.</summary>
         /// <param name="level">TraceLevel value to be converted.</param>
         /// <returns>Converted value of type ReportLevel.</returns>
-        public virtual ReportLevel TraceLevel2ReportLevel(TraceLevel tl)
+        public virtual ReportLevel TraceLevel2ReportLevel(TraceLevel level)
         {
-            switch (tl)
+            switch (level)
             {
                 case TraceLevel.Off:
                     return ReportLevel.Off;
@@ -1580,7 +1581,7 @@ namespace IG.Lib.Old
 
 
         /// <summary>Creates a TextWriter upon the stream and sets it as the text writer to which reporting is also performed.</summary>
-        /// <param name="writer">Stream to which reporting will be performed.</param>
+        /// <param name="stream">Stream to which reporting will be performed.</param>
         /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
         bool SetWriter(Stream stream)
         {
@@ -1604,7 +1605,7 @@ namespace IG.Lib.Old
 
 
         /// <summary>Creates a TextWriter upon a file and sets it as the text writer to which reporting is also performed.</summary>
-        /// <param name="writer">Stream to which reporting will be performed.</param>
+        /// <param name="filename">Name of the file to which reporting will be performed.</param>
         /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
         bool SetWriter(string filename)
         {
@@ -1626,7 +1627,7 @@ namespace IG.Lib.Old
         }
 
         /// <summary>Creates a TextWriter upon a file and sets it as the text writer to which reporting is also performed.</summary>
-        /// <param name="writer">Stream to which reporting will be performed.</param>
+        /// <param name="filename">Name of the file to which reporting will be performed.</param>
         /// <param name="overwrite">If true then eventual existing contents of the file are overwritten. Otherwise,
         /// new text is appended at the end of the file.</param>
         /// <returns>True if a new writer has been successfully set and is ready to use, false otherwise.</returns>
@@ -2031,7 +2032,8 @@ namespace IG.Lib.Old
         /// <summary>Default function function for assembling reserve error reporting message.
         /// This is put outside the DefaultReserveReportError() method such that the same assembly
         /// method can be used in different systems. 
-        /// The method is considered bulletproof.</param>
+        /// The method is considered bulletproof.</summary>
+        /// <param name="reporter">Reporter used for reserver error reporting.</param>
         /// <param name="messagetype">Level of the message (Error, Warning,Info, etc.)</param>
         /// <param name="location">Location string as passed to the error reporting function that has thrown an exception.</param>
         /// <param name="message">Error message string as passed to the error reporting function that has thrown an exception.</param>

@@ -50,6 +50,7 @@ namespace IG.Num
         /// <param name="numerator">List of units in the numerator. Units that are raised to some power are repeated the corresponding number of times.</param>
         /// <param name="denominator">List of units in the denominator.</param>
         /// <param name="symbol">Symbol of the constant.</param>
+        /// <param name="name">Name of the constant.</param>
         /// <param name="description">A short one line description of the constant.</param>
         public PhysicalConstant(double value, double relativeerror,
                 SI[] numerator, SI[] denominator, string symbol, string name, string description)
@@ -65,8 +66,6 @@ namespace IG.Num
         /// <param name="relativeerror">Standard error of the current constant measurements.</param>
         /// <param name="numerator">List of units in the numerator. Units that are raised to some power are repeated the corresponding number of times.</param>
         /// <param name="denominator">List of units in the denominator.</param>
-        /// <param name="symbol">Symbol of the constant.</param>
-        /// <param name="description">A short one line description of the constant.</param>
         public PhysicalConstant(double value, double relativeerror,
                 SI[] numerator, SI[] denominator)
         {
@@ -801,7 +800,7 @@ namespace IG.Num
     } // class SIPrefix
 
 
-    /// <summary>SI units (basic & derived)</summary>
+    /// <summary>SI units (basic and derived)</summary>
     public static partial class PhysicalUnit
     {
 

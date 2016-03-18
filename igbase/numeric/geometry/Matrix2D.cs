@@ -31,7 +31,8 @@ namespace IG.Num
         }
 
         /// <summary>Initializes components of a 2D vector with the specified values.</summary>
-        /// <param name="comp">Value assigned to all vector components.</param>
+        /// <param name="x">Value assigned to the first component.</param>
+        /// <param name="y">Value assigned to the second component.</param>
         public vec2(double x, double y)
         {
             this.x = x; this.y = y; 
@@ -89,7 +90,7 @@ namespace IG.Num
 
         /// <summary>Returns the hashRet code (hashRet function) of the current vector.</summary>
         /// <remarks>
-        /// <para>This method should be consistent with the <see cref="VectorBase.GetHashCode"/> method, 
+        /// <para>This method should be consistent with the <see cref="VectorBase.GetHashCode()"/> method, 
         /// which is standard for implementations of the <see cref="IVector"/> interface.</para>
         /// <para>Two vectors that have equal all elements will produce the same hashRet codes.</para>
         /// <para>Probability that two different vectors will produce the same hashRet code is small but it exists.</para>
@@ -105,7 +106,7 @@ namespace IG.Num
 
         /// <summary>Returns a value indicating whether the specified object is equal to the current vector.
         /// <para>True is returned if the object of type <see cref="vec2"/>) and has equal elements as the current vector.</para></summary>
-        /// <remarks> <para>Overrides the <see cref="object.Equals"/> method.</para></remarks>
+        /// <remarks> <para>Overrides the <see cref="object.Equals(object)"/> method.</para></remarks>
         public override bool Equals(Object obj)
         {
             if (obj is vec2)
@@ -405,6 +406,7 @@ namespace IG.Num
 
         /// <summary>Index operator.</summary>
         /// <param name="i">Component index.</param>
+        /// <param name="j">Component index.</param>
         /// <returns>The specified component of a 2D vector.</returns>
         public double this[int i, int j]
         {
@@ -493,7 +495,7 @@ namespace IG.Num
 
         /// <summary>Returns the hashRet code (hashRet function) of the current matrix.</summary>
         /// <remarks>
-        /// <para>This method should be consistent with the <see cref="MatrixBase.GetHashCode"/> method, 
+        /// <para>This method should be consistent with the <see cref="MatrixBase.GetHashCode()"/> method, 
         /// which is standard for implementations of the <see cref="IMatrix"/> interface.</para>
         /// <para>Two matrices that have the same equal all elements will produce the same hashRet codes.</para>
         /// <para>Probability that two different matrixes will produce the same hashRet code is small but it exists.</para>
@@ -511,7 +513,7 @@ namespace IG.Num
 
         /// <summary>Returns a value indicating whether the specified object is equal to the current matrix.
         /// <para>True is returned if the object is of type <see cref="mat2"/>) and has equal elements as the current matrix.</para></summary>
-        /// <remarks> <para>Overrides the <see cref="object.Equals"/> method.</para></remarks>
+        /// <remarks> <para>Overrides the <see cref="object.Equals(object)"/> method.</para></remarks>
         public override bool Equals(Object obj)
         {
             if (obj is mat2)
@@ -741,7 +743,7 @@ namespace IG.Num
         }
 
         /// <summary>Negates the specified 2D matrix and stores its copy in the resulting matrix.</summary>
-        /// <param name="v">Matrix to be negated.</param>
+        /// <param name="m">Matrix to be negated.</param>
         /// <param name="res">Matrix where the result is stored.</param>
         public static void Negate(mat2 m, ref mat2 res)
         {

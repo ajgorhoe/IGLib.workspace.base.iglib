@@ -27,7 +27,7 @@ namespace IG.Num
         /// <summary>Creates and returns a new real polynomial weighting function object based on Gaussian function
         /// (exp(-x^2).
         /// Reference function: bell like function with infinite support, 
-        ///     0 < |f(x)| <=1
+        ///     0 less than |f(x)| less than or equal to 1
         ///     f(0) = 1</summary>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
@@ -40,7 +40,7 @@ namespace IG.Num
         /// <summary>Creates and returns a new real polynomial weighting function object based on Gaussian function
         /// (exp(-x^2).
         /// Reference function: bell like function with infinite support, 
-        ///     0 < |f(x)| <=1
+        ///     0 less than |f(x)| less than or equal to 1
         ///     f(0) = 1</summary>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
@@ -51,7 +51,7 @@ namespace IG.Num
         /// <summary>Creates and returns a new real polynomial weighting function object based on Gaussian function
         /// (exp(-x^2).
         /// Reference function: bell like function with infinite support, 
-        ///     0 < |f(x)| <=1
+        ///     0 less than |f(x)| less than or equal to 1
         ///     f(0) = 1</summary>
         /// <returns>RealFunction object.</returns>
         public static RealFunction GetWeightGauss()
@@ -60,9 +60,8 @@ namespace IG.Num
         /// <summary>A RealFunction class representing bell like polynomial weighting function with finite support,
         ///  based  on Gaussian function (exp(-x^2)).
         /// Reference function: bell like function with infinite support, 
-        ///     0 < |f(x)| <=1
+        ///     0 less than |f(x)| less than or equal to 1
         ///     f(0) = 1</summary>
-        /// </summary>
         public class WeightGauss : RealFunction
         {
 
@@ -219,8 +218,9 @@ namespace IG.Num
         /// <summary>Creates and returns a new real polynomial weighting function object based on 
         /// reciprocal power function (1/(1+|x|^p)).
         /// Reference function: bell like function with infinite support, 
-        ///     0 < |f(x)| <=1
+        ///     0 less than |f(x)| less than or equal to 1
         ///     f(0) = 1</summary>
+        /// <param name="power">Power to which argument is raised.</param>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
         /// <param name="Ky">Scaling factor for dependent variable.</param>
@@ -232,8 +232,9 @@ namespace IG.Num
         /// <summary>Creates and returns a new real polynomial weighting function object based on 
         /// reciprocal power function (1/(1+|x|^p)).
         /// Reference function: bell like function with infinite support, 
-        ///     0 < |f(x)| <=1
+        ///     0 less than |f(x)| less than or equal to 1
         ///     f(0) = 1</summary>
+        /// <param name="power">Power to whic argument is raised.</param>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
         /// <returns>RealFunction object.</returns>
@@ -243,7 +244,7 @@ namespace IG.Num
         /// <summary>Creates and returns a new real polynomial weighting function object based on 
         /// reciprocal power function (1/(1+|x|^p)).
         /// Reference function: bell like function with infinite support, 
-        ///     0 < |f(x)| <=1
+        ///     0 less than |f(x)| less than or equal to 1
         ///     f(0) = 1</summary>
         /// <returns>RealFunction object.</returns>
         public static RealFunction GetWeightReciprocalPower(int power)
@@ -252,9 +253,8 @@ namespace IG.Num
         /// <summary>A RealFunction class representing bell like polynomial weighting function with finite support,
         ///  based on reciprocal power function (1/(1+|x|^p) where p>0 is an integer power).
         /// Reference function: bell like function with infinite support, 
-        ///     0 < |f(x)| <=1
+        ///     0 less than |f(x)| less than or equal to 1
         ///     f(0) = 1</summary>
-        /// </summary>
         public class WeightReciprocalPower : RealFunction
         {
 
@@ -426,8 +426,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less than or equal to |f(x)| less than or equall to 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
@@ -439,8 +439,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less than or equal to |f(x)| less than or equal to 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
@@ -450,8 +450,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less than or equal to |f(x)| less than or equal to 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <returns>RealFunction object.</returns>
         public static RealFunction GetWeightPol3()
@@ -459,10 +459,9 @@ namespace IG.Num
 
         /// <summary>A RealFunction class representing bell like polynomial weighting function with finite support.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
-        /// </summary>
         public class WeightPol3 : RealFunction
         {
 
@@ -616,8 +615,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object based on 4th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
@@ -629,8 +628,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object based on 4th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
@@ -640,8 +639,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object based on 4th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <returns>RealFunction object.</returns>
         public static RealFunction GetWeightPol4()
@@ -650,15 +649,14 @@ namespace IG.Num
         /// <summary>A RealFunction class representing bell like polynomial weighting function with finite support,
         ///  based on 4th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
-        /// </summary>
         public class WeightPol4 : RealFunction
         {
 
             public WeightPol4()
-                : this(1.0, 0.0, 1.0, 0.0)
+                : this(1.0, 0.0, 1.0, 0.0) 
             { }
 
             public WeightPol4(double Kx, double Sx)
@@ -808,8 +806,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object based on 5th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
@@ -821,8 +819,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object based on 5th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
@@ -832,8 +830,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object based on 5th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <returns>RealFunction object.</returns>
         public static RealFunction GetWeightPol5()
@@ -842,10 +840,9 @@ namespace IG.Num
         /// <summary>A RealFunction class representing bell like polynomial weighting function with finite support,
         ///  based on 5th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
-        /// </summary>
         public class WeightPol5 : RealFunction
         {
 
@@ -999,8 +996,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object based on 7th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
@@ -1012,8 +1009,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object based on 7th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <param name="Kx">Scaling factor for independent variable.</param>
         /// <param name="Sx">Shift in independent variable.</param>
@@ -1023,8 +1020,8 @@ namespace IG.Num
 
         /// <summary>Creates and returns a new real polynomial weighting function object based on 7th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
         /// <returns>RealFunction object.</returns>
         public static RealFunction GetWeightPol7()
@@ -1033,10 +1030,9 @@ namespace IG.Num
         /// <summary>A RealFunction class representing bell like polynomial weighting function with finite support,
         ///  based on 7th order polynomial.
         /// Reference function: bell like function with final support, 
-        ///     0 <= |f(x)| <=1
-        ///     f(x<-1) = f(x>1) = 0
+        ///     0 less or equal |f(x)| less or equal 1
+        ///     f(x less than -1) = f(x greater than 1) = 0
         ///     f(0) = 1</summary>
-        /// </summary>
         public class WeightPol7 : RealFunction
         {
 

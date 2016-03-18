@@ -152,7 +152,7 @@ namespace IG.Num
         }
 
        /// <summary>Returns the first derivative of this function at the specified parameter.</summary>
-        /// <param name="parameters">Vector of parameters where derivatives are evaluated.</param>
+        /// <param name="x">Vector of parameters where derivatives are evaluated.</param>
         /// <param name="gradient">Vector where first derivatives (gradient) are stored.</param>
         public override void GradientPlain(IVector x, IVector gradient)
         {
@@ -183,7 +183,7 @@ namespace IG.Num
 
 
         /// <summary>Returns the second derivative (Hessian) of this function at the specified arameter.</summary>
-        /// <param name="parameters">Vector of parameters where derivatives are evaluated.</param>
+        /// <param name="x">Vector of parameters where derivatives are evaluated.</param>
         /// <param name="hessian">Matrix where second derivatives (Hessian) are stored.</param>
         public override void HessianPlain(IVector x, IMatrix hessian)
         {

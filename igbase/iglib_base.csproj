@@ -15,30 +15,34 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\IGLib.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>1591</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
+    <OutputPath>..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DocumentationFile>bin\Debug\IGLib.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
@@ -48,9 +52,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
     <Optimize>false</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
+    <OutputPath>..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>1591</NoWarn>
@@ -59,6 +64,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.JScript">
@@ -99,8 +105,12 @@
     <Compile Include="data\serialization\dtos\BoundingBoxDto.cs" />
     <Compile Include="data\serialization\dtos\IndexListDto.cs" />
     <Compile Include="data\serialization\dtos\MatrixDto.cs" />
+    <Compile Include="data\serialization\dtos\ScalarFunctionScriptController.cs" />
+    <Compile Include="data\serialization\dtos\ScalarFunctionDto.cs" />
     <Compile Include="data\serialization\dtos\VectorDto.cs" />
+    <Compile Include="data\serialization\dtos\VectorFunctionDto.cs" />
     <Compile Include="data\serialization\dtos\VectorFunctionResultsDto.cs" />
+    <Compile Include="data\serialization\dtos\VectorFunctionScriptController.cs" />
     <Compile Include="data\serialization\json\JsonPrettyPrinter.cs" />
     <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\ICharacterStrategy.cs" />
     <Compile Include="data\serialization\json\JsonPrettyPrinterInternals\JsonPPStrategies\CloseBracketStrategy.cs" />
@@ -178,6 +188,7 @@
     <Compile Include="numeric\approximation\sampleddata\SampledDataDefinition.cs" />
     <Compile Include="numeric\approximation\sampleddata\SampledDataDto.cs" />
     <Compile Include="numeric\FunctionVectorExamples.cs" />
+    <Compile Include="numeric\FunctionVectorFromScalar.cs" />
     <Compile Include="numeric\geometry\Function2d.cs" />
     <Compile Include="numeric\geometry\Function3d.cs" />
     <Compile Include="numeric\geometry\Function3d2d.cs" />
@@ -317,6 +328,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\00readme_developers_iglib.html">
+      <Link>00readme_developers_iglib.html</Link>
+    </Content>
     <Content Include="..\Repositories_IGLib.html">
       <Link>Repositories_IGLib.html</Link>
       <SubType>Designer</SubType>
@@ -329,11 +343,17 @@
     <Content Include="interpreters\ExpressionEvaluatorDefinitions Jint.js" />
     <Content Include="interpreters\ExpressionEvaluatorDefinitions.js" />
     <Content Include="interpreters\interfaces\0ReadMeInterpreterInterfaces.txt" />
-    <Content Include="License_IGLib_Partner.html" />
-    <Content Include="License_IGLib_Redistributable.html" />
+    <Content Include="License_IGLib_Partner.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="License_IGLib_Redistributable.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="numeric\approximation\neural\0readme_TODO.txt" />
     <Content Include="optimization\0readme_optimization.txt" />
-    <Content Include="ReadMe_IGLib.html" />
+    <EmbeddedResource Include="ReadMe_IGLib.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="0guests\0common\" />

@@ -484,7 +484,6 @@ namespace IG.Lib.Copy
 
 
         /// <summary>Waits until a client connects to the specified server pipe.</summary>
-        /// <param name="pipe">Pipe that waits for connection to be established.</param>
         protected abstract void WaitForConnection();
 
 
@@ -724,7 +723,7 @@ namespace IG.Lib.Copy
             }
         }
 
-        /// <summary>Sends the response (i.e., the <see cref="ResponseString"/>) back to the client.</summary>
+        /// <summary>Sends the response (i.e., the <see cref="ClientServerStreamBase2.ResponseString"/>) back to the client.</summary>
         protected virtual void SendResponse()
         {
             SendResponse(this.ResponseString);
@@ -1042,7 +1041,7 @@ namespace IG.Lib.Copy
         }
 
 
-        /// <summary>Sends the current request string (the <see cref="RequestString"/> property) to the 
+        /// <summary>Sends the current request string (the <see cref="ClientServerStreamBase2.RequestString"/> property) to the 
         /// server through a named pipe.</summary>
         protected virtual void SentRequest()
         {

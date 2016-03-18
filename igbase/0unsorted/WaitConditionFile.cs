@@ -517,7 +517,7 @@ namespace IG.Lib
 
         /// <summary>Monitors the specified file and successively blocks until it is created and then 
         /// until it is removed. This procedure is repeated twice.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         public static void ExampleBlockCreateRemove(string filePath)
         {
             new Example().ExampleBlockCreateRemove(filePath);
@@ -525,7 +525,7 @@ namespace IG.Lib
 
         /// <summary>Monitors the specified file and successively blocks until it is created and then 
         /// until it is removed.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
         public static void ExampleBlockCreateRemove(string filePath, int numSwitches)
         {
@@ -534,9 +534,9 @@ namespace IG.Lib
 
         /// <summary>Monitors the specified file and successively blocks until it is created and then 
         /// until it is removed.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
-        /// <param name="directory">If true then creation/removal of a directory is waiting.</param>
+        /// <param name="waitDirectory">If true then creation/removal of a directory is waiting.</param>
         public static void ExampleBlockCreateRemove(string filePath, int numSwitches, bool waitDirectory)
         {
             new Example().ExampleBlockCreateRemove(filePath, numSwitches, waitDirectory);
@@ -546,24 +546,24 @@ namespace IG.Lib
 
         // SPEED TESTS (what event rates blocking functions can handle):
 
-        /// <summary>Test of speed of reaction of file/directory creation and removal blocking waits.
+        /// <summary>Test of speed of reaction of file/ directory creation and removal blocking waits.
         /// A specified number of alternate creations and removals are perfomed in a parallel
         /// thread, with specified delay between them. In the main thread, blocking waits are
         /// performed waiting for creation/removal in an infinite loop, and it is counted how
         /// many events are captured and how many are missed.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         public static void TestSpeedBlockCreateRemove(string filePath)
         {
             new Example().TestSpeedBlockCreateRemove(filePath);
         }
 
 
-        /// <summary>Test of speed of reaction of file/directory creation and removal blocking waits.
+        /// <summary>Test of speed of reaction of file/ directory creation and removal blocking waits.
         /// A specified number of alternate creations and removals are perfomed in a parallel
         /// thread, with specified delay between them. In the main thread, blocking waits are
         /// performed waiting for creation/removal in an infinite loop, and it is counted how
         /// many events are captured and how many are missed.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
         /// <param name="sleepMs">Number of milliseconds to sleep between examples.</param>
         public static void TestSpeedBlockCreateRemove(string filePath, int numSwitches, int sleepMs)
@@ -572,15 +572,15 @@ namespace IG.Lib
         }
 
 
-        /// <summary>Test of speed of reaction of file/directory creation and removal blocking waits.
+        /// <summary>Test of speed of reaction of file/ directory creation and removal blocking waits.
         /// A specified number of alternate creations and removals are perfomed in a parallel
         /// thread, with specified delay between them. In the main thread, blocking waits are
         /// performed waiting for creation/removal in an infinite loop, and it is counted how
         /// many events are captured and how many are missed.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
         /// <param name="sleepMs">Number of milliseconds to sleep between examples.</param>
-        /// <param name="directory">If true then creation/removal of a directory is waiting.</param>
+        /// <param name="waitDirectory">If true then creation/removal of a directory is waiting.</param>
         public static void TestSpeedBlockCreateRemove(string filePath, int numSwitches,
                 int sleepMs, bool waitDirectory)
         {
@@ -1041,7 +1041,7 @@ namespace IG.Lib
 
         /// <summary>Monitors the specified file and successively blocks until it is created and then 
         /// until it is removed. This procedure is repeated twice.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         public static void ExampleBlockCreateRemoveLatence(string filePath)
         {
             new ExampleLatence().ExampleBlockCreateRemove(filePath);
@@ -1049,7 +1049,7 @@ namespace IG.Lib
 
         /// <summary>Monitors the specified file and successively blocks until it is created and then 
         /// until it is removed.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
         public static void ExampleBlockCreateRemoveLatence(string filePath, int numSwitches)
         {
@@ -1058,9 +1058,9 @@ namespace IG.Lib
 
         /// <summary>Monitors the specified file and successively blocks until it is created and then 
         /// until it is removed.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
-        /// <param name="directory">If true then creation/removal of a directory is waiting.</param>
+        /// <param name="waitDirectory">If true then creation/removal of a directory is waiting.</param>
         public static void ExampleBlockCreateRemoveLatence(string filePath, int numSwitches, bool waitDirectory)
         {
             new ExampleLatence().ExampleBlockCreateRemove(filePath, numSwitches, waitDirectory);
@@ -1075,7 +1075,7 @@ namespace IG.Lib
         /// thread, with specified delay between them. In the main thread, blocking waits are
         /// performed waiting for creation/removal in an infinite loop, and it is counted how
         /// many events are captured and how many are missed.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         public static void TestSpeedBlockCreateRemoveLatence(string filePath)
         {
             new ExampleLatence().TestSpeedBlockCreateRemove(filePath);
@@ -1087,7 +1087,7 @@ namespace IG.Lib
         /// thread, with specified delay between them. In the main thread, blocking waits are
         /// performed waiting for creation/removal in an infinite loop, and it is counted how
         /// many events are captured and how many are missed.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
         /// <param name="sleepMs">Number of milliseconds to sleep between examples.</param>
         public static void TestSpeedBlockCreateRemoveLatence(string filePath, int numSwitches, int sleepMs)
@@ -1101,10 +1101,10 @@ namespace IG.Lib
         /// thread, with specified delay between them. In the main thread, blocking waits are
         /// performed waiting for creation/removal in an infinite loop, and it is counted how
         /// many events are captured and how many are missed.</summary>
-        /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+        /// <param name="filePath">File whose creation and removal is monitored.</param>
         /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
         /// <param name="sleepMs">Number of milliseconds to sleep between examples.</param>
-        /// <param name="directory">If true then creation/removal of a directory is waiting.</param>
+        /// <param name="waitDirectory">If true then creation/removal of a directory is waiting.</param>
         public static void TestSpeedBlockCreateRemoveLatence(string filePath, int numSwitches,
                 int sleepMs, bool waitDirectory)
         {
@@ -1173,7 +1173,7 @@ namespace IG.Lib
 
             /// <summary>Monitors the specified file and successively blocks until it is created and then 
             /// until it is removed. This procedure is repeated twice.</summary>
-            /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+            /// <param name="filePath">File whose creation and removal is monitored.</param>
             public void ExampleBlockCreateRemove(string filePath)
             {
                 lock (lockExample)
@@ -1184,7 +1184,7 @@ namespace IG.Lib
 
             /// <summary>Monitors the specified file and successively blocks until it is created and then 
             /// until it is removed.</summary>
-            /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+            /// <param name="filePath">File whose creation and removal is monitored.</param>
             /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
             public void ExampleBlockCreateRemove(string filePath, int numSwitches)
             {
@@ -1196,9 +1196,9 @@ namespace IG.Lib
 
             /// <summary>Monitors the specified file and successively blocks until it is created and then 
             /// until it is removed.</summary>
-            /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+            /// <param name="filePath">File whose creation and removal is monitored.</param>
             /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
-            /// <param name="directory">If true then creation/removal of a directory is waiting.</param>
+            /// <param name="waitDirectory">If true then creation/removal of a directory is waiting.</param>
             public void ExampleBlockCreateRemove(string filePath, int numSwitches, bool waitDirectory)
             {
                 lock (lockExample)
@@ -1299,7 +1299,7 @@ namespace IG.Lib
             /// thread, with specified delay between them. In the main thread, blocking waits are
             /// performed waiting for creation/removal in an infinite loop, and it is counted how
             /// many events are captured and how many are missed.</summary>
-            /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+            /// <param name="filePath">File whose creation and removal is monitored.</param>
             public void TestSpeedBlockCreateRemove(string filePath)
             {
                 TestSpeedBlockCreateRemove(filePath, 100 /* numSwitches */, 10 /* SleepMs */);
@@ -1310,7 +1310,7 @@ namespace IG.Lib
             /// thread, with specified delay between them. In the main thread, blocking waits are
             /// performed waiting for creation/removal in an infinite loop, and it is counted how
             /// many events are captured and how many are missed.</summary>
-            /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+            /// <param name="filePath">File whose creation and removal is monitored.</param>
             /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
             /// <param name="sleepMs">Number of milliseconds to sleep between examples.</param>
             public void TestSpeedBlockCreateRemove(string filePath, int numSwitches, int sleepMs)
@@ -1324,10 +1324,10 @@ namespace IG.Lib
             /// thread, with specified delay between them. In the main thread, blocking waits are
             /// performed waiting for creation/removal in an infinite loop, and it is counted how
             /// many events are captured and how many are missed.</summary>
-            /// <param name="inputFilePath">File whose creation and removal is monitored.</param>
+            /// <param name="filePath">File whose creation and removal is monitored.</param>
             /// <param name="numSwitches">Number of iterations (creation/removal waits).</param>
             /// <param name="sleepMs">Number of milliseconds to sleep between examples.</param>
-            /// <param name="directory">If true then creation/removal of a directory is waiting.</param>
+            /// <param name="waitDirectory">If true then creation/removal of a directory is waiting.</param>
             public void TestSpeedBlockCreateRemove(string filePath, int numSwitches, 
                     int sleepMs, bool waitDirectory)
             {

@@ -14,7 +14,7 @@ namespace IG.Num
     /// working through file system.</summary>
     /// <remarks>WARNING:
     /// This module is taken from Dragonfly opt. server and adapted for purpose of some
-    /// projects. If necessary to further develop, synchronize (& possibly merge) with
+    /// projects. If necessary to further develop, synchronize (and possibly merge) with
     /// Dragonfly, otherwise there will be problems with consistent development of both branches.</remarks>
     /// $A Igor Jul08 Nov09 Mar11;
     static public class OptFileConst

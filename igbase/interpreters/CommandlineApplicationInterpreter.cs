@@ -425,6 +425,7 @@ namespace IG.Lib
         /// number of frames below the top stack frame.
         /// <para>Null is returned if the variable does not exist on that frame.</para></summary>
         /// <param name="cmdThread">Thread where this method is executed.</param>
+        /// <param name="varName">Name of the variable to be returned.</param>
         /// <param name="framesBelowTop">Number of frames below the top-most stack frame where the 
         /// variable is defined.</param>
         /// <returns></returns>
@@ -501,9 +502,10 @@ namespace IG.Lib
             }
         }
 
-        /// <summary>Returns value of the specified global variable, if such a global variable exists.</summary>
+        /// <summary>Assigns value to the specified global variable, if such a global variable exists.</summary>
         /// <param name="varName">Name of the variable.</param>
         /// <value>Value that is assigned to the variable.</value>
+        /// <param name="varValue">Value to be assigned.</param>
         public virtual void SetGetGlobalVariableValue(string varName, string varValue)
         {
             lock (Lock)
@@ -1233,7 +1235,7 @@ namespace IG.Lib
         /// <summary>Runs all commands that are written in a file.
         /// Each line of a file is interpreted as a single command, consisting of command name followed by arguments.</summary>
         /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
-        /// <param name="inputFilePath">Path to the file containing commands.</param>
+        /// <param name="filePath">Path to the file containing commands.</param>
         /// <returns>Return value of the last command.</returns>
         public virtual string RunFile(CommandThread cmdThread, string filePath)
         {
@@ -2377,7 +2379,7 @@ namespace IG.Lib
         /// <param name="commandArguments">Command arguments.</param>
         /// <returns>Identification number of the parallel job that take over execution of the command.
         /// Queries about job progress and results can be made by using this identification number.</returns>
-        /// <seealso cref="RunParallelRepeat(string, string[])"/>
+        /// <seealso cref="RunParallelRepeat(int, string, string[])"/>
         public int RunParallel(string command, string[] commandArguments)
         {
             return RunParallelRepeat(1, command, commandArguments)[0];
@@ -2959,7 +2961,6 @@ namespace IG.Lib
         ///     etc. <br/>
         /// </summary>
         /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <param name="setCommandResult">If true then in any case variable value is set to the result of 
@@ -3476,7 +3477,7 @@ namespace IG.Lib
                 }
             }
             EnterBlock(cmdThread, executeCommands, saveCommands);
-            return null;
+            return ret;
         }
 
         /// <summary>Command.
@@ -3503,7 +3504,7 @@ namespace IG.Lib
             //bool saveCommands = true;
             if (args != null)
             {
-                bool parsed;
+                //bool parsed;
                 if (args.Length >= 1)
                     throw new Exception("Command " + cmdName + " can not have arguments.");
             }
@@ -3551,7 +3552,7 @@ namespace IG.Lib
                     throw new ArgumentException("Argument is not an integer: " + args[0]);
             }
             EnterRepeatBlock(cmdThread, numExecutions);
-            return null;
+            return ret;
         }
 
         /// <summary>Command.
@@ -3640,7 +3641,8 @@ namespace IG.Lib
 
         /// <summary>Command.
         /// Exits the current JavaScript expression block. If execution is active then the block of commands is sent to the
-        /// internal JavaScript evaluator for execution.</param>
+        /// internal JavaScript evaluator for execution.</summary>
+        /// <param name="cmdThread">Commmand thread that executes the block..</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>null.</returns>
@@ -5217,15 +5219,14 @@ namespace IG.Lib
                 : base(pipeName, serverAddress)
             { }
 
-            /// <summary>Constructs a new named pipe client with the specified pipe name, server address (<see cref="DefaultServerAddress"/>)
+            /// <summary>Constructs a new named pipe client with the specified pipe name, server address (DefaultServerAddress"/>)
             /// and other paramters.</summary>
             /// <param name="pipeName">Name of the pipe.</param>
             /// <param name="serverAddress">Address of the server where named pipe server is run. If null or empty string then the
-            /// default server address is uesd (<see cref="DefaultServerAddress"/>), referring to the current computer.</param>
+            /// default server address is uesd (<see cref="NamedPipeClientBase.DefaultServerAddress"/>), referring to the current computer.</param>
             /// <param name="requestEnd">Line that ends each request. If null or empty string then the requests are single line.</param>
             /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
-            /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
-            /// i.e. <see cref="DefaultErrorBegin"/></param>
+            /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use.</param>
             public InterpreterPipeClient(string pipeName, string serverAddress, string requestEnd, string responseEnd, string errorBegin) :
                 base(pipeName, serverAddress, requestEnd, responseEnd, errorBegin)
             { }
@@ -5273,7 +5274,7 @@ namespace IG.Lib
             /// <param name="requestEnd">Line that ends each request. If null or empty string then the requests are single line.</param>
             /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
             /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
-            /// i.e. <see cref="DefaultErrorBegin"/></param>
+            /// i.e. DefaultErrorBegin.</param>
             /// <param name="startImmediately">If true then server is starrted immediately, otherwise this is postponed.</param>
             public InterpreterPipeServer(CommandThread cmdThread, string pipeName, 
                 bool startImmediately, string requestEnd, string responseEnd, string errorBegin) :
@@ -5281,7 +5282,7 @@ namespace IG.Lib
             { 
                 Interpreter = cmdThread.Interpreter;
                 if (startImmediately)
-                    ThreadServe();
+                    ThreadServe(); 
             }
 
             protected ICommandLineApplicationInterpreter _interpreter;
@@ -5294,7 +5295,6 @@ namespace IG.Lib
 
 
             /// <summary>Calculates and returns response </summary>
-            /// <param name="cmdThread">Commandline interpreter thread in which command is executed.</param>
             /// <param name="request"></param>
             public override string GetResponse(string request)
             {
@@ -5488,7 +5488,7 @@ namespace IG.Lib
         /// Creates a new server that listens for interpreter commands on a named pipe, executes them, and writes result
         /// back to the named pipe.
         /// Command arguments are pipe name and server name (optional, if not specified then server name is the same as pipe name).</summary>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
+        /// <param name="cmdThread">Command thread that performs execution.</param>
         /// <param name="cmdName">Command name.</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>A string containing some basic data on the created pipe server.</returns>
@@ -5922,7 +5922,6 @@ namespace IG.Lib
         /// The rest of the arguments (if any) are directly transferred to the executable method of the script
         /// and are also used as argument to script initialization method.</summary>
         /// <param name="cmdThread">Command thread that is being executed.</param>
-        /// <param name="interpreter">Interpreter on which commad is run.</param>
         /// <param name="cmdName">Name of the command</param>
         /// <param name="args">Command arguments.</param>
         /// <returns>Result of command execution.</returns>
@@ -5969,7 +5968,7 @@ namespace IG.Lib
         /// Dynamically loads (temporarily, just for execution of the current commad) a class form the 
         /// script contained in the specified file and executes its executable method.
         /// The file must contain the script that is dynamically loaded and executed, in form of definition of
-        /// the appropriate class of type <typeparamref name="ILoadableScript"/>. 
+        /// the appropriate class of type <see cref="ILoadableScript"/>. 
         /// The dynamically loadable script class is loaded from the file and instantiated by the
         /// <see cref="LoadableScriptInterpreter"/> loadable script-based interpreter object.
         /// Interpreter command arguments:

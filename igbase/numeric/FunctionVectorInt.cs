@@ -24,6 +24,14 @@ namespace IG.Num
         /// <summary>Returns a short description of the function.</summary>
         string Description { get; }
 
+        /// <summary>Sets number of parameters of the current vector function to the specified value.</summary>
+        /// <param name="num">Number of parameters.</param>
+        void SetNumParameters(int num);
+
+        /// <summary>Sets number of values of the vector function to the specified value.</summary>
+        /// <param name="num">Number of values.</param>
+        void SetNumValues(int num);
+
         /// <summary>Gets number of parameters of the current vector function
         /// (-1 for not defined, in case that function works with different 
         /// numbers of parameters).</summary>

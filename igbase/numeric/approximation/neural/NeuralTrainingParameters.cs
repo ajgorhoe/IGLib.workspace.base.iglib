@@ -890,7 +890,7 @@ namespace IG.Num
         /// <summary>Saves (serializes) the specified training parameters object to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="trainingParameters">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file into which object is is saved.</param>
+        /// <param name="filePath">Path to the file into which object is is saved.</param>
         public static void SaveJson(NeuralTrainingParameters trainingParameters, string filePath)
         {
             SaveJson(trainingParameters, filePath, false /* append */ );
@@ -898,7 +898,7 @@ namespace IG.Num
 
         /// <summary>Saves (serializes) the specified training parameters object to the specified JSON file.</summary>
         /// <param name="trainingParameters">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file into which object is is saved.</param>
+        /// <param name="filePath">Path to the file into which object is is saved.</param>
         /// <param name="append">Specifies whether serialized data is appended at the end of the file
         /// in the case that the file already exists.</param>
         public static void SaveJson(NeuralTrainingParameters trainingParameters, string filePath, bool append)
@@ -910,7 +910,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores (deserializes) a training parameters object from the specified file in JSON format.</summary>
-        /// <param name="inputFilePath">File from which object data is restored.</param>
+        /// <param name="filePath">File from which object data is restored.</param>
         /// <param name="trainingParametersRestored">Object that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref NeuralTrainingParameters trainingParametersRestored)
         {
@@ -925,7 +925,7 @@ namespace IG.Num
         /// <summary>Saves (serializes) the specified array of training parameters objects to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="trainingParameters">Array that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file into which object is is saved.</param>
+        /// <param name="filePath">Path to the file into which object is is saved.</param>
         public static void SaveJson(NeuralTrainingParameters[] trainingParameters, string filePath)
         {
             SaveJson(trainingParameters, filePath, false /* append */ );
@@ -933,7 +933,7 @@ namespace IG.Num
 
         /// <summary>Saves (serializes) the specified array of training parameters objects to the specified JSON file.</summary>
         /// <param name="trainingParameters">Array that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file into which object is is saved.</param>
+        /// <param name="filePath">Path to the file into which object is is saved.</param>
         /// <param name="append">Specifies whether serialized data is appended at the end of the file
         /// in the case that the file already exists.</param>
         public static void SaveJson(NeuralTrainingParameters[] trainingParameters, string filePath, bool append)
@@ -946,7 +946,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores (deserializes) an array of training parameters objects from the specified file in JSON format.</summary>
-        /// <param name="inputFilePath">File from which array of objects is restored.</param>
+        /// <param name="filePath">File from which array of objects is restored.</param>
         /// <param name="trainingParametersRestored">Array of objects that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref NeuralTrainingParameters[] trainingParametersRestored)
         {
@@ -962,7 +962,7 @@ namespace IG.Num
         /// <summary>Saves (serializes) the specified list of training parameters objects to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="trainingParameters">List that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file into which object is is saved.</param>
+        /// <param name="filePath">Path to the file into which object is is saved.</param>
         public static void SaveJson(List<NeuralTrainingParameters> trainingParameters, string filePath)
         {
             SaveJson(trainingParameters, filePath, false /* append */ );
@@ -970,7 +970,7 @@ namespace IG.Num
 
         /// <summary>Saves (serializes) the specified list of training parameters objects to the specified JSON file.</summary>
         /// <param name="trainingParameters">List that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file into which object is is saved.</param>
+        /// <param name="filePath">Path to the file into which object is is saved.</param>
         /// <param name="append">Specifies whether serialized data is appended at the end of the file
         /// in the case that the file already exists.</param>
         public static void SaveJson(List<NeuralTrainingParameters> trainingParameters, string filePath, bool append)
@@ -983,7 +983,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores (deserializes) a list of training parameters objects from the specified file in JSON format.</summary>
-        /// <param name="inputFilePath">File from which list of objects is restored.</param>
+        /// <param name="filePath">File from which list of objects is restored.</param>
         /// <param name="trainingParametersRestored">Array of objects that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref List<NeuralTrainingParameters> trainingParametersRestored)
         {
@@ -995,16 +995,16 @@ namespace IG.Num
 
         /// <summary>Saves the specified list of training parameters objects to the specified CSV file.</summary>
         /// <param name="trainingParameters">List that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file into which object is is saved.</param>
+        /// <param name="filePath">Path to the file into which object is is saved.</param>
         /// $A Tako78 Sep12;
         public static void SaveCSV(List<NeuralTrainingParameters> trainingParameters, string filePath)
         {
             int numSamples;
             int outputLenght;
-            int numElements;
+            //int numElements;
             numSamples = trainingParameters.Count;
             outputLenght = trainingParameters[0].OutputLength;
-            numElements = 10;
+            //numElements = 10;
             using (StreamWriter writer = new StreamWriter(filePath, false))
             {
                 // Settings
@@ -1138,6 +1138,8 @@ namespace IG.Num
         /// <summary> Calculate average number of the desired number of first elements in the convergence list. </summary>
         /// <param name="ErrorConvergence">List of convergence errors. </param>
         /// <param name="NumLastErrors"> Number of elemnts in the convergence list. </param>
+        /// <param name="NumBundles">Number of epoch bundles.</param>
+        /// <param name="scalingLength">Scaling length.</param>
         /// <returns> Average number. </returns>
         protected static double ErrorAverageCalc(List<IVector> ErrorConvergence, int NumLastErrors, int NumBundles, IVector scalingLength)
         {
@@ -1171,6 +1173,7 @@ namespace IG.Num
         /// <summary> Calculate average number of the desired number of first elements in the convergence list. </summary>
         /// <param name="ErrorConvergence">List of convergence errors. </param>
         /// <param name="NumLastErrors"> Number of elemnts in the convergence list. </param>
+        /// <param name="NumBundles">Number of bundles.</param>
         /// <returns> Average number. </returns>
         protected static double ErrorAverageCalc(List<IVector> ErrorConvergence, int NumLastErrors, int NumBundles)
         {
@@ -2060,6 +2063,7 @@ namespace IG.Num
         /// <param name="minNeurons"> Minimum number of neurons. </param>
         /// <param name="maxNeurons"> Maximum number of neurons. </param>
         /// <param name="numNeurons"> Number of neurons in sequence. </param>
+        /// <param name="growthFactorref">Growth factor.</param>
         /// <param name="neurpnsTable"> Table of neurons. </param>
         /// $A Tako78 Nov12;
         private void PrepareNeuronsTable(int minNeurons, int maxNeurons, int numNeurons, double growthFactorref, ref int[] neurpnsTable)
@@ -2549,16 +2553,16 @@ namespace IG.Num
 
         /// <summary>Saves (serializes) the specified array of training limits objects to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
-        /// <param name="trainingParameters">Array that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file into which object is is saved.</param>
+        /// <param name="trainingLimits">Contains neural network architectural limits and limits for training parameters.</param>
+        /// <param name="filePath">Path to the file into which object is is saved.</param>
         public static void SaveJson(NeuralTrainingLimits trainingLimits, string filePath)
         {
             SaveJson(trainingLimits, filePath, false /* append */ );
         }
 
         /// <summary>Saves (serializes) the specified array of training limits objects to the specified JSON file.</summary>
-        /// <param name="trainingParameters">Array that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file into which object is is saved.</param>
+        /// <param name="trainingLimits">Contains neural network architectural limits and limits for training parameters.</param>
+        /// <param name="filePath">Path to the file into which object is is saved.</param>
         /// <param name="append">Specifies whether serialized data is appended at the end of the file
         /// in the case that the file already exists.</param>
         public static void SaveJson(NeuralTrainingLimits trainingLimits, string filePath, bool append)
@@ -2570,8 +2574,8 @@ namespace IG.Num
         }
 
         /// <summary>Restores (deserializes) an array of training parameters objects from the specified file in JSON format.</summary>
-        /// <param name="inputFilePath">File from which array of objects is restored.</param>
-        /// <param name="trainingParametersRestored">Array of objects that is restored by deserialization.</param>
+        /// <param name="filePath">File from which array of objects is restored.</param>
+        /// <param name="trainingLimits">Contains neural network architectural limits and limits for training parameters.</param>
         public static void LoadJson(string filePath, ref NeuralTrainingLimits trainingLimits)
         {
             ISerializer serializer = new SerializerJson();
@@ -2612,7 +2616,7 @@ namespace IG.Num
 
         public NeuralTrainingLimits _trainingLimits = null;
 
-        /// <summary>Contains Parameters that define neural network architecture limits and trainig parameter limits.<summary>
+        /// <summary>Contains Parameters that define neural network architecture limits and trainig parameter limits.</summary>
         public NeuralTrainingLimits TrainingLimits
         {
             get { return _trainingLimits; }
@@ -2630,7 +2634,7 @@ namespace IG.Num
         public List<NeuralTrainingParameters> _trainingParameters = null;
 
         /// <summary>Contains Parameters that define neural network architecture and trainig procedure, together with 
-        /// achieved results after training such as various error norms.<summary>
+        /// achieved results after training such as various error norms.</summary>
         public List<NeuralTrainingParameters> TrainingParameters
         {
             get 
@@ -2758,7 +2762,7 @@ namespace IG.Num
         }
 
         /// <summary>Calculates and stores the multidimensional indices of an element of the
-        /// multidimensional table of training parameters & results.</summary>
+        /// multidimensional table of training parameters amd results.</summary>
         /// <param name="oneDimensionalIndex">One dimensional index that defines the position of the 
         /// element in the list of elements.</param>
         /// <param name="tableIndices">Variable where multidimensional indices of the element are stored.</param>
@@ -2801,18 +2805,18 @@ namespace IG.Num
 
         // Saving / restoring training parameters and results to a JSON file:
 
-        /// <summary>Saves (serializes) the specified training parameters object to the specified JSON file.
+        /// <summary>Saves (serializes) the specified training results object to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
-        /// <param name="trainingParameters">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file into which object is is saved.</param>
+        /// <param name="trainingResults">Object that is saved to a file.</param>
+        /// <param name="filePath">Path to the file into which object is is saved.</param>
         public static void SaveJson(NeuralTrainingTable trainingResults, string filePath)
         {
             SaveJson(trainingResults, filePath, false /* append */ );
         }
 
-        /// <summary>Saves (serializes) the specified training parameters object to the specified JSON file.</summary>
-        /// <param name="trainingParameters">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file into which object is is saved.</param>
+        /// <summary>Saves (serializes) the specified training results object to the specified JSON file.</summary>
+        /// <param name="trainingResults">Object that is saved to a file.</param>
+        /// <param name="filePath">Path to the file into which object is is saved.</param>
         /// <param name="append">Specifies whether serialized data is appended at the end of the file
         /// in the case that the file already exists.</param>
         public static void SaveJson(NeuralTrainingTable trainingResults, string filePath, bool append)
@@ -2823,9 +2827,9 @@ namespace IG.Num
             serializer.Serialize<NeuralTrainingTableDto>(dtoOriginal, filePath, append);
         }
 
-        /// <summary>Restores (deserializes) a training parameters object from the specified file in JSON format.</summary>
-        /// <param name="inputFilePath">File from which object data is restored.</param>
-        /// <param name="trainingParametersRestored">Object that is restored by deserialization.</param>
+        /// <summary>Restores (deserializes) a training results object from the specified file in JSON format.</summary>
+        /// <param name="filePath">File from which object data is restored.</param>
+        /// <param name="trainingResultsRestored">Object that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref NeuralTrainingTable trainingResultsRestored)
         {
             ISerializer serializer = new SerializerJson();
@@ -2864,7 +2868,7 @@ namespace IG.Num
 
         #region ComparerClasses
 
-        /// <summary>Base comparer class (implementation of the <see cref="IComparer<NeuralTrainingParameters>"/>
+        /// <summary>Base comparer class (implementation of the <see cref="IComparer{NeuralTrainingParameters}"/>
         /// interface) for conmparing objects of type <see cref="NeuralTrainingParameters"/></summary>
         public class ComparerBase : IComparer<NeuralTrainingParameters>
         {
@@ -3278,14 +3282,14 @@ namespace IG.Num
                 }
                 else
                 {
-                    if (a.TrainingTime == null)
+                    if (a.TrainingTime == 0)
                     {
-                        if (b.TrainingTime == null)
+                        if (b.TrainingTime == 0)
                             return 0;
                         else
                             return -1;
                     }
-                    else if (b.TrainingTime == null)
+                    else if (b.TrainingTime == 0)
                     {
                         return 1;
                     }

@@ -210,7 +210,7 @@ namespace IG.Lib.Copy
 
         /// <summary>Changes message separator for the current object.
         /// <para>This setter method is provided in order to keep the <see cref="MessageSeparator"/> setter protected.</para></summary>
-        /// <param name="messagePrefix">New message separator must not be a separator or a white space character.</param>
+        /// <param name="messageSeparator">New message separator must not be a separator or a white space character.</param>
         public void SetMessageSeparator(char messageSeparator)
         {
             MessageSeparator = messageSeparator;
@@ -246,7 +246,7 @@ namespace IG.Lib.Copy
 
         /// <summary>Changes message false separator for the current object.
         /// <para>This setter method is provided in order to keep the <see cref="MessageFalseSeparator"/> setter protected.</para></summary>
-        /// <param name="messagePrefix">New message false separator must not be a separator or a white space character.</param>
+        /// <param name="messageFalseSeparator">New message false separator must not be a separator or a white space character.</param>
         public void SetMessageFalseSeparator(char messageFalseSeparator)
         {
             MessageFalseSeparator = messageFalseSeparator;

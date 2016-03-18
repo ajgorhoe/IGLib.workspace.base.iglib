@@ -49,8 +49,7 @@ namespace IG.Lib
         /// <param name="pipeName">Name of the pipe.</param>
         /// <param name="requestEnd">Line that ends each request. If null or empty string then the requests are single line.</param>
         /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
-        /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
-        /// i.e. <see cref="DefaultErrorBegin"/></param>
+        /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use</param>
         /// <param name="startImmediately">If true then server is started immediately after created.</param>
         public NamedPipeServerBase(string pipeName, string requestEnd, string responseEnd, string errorBegin,
             bool startImmediately = true) :
@@ -63,7 +62,7 @@ namespace IG.Lib
                 this.IsMultilineRequest = true;
                 this.MsgRequestEnd = requestEnd;
             }
-            if (string.IsNullOrEmpty(responseEnd))
+            if (string.IsNullOrEmpty(responseEnd)) 
                 this.IsMultilineResponse = false;
             else
             {
@@ -113,6 +112,10 @@ namespace IG.Lib
 
         private NamedPipeServerStream _serverPipe = null;
 
+
+        // TODO: remove when testing is done.
+        private bool _isTesting = true; 
+
         /// <summary>Named pipe used for communication by the server.</summary>
         public NamedPipeServerStream ServerPipe
         {
@@ -122,7 +125,7 @@ namespace IG.Lib
                 {
                     if (_serverPipe == null)
                     {
-                        if (true)  // $$ TEST
+                        if (_isTesting)  // $$ TEST
                             _serverPipe = new NamedPipeServerStream(PipeName);
                         else
                             _serverPipe = new NamedPipeServerStream(PipeName, PipeDirection.InOut);
@@ -192,7 +195,6 @@ namespace IG.Lib
 
 
         /// <summary>Waits until a client connects to the specified server pipe.</summary>
-        /// <param name="pipe">Pipe that waits for connection to be established.</param>
         protected override void WaitForConnection()
         {
             WaitForConnection(ServerPipe);
@@ -406,7 +408,7 @@ namespace IG.Lib
         /// <param name="requestEnd">Line that ends each request. If null or empty string then the requests are single line.</param>
         /// <param name="responseEnd">Line that ends each response. If null or empty string then the responses are single line.</param>
         /// <param name="errorBegin">String that begins an error response. If null or empty string then default string remains in use,
-        /// i.e. <see cref="DefaultErrorBegin"/></param>
+        /// i.e. <see cref="IpcStreamClientServerBase2.DefaultErrorBegin"/></param>
         public NamedPipeClientBase(string pipeName, string serverAddress, string requestEnd, string responseEnd, string errorBegin):
             this(pipeName, serverAddress)
         {
@@ -515,6 +517,8 @@ namespace IG.Lib
 
         private NamedPipeClientStream _clientPipe = null;
 
+        private bool _test = true;  // TODO: remove when finished testing!
+
         /// <summary>Named pipe used for communication by the server.</summary>
         public NamedPipeClientStream ClientPipe
         {
@@ -524,7 +528,7 @@ namespace IG.Lib
                 {
                     if (_clientPipe == null)
                     {
-                        if (true) // $$ TEST
+                        if (_test) // $$ TEST
                             _clientPipe = new NamedPipeClientStream(PipeName);
                         else
                             _clientPipe = new NamedPipeClientStream(ServerAddress, PipeName, PipeDirection.InOut);

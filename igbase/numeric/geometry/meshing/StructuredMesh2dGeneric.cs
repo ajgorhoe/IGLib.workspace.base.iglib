@@ -178,7 +178,7 @@ namespace IG.Num
 
         /// <summary>Adds the specified index field to the collection of index fields under the specified name.
         /// <para>If the field already has a name then its name is replaced by the specified name, 
-        /// unless the specified name is null.</summary>
+        /// unless the specified name is null.</para></summary>
         /// <param name="field">Field to be added to the collection.</param>
         /// <param name="name">Name under which the field is added to the collection.</param>
         public void AddIndexField(TIndexField field, string name)
@@ -332,7 +332,7 @@ namespace IG.Num
 
         /// <summary>Adds the specified scalar field to the collection of scalar fields under the specified name.
         /// <para>If the field already has a name then its name is replaced by the specified name, 
-        /// unless the specified name is null.</summary>
+        /// unless the specified name is null.</para></summary>
         /// <param name="field">Field to be added to the collection.</param>
         /// <param name="name">Name under which the field is added to the collection.</param>
         public void AddScalarField(TScalarField field, string name)
@@ -487,7 +487,7 @@ namespace IG.Num
 
         /// <summary>Adds the specified vector field to the collection of vector fields under the specified name.
         /// <para>If the field already has a name then its name is replaced by the specified name, 
-        /// unless the specified name is null.</summary>
+        /// unless the specified name is null.</para></summary>
         /// <param name="field">Field to be added to the collection.</param>
         /// <param name="name">Name under which the field is added to the collection.</param>
         public void AddVectorField(TVectorField field, string name)
@@ -642,7 +642,7 @@ namespace IG.Num
 
         /// <summary>Adds the specified tensor field to the collection of tensor fields under the specified name.
         /// <para>If the field already has a name then its name is replaced by the specified name, 
-        /// unless the specified name is null.</summary>
+        /// unless the specified name is null.</para></summary>
         /// <param name="field">Field to be added to the collection.</param>
         /// <param name="name">Name under which the field is added to the collection.</param>
         public void AddTensorField(TTensorField field, string name)

@@ -522,7 +522,6 @@ namespace IG.Num
 
 
         /// <summary>Creates and returns a new bounding box cast to the interface type IBoundingBox.</summary>
-        /// <param name="dimension">Bounding box dimension.</param>
         public override INeuralApproximator CreateObject()
         {
             if (string.IsNullOrEmpty(NeuralApproximatorType))

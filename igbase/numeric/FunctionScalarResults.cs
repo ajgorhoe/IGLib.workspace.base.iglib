@@ -208,7 +208,7 @@ namespace IG.Num
 
         /// <summary>Sets the vector of optimization parameters.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Vector reference to be assigned.</param>
         public virtual void SetParametersReference(IVector reference)
         {
             Calculated = false;
@@ -219,7 +219,7 @@ namespace IG.Num
 
         /// <summary>Returns specific optimization parameter.
         /// Throws exception if not defined or index out of bounds.</summary>
-        /// <param name="iindex">Index of parameter to be returned (counting from 0).</param>
+        /// <param name="index">Index of parameter to be returned (counting from 0).</param>
         public virtual double GetParameter(int index)
         { return Parameters[index]; }
 
@@ -245,7 +245,7 @@ namespace IG.Num
         public virtual double Value
         { get { return _value; } set { _value = value; } }
 
-        /// <summary>Returns the value of the function./summary>
+        /// <summary>Returns the value of the function.</summary>
         public virtual double GetValue()
         { return Value; }
 
@@ -284,7 +284,7 @@ namespace IG.Num
 
         /// <summary>Sets the function gradient.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         public virtual void SetGradientReference(IVector reference)
         {
             _Gradient = reference;
@@ -335,7 +335,7 @@ namespace IG.Num
 
         /// <summary>Sets the functions' Hessian.
         /// Only the reference is copied.</summary>
-        /// <param name="value">Reference to be assigned.</param>
+        /// <param name="reference">Reference to be assigned.</param>
         public virtual void SetHessianReference(IMatrix reference)
         { _Hessian = reference; }
 
@@ -523,7 +523,7 @@ namespace IG.Num
         #region Helper methods
 
         /// <summary>Copies data from another analysis results.</summary>
-        /// <param name="res">Analysis results which data is copied from.</param>
+        /// <param name="results">Analysis results which data is copied from.</param>
         public virtual void Copy(IScalarFunctionResults results)
         {
             this.CopyReferences = false;

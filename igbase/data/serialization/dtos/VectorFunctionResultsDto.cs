@@ -89,7 +89,7 @@ namespace IG.Num
         }
 
         /// <summary>Copies data from the current DTO to a vector object.</summary>
-        /// <param name="vec">Analysis results object that data is copied to.</param>
+        /// <param name="vectorFunctionRes">Analysis results object that data is copied to.</param>
         protected override void CopyToPlain(ref VectorFunctionResults vectorFunctionRes)
         {
             if (GetNull())
@@ -218,7 +218,7 @@ namespace IG.Num
         }
 
         /// <summary>Copies data from the current DTO to a vector function results object.</summary>
-        /// <param name="vec">Vector object that data is copied to.</param>
+        /// <param name="vectorFunctionRes">Vector object that data is copied to.</param>
         protected override void CopyToPlain(ref VectorFunctionResults vectorFunctionRes)
         {
             base.CopyToPlain(ref vectorFunctionRes);

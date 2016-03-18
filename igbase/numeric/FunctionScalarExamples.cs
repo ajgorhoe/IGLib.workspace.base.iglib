@@ -490,7 +490,6 @@ namespace IG.Num
         }
 
         /// <summary>Tells whether value of the function is defined by implementation. Always true for this case.</summary>
-        /// <param name="parameters">Vector of parameters at which derivatives are evaluated.</param>
         public override bool ValueDefined
         {
             get { return true; }
@@ -1014,12 +1013,11 @@ namespace IG.Num
             public ParaboloidSymmetric2D(): this(1.0)
             {  }
 
-            /// <summary>Creates a new transformed Rosenbrock's function.</summary>
-            /// <param name="transf">Affine transformation that is applied on parameters.
-            /// If null then the fuction is identical to the untransformed Rosenbrock function.</param>
+            /// <summary>Creates a new symmetric paraboloid function.</summary>
+            /// <param name="r0Square">Sqyare of diameter (?).</param>
             public ParaboloidSymmetric2D(double r0Square): base()
             {
-  
+                throw new NotImplementedException("This is yet to be defined.");
             }
 
             #endregion Construction

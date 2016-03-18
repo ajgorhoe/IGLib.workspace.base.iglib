@@ -243,7 +243,7 @@ namespace IG.Gr
         /// Primitives contained in descendant objects are excluded.</summary>
         /// <param name="i">Zero-based index of the primitive.</param>
         /// <returns>The specified primitive that is directly contained in the current graphic object.</returns>
-        /// <exception cref="">When index is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">When index is out of range.</exception>
         public virtual GraphicPrimitive GetDirectPrimitive(int i)
         {
             if (i < 0 || i >= _primitives.Count)
@@ -496,8 +496,8 @@ namespace IG.Gr
 
         /// <summary>Constructs a structured surface grid primitive in 3 dimensions.
         /// Grid co-ordinates are initialized to 0.</summary>
-        /// <param name="numx">Number of points in the first grid direction.</param>
-        /// <param name="numy">Number of points in the second grid direction.</param>
+        /// <param name="num1">Number of points in the first grid direction.</param>
+        /// <param name="num2">Number of points in the second grid direction.</param>
         public StructuredSurfaceGridPrimitive(int num1, int num2)
         {
             _mesh = new StructuredSurfaceMesh3D(num1, num2);

@@ -618,9 +618,10 @@ namespace IG.Num
 
             protected override double RefInverse(double x)
             {
-                return 0;
+                //return 0;
                 if (x != ConstantValue)
                     throw new Exception("Constant function of 1 variable does not have an inverse defined.");
+                else return 0;
             }
 
             public override bool InverseDefined

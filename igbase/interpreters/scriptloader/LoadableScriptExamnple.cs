@@ -16,7 +16,7 @@ namespace IG.Script
         
         #region Initialization
 
-        /// <summary>Creates the <typeparamref name="LoadableScriptExamnple"/> object.</summary>
+        /// <summary>Creates the <see name="LoadableScriptExamnple"/> object.</summary>
         public LoadableScriptExample()
             : base()
         {  }

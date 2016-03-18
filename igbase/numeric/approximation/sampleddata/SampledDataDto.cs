@@ -420,6 +420,9 @@ namespace IG.Num
         /// <remarks>This field was required by the Jozef Stefan optimization group.</remarks>
         public double DiscretizationStep = 0.0;
 
+        /// <summary>Number of sampling points.</summary>
+        public int NumSamplingPoints = 0;
+
 
         #endregion Data
 
@@ -445,6 +448,7 @@ namespace IG.Num
                 this.OptimizationIndexSpecified = objInput.OptimizationIndexSpecified;
                 this.OptimizationIndex = objInput.OptimizationIndex;
                 this.DiscretizationStep = objInput.DiscretizationStep;
+                this.NumSamplingPoints = objInput.NumSamplingPoints;
             }
         }
 
@@ -466,6 +470,7 @@ namespace IG.Num
                     objInput.OptimizationIndexSpecified = this.OptimizationIndexSpecified;
                     objInput.OptimizationIndex = this.OptimizationIndex;
                     objInput.DiscretizationStep = this.DiscretizationStep;
+                    objInput.NumSamplingPoints = this.NumSamplingPoints;
                 }
             }
         }

@@ -514,7 +514,6 @@ namespace IG.Num
             /// <summary>Calculates and returns value of the current 2D scalar function.</summary>
             /// <param name="x">First parameter.</param>
             /// <param name="y">Second parameter.</param>
-            /// <param name="z">Third parameter.</param>
             public override double Value(double x, double y)
             {
                 return _vectorFunction.Value1(x, y);
@@ -524,10 +523,8 @@ namespace IG.Num
             /// through the specified output variables.</summary>
             /// <param name="x">First parameter.</param>
             /// <param name="y">Second parameter.</param>
-            /// <param name="z">Third parameter.</param>
             /// <param name="gradx">First component of the returned gradient.</param>
             /// <param name="grady">Second component of the returned gradient.</param>
-            /// <param name="gradz">Third component of the returned gradient.</param>
             public override void Gradient(double x, double y, out double gradx, out double grady)
             {
                 _vectorFunction.Gradient1(x, y, out gradx, out grady);
@@ -558,7 +555,6 @@ namespace IG.Num
             /// <summary>Calculates and returns value of the current 2D scalar function.</summary>
             /// <param name="x">First parameter.</param>
             /// <param name="y">Second parameter.</param>
-            /// <param name="z">Third parameter.</param>
             public override double Value(double x, double y)
             {
                 return _vectorFunction.Value2(x, y);
@@ -568,10 +564,8 @@ namespace IG.Num
             /// through the specified output variables.</summary>
             /// <param name="x">First parameter.</param>
             /// <param name="y">Second parameter.</param>
-            /// <param name="z">Third parameter.</param>
             /// <param name="gradx">First component of the returned gradient.</param>
             /// <param name="grady">Second component of the returned gradient.</param>
-            /// <param name="gradz">Third component of the returned gradient.</param>
             public override void Gradient(double x, double y, out double gradx, out double grady)
             {
                 _vectorFunction.Gradient2(x, y, out gradx, out grady);
@@ -602,7 +596,6 @@ namespace IG.Num
             /// <summary>Calculates and returns value of the current 2D scalar function.</summary>
             /// <param name="x">First parameter.</param>
             /// <param name="y">Second parameter.</param>
-            /// <param name="z">Third parameter.</param>
             public override double Value(double x, double y)
             {
                 return _vectorFunction.Value3(x, y);
@@ -612,10 +605,8 @@ namespace IG.Num
             /// through the specified output variables.</summary>
             /// <param name="x">First parameter.</param>
             /// <param name="y">Second parameter.</param>
-            /// <param name="z">Third parameter.</param>
             /// <param name="gradx">First component of the returned gradient.</param>
             /// <param name="grady">Second component of the returned gradient.</param>
-            /// <param name="gradz">Third component of the returned gradient.</param>
             public override void Gradient(double x, double y, out double gradx, out double grady)
             {
                 _vectorFunction.Gradient3(x, y, out gradx, out grady);

@@ -19,7 +19,7 @@ namespace IG.Lib
     }
 
     /// <summary>Interpreter that can install commands from dynamically loaded (compiled) scripts and run them.
-    /// Script loader object of a type <typeparamref name="ScriptLoaderBase"/> is accessed through
+    /// Script loader object of a type <see name="ScriptLoaderBase"/> is accessed through
     /// a property that can be overridden in derived classes, such that a different script loader is used.
     /// This is importand because different libraries will be required for compilation in different contexts.
     /// Script loader property creates a new script loader on first access.</summary>
@@ -80,7 +80,7 @@ namespace IG.Lib
         SortedList<string, ILoadableScript> _commands = new SortedList<string, ILoadableScript>();
 
         /// <summary>Sorted list that contains commands as key-value pairs where the key is command name
-        /// and the corresponding value is a loadable script object of type <typeparamref name="ILoadableScript"/> 
+        /// and the corresponding value is a loadable script object of type <see name="ILoadableScript"/> 
         /// that can be executd.</summary>
         public SortedList<string, ILoadableScript> Commands
         { get { return _commands; } }
@@ -126,7 +126,7 @@ namespace IG.Lib
         /// <param name="commandName">Interpreter's name of the command; added command is installed 
         /// under this name on the current interpreter.</param>
         /// <param name="code">Script code containing definition of the loadable class that contains executable code of the command.</param>
-        /// <param name="classFillName">Name of the class containing loadable script code.</param>
+        /// <param name="className">Name of the class containing loadable script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object 
         /// that will perform execution of the added command.</param>
         public void AddCommandFromCode(string commandName, string code, string className, string[] initializationArguments)
@@ -150,9 +150,9 @@ namespace IG.Lib
         /// dynamically compiled from the script code contained in the specified file.</summary>
         /// <param name="commandName">Interpreter's name of the command; added command is installed 
         /// under this name on the current interpreter.</param>
-        /// <param name="inputFilePath">Path to the file containing script code containing definition of the 
+        /// <param name="filePath">Path to the file containing script code containing definition of the 
         /// loadable class that contains executable code of the command.</param>
-        /// <param name="classFillName">Name of the class containing loadable script code.</param>
+        /// <param name="className">Name of the class containing loadable script code.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object 
         /// that will perform execution of the added command.</param>
         public void AddCommandFromFile(string commandName, string filePath, string className, string[] initializationArguments)
@@ -166,7 +166,7 @@ namespace IG.Lib
         /// is extracted from the script code.</summary>
         /// <param name="commandName">Interpreter's name of the command; added command is installed 
         /// under this name on the current interpreter.</param>
-        /// <param name="inputFilePath">Path to the file containing script code containing definition of the 
+        /// <param name="filePath">Path to the file containing script code containing definition of the 
         /// loadable class that contains executable code of the command.</param>
         /// <param name="initializationArguments">Initialization arguments for the created object 
         /// that will perform execution of the added command.</param>

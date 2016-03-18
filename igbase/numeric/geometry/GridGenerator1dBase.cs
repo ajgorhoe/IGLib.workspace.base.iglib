@@ -170,8 +170,8 @@ namespace IG.Num
         /// <param name="from">Lower bound of the generated 1D grid.</param>
         /// <param name="to">Upper bound of the generated 1D grid.</param>
         /// <param name="numNodes">Number of nodes generated.</param>
-        public static GridGenerator1d CreateUniform(double from, double to, int numnodes)
-        { return new GridGenerator1d(from, to, numnodes); }
+        public static GridGenerator1d CreateUniform(double from, double to, int numNodes)
+        { return new GridGenerator1d(from, to, numNodes); }
         
         /// <summary>Creates and returns a 1D grid generator.
         /// Grid intervals can grow or fall in geometrical series from the lower bound of the grid interval.</summary>
@@ -385,7 +385,7 @@ namespace IG.Num
         /// <param name="growthFactor">Factor by which length of successive intervals is increases
         /// to obtain table with intervals growing in geometric order. If the specified
         /// factor is 0 then it is set to 1.</param>
-        /// <param name="scalingfactor">additional factor by which each factor is mutiplied.
+        /// <param name="scalingFactor">additional factor by which each factor is mutiplied.
         ///  If centered!=0 and growthfactor>1 then intervals fall from -1 to 0 and 
         /// grow from 0 to 1.</param>
         /// <param name="factors">Ouptput - list where factors are stored.</param>
@@ -821,7 +821,7 @@ namespace IG.Num
         /// <param name="maxCurrent">Upper bound of the interval containing the current grid.</param>
         /// <param name="minTarget">Lower bound of the interval containing the fitted (stretched) grid.</param>
         /// <param name="maxTarget">Lower bound of the interval containing the fitted (stretched) grid.</param>
-        /// <param name="node">List containing positions of node to be modified according to grid stretching.</param>
+        /// <param name="nodes">List containing positions of node to be modified according to grid stretching.</param>
         public static void FitGridNodes(double minCurrent, double maxCurrent,
             double minTarget, double maxTarget, List<double> nodes)
         {

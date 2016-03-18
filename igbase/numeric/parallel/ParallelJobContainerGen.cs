@@ -69,7 +69,7 @@ namespace IG.Num
 
 
         /// <summary>Creates a new parallel job container with inptu data assigned.</summary>
-        /// <param name="EvaluationDelegate">Dellegate that performs calculation.</param>
+        /// <param name="evaluationDelegate">Dellegate that performs calculation.</param>
         /// <param name="inputData">Inpt data for the job.</param>
         public ParallelJobContainerGen(SimpleFunctionDelegate<InputType, ResultType> evaluationDelegate, 
             InputType inputData): this(evaluationDelegate)
@@ -78,8 +78,9 @@ namespace IG.Num
         }
 
         /// <summary>Creates a new parallel job container with inptu data assigned.</summary>
-        /// <param name="EvaluationDelegate">Dellegate that performs calculation.</param>
+        /// <param name="evaluationDelegate">Delegate that performs calculation.</param>
         /// <param name="inputData">Inpt data for the job.</param>
+        /// <param name="clientData">Data that was set by the client (caller).</param>
         public ParallelJobContainerGen(SimpleFunctionDelegate<InputType, ResultType> evaluationDelegate,
             InputType inputData, object clientData)
             : this(evaluationDelegate, inputData)
@@ -138,7 +139,7 @@ namespace IG.Num
             set { lock (Lock) { _onStartedGeneric = value; } }
         }
 
-        /// <summary>Called when 'started' notification is triggered (within the method <see cref="NotifyJobStarted"/>).</summary>
+        /// <summary>Called when 'started' notification is triggered (within the method NotifyJobStarted()).</summary>
         protected override void RunOnStarted()
         {
             base.RunOnStarted();
@@ -156,7 +157,7 @@ namespace IG.Num
             set { lock (Lock) { _onFinishedGeneric = value; } }
         }
 
-        /// <summary>Called when 'finished' notification is triggered (within the method <see cref="NotifyJobFinished"/>).</summary>
+        /// <summary>Called when 'finished' notification is triggered (within the method NotifyJobFinished()).</summary>
         protected override void RunOnFinished()
         {
             base.RunOnFinished();
@@ -174,7 +175,7 @@ namespace IG.Num
             set { lock (Lock) { _onAbortedGeneric = value; } }
         }
 
-        /// <summary>Called when 'aborted' notification is triggered (within the method <see cref="NotifyJobAborted"/>).</summary>
+        /// <summary>Called when 'aborted' notification is triggered (within the method NotifyJobAborted()).</summary>
         protected override void RunOnAborted()
         {
             base.RunOnAborted();
@@ -211,13 +212,13 @@ namespace IG.Num
         /// <remarks>
         /// <para>Warning: This method should only be called if the  flag is true. Otherwise, the job container itself does
         /// not know how to execute the job, an this must be done by the appropriate parallel job server object 
-        /// (base type <see cref="ParallelJobServerBase"/>).</para>
+        /// (base type <see cref="ParallelJobServerBase{CT}"/>).</para>
         /// <para>When overriding this method, it must be checked that consistency with the <see cref="IsJobDefined"/>
         /// flag is preserved (one may also need to override the flag).</para>
-        /// <para>The parallel job can be executed on the current job container by the <see cref="RunJob"/> 
+        /// <para>The parallel job can be executed on the current job container by the <see cref="RunJob()"/> 
         /// method. That method in turn calls this method, and by overriding the method one can modify
         /// how job execution is performed.</para>
-        /// <para>The basic variant defined in the <see cref="ParallelJobContainerGen"/> class just calls the 
+        /// <para>The basic variant defined in the <see cref="ParallelJobContainerGen{IToXml,RT}"/> class just calls the 
         /// <see cref="EvaluationDelegate"/> delegate to perform the job, or throws exception if the delegate is 
         /// not assigned. This behavior can be chabged by overriding the method.</para>
         /// </remarks>
@@ -234,8 +235,8 @@ namespace IG.Num
         protected bool _doesNotContainJobDefinition = false;
 
         /// <summary>Indicates whether the curren job container can itself execute a job by calling
-        /// either variant of the <see cref="RunJob"/> method.</summary>
-        /// <remarks><para>This flag must be consistent with the <see cref="CalculateResultsPlain"/> and <see cref="RunJob"/> methods. If any of
+        /// either variant of the <see cref="RunJob()"/> method.</summary>
+        /// <remarks><para>This flag must be consistent with the <see cref="CalculateResultsPlain"/> and <see cref="RunJob()"/> methods. If any of
         /// these method is overridden, consistency must be preserved, which may require overriding the property,
         /// too.</para></remarks>
         public virtual bool IsJobDefined
@@ -249,7 +250,7 @@ namespace IG.Num
         /// <remarks>
         /// <para>Warning: This method should only be called if the  flag is true. Otherwise, the job container itself does
         /// not know how to execute the job, an this must be done by the appropriate parallel job server object 
-        /// (base type <see cref="ParallelJobServerBase"/>).</para>
+        /// (base type <see cref="ParallelJobServerBase{JT}"/>).</para>
         /// <para>When overriding this method, it must be checked that consistency with the <see cref="IsJobDefined"/>
         /// flag is preserved (one may also need to override the flag).</para>
         /// <para>Parallel jobs by data contained job container objects are normally run by the job
@@ -311,13 +312,13 @@ namespace IG.Num
 
         /// <summary>Calculates and results of the job corresponding to the current job container, 
         /// based on the specified intput data.
-        /// <para>Calculation is performed by setting input data and calling the <see cref="RunJob"/>() method.</para></summary>
+        /// <para>Calculation is performed by setting input data and calling the <see cref="RunJob()"/>() method.</para></summary>
         /// <param name="input">Input data for the job that is executed when calling this function.</param>
         /// <returns>Results of execution of the job.</returns>
         /// <remarks>
         /// <para>Warning: This method should only be called if the  flag is true. Otherwise, the job container itself does
         /// not know how to execute the job, an this must be done by the appropriate parallel job server object 
-        /// (base type <see cref="ParallelJobServerBase"/>).</para>
+        /// (base type <see cref="ParallelJobServerBase{JT}"/>).</para>
         /// <para>This function locks the current job container object's lock. It is therefore thread safe, but
         /// may not be called in the context where locking the job container could cause delays or deadlocks.</para>
         /// </remarks>
@@ -597,11 +598,11 @@ namespace IG.Num
 
 
 
-    /// <summary>Parallel job server for job containers that inherit from <see cref="ParallelJobContainerGen"/>.</summary>
+    /// <summary>Parallel job server for job containers that inherit from <see cref="ParallelJobContainerGen{IT,RT}"/>.</summary>
     /// <typeparam name="InputType">Type of inpout data for jobs.</typeparam>
     /// <typeparam name="ResultType">Type of output data for jobs.</typeparam>
     /// <typeparam name="JobContainerType">Type of the job data container used by this parallel server class.
-    /// It must be be of type <see cref="ParallelJobContainer<InputType, ResultType>"/>, or must derive form this type.</typeparam>
+    /// It must be be of type ParallelJobContainer{InputType, ResultType}, or must derive form this type.</typeparam>
     public class ParallelJobServerGen<InputType, ResultType, JobContainerType> : ParallelJobServerBase<JobContainerType>,
         ILockable, IIdentifiable
         where JobContainerType : ParallelJobContainerGen<InputType, ResultType>
@@ -612,7 +613,7 @@ namespace IG.Num
 
         /// <summary>Runs the job whose data is contained in the specified job data container.</summary>
         /// <param name="jobData">Data container for the job to be run.</param>
-        /// <remarks>This method runs the job by runniing the <see cref="ParallelJobContainer<InputType, ResultType>.RunJob"/>
+        /// <remarks>This method runs the job by runniing the <see cref="ParallelJobContainerGen{InputType, ResultType}.RunJob()"/>
         /// method defined on the job container (argument <paramref name="jobData"/>).</remarks>
         protected override void RunJobDefined(JobContainerType jobData)
         {
@@ -629,7 +630,7 @@ namespace IG.Num
     }  // class ParallelJobServerGen<InputType, ResultType, JobContainerType>
 
 
-    /// <summary>Parallel job server for job containers that inherit from <see cref="ParallelJobContainerGen"/>.</summary>
+    /// <summary>Parallel job server for job containers that inherit from <see cref="ParallelJobContainerGen{InputType, ResultType}"/>.</summary>
     /// <typeparam name="InputType">Type of inpout data for jobs.</typeparam>
     /// <typeparam name="ResultType">Type of output data for jobs.</typeparam>
     public class ParallelJobServerGen<InputType, ResultType> :
@@ -645,11 +646,11 @@ namespace IG.Num
 
 
 
-    /// <summary>Parallel job dispatcher for job containers that inherit from <see cref="ParallelJobContainerGen"/>.</summary>
+    /// <summary>Parallel job dispatcher for job containers that inherit from <see cref="ParallelJobContainerGen{InputType, ResultType}"/>.</summary>
     /// <typeparam name="InputType">Type of inpout data for jobs.</typeparam>
     /// <typeparam name="ResultType">Type of output data for jobs.</typeparam>
     /// <typeparam name="JobContainerType">Type of the job data container used by this parallel server class.
-    /// It must be be of type <see cref="ParallelJobContainer<InputType, ResultType>"/>, or must derive form this type.</typeparam>
+    /// It must be be of type <see cref="ParallelJobContainerGen{InputType, ResultType}"/>, or must derive form this type.</typeparam>
     public class ParallelJobDispatcherGen<InputType, ResultType, JobContainerType> : ParallelJobDispatcherBase<JobContainerType>,
         ILockable, IIdentifiable
         where JobContainerType : ParallelJobContainerGen<InputType, ResultType>
@@ -661,7 +662,7 @@ namespace IG.Num
     }  // class ParallelJobDispatcherGen<InputType, ResultType, JobContainerType>
 
 
-    /// <summary>Parallel job jerver for job containers that inherit from <see cref="ParallelJobContainerGen"/>.</summary>
+    /// <summary>Parallel job jerver for job containers that inherit from <see cref="ParallelJobContainerGen{InputType, ResultType}"/>.</summary>
     /// <typeparam name="InputType">Type of inpout data for jobs.</typeparam>
     /// <typeparam name="ResultType">Type of output data for jobs.</typeparam>
     public class ParallelJobDispatcherGen<InputType, ResultType> :

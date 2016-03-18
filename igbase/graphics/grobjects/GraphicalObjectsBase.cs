@@ -201,6 +201,7 @@ namespace IG.Gr
 
         /// <summary>Sets the specified line color of the graphic primitive.</summary>
         /// <param name="which">Index of primitive's line whose color is set.</param>
+        /// <param name="color">Color to be set.</param>
         public virtual void SetLineColor(int which, Color color)
         {
             if (which < 0)
@@ -271,6 +272,7 @@ namespace IG.Gr
 
         /// <summary>Sets the specified fill color of the graphic primitive.</summary>
         /// <param name="which">Index of primitive's fill whose color is set.</param>
+        /// <param name="color">Color to be set.</param>
         public virtual void SetFillColor(int which, Color color)
         {
             if (which < 0)

@@ -400,7 +400,7 @@ namespace IG.Num
 
         /// <summary>Calculates and returns Hessian of the current 3D scalar function and returns it
         /// (in the form of a <see cref="mat3"/> struct).
-        /// <para>This method must be overridden in derives classes where calculation of function Hessian is implemented.</summary>
+        /// <para>This method must be overridden in derives classes where calculation of function Hessian is implemented.</para></summary>
         public override mat3 Hessian(vec3 parameters)
         {
             throw new NotImplementedException("Calculation of function Hessian is not implemented.");
@@ -475,7 +475,7 @@ namespace IG.Num
                 private Func3dLinear() : base()
         { ValueDefined = true; GradientDefined = true; HessianDefined = true; }
 
-        /// <summary>Creation of a linear 3D scalar function.</param>
+        /// <summary>Creation of a linear 3D scalar function.</summary>
         /// <param name="gradient0">Vector of linear coefficients - gradient of the linear function.</param>
         /// <param name="scalarTerm">Constant term.</param>
         public Func3dLinear(vec3 gradient0, double scalarTerm) : this()
@@ -640,11 +640,11 @@ namespace IG.Num
     } // class Func3dQuadratic
 
 
-    /// <summary>Example classes of type <see cref="Func3d"/>.</summary>
+    /// <summary>Example classes of type <see cref="Func3dBase"/>.</summary>
     /// $A Igor Aug09 Oct09;
     public static class Func3dExamples
     {
-
+        
         /// <summary>Function f(x, y, z) = x * y * z.
         /// <para>Value and gradient are defined.</para></summary>
         public class Func3dXYZ : Func3dBaseNoHessian, IFunc3d, IScalarFunctionUntransformed

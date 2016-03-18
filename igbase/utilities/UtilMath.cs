@@ -10,10 +10,10 @@ namespace IG.Num
 
     /// <summary>Example class that derives from the <see cref="M"/> class.
     /// Implements a method that uses basic mathematical functions implemented in M.</summary>
-    /// $A Igor xx Jul11;
     /// <remarks>
-    /// TODO: Join the <see cref="FuncMath"/> class with this class (incorporate that class and abolish it)!!
-    /// </reremarks>
+    /// TODO: Join the FuncMath class with this class (incorporate that class and abolish it)!!
+    /// </remarks>
+    /// $A Igor xx Jul11;
     [Obsolete("Experimental functionality, should not be used in produciton code!")]
     public class ExampleMathClass : M
     {
@@ -555,7 +555,6 @@ namespace IG.Num
 
 
         /// <summary>Writes to the console all factorials that can be calculatet.</summary>
-        /// <param name="max">Largest number whose factorial will be calculated.</param>
         public static void TestFactorials()
         {
             TestFactorials(0);
@@ -636,7 +635,7 @@ namespace IG.Num
         }
 
         /// <summary>Writes binomial coefficients up to the specified number to the console.</summary>
-        /// <param name="n">Maximal enumerator until which coefficients are written.</param>
+        /// <param name="nMax">Maximal enumerator until which coefficients are written.</param>
         public static void TestBinomialCoefficients(int nMax)
         {
             Console.WriteLine();
@@ -1186,13 +1185,13 @@ namespace IG.Num
 
         #region HyperbolicFunctions
 
-        /// <summary>Returns the hyperbolic sine of the specified angle.</summary>
-        public static double Sinh(double a)
-        { return Math.Sinh(a); }
+        ///// <summary>Returns the hyperbolic sine of the specified angle.</summary>
+        //public static double Sinh(double a)
+        //{ return Math.Sinh(a); }
 
-        /// <summary>Returns the hyperbolic sine of the specified angle.</summary>
-        public static double sinh(double a)
-        { return Math.Sinh(a); }
+        ///// <summary>Returns the hyperbolic sine of the specified angle.</summary>
+        //public static double sinh(double a)
+        //{ return Math.Sinh(a); }
 
         /// <summary>Returns the hyperbolic cosine of the specified angle.</summary>
         public static double Cosh(double a)
@@ -1436,7 +1435,7 @@ namespace IG.Num.Experimental
     /// Implements a method that uses basic mathematical functions implemented in M.</summary>
     /// $A Igor xx Jul11;
     /// <remarks>
-    /// TODO: Join the <see cref="FuncMath"/> class with this class (incorporate that class and abolish it)!!
+    /// TODO: Join the FuncMath class with this class (incorporate that class and abolish it)!!
     /// </remarks>
     [Obsolete("Experimental functionality, should not be used in produciton code!")]
     public class ExampleMathClassExperimental : MX

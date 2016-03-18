@@ -49,7 +49,7 @@ namespace IG.Lib
 
         /// <summary>Constructs the alignment structure with specified vertical alignement and with horizontal 
         /// alignment set to <see cref="Alignment.DefaultHorizontalAlignment"/>.</summary>
-        /// <param name="horizontal">Horizontal alignment.</param>
+        /// <param name="vertical">Vertical alignment.</param>
         public Alignment(AlignmentVertical vertical) :
             this(Alignment.DefaultHorizontalAlignment, vertical) { }
 
@@ -61,7 +61,7 @@ namespace IG.Lib
         public AlignmentHorizontal Horizontal;
 
         /// <summary>Vertical Alignment.
-        /// <para>Default is <see cref="Alignment.DefaultVerticalAlignment"/>.</summary>
+        /// <para>Default is <see cref="Alignment.DefaultVerticalAlignment"/>.</para></summary>
         public AlignmentVertical Vertical;
 
 

@@ -26,8 +26,7 @@ namespace IG.Num
 
         /// <summary>Constructs affine transformation with the specified dimensions of the original (reference)
         /// and transformed (target) space.</summary>
-        /// <param name="dimOriginal">Dimension of the original space.</param>
-        /// <param name="dimTransformed">Dimension of the reference space.</param>
+        /// <param name="dimension">Dimension of the original space.</param>
         public AffineTransformationSquare(int dimension)
         {
             if (dimension < 1)
@@ -39,6 +38,7 @@ namespace IG.Num
         /// Either of the transformation matrix or translation vector can be null, but not both.</summary>
         /// <param name="transformationMatrix">Transformation matrix of the affine transformation.</param>
         /// <param name="translationVector">Translation vector of the affine transformation.</param>
+        /// <param name="inverseSpecified">Whether inverse is specified.</param>
         public AffineTransformationSquare(Matrix transformationMatrix, Vector translationVector, bool inverseSpecified)
         {
             if (transformationMatrix == null && translationVector == null)
@@ -397,7 +397,7 @@ namespace IG.Num
 
         /// <summary>Backward transforms co-ordinates from the transformed to the reference space.</summary>
         /// <param name="transformed">Vector of transformed co-ordinates.</param>
-        /// <param name="original">Vector where inverse-transformed original co-ordinates are stored.</param>
+        /// <param name="result">Vector where inverse-transformed original co-ordinates are stored.</param>
         public void TransformBackCoordinatesPlain(IVector transformed, IVector result)
         {
             IVector transVec = TranslationVector;
@@ -426,7 +426,7 @@ namespace IG.Num
 
         /// <summary>Backward transforms co-ordinates from the transformed to the reference space.</summary>
         /// <param name="transformed">Vector of transformed co-ordinates.</param>
-        /// <param name="original">Vector where inverse-transformed original co-ordinates are stored.</param>
+        /// <param name="result">Vector where inverse-transformed original co-ordinates are stored.</param>
         public void TransformBackCoordinates(IVector transformed, ref IVector result)
         {
             if (transformed == null)
@@ -479,7 +479,7 @@ namespace IG.Num
 
         /// <summary>Backward transforms gradient (or other covariant vector) from the transformed to the reference space.</summary>
         /// <param name="transformed">Transformed gradient-like vector.</param>
-        /// <param name="original">Vector where resulting backward transformed vector is stored.</param>
+        /// <param name="result">Vector where resulting backward transformed vector is stored.</param>
         public void TransformBackGradientPlain(IVector transformed, IVector result)
         {
             IMatrix transfMat = TransformationMatrix;
@@ -492,7 +492,7 @@ namespace IG.Num
 
         /// <summary>Backward transforms gradient (or other covariant vector) from the transformed to the reference space.</summary>
         /// <param name="transformed">Transformed gradient-like vector.</param>
-        /// <param name="original">Vector where resulting backward transformed vector is stored.</param>
+        /// <param name="result">Vector where resulting backward transformed vector is stored.</param>
         public void TransformBackGradient(IVector transformed, ref IVector result)
         {
             if (transformed == null)
@@ -545,7 +545,7 @@ namespace IG.Num
 
         /// <summary>Backward transforms Hessian (or other covariant matrix) from the transformed to the reference space.</summary>
         /// <param name="transformed">Matrix in transformed coordinates.</param>
-        /// <param name="original">Matrix where resulting backward-transformed matrix is stored.</param>
+        /// <param name="result">Matrix where resulting backward-transformed matrix is stored.</param>
         public void TransformBackHessianPlain(IMatrix transformed, IMatrix result)
         {
             IMatrix transfMat = TransformationMatrix;
@@ -558,7 +558,7 @@ namespace IG.Num
 
         /// <summary>Backward transforms Hessian (or other covariant matrix) from the transformed to the reference space.</summary>
         /// <param name="transformed">Matrix in transformed coordinates.</param>
-        /// <param name="original">Matrix where resulting backward-transformed matrix is stored. Allocated/reallocated if necessary.</param>
+        /// <param name="result">Matrix where resulting backward-transformed matrix is stored. Allocated/reallocated if necessary.</param>
         public void TransformBackHessian(IMatrix transformed, ref IMatrix result)
         {
             if (transformed == null)

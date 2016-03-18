@@ -16,7 +16,7 @@ namespace IG.Num
     /// Performs direct analyses by request.</summary>
     /// <remarks>WARNING:
     /// This module is taken from Dragonfly opt. server and adapted for purpose of some
-    /// projects. If necessary to further develop, synchronize (& possibly merge) with
+    /// projects. If necessary to further develop, synchronize (and possibly merge) with
     /// Dragonfly, otherwise there will be problems with consistent development of both branches.
     /// WARNING:
     /// Only a part of file analysis server is taken from Dragonfly, be careful with sync. (the best

@@ -286,13 +286,13 @@ namespace IG.Lib
 
         /// <summary>Runs tests from scripts according to hard-coded settings.
         /// <para>Standard form of test applications for functionality based on IGLib.</para></summary>
-        /// <param name="AppArguments">Command-line argumets passed when the application is run.</param>
+        /// <param name="args">Command-line argumets passed when the application is run.</param>
         /// <remarks><para>Standard scheme for IGLib-based test applications has been adopted in December 2011.</para></remarks>
         /// $A Igor xx Nov09 Dec11;
         public abstract void TestMain(string[] args);
 
         /// <summary>Default main method for the current application.</summary>
-        /// <param name="AppArguments">Command-line argumets passed when the application is run.</param>
+        /// <param name="args">Command-line argumets passed when the application is run.</param>
         /// <remarks><para>Standard scheme for IGLib-based test applications has been adopted in December 2011.</para></remarks>
         /// $A Igor xx Nov09 Dec11;
         public virtual void AplicationMain(string[] args)
@@ -359,8 +359,7 @@ namespace IG.Lib
 
 
         /// <summary>Entry point of the application.</summary>
-        /// <param name="commandThread">Command thread that is being executed.</param>
-        /// <param name="AppArguments">Application arguments.</param>
+        /// <param name="args">Application arguments.</param>
         public void Main(string[] args)
         {
             //new ProgramTestIgor().AplicationMain(AppArguments);
@@ -403,7 +402,7 @@ namespace IG.Lib
 
 
         /// <summary>Default main method for the current shell application.</summary>
-        /// <param name="AppArguments">Command-line argumets passed when the application is run.</param>
+        /// <param name="args">Command-line argumets passed when the application is run.</param>
         /// $A Igor xx Nov09 Dec11;
         public override void AplicationMain(string[] args)
         {

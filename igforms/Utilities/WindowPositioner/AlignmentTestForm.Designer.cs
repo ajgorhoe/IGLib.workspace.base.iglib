@@ -30,7 +30,7 @@ namespace IG.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BrowserSimpleWindow));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BrowserSimpleForm));
 
             this.alignmentControl1 = new IG.Forms.AlignmentControl();
             this.testControl1 = new IG.Forms.TestControl();
@@ -72,7 +72,7 @@ namespace IG.Forms
             this.Controls.Add(this.windowShiftControlRelative1);
             this.Controls.Add(this.alignmentControl1);
             this.Controls.Add(this.testControl1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = IG.Forms.Properties.Resources.ig;
             this.Name = "AlignmentForm";
             this.Text = "IGLib Test form No. xx.";
             this.ResumeLayout(false);

@@ -137,7 +137,7 @@ namespace IG.Num
 
         /// <summary>Creates and returns a list of all sampled data elemets of the current object that are sorted
         /// according to the specified comparer object (that implements the 
-        /// <see cref="IComparer<SampledDataElement>"/> interface).</summary>
+        /// <see cref="IComparer{SampledDataElement}"/> interface).</summary>
         /// <param name="comparer">Comparer that is used for sorting the returned list.</param>
         public List<SampledDataElement> GetSortedElemetnList(IComparer<SampledDataElement> comparer)
         {
@@ -694,8 +694,9 @@ namespace IG.Num
             /// <summary>Constructs a new comparer according to input distance to a reference poiont (type <see cref="IVector"/>).
             /// <para>Distance between two points is calculated as Euclidean distance.</para>
             /// <para>This method is protected because it is meant that distance delegate must be provided.
-            /// However, classes can be derived that allow that distance delegate is not specified.</para></summary>
+            /// However, classes can be derived that allows that distance delegate is not specified.</para></summary>
             /// <param name="referencePoint">Reference point. Data elements are compared by their distance to this point.</param>
+            /// <param name="immutable">If true then the reference point is copied rather than oly its reference would be taken.</param>
             protected ComparerInputDistance(IVector referencePoint, bool immutable)
             {
                 this.IsImmutable = immutable;
@@ -730,8 +731,7 @@ namespace IG.Num
             /// <summary>Constructs a new comparer according to input distance to a reference poiont (type <see cref="IVector"/>).
             /// <para>Object constructed in this way is not immutable.</para></summary>
             /// <param name="referencePoint">Reference point. Data elements are compared by their distance to this point.</param>
-            /// <param name="distanceFunction">Delegate used for calculation of distance between two points.</param>
-            /// <param name="immutable">If true then a copy of the reference point is stored internally rather than just 
+            /// <param name="distanceFunction">Delegate used for calculation of distance between two points.
             /// its reference, so it can not be changed.</param>
             public ComparerInputDistance(IVector referencePoint, DistanceDelegate distanceFunction) :
                 this(referencePoint, distanceFunction, false /* immutable */)
@@ -876,6 +876,7 @@ namespace IG.Num
             /// <para>This method is protected because it is meant that distance delegate must be provided.
             /// However, classes can be derived that allow that distance delegate is not specified.</para></summary>
             /// <param name="referencePoint">Reference point. Data elements are compared by their distance to this point.</param>
+            /// <param name="immutable">If true then a copy of the reference point is created. Otherwise, only its reference is taken.</param>
             protected ComparerOutputDistance(IVector referencePoint, bool immutable)
             {
                 this.IsImmutable = immutable;
@@ -911,8 +912,6 @@ namespace IG.Num
             /// <para>Object constructed in this way is not immutable.</para></summary>
             /// <param name="referencePoint">Reference point. Data elements are compared by their distance to this point.</param>
             /// <param name="distanceFunction">Delegate used for calculation of distance between two points.</param>
-            /// <param name="immutable">If true then a copy of the reference point is stored internally rather than just 
-            /// its reference, so it can not be changed.</param>
             public ComparerOutputDistance(IVector referencePoint, DistanceDelegate distanceFunction) :
                 this(referencePoint, distanceFunction, false /* immutable */)
             { }
@@ -1048,7 +1047,7 @@ namespace IG.Num
         /// <summary>Saves the specified sempled data to the specified file in binary format.
         /// The file is owerwritten if it exists.</summary>
         /// <param name="sampledData">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file where sampled data is saved.</param>
+        /// <param name="filePath">Path to the file where sampled data is saved.</param>
         public static void SaveBinary(SampledDataSet sampledData, string filePath)
         {
             UtilSystem.SaveBinary<SampledDataSet>(sampledData, filePath);
@@ -1063,7 +1062,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores sampled data from the specified file in binary format.</summary>
-        /// <param name="inputFilePath">File from which sampled data is restored.</param>
+        /// <param name="filePath">File from which sampled data is restored.</param>
         /// <param name="dataDefRestored">Sampled data that is restored.</param>
         public static void LoadBinary(string filePath, ref SampledDataSet dataDefRestored)
         {
@@ -1087,7 +1086,7 @@ namespace IG.Num
         /// <summary>Saves the specified sempled data to the specified JSON file.
         /// The file is owerwritten if it exists.</summary>
         /// <param name="sampledData">Object that is saved to a file.</param>
-        /// <param name="inputFilePath">Path to the file where sampled data is saved.</param>
+        /// <param name="filePath">Path to the file where sampled data is saved.</param>
         public static void SaveJson(SampledDataSet sampledData, string filePath)
         {
             SampledDataSetDto dtoOriginal = new SampledDataSetDto();
@@ -1097,7 +1096,7 @@ namespace IG.Num
         }
 
         /// <summary>Restores sampled data from the specified file in JSON format.</summary>
-        /// <param name="inputFilePath">File from which sampled data is restored.</param>
+        /// <param name="filePath">File from which sampled data is restored.</param>
         /// <param name="dataDefRestored">Sampled data that is restored by deserialization.</param>
         public static void LoadJson(string filePath, ref SampledDataSet dataDefRestored)
         {
@@ -1156,7 +1155,8 @@ namespace IG.Num
 
         /// <summary>Saves network's sampled data to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
-        /// <param name="inputFilePath">Path to the file where sampled data is saved.</param>
+        /// <param name="filePath">Path to the file where sampled data is saved.</param>
+        /// <param name="sampledData">Sampled data to be saved to a JSON file.</param>
         /// $A Tako78 Mar11;
         public static void SaveSampledDataJson(string filePath, SampledDataSet sampledData)
         {
@@ -1170,20 +1170,22 @@ namespace IG.Num
 
         /// <summary>Saves network's definition data to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
-        /// <param name="inputFilePath">Path to the file where definition data is saved.</param>
+        /// <param name="filePath">Path to the file where definition data is saved.</param>
+        /// <param name="definitionData">Definition data to be saved to a JSON file.</param>
         /// $A Tako78 Maj31;
-        public static void SaveDefinitionDataJson(string filePath, InputOutputDataDefiniton sampledData)
+        public static void SaveDefinitionDataJson(string filePath, InputOutputDataDefiniton definitionData)
         {
             {
                 InputOutputDataDefinitonDto dtoOriginal = new InputOutputDataDefinitonDto();
-                dtoOriginal.CopyFrom(sampledData);
+                dtoOriginal.CopyFrom(definitionData);
                 ISerializer serializer = new SerializerJson();
                 serializer.Serialize<InputOutputDataDefinitonDto>(dtoOriginal, filePath);
             }
         }
 
         /// <summary>Restores sampled data from the specified file in JSON format.</summary>
-        /// <param name="inputFilePath">File from which sampled data is restored.</param>
+        /// <param name="filePath">File from which sampled data is restored.</param>
+        /// <param name="sampledData">Sampled data to be loaded.</param>
         /// $A Tako78 Mar11;
         public static void LoadSampledDataJson(string filePath, ref SampledDataSet sampledData)
         {
@@ -1198,13 +1200,14 @@ namespace IG.Num
 
         #region CSV
 
-        /// <summary>Loads sampled data and definition data from single CSV file.
-        /// <param name="inputFilePath">Path to the file where sampled data are saved.</param>
+        /// <summary>Loads sampled data and definition data from single CSV file.</summary>
+        /// <param name="filePath">Path to the file where sampled data are saved.</param>
         /// <param name="inputLenght">Lenght of input parameters.</param>
         /// <param name="outputLenght">Lenght of output parameters.</param>
         /// <param name="namesSpecified">Flag if names are specified in the file.</param>
         /// <param name="descriptionSpecified">Flag if definitions (descriptions, defaultValue, boundDefiner, minValue, maxValue) are specified in the file.</param>
-        /// <param name="trainingData">Sampled data set.</param>
+        /// <param name="titleSpecified">Specifies whether title is specified in the file.</param>
+        /// <param name="sampledData">Sampled data set.</param>
         /// <param name="definitionData">Definition data set.</param>
         /// $A Tako78 Mar11; June27;
         public static void LoadSampledDataCSVinOneLine(string filePath, int inputLenght, int outputLenght,
@@ -1421,13 +1424,14 @@ namespace IG.Num
             }
         }
 
-        /// <summary>Loads sampled data and definition data from single CSV file.
-        /// <param name="inputFilePath">Path to the file where sampled data are saved.</param>
+        /// <summary>Loads sampled data and definition data from single CSV file.</summary>
+        /// <param name="filePath">Path to the file where sampled data are saved.</param>
         /// <param name="inputLenght">Lenght of input parameters.</param>
         /// <param name="outputLenght">Lenght of output parameters.</param>
         /// <param name="namesSpecified">Flag if names are specified in the file.</param>
+        /// <param name="titleSpecified">Determines whether title is specified in the file.</param>
         /// <param name="descriptionSpecified">Flag if descriptions are specified in the file.</param>
-        /// <param name="trainingData">Sampled data set.</param>
+        /// <param name="sampledData">Sampled data set.</param>
         /// <param name="definitionData">Definition data set.</param>
         /// $A Tako78 Apr11, June24;
         public static void LoadSampledDataCSV(string filePath, int inputLenght, int outputLenght,
@@ -1442,8 +1446,8 @@ namespace IG.Num
             StreamReader reader = null;
             List<double[]> data = new List<double[]>();
 
-            // data names not sbecified, descriptions are specified
-            if ((!namesSpecified && descriptionSpecified) || (!namesSpecified && titleSpecified))
+            // data names not sbecified, descriptions are specified 
+            if ((!namesSpecified && descriptionSpecified) || (!namesSpecified && titleSpecified)) 
                 throw new ArgumentException("Data names not specified, but descriptions or titles are.");
             // open selected file
             reader = File.OpenText(filePath);
@@ -1591,7 +1595,7 @@ namespace IG.Num
         }
 
         /// <summary>Loads definition data from CSV file.</summary>
-        /// <param name="inputFilePath">Path to the file where definition data are saved.</param>
+        /// <param name="filePath">Path to the file where definition data are saved.</param>
         /// <param name="inputLenght">Lenght of input parameters.</param>
         /// <param name="outputLenght">Lenght of output parameters.</param>
         /// <param name="definitionData">Definition data set.</param>
@@ -1803,9 +1807,10 @@ namespace IG.Num
         }
 
         /// <summary>Saves sampled data and Definition data to single CSV file.</summary>
-        /// <param name="inputFilePath">Path to the file where sampled data will be saved.</param>
+        /// <param name="filePath">Path to the file where sampled data will be saved.</param>
         /// <param name="sampledData">Sampled data set.</param>
         /// <param name="namesSpecified">Flag if names will be written in the file.</param>
+        /// <param name="titleSpecified">Whether title will be written.</param>
         /// <param name="descriptionSpecified">Flag if descriptions (descriptions, defaultValue, boundDefiner, minValue, maxValue) will be written in the file.</param>
         /// <param name="definitionData">Definition data set.</param>
         /// $A Tako78 Mar11; June27;
@@ -1947,9 +1952,10 @@ namespace IG.Num
         }
 
         /// <summary>Saves sampled data and Definition data to single CSV file.</summary>
-        /// <param name="inputFilePath">Path to the file where sampled data will be saved.</param>
+        /// <param name="filePath">Path to the file where sampled data will be saved.</param>
         /// <param name="sampledData">Sampled data set.</param>
         /// <param name="namesSpecified">Flag if names will be written in the file.</param>
+        /// <param name="titlesSpecified">Whether title will be written to the file.</param>
         /// <param name="descriptionSpecified">Flag if descriptions will be written in the file.</param>
         /// <param name="definitionData">Definition data set.</param>
         /// $A Tako78 Mar11; June27;
@@ -2056,7 +2062,7 @@ namespace IG.Num
         }
 
         /// <summary>Saves definition data to CSV file.</summary>
-        /// <param name="inputFilePath">Path to the file where definition data will be saved.</param>
+        /// <param name="filePath">Path to the file where definition data will be saved.</param>
         /// <param name="definitionData">Definition data set.</param>
         /// $A Tako78 Mar11; June27;
         public static void SaveDefinitionDataCSV(string filePath, InputOutputDataDefiniton definitionData)

@@ -150,15 +150,16 @@ namespace IG.Num
         { }
 
         /// <summary>Constructor. Does not define affine transformation of the function.</summary>
-        /// <param name="parameters">Parameter that define a specific function out of a parametric family of functions.</param>
+        /// <param name="parameter">Parameter that define a specific function out of a parametric family of functions.</param>
         public ScalarFunctionOneParametric(double parameter): base(_parAux)
         {
+            // TODO: check if the call of base function with that argument actually makes sense!
             this.Parameter = parameter;
         }
 
         /// <summary>Constructor. 
         /// Creates a new parametric scalar function with the specified parameter and transformation of coordinates.</summary>
-        /// <param name="parameters">Parameter that defines a specific function out of a parametric family of functions.</param>
+        /// <param name="parameter">Parameter that defines a specific function out of a parametric family of functions.</param>
         /// <param name="transformation">Affine transformation of coordinates.
         /// Actual function is calculated as some reference function evaluated at inverse affine transformed parameters.
         /// If null then transformation is not applied.</param>

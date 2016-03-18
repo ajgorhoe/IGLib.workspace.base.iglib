@@ -82,7 +82,7 @@ namespace IG.Num
         /// <summary>Constructs a new 3D field with the specified dimensions, name and description.
         /// Table of elements is allocated.
         /// <para>Elements of the field are arranged in a 3D structured grid.</para></summary>
-        /// <param name="numElements"></param>
+        /// <param name="dim1">First dimension.</param> <param name="dim2">Second dimension.</param> <param name="dim3">Third dimension.</param> 
         public StructuredField3d(int dim1, int dim2, int dim3)
             : this(dim1, dim2, dim3, null /* fieldName */, null /* description */)
         { }
@@ -90,7 +90,7 @@ namespace IG.Num
         /// <summary>Constructs a new 3D field with the specified dimensions, name and description.
         /// Table of elements is allocated.
         /// <para>Elements of the field are arranged in a 3D structured grid.</para></summary>
-        /// <param name="numElements">Number of elements.</param>
+        /// <param name="dim1">First dimension.</param> <param name="dim2">Second dimension.</param> <param name="dim3">Third dimension.</param> 
         /// <param name="fieldName">Name of the field.</param>
         public StructuredField3d(int dim1, int dim2, int dim3, string fieldName)
             : this(dim1, dim2, dim3, fieldName, null /* description */)
@@ -309,7 +309,7 @@ namespace IG.Num
         /// <param name="referenceField">Field containing coordinates that will be mapped to scalar values.
         /// <para>Dimensions must be set and array of vector values (coordinates) must be allocated 
         /// before the function is called.</para></param>
-        /// <param name="targetField">Field in which the mapped scalars are stored. 
+        /// <param name="targetScalarField">Field in which the mapped scalars are stored. 
         /// <para>Dimensions must be set and consistent with dimensions of the reference field, and array of 
         /// values must be allocated before the function is called.</para></param>
         /// <param name="scalarMap">Function that maps node coordinates of the reference grid to scalar values of the target grid.</param>
@@ -337,7 +337,7 @@ namespace IG.Num
         /// <param name="referenceField">Field containing coordinates that will be mapped to scalar values.
         /// <para>Dimensions must be set and array of vector values (coordinates) must be allocated 
         /// before the function is called.</para></param>
-        /// <param name="targetField">Field in which the mapped scalars are stored. 
+        /// <param name="targetScalarField">Field in which the mapped scalars are stored. 
         /// <para>Dimensions must be set and consistent with dimensions of the reference field, and array of 
         /// values must be allocated before the function is called.</para></param>
         /// <param name="scalarMap">Function that maps node coordinates of the reference grid to scalar values of the target grid.</param>

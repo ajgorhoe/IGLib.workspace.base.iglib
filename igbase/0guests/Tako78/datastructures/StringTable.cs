@@ -554,7 +554,7 @@ namespace IG.Lib
             }
         }
 
-        /// <summary>Adds (appends ) the specified elements at the end of the table, i.e. at the end of the last row.</param>
+        /// <summary>Adds (appends ) the specified elements at the end of the table, i.e. at the end of the last row.</summary>
         /// <param name="values">Array of values of the elements that are added.</param>
         /// <remarks>Throws exception if the data table is read only, or if the specified row 
         /// does not exist and the data table is not extensible.</remarks>
@@ -564,7 +564,7 @@ namespace IG.Lib
         }
 
         /// <summary>Adds (appends ) string representations of the specified elements of the specified type at 
-        /// the end of the table, i.e. at the end of the last row.</param>
+        /// the end of the table, i.e. at the end of the last row.</summary>
         /// <param name="values">Array of values of the elements that are added.</param>
         /// <remarks>Throws exception if the data table is read only, or if the specified row 
         /// does not exist and the data table is not extensible.</remarks>
@@ -1105,8 +1105,8 @@ namespace IG.Lib
         }
 
         /// <summary>Loads the specified CSV file. Reads contents of the file into the data table of the current object.</summary>
-        /// <param name="inputFilePath">Path to the CSV file that is read and parsed.</param>
-        /// <param name="separator">Separator that is used in the CSV file. If not specified (null or empty string) then Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed.</param>
+        /// <param name="filePath">Path to the CSV file that is read and parsed.</param>
+        /// <param name="separator">Separator that is used in the CSV file. If not specified (null or empty string) then Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is assumed.</param>
         public void LoadCsv(string filePath, string separator)
         {
             // TODO: optimize this! (without use of the jagged array - directly)
@@ -1119,10 +1119,10 @@ namespace IG.Lib
             }
         }
 
-        
+
         /// <summary>Loads the specified CSV file. Reads contents of the file into the data table of the current object.
         /// <para>The value of the <see cref="CsvSeparator"/> property is used as separator.</para></summary>
-        /// <param name="inputFilePath">Path to the CSV file that is read and parsed.</param>
+        /// <param name="filePath">Path to the CSV file that is read and parsed.</param>
         public void LoadCsv(string filePath)
         {
             this.LoadCsv(filePath, this.CsvSeparator);
@@ -1137,9 +1137,9 @@ namespace IG.Lib
             return str;
         }
 
-        
+
         /// <summary>Saves the data of the current object to the specified CSV file.</summary>
-        /// <param name="inputFilePath">Path to the file into which data is written.</param>
+        /// <param name="filePath">Path to the file into which data is written.</param>
         /// <param name="separator">Separator that is used in CSV format.</param>
         /// <param name="append">If true then the CSV string is appended to the existent file if 
         /// the file already exists. Otherwise, existend files are overwritten.</param>
@@ -1155,7 +1155,7 @@ namespace IG.Lib
 
         /// <summary>Saves the data of the current object into a CSV file.
         /// If the file already exists then its contents are overwritten.</summary>
-        /// <param name="inputFilePath">Path to the file into which contents is written.</param>
+        /// <param name="filePath">Path to the file into which contents is written.</param>
         /// <param name="separator">Separator that is used in CSV format.</param>
         public void SaveCsv(string filePath, string separator)
         {
@@ -1163,9 +1163,10 @@ namespace IG.Lib
         }
 
         /// <summary>Saves the data of the current object into a CSV file.
-        /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
-        /// <param name="inputFilePath">Path to the file into which contents is written.</param>
-        /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
+        /// Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
+        /// <param name="filePath">Path to the file into which contents is written.</param>
+        /// <param name="append">If true then the CSV string is appended to the existent file if 
+        /// the file already exists. Otherwise, existend files are overwritten.</param>
         public void SaveCsv(string filePath, bool append)
         {
             SaveCsv(filePath, CsvSeparator /* separator */, append);
@@ -1173,9 +1174,8 @@ namespace IG.Lib
 
         /// <summary>Saves the data of the current object values into a CSV file.
         /// If the file already exists then its contents are overwritten.
-        /// Constant <see cref="UtilStr.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
-        /// <param name="inputFilePath">Path to the file into which contents is written.</param>
-        /// <param name="values">A 2D jagged array of string cell values. Each outer element contains one row of values in CSV.</param>
+        /// Constant <see cref="UtilCsv.DefaultCsvSeparator"/> is assumed to be a separator for the CSV format.</summary>
+        /// <param name="filePath">Path to the file into which contents is written.</param>
         public void SaveCsv(string filePath)
         {
             SaveCsv(filePath, CsvSeparator /* separator */, false /* append */);
@@ -1187,7 +1187,7 @@ namespace IG.Lib
         #region Examples
 
         /// <summary>Creates a simple string table and saves it to a CSV file.</summary>
-        /// <param name="inputFilePath">Path to the file where CSV is stored.</param>
+        /// <param name="filePath">Path to the file where CSV is stored.</param>
         public static void ExampleWriteCsv(string filePath)
         {
             StringTable csv = new StringTable();

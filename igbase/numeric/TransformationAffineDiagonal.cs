@@ -32,7 +32,7 @@ namespace IG.Num
 
 
         /// <summary>Constructs affine transformation with the specified transformation matrix and translation vector.</summary>
-        /// <param name="transformationMatrix">Transformation matrix of the affine transformation.</param>
+        /// <param name="diagonalOfTransfMat">Transformation matrix of the affine transformation.</param>
         /// <param name="translationVec">Translation vector of the affine transformation.</param>
         public AffineTransformationDiagonal(IVector diagonalOfTransfMat, IVector translationVec) 
         {
@@ -79,7 +79,7 @@ namespace IG.Num
 
 
         /// <summary>Constructs affine transformation with the specified transformation matrix and translation vector.</summary>
-        /// <param name="transformationMatrix">Transformation matrix of the affine transformation.</param>
+        /// <param name="transformationMatrixDiagonal">Transformation matrix of the affine transformation.</param>
         /// <param name="translationVector">Translation vector of the affine transformation.</param>
         public AffineTransformationDiagonal0_TO_DELETE(IVector transformationMatrixDiagonal, IVector translationVector) // :
             // base(transformationMatrix, translationVector)

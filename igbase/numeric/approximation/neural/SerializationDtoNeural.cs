@@ -1065,7 +1065,7 @@ namespace IG.Num
 
         #region neural network limits
 
-        /// <summary>Contains Parameters that define neural network architecture limits and trainig parameter limits.<summary>
+        /// <summary>Contains Parameters that define neural network architecture limits and trainig parameter limits.</summary>
         public NeuralTrainingLimitsDto TrainingLimits;
 
         #endregion neural network limits
@@ -1074,7 +1074,7 @@ namespace IG.Num
         #region neural network parameters
 
         /// <summary>Contains Parameters that define neural network architecture and trainig procedure, together with 
-        /// achieved results after training such as various error norms.<summary>
+        /// achieved results after training such as various error norms.</summary>
         public NeuralTrainingParametersDto[] TrainingParameters;
 
         #endregion neural network parameters
@@ -1093,7 +1093,7 @@ namespace IG.Num
         }
 
         /// <summary>Copies the specified training results to the current DTO.</summary>
-        /// <param name="trainingParameters">Object that is copied to the current DTO.</param>
+        /// <param name="trainingResults">Object that is copied to the current DTO.</param>
         protected override void CopyFromPlain(NeuralTrainingTable trainingResults)
         {
             if (trainingResults==null)
@@ -1130,7 +1130,7 @@ namespace IG.Num
         }
 
         /// <summary>Copies contents of the current DTO to the specified training results object.</summary>
-        /// <param name="trainingParameters">Object that the current DTO content is copied to.</param>
+        /// <param name="trainingResults">Object that the current DTO content is copied to.</param>
         protected override void CopyToPlain(ref NeuralTrainingTable trainingResults)
         {
             if (this.GetNull())

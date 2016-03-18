@@ -30,7 +30,7 @@ namespace IG.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BrowserSimpleWindow));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BrowserSimpleForm));
 
             this.windowPositionerControl1 = new IG.Forms.WindowPositionerControl();
             this.SuspendLayout();
@@ -53,7 +53,7 @@ namespace IG.Forms
             this.ClientSize = new System.Drawing.Size(509, 605);
             this.Controls.Add(this.windowPositionerControl1);
             this.MinimumSize = new System.Drawing.Size(525, 643);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Icon = IG.Forms.Properties.Resources.ig;
             this.Name = "WindowPositionTesterForm";
             this.Text = "IGLib - Window positioner";
             this.ResumeLayout(false);
@@ -62,7 +62,7 @@ namespace IG.Forms
 
         #endregion
 
-        private WindowPositionerControl windowPositionerControl1;
+        protected WindowPositionerControl windowPositionerControl1 = null;
 
     }
 }

@@ -209,7 +209,7 @@ namespace IG.Num
 
         private static int _nextPointId = 0;
 
-        /// <summary>Returns the next point ID that can be used for new <see cref="PointContainer"/> objects.</summary>
+        /// <summary>Returns the next point ID that can be used for new PointContainer objects.</summary>
         public static int NextPointId
         {
             get { ++_nextPointId; return _nextPointId - 1; }

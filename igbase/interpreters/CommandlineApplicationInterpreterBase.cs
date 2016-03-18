@@ -178,7 +178,6 @@ namespace IG.Lib
 
         /// <summary>Executes the command that is represented by the current command data, and
         /// stores the results.</summary>
-        /// <param name="commandThread">Commandline interpreter thread in which command is executed.</param>
         protected virtual void RunCommand()
         {
             this.StartTime = DateTime.Now;
@@ -191,12 +190,10 @@ namespace IG.Lib
         /// and stores the results.
         /// <para>This method just calls the argument-less <see cref="RunCommand"/> method and is used for execution delegate
         /// for the parallel job container.</para></summary>
-        /// <param name="commandThread">Commandline interpreter thread in which command is executed.</param>
         /// <param name="input">Input data. Does not have any effect because data is taken from the current object.</param>
         /// <returns>Resuts. Actually it just returns the current object, since results are stored in this object
         /// by the argument-less <see cref="RunCommand"/> function.</returns>
-        protected static CommandLineJobContainer Run( 
-            CommandLineJobContainer input)
+        protected static CommandLineJobContainer Run(CommandLineJobContainer input)
         {
 
             //if (input == null)
@@ -393,6 +390,7 @@ namespace IG.Lib
 
         /// <summary>Constructs a new interpreter variable.</summary>
         /// <param name="variableName">Variable name. Must be specified.</param>
+        /// <param name="stackLevel">Stack level.</param>
         /// <param name="variableValue">String value of the variable. Can be null.</param>
         /// <param name="flags">Flags that define type and behavior of the variable. Default is <see cref="VariableFlags.Default"/></param>
         public InterpreterVariable(string variableName, int stackLevel = StackLevelDefault, string variableValue = null, VariableFlags flags = VariableFlags.Default)
@@ -578,8 +576,8 @@ namespace IG.Lib
 
         /// <summary>Gets a flag indicating whether the current variable references a local variable.</summary>
         /// <exception cref="InvalidOperationException">Thrown when the current variable is not a reference to another variable.</exception>
-        public bool IsReferencedVariableLocal
         /// <exception cref="InvalidOperationException">Thrown when the current variable is not a reference to another variable.</exception>
+        public bool IsReferencedVariableLocal
         {
             get
             {
@@ -678,12 +676,12 @@ namespace IG.Lib
     /// <summary>Stack frame for a block of command-line interpreter commands.</summary>
     /// <remarks>
     /// <para>Usually properties, index operators and methods are not thread safe. Variants whose names end with "Locked"
-    /// implement locking on the <see cref="Lock"/> property and are thus thread safe. It is not likely that
+    /// implement locking on the <see cref="CommandStackFrameBase.Lock"/> property and are thus thread safe. It is not likely that
     /// locking is needed because the object will typically be used within a single thread.</para>
     /// </remarks>
     /// $A Igor Sep15;
     public class CommandStackFrame :
-        CommandStackFrame<ICommandLineApplicationInterpreter, CommandThread>
+        CommandStackFrame<ICommandLineApplicationInterpreter, CommandThread> 
     {
 
         /// <summary>Constructor.</summary>
@@ -722,7 +720,7 @@ namespace IG.Lib
     /// command-line interreter.</summary>
     /// <remarks>
     /// <para>Usually properties, index operators and methods are not thread safe. Variants whose names end with "Locked"
-    /// implement locking on the <see cref="Lock"/> property and are thus thread safe. It is not likely that
+    /// implement locking on the <see cref="CommandThreadBase.Lock"/> property and are thus thread safe. It is not likely that
     /// locking is needed because the object will typically be used within a single thread.</para>
     /// </remarks>
     /// $A Igor Sep15;
@@ -755,7 +753,7 @@ namespace IG.Lib
     /// <summary>Stack frame for a block of command-line interpreter commands.</summary>
     /// <remarks>
     /// <para>Usually properties, index operators and methods are not thread safe. Variants whose names end with "Locked"
-    /// implement locking on the <see cref="Lock"/> property and are thus thread safe. It is not likely that
+    /// implement locking on the <see cref="CommandStackFrameBase.Lock"/> property and are thus thread safe. It is not likely that
     /// locking is needed because the object will typically be used within a single thread.</para>
     /// </remarks>
     /// <typeparam name="InterpreterType">Type of the interpreter for which this class provides stack frames.</typeparam>
@@ -800,7 +798,7 @@ namespace IG.Lib
     /// command-line interreter.</summary>
     /// <remarks>
     /// <para>Usually properties, index operators and methods are not thread safe. Variants whose names end with "Locked"
-    /// implement locking on the <see cref="Lock"/> property and are thus thread safe. It is not likely that
+    /// implement locking on the <see cref="CommandThreadBase.Lock"/> property and are thus thread safe. It is not likely that
     /// locking is needed because the object will typically be used within a single thread.</para>
     /// </remarks>
     /// <typeparam name="InterpreterType">Type of the interpreter for which this class provides command thread data.</typeparam>
@@ -827,7 +825,7 @@ namespace IG.Lib
     /// <summary>Stack frame for a block of command-line interpreter commands.</summary>
     /// <remarks>
     /// <para>Usually properties, index operators and methods are not thread safe. Variants whose names end with "Locked"
-    /// implement locking on the <see cref="Lock"/> property and are thus thread safe. It is not likely that
+    /// implement locking on the <see cref="CommandStackFrameBase.Lock"/> property and are thus thread safe. It is not likely that
     /// locking is needed because the object will typically be used within a single thread.</para>
     /// </remarks>
     /// <typeparam name="InterpreterType">Type of the interpreter for which this class provides a stack frame.</typeparam>
@@ -865,9 +863,6 @@ namespace IG.Lib
         /// <summary>Returns the stack frame of the specified level for the current thread.
         /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
         /// dependent) methods in derived classes.</para></summary>
-        /// <param name="level">Level of the stack frame to be returned.
-        /// <para>Command thread (if not replicated for another one) begins executon at stack level 0, then each 
-        /// command block or function call increments the stack level by creating a new stack frame.</para></param>
         public override CommandThreadBase GetThreadBase()
         { return InterpreterThread; }
 
@@ -911,9 +906,9 @@ namespace IG.Lib
 
         /// <summary>Returns the stack frame of the specified level for the current thread.
         /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
-        /// dependent) methods in derived classes.</para></summary>
+        /// dependent) methods in derived classes.</para>
         /// <para>Command thread (if not replicated for another one) begins executon at stack level 0, then each 
-        /// command block or function call increments the stack level by creating a new stack frame.</para></param>
+        /// command block or function call increments the stack level by creating a new stack frame.</para></summary>
         public abstract CommandThreadBase GetThreadBase();
 
         #endregion Data.GenericTypesBypass
@@ -1597,7 +1592,7 @@ namespace IG.Lib
     /// command-line interreter.</summary>
     /// <remarks>
     /// <para>Usually properties, index operators and methods are not thread safe. Variants whose names end with "Locked"
-    /// implement locking on the <see cref="Lock"/> property and are thus thread safe. It is not likely that
+    /// implement locking on the <see cref="CommandThreadBase.Lock"/> property and are thus thread safe. It is not likely that
     /// locking is needed because the object will typically be used within a single thread.</para>
     /// </remarks>
     /// <typeparam name="InterpreterType">Type of the interpreter for which this class provides command thread data.</typeparam>

@@ -186,7 +186,9 @@ namespace IG.Num
         }
 
         /// <summary>Initializes components of a 3D vector with the specified values.</summary>
-        /// <param name="comp">Value assigned to all vector components.</param>
+        /// <param name="x">Value of the first element of the vector.</param>
+        /// <param name="y">Value of the second element of the vector.</param>
+        /// <param name="z">Value of the third element of the vector.</param>
         public Vector3d(double x, double y, double z)
         {
             this.X = x; this.Y = y; this.Z = z;
@@ -201,22 +203,22 @@ namespace IG.Num
 
         //Remark: unit vector is abolished because its use causef problems becaues of ambiguity.
         // Use the static BasisVector function instead!
-       ///// <summary>Constructs a 3-dimensional unit vector for i'th coordinate.</summary>
-       // /// <param name="i">Coordinate index.</param>
-       // public Vector3d(int i)
-       // {
-       //     if (i < 0 || i >= 3)
-       //         throw new ArgumentException("Creation of unit vector: index out of range: "
-       //             + i.ToString() + ", should be between 0 and 2.");
-       //     this.X = this.Y = this.Z = 0.0;
-       //     this[i] = 1.0;
-       // }
+        ///// <summary>Constructs a 3-dimensional unit vector for i'th coordinate.</summary>
+        // /// <param name="i">Coordinate index.</param>
+        // public Vector3d(int i)
+        // {
+        //     if (i < 0 || i >= 3)
+        //         throw new ArgumentException("Creation of unit vector: index out of range: "
+        //             + i.ToString() + ", should be between 0 and 2.");
+        //     this.X = this.Y = this.Z = 0.0;
+        //     this[i] = 1.0;
+        // }
 
 
 
         /// <summary>Constructs a vector from a 1-D array.</summary>
         /// <param name="components">One-dimensional array of doubles.</param>
-        /// <seealso cref="Create"/>
+        /// <seealso cref="Create(double[])"/>
         public Vector3d(double[] components) 
         {
             if (components==null)
@@ -292,10 +294,8 @@ namespace IG.Num
         //    return ReturnedString;
         //}
 
-        /// <summary>Generates vector with random elements uniformly distributed on [0, 1).</summary>
-        /// <param name="d2">Dimensionality of vector.</param>
-        /// <returns>An d2-dimensional vector with uniformly distributedrandom elements in <c>[0, 1)</c> interval.</returns>
-        public static Vector3d Random(int n)
+        /// <summary>Generates 3-dimensional vector with random elements uniformly distributed on [0, 1).</summary>
+        public static Vector3d Random()
         {
             Vector3d ret = new Vector3d(0.0);
             ret.SetRandom();
@@ -303,22 +303,19 @@ namespace IG.Num
             // return Random(new SystemRandomSource());
         }
 
-        /// <summary>Generates an d2-dimensional vector filled with 1.</summary>
-        /// <param name="d2">Dimensionality of vector.</param>
-        public static Vector3d Ones(int n)
+        /// <summary>Generates an 3-dimensional vector filled with 1s.</summary>
+        public static Vector3d Ones()
         {
             return new Vector3d(1.0);
         }
 
-        /// <summary>Generates an d2-dimensional vector filled with 0.</summary>
-        /// <param name="d2">Dimensionality of vector.</param>
-        public static Vector3d Zeros(int n)
+        /// <summary>Generates an 3-dimensional vector filled with 0.</summary>
+        public static Vector3d Zeros()
         {
             return new Vector3d(0.0);
         }
 
-        /// <summary>Generates an d2-dimensional unit vector for i-th coordinate.</summary>
-        /// <param name="d2">Dimensionality of vector.</param>
+        /// <summary>Generates an 3-dimensional unit vector for i-th coordinate.</summary>
         /// <param name="i">Coordinate index.</param>
         public static Vector3d BasisVector(int i)
         {
@@ -377,7 +374,7 @@ namespace IG.Num
 
         /// <summary>Returns the hashRet code (hashRet function) of the current vector.</summary>
         /// <remarks>
-        /// <para>This method calls the <see cref="VectorBase.GetHashCode"/> to calculate the 
+        /// <para>This method calls the <see cref="VectorBase.GetHashCode()"/> to calculate the 
         /// hashRet code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
         /// <para>Two vectors that have the same dimensions and equal elements will produce the same hashRet codes.</para>
         /// <para>Probability that two different vectors will produce the same hashRet code is small but it exists.</para>
@@ -391,9 +388,9 @@ namespace IG.Num
         /// <summary>Returns a value indicating whether the specified object is equal to the current vector.
         /// <para>True is returned if the object is a non-null vector (i.e. it implements the <see cref="IVector"/>
         /// interface), has the same dimension and equal elements as the current vector.</para></summary>
-        /// <remarks>This method calls the <see cref="VectorBase.Equals"/> to obtain the returned value, which is
+        /// <remarks>This method calls the <see cref="VectorBase.Equals(IVector, IVector)"/> to obtain the returned value, which is
         /// standard for all implementations of the <see cref="IVector"/> function.
-        /// <para>Overrides the <see cref="object.Equals"/> method.</para></remarks>
+        /// <para>Overrides the <see cref="object.Equals(object)"/> method.</para></remarks>
         public override bool Equals(Object obj)
         {
             return VectorBase.Equals(this, obj as IVector);

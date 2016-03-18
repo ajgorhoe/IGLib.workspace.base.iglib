@@ -20,6 +20,9 @@ using System.Threading;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
+using System.Collections;
+using System.Globalization;
+using System.Resources;
 
 
 
@@ -346,7 +349,7 @@ namespace IG.Lib
         /// <summary>Executes system command with arguments synchronously (blocks until the 
         /// process that is created exits).</summary>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="AppArguments">Arguments to system command.</param>
+        /// <param name="args">Arguments to system command.</param>
         public static Process ExecuteSystemCommand(string command, params string[] args)
         {
             return ExecuteSystemCommand(null /* workingDirectory */, false /* asynchronous */, command, args);
@@ -356,7 +359,7 @@ namespace IG.Lib
         /// <summary>Executes system command with arguments asynchronously (returns immediately and does not
         /// wait for the process to complete).</summary>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="AppArguments">Arguments to system command.</param>
+        /// <param name="args">Arguments to system command.</param>
         public static Process ExecuteSystemCommandAsync(string command, params string[] args)
         {
             return ExecuteSystemCommand(null /* workingDirectory */, true /* asynchronous */, command, args);
@@ -367,7 +370,7 @@ namespace IG.Lib
         /// and the caller can wait for the executed process by calling WaitForExit() on the returned object).
         /// If false then method blocks until the process completes.</param>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="AppArguments">Arguments to system command.</param>
+        /// <param name="args">Arguments to system command.</param>
         /// <returns><see cref="Process"/> object that can be used to access and manimulate the process that has
         /// been executed by this method.</returns>
         public static Process ExecuteSystemCommand(bool asynchronous, string command, params string[] args)
@@ -382,7 +385,7 @@ namespace IG.Lib
         /// and the caller can wait for the executed process by calling WaitForExit() on the returned object).
         /// If false then method blocks until the process completes.</param>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="AppArguments">Arguments to system command.</param>
+        /// <param name="args">Arguments to system command.</param>
         /// <returns><see cref="Process"/> object that can be used to access and manimulate the process that has
         /// been executed by this method.</returns>
         public static Process ExecuteSystemCommand(string workingDirectory, bool asynchronous,
@@ -401,7 +404,7 @@ namespace IG.Lib
         /// If false then method blocks until the process completes.</param>
         /// <param name="useShell">Whether to use the command shell (open in a new window) for execution.</param>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="AppArguments">Arguments to system command.</param>
+        /// <param name="args">Arguments to system command.</param>
         /// <returns><see cref="Process"/> object that can be used to access and manimulate the process that has
         /// been executed by this method.</returns>
         public static Process ExecuteSystemCommand(string workingDirectory, bool asynchronous, bool useShell,
@@ -425,7 +428,7 @@ namespace IG.Lib
         /// <param name="redirectStandardOutput">Whether standard output is redirected (in this case, there will be no output
         /// to the console). Enables suppressing output to console without redirecting it to a specified file.</param>
         /// <param name="command">Command string, usually a path to executable or other type of command.</param>
-        /// <param name="AppArguments">Arguments to system command.</param>
+        /// <param name="args">Arguments to system command.</param>
         /// <returns><see cref="Process"/> object that can be used to access and manimulate the process that has
         /// been executed by this method.</returns>
         public static Process ExecuteSystemCommand(string workingDirectory, bool asynchronous, bool useShell,
@@ -509,22 +512,34 @@ namespace IG.Lib
         }
 
 
-        /// <summary>Opens the specified file in the system's default browser.</summary>
-        /// <param name="inputFilePath">Path of the file to be opened.</param>
-        public static void OpenFileInDefaultBrowser(string filePath)
+        /// <summary>Opens the specified file in the default system's application for handling this kind of prcesses, 
+        /// and returns the process that opened the file.</summary>
+        /// <param name="filePath">Path to the file to be opened.</param>
+        /// <returns>Process object for the eprocess where the file is opened.</returns>
+        public static Process OpenFileInDefaultApplication(string filePath)
         {
-            Process.Start("file:///" + filePath);
+            return Process.Start(filePath);
+        }
+
+        /// <summary>Opens the specified file in the system's default browser.</summary>
+        /// <param name="filePath">Path of the file to be opened.</param>
+        /// <returns>Process object for the eprocess where the file is opened.</returns>
+        public static Process OpenFileInDefaultBrowser(string filePath)
+        {
+            return Process.Start("file:///" + filePath);
         }
 
         /// <summary>Opens the specified URL (Unique Resource locator, e.g. a web address) in the default browser.</summary>
         /// <url>Adress of page to be shown.</url>
-        public static void OpenUrlInDefaultBrowser(string url)
+        /// <returns>Process object for the eprocess where the file is opened.</returns>
+        public static Process OpenUrlInDefaultBrowser(string url)
         {
-            Process.Start(url);
+            return Process.Start(url);
         }
 
 
         #endregion SystemExecution
+
 
         #region CurrentProcess
 
@@ -555,6 +570,7 @@ namespace IG.Lib
 
 
         #endregion CurrentProcess
+
 
         #region Processes
 
@@ -1621,6 +1637,7 @@ namespace IG.Lib
         /// <para>Applications are regarded all processes with visible main window and window title defined.</para></summary>
         /// <param name="mainWindowTitle">Application's main window title.</param>
         /// <param name="caseSensitive">Whether process name is case sensitive.</param>
+        /// <param name="isFullString">Whether the name is full name.</param>
         /// <returns>True if at least one process with the specified name is running, false otherwise.</returns>
         public static bool IsApplicationRunningByWindowTitle(string mainWindowTitle, bool caseSensitive, bool isFullString)
         {
@@ -1736,6 +1753,7 @@ namespace IG.Lib
         /// eventually reported on console if the <see cref="Util.OutputLevel"/> >= 1.</para></summary>
         /// <param name="mainWindowTitle">Application's main window title.</param>
         /// <param name="caseSensitive">Whether process name is case sensitive.</param>
+        /// <param name="isFullString">Whether the name is full name.</param>
         public static void KillFirstApplicationByWindowTitle(string mainWindowTitle, bool caseSensitive, bool isFullString)
         {
             if (isFullString)
@@ -1913,6 +1931,193 @@ namespace IG.Lib
 
         #endregion Processes
 
+
+        #region ThreadPriority
+
+
+        /// <summary>Converts the specified <see cref="ProcessPriorityClass"/> enum value to the approcimately equivalent
+        /// <see cref="ThreadPriority"/> value and returns it.</summary>
+        /// <param name="processPriority">Process priority value to be converted to thread priority.</param>
+        public static ThreadPriority ProcessToThreadPriority(ProcessPriorityClass processPriority)
+        {
+            switch (processPriority)
+            {
+                case ProcessPriorityClass.Idle:
+                    return ThreadPriority.Lowest;
+                case ProcessPriorityClass.BelowNormal:
+                    return ThreadPriority.BelowNormal;
+                case ProcessPriorityClass.Normal:
+                    return ThreadPriority.Normal;
+                case ProcessPriorityClass.AboveNormal:
+                    return ThreadPriority.AboveNormal;
+                case ProcessPriorityClass.High:
+                    return ThreadPriority.Highest;
+                case ProcessPriorityClass.RealTime:
+                    return ThreadPriority.Highest;
+                default:
+                    return ThreadPriority.Normal;
+            }
+        }
+
+
+        /// <summary>Converts the specified <see cref="ThreadPriority"/> enum value to the approcimately equivalent
+        /// <see cref="ProcessPriorityClass"/> value and returns it.</summary>
+        /// <param name="threadPriority">Thread priority value to be converted to thread priority.</param>
+        public static ProcessPriorityClass ThreadToProcessPriority(ThreadPriority threadPriority)
+        {
+            switch (threadPriority)
+            {
+                case ThreadPriority.Lowest:
+                    return ProcessPriorityClass.Idle;
+                case ThreadPriority.BelowNormal:
+                    return ProcessPriorityClass.BelowNormal;
+                case ThreadPriority.Normal:
+                    return ProcessPriorityClass.Normal;
+                case ThreadPriority.AboveNormal:
+                    return ProcessPriorityClass.AboveNormal;
+                case ThreadPriority.Highest:
+                    return ProcessPriorityClass.RealTime;
+                default:
+                    return ProcessPriorityClass.Normal;
+            }
+        }
+
+
+        private static bool _dynamicThreadPriority = true;
+
+        /// <summary>Whether the <see cref="ThreadPriority"/> property should be obtained dynamically from the 
+        /// process priority each time its getter is called, or the value that is set should be used until it
+        /// is not changed explicitly.
+        /// <para>Default is true.</para>
+        /// <para>By setting the <see cref="ThreadPriority"/> property, this flag is automatically set to false.</para></summary>
+        public static bool DynamicThreadPriority
+        {
+            get { lock (LockStatic) { return _dynamicThreadPriority; } }
+            set { lock (LockStatic) { _dynamicThreadPriority = value; } }
+        }
+
+
+        private static ThreadPriority _threadPriority = ProcessToThreadPriority(Process.GetCurrentProcess().PriorityClass);
+
+        /// <summary>Global thread priority.
+        /// <para>Gets or sets priority that should be given to the newly created threads that
+        /// use this instrument.</para>
+        /// <para>If the <see cref="DynamicThreadPriority"/> property is set to true then each time the getter
+        /// is called, the value of the property will be obtained anew from the process priority class. Otherwise, 
+        /// the value that has been set last is used.</para>
+        /// <para>Setting the property value will automatically set the <see cref="DynamicThreadPriority"/> to false.</para></summary>
+        public static ThreadPriority ThreadPriority
+        {
+            get
+            {
+                ThreadPriority ret;
+                bool priorityChanged = false;
+                lock (LockStatic)
+                {
+                    if (_dynamicThreadPriority)
+                    {
+                        ThreadPriority priority = GetThreadPriorityFromProcess();
+                        if (priority != _threadPriority)
+                        {
+                            priorityChanged = true;
+                            _threadPriority = priority;
+                        }
+                    }
+                    ret = _threadPriority;
+                }
+                if (priorityChanged)
+                    OnThreadPriorityChange();
+                return ret;
+            }
+            set
+            {
+                bool priorityChanged = false;
+                lock (LockStatic)
+                {
+                    if (value != _threadPriority)
+                        priorityChanged = true;
+                    _dynamicThreadPriority = false;
+                    _threadPriority = value;
+                }
+                if (priorityChanged)
+                {
+                    OnThreadPriorityChange();
+                }
+            }
+        }
+
+
+        /// <summary>Returns the thread priority value that is equivallent to the current process' priority class.</summary>
+        public static ThreadPriority GetThreadPriorityFromProcess()
+        {
+            return ProcessToThreadPriority(Process.GetCurrentProcess().PriorityClass);
+        }
+
+        /// <summary>Updates the global thread priority (the <see cref="UtilSystem.ThreadPriority"/> property ) 
+        /// in such a way that it is the same as the current process priority.
+        /// <para>If the priority is changed by this call then the event handlers are also executed
+        /// (the delegate <see cref="UtilSystem.OnThreadPriorityChange"/> is called).</para></summary>
+        public static void UpdateThreadPriorityFromProcess()
+        {
+            ThreadPriority priority = GetThreadPriorityFromProcess();
+            bool priorityChanged = false;
+            lock (LockStatic)
+            {
+                if (priority != _threadPriority)
+                {
+                    priorityChanged = true;
+                    _threadPriority = priority;
+                }
+            }
+            if (priorityChanged)
+                OnThreadPriorityChange();
+        }
+
+
+        private static ThreadStart _onThreadPriorityChange;
+
+        /// <summary>This delegate is called when the global thread priority changes (property <see cref="UtilSystem.ThreadPriority"/>),
+        /// but can also be called manually.</summary>
+        public static void OnThreadPriorityChange()
+        {
+            ThreadStart onChange;
+            lock (LockStatic)
+            {
+                onChange = _onThreadPriorityChange;
+            }
+            if (onChange != null)
+                onChange();
+        }
+
+        /// <summary>Adds the specified method that is executed when the global thread priority changes.</summary>
+        /// <param name="onPriorityChangeMethod">Method that is added.</param>
+        public static void AddOnThreadPriorityChange(ThreadStart onPriorityChangeMethod)
+        {
+            lock (LockStatic)
+            {
+                _onThreadPriorityChange += onPriorityChangeMethod;
+            }
+        }
+
+        /// <summary>Removes the specified method that is executed when the global thread priority changes.</summary>
+        /// <param name="onPriorityChangeMethod">Method that is removed.</param>
+        public static void RemoveOnThreadPriorityChange(ThreadStart onPriorityChangeMethod)
+        {
+            lock (LockStatic)
+            {
+                try
+                {
+                    _onThreadPriorityChange -= onPriorityChangeMethod;
+                }
+                catch { }
+            }
+        }
+
+
+
+        #endregion ThreadPriority
+
+
         #region Assemblies
 
         // See also:
@@ -1927,6 +2132,9 @@ namespace IG.Lib
         // Resolving Assembly Loads: https://msdn.microsoft.com/en-us/library/ff527268%28v=vs.110%29.aspx
         // AppDomain.AssemblyResolve Event (warning: example is useless!): https://msdn.microsoft.com/en-us/library/system.appdomain.assemblyresolve%28v=vs.110%29.aspx 
         // ResolveEventArgs.RequestingAssembly (good explanation!): https://msdn.microsoft.com/en-us/library/system.resolveeventargs.requestingassembly%28v=vs.110%29.aspx
+        //   Very good article on AssemblyResolve:
+        //     C# in a nutshell - see under Resolving and Loading Assemblies, and under AssemblyResolve:
+        //     https://books.google.lu/books?id=_Y0rWd-Q2xkC&pg=PA548&lpg=PA548&dq=how+to+get+stream+of+resource+within+resource+file&source=bl&ots=R9FwU6WG-j&sig=ESi1A_dkYpM69Xbc2c6N0PzeE0M&hl=en&sa=X&redir_esc=y#v=onepage&q=how%20to%20get%20stream%20of%20resource%20within%20resource%20file&f=false
 
         // General on loading assemblies:
         // How the Runtime Locates Assemblies: https://msdn.microsoft.com/en-us/library/yx7xezcf%28v=vs.110%29.aspx
@@ -2004,7 +2212,8 @@ namespace IG.Lib
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <param name="caseSensitive">Whether names are case sensitive.</param>
         /// <param name="loadIfNecessary">Whether assembly can be loaded.</param>
-        /// <param name="byFileName">If true then assembly is searched for by file name instead by just the assembly.</param>
+        /// <param name="byName">Whether assembly is searched for by name rather than by its filenmae.</param>
+        /// <param name="byFileName">If true then assembly is searched for by file name.</param>
         public static Assembly GetAssemblyByNameOrFileName(string assemblyName, bool caseSensitive = false, bool loadIfNecessary = true,
             bool byName = true, bool byFileName = true)
         {
@@ -2081,8 +2290,41 @@ namespace IG.Lib
         }
 
 
+        /// <summary>Adds all loaded assembly from the current application domain to the specified list, and returns the list.</summary>
+        /// <param name="assemblyList">List on which loaded assemblies are loaded. If null then the list is created internally
+        /// (inboth cases the list is returned).</param>
+        /// <param name="clearBefore">Spwcifies whether the list should be cleared fitst in order to remove any existent items on the list.</param>
+        /// <returns>List onto which the loaded assemblies were added. This makes the method usable even if the <paramref name="assemblyList"/>
+        /// is null, in which case the list is allocated within the method.</returns>
+        public static IList<Assembly> GetLoadedAssemblies(IList<Assembly> assemblyList, bool clearBefore = true)
+        {
+            if (assemblyList == null)
+                assemblyList = new List<Assembly>();
+            else if (clearBefore)
+                assemblyList.Clear();
+            Assembly[] loadedAssemblies = GetLoadedAssemblies();
+            foreach (Assembly asm in loadedAssemblies)
+                assemblyList.Add(asm);
+            return assemblyList;
+        }
+
+
 
         #region Assembly.ReferencedAssemblies
+
+
+        // TODO: GetReferencedAssemblies() class of functions can return assemblies that are not null but that can 
+        // not be worked on because their dependencies are not loaded. The following type of exception is thrown if a
+        // type is checked in such an assembly by the assembly.GetType(formClassName2, false):
+        //   Cannot resolve dependency to assembly 'System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' because it has not been preloaded. When using the ReflectionOnly APIs, dependent assemblies must be pre-loaded or loaded on demand 
+        // This error can be reproduced e.g. by 
+        //   Internal IG.Script.AppExtBase FormDemo OpenForm IG.Forms.TestForm
+        // if the first check iwthin the corresponding function is set to GetReferencedAssemblies() instead of 
+        // GetLoadedAssemblies().
+        // Check what can be done in this respect. Sometimes one would also like to check all referenced fo a given
+        // class that could then be instantiated.
+
+
 
         /// <summary>Assemblies directly referenced by the current executale assembly.
         /// Calculated only once, lazy evaluation.</summary>
@@ -2100,7 +2342,6 @@ namespace IG.Lib
         /// <summary>Assemblies directly or indirectly referenced by the current executale assembly.
         /// Calculated only once, lazy evaluation.</summary>
         private static volatile Assembly[] _referencedAssembliesRecursive;
-
 
         /// <summary>Returns an array containing the executable assembly and all its DIRECTLY referenced assemblies.
         /// Assemblies from the Global Assembly Cache (GAC) are NOT included.</summary>
@@ -2133,6 +2374,8 @@ namespace IG.Lib
             return _referencedAssembliesDirectWithoutGac;
         }
 
+
+
         /// <summary>Returns an array containing the executable assembly and all its referenced assemblies (directly or indirectly).
         /// Assemblies from the Global Assembly Cache (GAC) are NOT included.</summary>
         /// <remarks>Array of assemblies is calculated only once (the first time it is needed) and is stored internally for 
@@ -2163,6 +2406,26 @@ namespace IG.Lib
             }
             return _referencedAssembliesRecursiveWithoutGac;
         }
+
+        /// <summary>Adds the executable assembly and all its referenced assemblies (directly or indirectly) without those 
+        /// from GAC to the specified list, and returns the list.</summary>
+        /// <param name="assemblyList">List on which referenced assemblies are loaded. If null then the list is created internally
+        /// (inboth cases the list is returned).</param>
+        /// <param name="clearBefore">Spwcifies whether the list should be cleared fitst in order to remove any existent items on the list.</param>
+        /// <returns>List onto which the loaded assemblies were added. This makes the method usable even if the <paramref name="assemblyList"/>
+        /// is null, in which case the list is allocated within the method.</returns>
+        public static IList<Assembly> GetReferencedAssembliesWithoutGac(IList<Assembly> assemblyList, bool clearBefore = true)
+        {
+            if (assemblyList == null)
+                assemblyList = new List<Assembly>();
+            else if (clearBefore)
+                assemblyList.Clear();
+            Assembly[] loadedAssemblies = GetReferencedAssembliesWithoutGac();
+            foreach (Assembly asm in loadedAssemblies)
+                assemblyList.Add(asm);
+            return assemblyList;
+        }
+
 
         /// <summary>Returns an array containing the executable assembly and all its DIRECTLY referenced assemblies.
         /// Assemblies from the Global Assembly Cache (GAC) are also included.</summary>
@@ -2195,13 +2458,32 @@ namespace IG.Lib
             return _referencedAssembliesDirect;
         }
 
+        /// <summary>Adds the executable assembly and all its DIRECTLY referenced assemblies without those from GAC to the specified list, and returns the list.</summary>
+        /// <param name="assemblyList">List on which referenced assemblies are loaded. If null then the list is created internally
+        /// (inboth cases the list is returned).</param>
+        /// <param name="clearBefore">Spwcifies whether the list should be cleared fitst in order to remove any existent items on the list.</param>
+        /// <returns>List onto which the loaded assemblies were added. This makes the method usable even if the <paramref name="assemblyList"/>
+        /// is null, in which case the list is allocated within the method.</returns>
+        public static IList<Assembly> GetReferencedAssemblies(IList<Assembly> assemblyList, bool clearBefore = true)
+        {
+            if (assemblyList == null)
+                assemblyList = new List<Assembly>();
+            else if (clearBefore)
+                assemblyList.Clear();
+            Assembly[] loadedAssemblies = GetReferencedAssemblies();
+            foreach (Assembly asm in loadedAssemblies)
+                assemblyList.Add(asm);
+            return assemblyList;
+        }
+
+
         /// <summary>Returns an array containing the executable assembly and all its referenced assemblies (directly or indirectly), 
-        // which roughly coincides with all assemblies that can be potentially used by the current application.
+        /// which roughly coincides with all assemblies that can be potentially used by the current application.
         /// Assemblies from the Global Assembly Cache (GAC) are also included.</summary>
         /// <remarks>Array of assemblies is calculated only once (the first time it is needed) and is stored internally 
         /// to speed up further uses.
         /// <para>See:</para>
-        /// <para>http://stackoverflow.com/questions/383686/how-do-you-loop-through-currently-loaded-assemblies </para>
+        /// <para> http://stackoverflow.com/questions/383686/how-do-you-loop-through-currently-loaded-assemblies </para>
         /// <para>Assembly names, http://msdn.microsoft.com/en-us/library/k8xx4k69%28v=vs.110%29.aspx </para></remarks>
         public static Assembly[] GetReferencedAssembliesRecursive()
         {
@@ -2226,6 +2508,27 @@ namespace IG.Lib
             }
             return _referencedAssembliesRecursive;
         }
+
+        /// <summary>Adds the executable assembly and all its referenced (directly or indirectly) assemblies to the specified list, 
+        /// and returns the list. This roughly coincides with all assemblies that can be potentially used by the current application.</summary>
+        /// <param name="assemblyList">List on which referenced assemblies are loaded. If null then the list is created internally
+        /// (inboth cases the list is returned).</param>
+        /// <param name="clearBefore">Spwcifies whether the list should be cleared fitst in order to remove any existent items on the list.</param>
+        /// <returns>List onto which the loaded assemblies were added. This makes the method usable even if the <paramref name="assemblyList"/>
+        /// is null, in which case the list is allocated within the method.</returns>
+        public static IList<Assembly> GetReferencedAssembliesRecursive(IList<Assembly> assemblyList, bool clearBefore = true)
+        {
+            if (assemblyList == null)
+                assemblyList = new List<Assembly>();
+            else if (clearBefore)
+                assemblyList.Clear();
+            Assembly[] loadedAssemblies = GetReferencedAssembliesRecursive();
+            foreach (Assembly asm in loadedAssemblies)
+                assemblyList.Add(asm);
+            return assemblyList;
+        }
+
+
 
 
         public class MissingAssembly
@@ -2713,7 +3016,10 @@ namespace IG.Lib
 
         #region Assemblies.General
 
-        /// <summary>Returns name of the specified assembly.</summary>
+        /// <summary>Returns the simple name of the specified assembly.
+        /// <para>This method is provided, among the others, in order to standardise how assemblies are referred to
+        /// within the IGLib library when version, culture and other specifics do not need to be differentiated and 
+        /// it only matters that logically the same assemblies are identified by some a common identifier.</para></summary>
         /// <param name="assembly">Assembly whose name is returned.</param>
         public static string GetAssemblyName(Assembly assembly)
         {
@@ -2806,6 +3112,7 @@ namespace IG.Lib
             return versionInfo.LegalCopyright;
         }
 
+        
         /// <summary>Returns a (possibly multiline) string containing basic information about the specified assembly, 
         /// such as file name, directory, assembly name, and version.</summary>
         /// <param name="infoLevel">Level of information put into the string:
@@ -2873,7 +3180,6 @@ namespace IG.Lib
 
 
         #endregion Assemblies.General
-
 
 
         #region Assemblies.Executable
@@ -3086,190 +3392,822 @@ namespace IG.Lib
 
         #endregion Assemblies
 
-        #region ThreadPriority
 
+        #region AssemblyTypes
 
-        /// <summary>Converts the specified <see cref="ProcessPriorityClass"/> enum value to the approcimately equivalent
-        /// <see cref="ThreadPriority"/> value and returns it.</summary>
-        /// <param name="processPriority">Process priority value to be converted to thread priority.</param>
-        public static ThreadPriority ProcessToThreadPriority(ProcessPriorityClass processPriority)
+        /// <summary>Finds a type with the specified class name and returns it.
+        /// <para>The type is searched for in the executable assembly, the current assembly, all loaded assemblies and in the 
+        /// referenced assemblies of the executable assembly.</para>
+        /// <para>If the type can not be found then 0 is returned (no exceptions thrown).</para></summary>
+        /// <param name="className">Name of the type to be obtained. It must include namespace unless the namespace is specified
+        /// separately by the <paramref name="nameSpace"/> parameter.</param>
+        /// <param name="nameSpace">If provided then this parameter is prepended to the class name as (. separated) namespace.
+        /// <para>If thee <paramref>tryWithoutNamespace</paramref> parameter is true then type name is also tried without the
+        /// namespace, but this is done after the name prepended with a namespace is tried (when namespace is specified).</para></param>
+        /// <param name="ignoreCase">If true then type name is case insensitive; default is false (case sensitive names).</param>
+        /// <param name="tryWithoutNamespace">If true then search for a type without namespace is attempted, too, even if the 
+        /// namespace is specified.</param>
+        public static Type GetType(string className, string nameSpace = null,
+            bool ignoreCase = true, bool tryWithoutNamespace = true)
         {
-            switch (processPriority)
+            if (string.IsNullOrEmpty(className))
+                throw new ArgumentException("Class name is not specified (null or empty string).");
+            Type ret = null;
+            if (!string.IsNullOrEmpty(nameSpace))
+                ret = GetType(nameSpace + "." + className, ignoreCase);
+            if (ret == null && (tryWithoutNamespace || !string.IsNullOrEmpty(nameSpace)))
+                ret = GetType(className, ignoreCase);
+            return ret;
+        }
+
+
+        /// <summary>Finds a type with the specified class name and returns it.
+        /// <para>The type is searched for in the executable assembly, the current assembly, all loaded assemblies and in the 
+        /// referenced assemblies of the executable assembly.</para>
+        /// <para>If the type can not be found then 0 is returned (no exceptions thrown).</para></summary>
+        /// <param name="className">Full name of the type to be obtaines (must include namespace).</param>
+        /// <param name="ignoreCase">If true then type name is case insensitive; default is false (case sensitive names).</param>
+        public static Type GetType(string className, bool ignoreCase = false)
+        {
+            if (string.IsNullOrEmpty(className))
+                throw new ArgumentException("Class name is not specified (null or empty string).");
+            Type ret = null;
+            // Check for the control type in the executable assembly:
+            ret = Assembly.GetEntryAssembly().GetType(className, false /* throwOnError */, ignoreCase);
+            if (ret == null)
             {
-                case ProcessPriorityClass.Idle:
-                    return ThreadPriority.Lowest;
-                case ProcessPriorityClass.BelowNormal:
-                    return ThreadPriority.BelowNormal;
-                case ProcessPriorityClass.Normal:
-                    return ThreadPriority.Normal;
-                case ProcessPriorityClass.AboveNormal:
-                    return ThreadPriority.AboveNormal;
-                case ProcessPriorityClass.High:
-                    return ThreadPriority.Highest;
-                case ProcessPriorityClass.RealTime:
-                    return ThreadPriority.Highest;
-                default:
-                    return ThreadPriority.Normal;
+                // Type not found in the entry assembly, try to locate it in the currently executing assembly:
+                ret = Assembly.GetExecutingAssembly().GetType(className, false /* throwOnError */, ignoreCase);
+                if (ret == null)
+                {
+                    // Still not found, check all loaded assemblies:
+                    Assembly[] assemblies = UtilSystem.GetLoadedAssemblies();
+                    int numAssemblies = 0;
+                    if (assemblies != null)
+                        numAssemblies = assemblies.Length;
+                    for (int whichAsm = 0; whichAsm < numAssemblies && ret == null; ++whichAsm)
+                    {
+                        Assembly asm = assemblies[whichAsm];
+                        try
+                        {
+                            ret = asm.GetType(className, false /* throwOnError */, ignoreCase);
+                        }
+                        catch (Exception ex)
+                        {
+                            // There should be no exception here, therefore we output something to console:
+                            Console.WriteLine(Environment.NewLine + "Exception thrown when trying to locate the form type "
+                                + className + Environment.NewLine + "  in assembly \"" + asm.FullName + "\". Details: "
+                                + Environment.NewLine + ex.Message);
+                        }
+                    }
+                    if (ret == null)
+                    {
+                        // The type is not even found in loaded assemblies, try also the referenced assemblies:
+                        assemblies = UtilSystem.GetReferencedAssemblies();
+                        numAssemblies = 0;
+                        if (assemblies != null)
+                            numAssemblies = assemblies.Length;
+                        for (int whichAsm = 0; whichAsm < numAssemblies && ret == null; ++whichAsm)
+                        {
+                            Assembly asm = assemblies[whichAsm];
+                            try
+                            {
+                                ret = asm.GetType(className, false /* throwOnError */, ignoreCase);
+                            }
+                            catch (Exception ex)
+                            {
+                                // There should be no exception here, therefore we output something to console:
+                                Console.WriteLine(Environment.NewLine + "Exception thrown when trying to locate the form type "
+                                    + className + Environment.NewLine + "  in assembly \"" + asm.FullName + "\". Details: "
+                                    + Environment.NewLine + ex.Message);
+                            }
+                        }
+                    }
+                }
             }
+            return ret;
         }
 
 
-        /// <summary>Converts the specified <see cref="ThreadPriority"/> enum value to the approcimately equivalent
-        /// <see cref="ProcessPriorityClass"/> value and returns it.</summary>
-        /// <param name="threadPriority">Thread priority value to be converted to thread priority.</param>
-        public static ProcessPriorityClass ThreadToProcessPriority(ThreadPriority threadPriority)
+
+        /// <summary>Instantiates an object of the specified type and performs checks on type inheritance if this is 
+        /// specified by parameters.
+        /// <para>Object type must have an argument-less constructor, otherwise exception is thrown.</para></summary>
+        /// <exception cref="InvalidCastException">Thrown if object type does not correspond to the inheritance requirements specified by parameters.</exception>
+        /// <exception cref="ArgumentException"> Thrown if <paramref name="objectType"/> is null.</exception>
+        /// <param name="objectType">Type of the object to be instantiated.</param>
+        /// <param name="superClass">If specified (not null) then the <paramref name="objectType"/> must inherit from this type.</param>
+        /// <param name="notSuperClass">If specified (not null) then the <paramref name="objectType"/> must NOT inherit from this type.</param>
+        /// <returns>Newly created object of the specified type.</returns>
+        public static object InstantiateObject(Type objectType, Type superClass = null, Type notSuperClass = null)
         {
-            switch (threadPriority)
+            if (objectType == null)
+                throw new ArgumentException("Type of the object to be created is not specified (null argument).");
+            else
             {
-                case ThreadPriority.Lowest:
-                    return ProcessPriorityClass.Idle;
-                case ThreadPriority.BelowNormal:
-                    return ProcessPriorityClass.BelowNormal;
-                case ThreadPriority.Normal:
-                    return ProcessPriorityClass.Normal;
-                case ThreadPriority.AboveNormal:
-                    return ProcessPriorityClass.AboveNormal;
-                case ThreadPriority.Highest:
-                    return ProcessPriorityClass.RealTime;
-                default:
-                    return ProcessPriorityClass.Normal;
+                if (superClass != null)
+                    if (!objectType.IsSubclassOf(superClass))
+                    {
+                        throw new InvalidCastException("Type " + objectType.FullName + " is not subclass of " + superClass.FullName + 
+                            " while it is supposed to be.");
+                    }
+                if (notSuperClass != null)
+                    if (objectType.IsSubclassOf(notSuperClass))
+                    {
+                        throw new InvalidCastException("Type " + objectType.FullName + " is a subclass of " + superClass.FullName + 
+                            " while it is not supposed to be.");
+                    }
             }
+            return System.Activator.CreateInstance(objectType);
         }
 
 
-        private static bool _dynamicThreadPriority = true;
-
-        /// <summary>Whether the <see cref="ThreadPriority"/> property should be obtained dynamically from the 
-        /// process priority each time its getter is called, or the value that is set should be used until it
-        /// is not changed explicitly.
-        /// <para>Default is true.</para>
-        /// <para>By setting the <see cref="ThreadPriority"/> property, this flag is automatically set to false.</para></summary>
-        public static bool DynamicThreadPriority
-        {
-            get { lock (LockStatic) { return _dynamicThreadPriority; } }
-            set { lock (LockStatic) { _dynamicThreadPriority = value; } }
-        }
+        #endregion AssemblyTypes
 
 
-        private static ThreadPriority _threadPriority = ProcessToThreadPriority(Process.GetCurrentProcess().PriorityClass);
 
-        /// <summary>Global thread priority.
-        /// <para>Gets or sets priority that should be given to the newly created threads that
-        /// use this instrument.</para>
-        /// <para>If the <see cref="DynamicThreadPriority"/> property is set to true then each time the getter
-        /// is called, the value of the property will be obtained anew from the process priority class. Otherwise, 
-        /// the value that has been set last is used.</para>
-        /// <para>Setting the property value will automatically set the <see cref="DynamicThreadPriority"/> to false.</para></summary>
-        public static ThreadPriority ThreadPriority
+
+
+        #region AssemblyResources
+
+        // ASSEMBLY RESOURCES:
+        // There are two type of resources, embedded file resources, and resources that are compiled from .resx files.
+        // Good starting point (check under Remarks):
+        // https://msdn.microsoft.com/en-us/library/system.reflection.assembly.getmanifestresourcenames.aspx
+        //    Good article on resources: in C# in a Nutshell
+        //      https://books.google.lu/books?id=_Y0rWd-Q2xkC&pg=PA548&lpg=PA548&dq=how+to+get+stream+of+resource+within+resource+file&source=bl&ots=R9FwU6WG-j&sig=ESi1A_dkYpM69Xbc2c6N0PzeE0M&hl=en&sa=X&redir_esc=y#v=onepage&q=how%20to%20get%20stream%20of%20resource%20within%20resource%20file&f=false
+        // EMBEDDED resources:
+        // Put files in directories within projects, include them in the project, then under Properties (right-click)
+        // in Solution Explorer) set Build Action to "Embedded Resource". Directory structure (as seen in Solution 
+        // Explorer) is reflected in resouce name (a kind of path) as returned by Assembly.GetManifestResourceNames()
+        // and as passed to Assembly.GetManifestResourceStream(): "<namespace>.<dir1>.<dir2>.<filename>" where namespace
+        // is default namespace of the assembly, dir1.dir2 corresponds to relative directory path within the project, 
+        // (e.g., file was contained in directory dir1/dir2) and filename is original file name, including extension.
+        //  - To list: names = Assembly.GetManifestResourceNames()
+        //  - To access: stream = Assembly.GetManifestResourceStream(name[i]), 
+        //      then use tools like Image.FromStream(stream), various StreamReader-s,  etc.
+        // .RESX resources:
+        // Include the via resource editor - double click on .resx file to open
+        //  - Included through .resx files (XML).
+        //  - Strings included directly, other usually by relative links to files
+        //  - Compiled into a .resources binary file included in assembly
+        //  - Class generated automatically with access properties (<filename>.Designer.cs) (returning objects for non-string data)
+        //  - Default is IG.Forms.Properties.Resources.resources (in Properties directory, together with AssemblyInfo.cs)
+        //  - Naming similar as for embedded resources, but with .resources extension, contained resources without extension
+        // Accessed either through ResourceManager (or ResourceReader), or throug accessing autometically generated class (strongly typed).
+        //   - To list resources from .resx file:
+        //       stream = assembly.GetManifestResourceStream("<resFileName>.resources");
+        //       reader = new ResourceReader(stream);
+        //       IDictionaryEnumerator dict = reader.GetEnumerator();
+        //       while (dict.MoveNext()) { var a = dict.Key. var b = dict.Value;  }
+        //   - Access to .resx-contained resources throgh resouce manager:
+        //    - mgr = new ResourceManager (baseName, assmebly)  ; baseName = name of resource file without extension 
+        //    - img = (img) mgr.GetObject(name)    for strings: mgr.GetString(name).  name is file name without extension.
+        //   - Access through generated resource classs properties:
+        //    - class is <ResourceFileName>.Designer.cs
+        // 
+        // Advantages of embedded resources:
+        //   - normal files in the project, can be edited by usual means
+        // Advantages of .resx files:
+        //   - easy programatic access through strongly typed members of generated resource class
+
+
+        private static char _resourceSeparator = ':';
+
+        private static string _resourceSeparatorString = null;
+
+        private static char _assemblySeparator = ';';
+
+        private static string _assemblySeparatorString = null;
+
+        /// <summary>Gets the character that is used to separate resource from the resource file (.resources).</summary>
+        public static char ResourceSeparator
+        { get { return _resourceSeparator; } }
+
+        /// <summary>Gets the string that is used to separate resource from the resource file (.resources).
+        /// <para>The separator is originally defined as character, this method just returns the string 
+        /// that contains only that character.</para></summary>
+        public static string ResourceSeparatorString
         {
             get
             {
-                ThreadPriority ret;
-                bool priorityChanged = false;
-                lock (LockStatic)
+                if (_resourceSeparatorString == null)
                 {
-                    if (_dynamicThreadPriority)
+                    lock (Util.LockGlobal)
                     {
-                        ThreadPriority priority = GetThreadPriorityFromProcess();
-                        if (priority != _threadPriority)
-                        {
-                            priorityChanged = true;
-                            _threadPriority = priority;
-                        }
+                        _resourceSeparatorString = new string(new char[] { _resourceSeparator });
                     }
-                    ret = _threadPriority;
                 }
-                if (priorityChanged)
-                    OnThreadPriorityChange();
-                return ret;
+                return _resourceSeparatorString;
             }
-            set
+        }
+
+        /// <summary>Gets the character that is used to separate resource from the assembly.</summary>
+        public static char AssemblySeparator
+        { get { return _assemblySeparator; } }
+
+        /// <summary>Gets the string that is used to separate resource from the assembly.
+        /// <para>The separator is originally defined as character, this method just returns the string 
+        /// that contains only that character.</para></summary>
+        public static string AssemblySeparatorString
+        {
+            get
             {
-                bool priorityChanged = false;
-                lock (LockStatic)
+                if (_assemblySeparatorString == null)
                 {
-                    if (value != _threadPriority)
-                        priorityChanged = true;
-                    _dynamicThreadPriority = false;
-                    _threadPriority = value;
+                    lock (Util.LockGlobal)
+                    {
+                        _assemblySeparatorString = new string(new char[] { _assemblySeparator });
+                    }
                 }
-                if (priorityChanged)
+                return _assemblySeparatorString;
+            }
+        }
+
+        // resource resource
+
+        #region Resources.PathManipulations
+
+        /// <summary>Returns a flag indicating whether the specified resource path represents a resource included
+        /// through a resource file (extension .resx, which compiles to file with extension .resourced).</summary>
+        /// <param name="resourcePath">Full path to the resource. If this is a resource that was included via
+        /// resource file (.resx), this consists of the path of the resources file (extension .resources) and name
+        /// of the resource without extension.</param>
+        public static bool IsPathResxResource(string resourcePath)
+        {
+            bool ret = false;
+            if (!string.IsNullOrEmpty(resourcePath))
+            {
+                ret = resourcePath.Contains(":");
+                if (ret)
                 {
-                    OnThreadPriorityChange();
+                    ret = false;
+                    string[] splitPath = resourcePath.Split(':');
+                    if (splitPath != null)
+                        if (splitPath.Length >= 2)
+                        {
+                            ret = splitPath[splitPath.Length - 2].EndsWith(".resources");
+                        }
                 }
             }
+            return ret;
         }
 
-
-        /// <summary>Returns the thread priority value that is equivallent to the current process' priority class.</summary>
-        public static ThreadPriority GetThreadPriorityFromProcess()
+        /// <summary>Returns a flag indicating whether the specified resource path represents a compiled resource file that
+        /// was compiled via the XML resource file (extension .resx, which compiles to file with extension .resourced).</summary>
+        /// <param name="resourcePath">Full path to the resource or resource file. If this is a resource that was included via
+        /// resource file (.resx), this consists of the path of the resources file (extension .resources) and name
+        /// of the resource without extension.</param>
+        public static bool IsPathResxResourceFile(string resourcePath)
         {
-            return ProcessToThreadPriority(Process.GetCurrentProcess().PriorityClass);
-        }
-
-        /// <summary>Updates the global thread priority (the <see cref="UtilSystem.ThreadPriority"/> property ) 
-        /// in such a way that it is the same as the current process priority.
-        /// <para>If the priority is changed by this call then the event handlers are also executed
-        /// (the delegate <see cref="UtilSystem.OnThreadPriorityChange"/> is called).</para></summary>
-        public static void UpdateThreadPriorityFromProcess()
-        {
-            ThreadPriority priority = GetThreadPriorityFromProcess();
-            bool priorityChanged = false;
-            lock (LockStatic)
+            bool ret = false;
+            if (!string.IsNullOrEmpty(resourcePath))
             {
-                if (priority != _threadPriority)
+                ret = resourcePath.EndsWith(".resources");
+                if (ret)
                 {
-                    priorityChanged = true;
-                    _threadPriority = priority;
+                    ret = !resourcePath.Contains(":");
                 }
             }
-            if (priorityChanged)
-                OnThreadPriorityChange();
+            return ret;
         }
 
-
-        private static ThreadStart _onThreadPriorityChange;
-
-        /// <summary>This delegate is called when the global thread priority changes (property <see cref="UtilSystem.ThreadPriority"/>),
-        /// but can also be called manually.</summary>
-        public static void OnThreadPriorityChange()
+        /// <summary>Returns a flag indicating whether the specified resource path represents an embedded resource (a resource
+        /// that is compiled into assembly as a stand-alone file).</summary>
+        /// <param name="resourcePath">Full path to the resource or resource file. If this is a resource that was included via
+        /// resource file (.resx), this consists of the path of the resources file (extension .resources) and name
+        /// of the resource without extension.</param>
+        public static bool IsPathEmbeddedResource(string resourcePath)
         {
-            ThreadStart onChange;
-            lock (LockStatic)
+            bool ret = false;
+            if (!string.IsNullOrEmpty(resourcePath))
             {
-                onChange = _onThreadPriorityChange;
+                ret = (!resourcePath.EndsWith(".resources") && !resourcePath.Contains(":"));
             }
-            if (onChange != null)
-                onChange();
+            return ret;
         }
 
-        /// <summary>Adds the specified method that is executed when the global thread priority changes.</summary>
-        /// <param name="onPriorityChangeMethod">Method that is added.</param>
-        public static void AddOnThreadPriorityChange(ThreadStart onPriorityChangeMethod)
+
+
+
+        /// <summary>Returns name of the resource with the specified path that was compiled to assembly
+        /// throuwh a .resx file (XML resource file).
+        /// <para>If the <paramref name="resourcePath"/> does not represent such a resource then null is returned.</para></summary>
+        /// <param name="resourcePath">Full path to the resource or resource file. If this is a resource that was included via
+        /// resource file (.resx), this consists of the path of the resources file (extension .resources) and name
+        /// of the resource without extension.</param>
+        public static string GetResxResourceName(string resourcePath)
         {
-            lock (LockStatic)
+            string ret = null;
+            if (IsPathResxResource(resourcePath))
             {
-                _onThreadPriorityChange += onPriorityChangeMethod;
+                string[] splitPath = resourcePath.Split(':');
+                if (splitPath != null)
+                    if (splitPath.Length >= 2)
+                    {
+                        ret = splitPath[splitPath.Length - 1];
+                    }
             }
+            return ret;
         }
 
-        /// <summary>Removes the specified method that is executed when the global thread priority changes.</summary>
-        /// <param name="onPriorityChangeMethod">Method that is removed.</param>
-        public static void RemoveOnThreadPriorityChange(ThreadStart onPriorityChangeMethod)
+
+        /// <summary>Returns path of the resource file, given the specified path of a resource (or its resource file) that was compiled to assembly
+        /// through a .resx file (XML resource file).
+        /// <para>If the <paramref name="resourcePath"/> does not represent such a resource then null is returned.</para></summary>
+        /// <param name="resourcePath">Full path to the resource or resource file. If this is a resource that was included via
+        /// resource file (.resx), this consists of the path of the resources file (extension .resources) and name
+        /// of the resource without extension.
+        /// <para>IMPORTANT: For this method, parameter can either be a path to the resource (consisting of resource file path and resource name 
+        /// separated by colon) or it can just be a path to the resource.</para></param>
+        public static string GetResxResourceFilePath(string resourcePath)
         {
-            lock (LockStatic)
+            string ret = null;
+            if (IsPathResxResource(resourcePath))
             {
+                // The specified path is full path of the resource:
+                string[] splitPath = resourcePath.Split(':');
+                if (splitPath != null)
+                    if (splitPath.Length >= 2)
+                    {
+                        ret = splitPath[0];
+                    }
+            }
+            else
+            {
+                // Tehe specified path is actually path to the resource file, therefore we just return it:
+                if (IsPathResxResourceFile(resourcePath))
+                    return resourcePath;
+            }
+            return ret;
+        }
+
+        /// <summary>Returns name of the embedded resource (i.e., its filename) with the specified path.
+        /// <para>If the <paramref name="resourcePath"/> does not represent such a resource then null is returned.</para>
+        /// <para>WARNING: This method is not reliable and can only be ursed for informative purposes! For example, it does 
+        /// not return the correct path if the embedded resource file does not have an extension.</para>summary>
+        /// <param name="resourcePath">Full path to the resource or resource file. If this is a resource that was included via
+        /// resource file (.resx), this consists of the path of the resources file (extension .resources) and name
+        /// of the resource without extension.</param>
+        public static string GetEmbeddedResourceName(string resourcePath)
+        {
+            string ret = null;
+            if (IsPathEmbeddedResource(resourcePath))
+            {
+                string lastPart = Path.GetExtension(resourcePath);
+                if (string.IsNullOrEmpty(lastPart))
+                    ret = resourcePath;
+                else
+                {
+                    string firstPart = Path.GetExtension(Path.GetFileNameWithoutExtension(resourcePath));
+                    if (string.IsNullOrEmpty(firstPart))
+                    {
+                        ret = lastPart;
+                    }
+                    else
+                    {
+                        ret = firstPart + "." + lastPart;
+                    }
+                }
+            }
+            return ret;
+        }
+
+
+        /// <summary>Returns path of the embedded resource' directory for a resource with the specified path.
+        /// <para>If the <paramref name="resourcePath"/> does not represent such a resource then null is returned.</para>
+        /// <para>WARNING: This method is not reliable and can only be ursed for informative purposes! For example, it does 
+        /// not return the correct path if the embedded resource file does not have an extension.</para></summary>
+        /// <param name="resourcePath">Full path to the resource or resource file. If this is a resource that was included via
+        /// resource file (.resx), this consists of the path of the resources file (extension .resources) and name
+        /// of the resource without extension.</param>
+        public static string GetEmbeddedResourceDirectory(string resourcePath)
+        {
+            string ret = null;
+            if (IsPathEmbeddedResource(resourcePath))
+            {
+                string firstPart = Path.GetFileNameWithoutExtension(resourcePath);
+                string firstFirstPart = Path.GetFileNameWithoutExtension(firstPart);
+                if (string.IsNullOrEmpty(firstFirstPart))
+                {
+                    ret = firstPart;
+                }
+                else
+                {
+                    ret = firstFirstPart;
+                }
+            }
+            return ret;
+        }
+
+
+        #endregion Resources.PathManipulations
+
+
+
+        /// <summary>Returns a stream containing the embedded file resource included in the specified assembly.</summary>
+        /// <param name="assembly">Assembly from which the resource is obtained.</param>
+        /// <param name="resourceName">Name of the embedded file resource (i.e., its complete path, consisting of the
+        /// default namespace of the assembly, dot separated directory path, and resource file name).</param>
+        /// <returns>Open readable stream (which must be closed upon use) containing the resource.</returns>
+        public static Stream AssemblyEmbeddedFileResourceStream(Assembly assembly, string resourceName)
+        {
+            if (assembly == null)
+                throw new ArgumentException("Assembly not specified (null reference).");
+            return assembly.GetManifestResourceStream(resourceName);
+        }
+
+        /// <summary>Returns a stream containing the embedded file resource included in the currently executing assembly.</summary>
+        /// <param name="resourceName">Name of the embedded file resource (i.e., its complete path, consisting of the
+        /// default namespace of the assembly, dot separated directory path, and resource file name).</param>
+        /// <returns>Open readable stream (which must be closed upon use) containing the resource.</returns>
+        public static Stream AssemblyEmbeddedFileResourceStream(string resourceName)
+        {
+            return AssemblyEmbeddedFileResourceStream(Assembly.GetExecutingAssembly(), resourceName);
+        }
+
+
+        /// <summary>The same as <see cref="GetAssemblyResourceFiles(Assembly, IList{string}, bool,)"/>, except
+        /// that list of resource files is passed by references and a newly created list is assigned to the argument
+        /// when a null valued variable is passed.</summary>
+        public static IList<string> GetAssemblyResourceFiles(Assembly assembly, ref IList<string>
+            resourceNames, bool clearBefore = true)
+        {
+            if (resourceNames == null)
+                resourceNames = new List<string>();
+            return GetAssemblyResourceFiles(assembly, ref resourceNames, clearBefore);
+        }
+
+        /// <summary>Returns names of the resource files (generated from .resx files, with .resources extensions) in the 
+        /// specified assemnly and stores them on the provided list.</summary>
+        /// <param name="assembly">Assembly that is searched for contained resources.</param>
+        /// <param name="resourceNames">A <see cref="IList"/> list object where the names of lcated resources are stored.
+        /// <para>If the list is not provided (i.e.,  it is null) then it is created by the function and returned.</para></param>
+        /// <param name="clearBefore">If true then the provided list is cleared before resource names are loaded on it.</param>
+        /// <returns>Reference of the list where names of the located resources are stored. This makes the method usable for
+        /// the case where the caller does not provide the list, in which case it is created anew.</returns>
+        public static IList<string> GetAssemblyResourceFiles(Assembly assembly, IList<string>
+            resourceNames = null, bool clearBefore = true)
+        {
+            if (resourceNames == null)
+            {
+                resourceNames = new List<string>();
+            }
+            else
+            {
+                if (clearBefore)
+                    resourceNames.Clear();
+            }
+            string[] embeddedFileResources = assembly.GetManifestResourceNames();
+            if (embeddedFileResources != null)
+            {
+                int num = embeddedFileResources.Length;
+                for (int i = 0; i < num; ++i)
+                {
+                    if (embeddedFileResources[i].EndsWith(".resources"))
+                        resourceNames.Add(embeddedFileResources[i]);
+                }
+            }
+            return resourceNames;
+        }
+
+
+
+
+        /// <summary>The same as <see cref="GetAssemblyEmbeddedFileResources(Assembly, IList{string}, bool, bool)"/>, except
+        /// that list of resources is passed by references and a newly created list is assigned to the argument
+        /// when a null valued variable is passed.</summary>
+        public static IList<string> GetAssemblyEmbeddedFileResources(Assembly assembly, ref IList<string>
+            resourceNames, bool clearBefore = true, bool includeResourceFiles = false)
+        {
+            if (resourceNames == null)
+                resourceNames = new List<string>();
+            return GetAssemblyEmbeddedFileResources(assembly, ref resourceNames, clearBefore, includeResourceFiles);
+        }
+
+        /// <summary>Returns names of the embedded resources in the specified assemnly and stores them on the provided 
+        /// collection.</summary>
+        /// <remarks>In order to get a list of resource files (compiled from .resx files), call the 
+        /// <see cref="GetAssemblyResourceFiles(Assembly, IList{string}, bool)"/> method.</remarks>
+        /// <param name="assembly">Assembly that is searched for contained resources.</param>
+        /// <param name="resourceNames">A <see cref="IList"/> list object where the names of lcated resources are stored.
+        /// <para>If the list is not provided (i.e.,  it is null) then it is created by the function and returned.</para></param>
+        /// <param name="clearBefore">If true then the provided list is cleared before resource names are loaded on it.</param>
+        /// <param name="includeResourceFiles">If true then resource files will also be included on the list. Default is false.</param>
+        /// <returns>Reference of the list where names of the located resources are stored. This makes the method usable for
+        /// the case where the caller does not provide the list, in which case it is created anew.</returns>
+        public static IList<string> GetAssemblyEmbeddedFileResources(Assembly assembly, IList<string>
+            resourceNames = null, bool clearBefore = true, bool includeResourceFiles = false)
+        {
+            if (resourceNames == null)
+            {
+                resourceNames = new List<string>();
+            }
+            else
+            {
+                if (clearBefore)
+                    resourceNames.Clear();
+            }
+            string[] embeddedFileResources = assembly.GetManifestResourceNames();
+            if (embeddedFileResources != null)
+            {
+                int num = embeddedFileResources.Length;
+                for (int i = 0; i < num; ++i)
+                {
+                    if (includeResourceFiles)
+                    {
+                        resourceNames.Add(embeddedFileResources[i]);
+                    }
+                    else
+                    {
+                        if (!embeddedFileResources[i].EndsWith(".resources"))
+                            resourceNames.Add(embeddedFileResources[i]);
+                    }
+                }
+            }
+            return resourceNames;
+        }
+
+
+
+        /// <summary>The same as <see cref="GetAssemblyResxResources(Assembly, IList{string}, bool)"/>, except
+        /// that list of resources is passed by references and a newly created list is assigned to the argument
+        /// when a null valued variable is passed.</summary>
+        public static IList<string> GetAssemblyResxResources(Assembly assembly, ref IList<string>
+            resourceNames, bool clearBefore = true)
+        {
+            if (resourceNames == null)
+                resourceNames = new List<string>();
+            return GetAssemblyResxResources(assembly, ref resourceNames, clearBefore);
+        }
+
+        /// <summary>Returns names of the resources included in the specified assemnly through a .resx file and 
+        /// stores them on the provided 
+        /// collection.</summary>
+        /// <remarks>See: http://stackoverflow.com/questions/2041000/loop-through-all-the-resources-in-a-resx-file </remarks>
+        /// <param name="assembly">Assembly that is searched for contained resources.</param>
+        /// <param name="resourceNames">A <see cref="IList"/> list object where the names of lcated resources are stored.
+        /// <para>If the list is not provided (i.e.,  it is null) then it is created by the function and returned.</para></param>
+        /// <param name="clearBefore">If true then the provided list is cleared before resource names are loaded on it.</param>
+        /// <returns>Reference of the list where names of the located resources are stored. This makes the method usable for
+        /// the case where the caller does not provide the list, in which case it is created anew.</returns>
+        public static IList<string> GetAssemblyResxResources(Assembly assembly, IList<string>
+            resourceNames = null, bool clearBefore = true)
+        {
+            if (resourceNames == null)
+            {
+                resourceNames = new List<string>();
+            }
+            else
+            {
+                if (clearBefore)
+                    resourceNames.Clear();
+            }
+            var resNames = assembly.GetManifestResourceNames();
+            var resourceFileNames = resNames.Select(p => p).Where(p => p.EndsWith(".resources"));
+            foreach (string resFilename in resourceFileNames)
+            {
+                var stream = assembly.GetManifestResourceStream(resFilename);
+                var resReader = new ResourceReader(stream);
+                IDictionaryEnumerator dict = resReader.GetEnumerator();
+                //int num = 0;
+                while (dict.MoveNext())
+                {
+                    //num++;
+                    //Console.WriteLine("    {0:00}: {1} = {2}", num, dict.Key, dict.Value);
+                    resourceNames.Add(resFilename + ":" + dict.Key);
+
+                }
+                resReader.Close();
+            }
+
+            return resourceNames;
+        }
+
+
+
+        /// <summary>Returns a string containing informatio nabout resources contained in the specified assembly, such as 
+        /// images, sounds, strings, and various files. Information returned is on embedded resources (i.e., files that are 
+        /// compiled into assembly and are accessed by path in a directory-like structure and full file names, eventually 
+        /// with extension) and resources that are compiled into .resix files and are thus accessed by a fully qualified 
+        /// name of a property in a Resources class.</summary>
+        /// <param name="assembly">Assembly that is searched for resources. You can find application-related assemblies
+        /// by one of the corresponding methods in the <see cref="UtilSystem"/> class.</param>
+        /// <param name="includeEmbedded">Specifies whether embedded resources are included in the report.</param>
+        /// <param name="includeResx">Specifies whether rerources from .resources files (compiled through .resx filles) are included in the report.</param>
+        /// <param name="outputLevel">Level of output that is output to console. If 0 then  no output is produced.
+        /// <para>Currently only 0 (no output at all) and 1 or more (complete output) are supported.</para></param>
+        /// <returns>A string containing names of all located resources, each contained in a separate line.</returns>
+        public static string GetAssemblyResourcesInfo(Assembly assembly, bool includeEmbedded = true, bool includeResx = true, int outputLevel = 1)
+        {
+            StringBuilder sbOutput = new StringBuilder();
+            StringBuilder sbReturned = new StringBuilder();
+            int versionLevel = 3;
+            sbOutput.AppendLine("Assembly: " + assembly.GetName().Name + ", version " + GetAssemblyVersion(assembly, versionLevel));
+            sbOutput.AppendLine("Full name: " + assembly.GetName().FullName);
+            if (assembly == ExecutableAssembly)
+                sbOutput.AppendLine("Executable name: " + GetAssemblyFileName(assembly));
+            else
+                sbOutput.AppendLine("File name: " + GetAssemblyFileName(assembly));
+            sbOutput.AppendLine("Resource information:");
+
+
+            List<string> embeddedFileResources = new List<string>();
+            List<string> resxResources = new List<string>();
+            try
+            {
+                // Obtain the embedded resources:
+                GetAssemblyEmbeddedFileResources(assembly, embeddedFileResources, true /*  clearBefoe */, false /* includeresourceFiles */);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(Environment.NewLine + "ERROR when acquiring embedded resources: " + Environment.NewLine
+                    + "  " + ex.Message + Environment.NewLine);
+            }
+            try
+            {
+                // Obtain the resources compiled into assembly through a .resx file:
+                GetAssemblyResxResources(assembly, resxResources);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(Environment.NewLine + "ERROR when acuiring resources included through a .resx file: " + Environment.NewLine
+                    + "  " + ex.Message + Environment.NewLine);
+            }
+            // Include resources in the report:
+            if (includeEmbedded)
+            {
+                sbOutput.AppendLine("----");
+                sbOutput.AppendLine("File resources embedded in assembly: ");
+                if (embeddedFileResources.Count == 0)
+                    sbOutput.AppendLine("  No such resources.  (null array)");
+                else
+                {
+                    int numRes = embeddedFileResources.Count;
+                    for (int i = 0; i < numRes; ++i)
+                    {
+                        sbOutput.AppendLine("  " + (i + 1).ToString("00") + ": " + embeddedFileResources[i]);
+                        sbReturned.AppendLine(embeddedFileResources[i]);
+                    }
+                }
+            }
+            if (includeResx)
+            {
+                sbOutput.AppendLine("----");
+                sbOutput.AppendLine("Resources in the resx files:");
+                if (resxResources.Count == 0)
+                    sbOutput.AppendLine("  No such resources.  (null array)");
+                else
+                {
+                    int numRes = resxResources.Count;
+                    string currentResourceFilename = null;
+                    string currentResourcename = null;
+                    int whichWithinFile = 0;
+                    for (int i = 0; i < numRes; ++i)
+                    {
+                        try
+                        {
+                            string[] parsed = resxResources[i].Split(':');
+                            if (parsed.Length < 2)
+                                throw new InvalidDataException("Could not split .resx-included resource to file name and resource name.");
+                            if (parsed[0] != currentResourceFilename)
+                            {
+                                currentResourceFilename = parsed[0];
+                                sbOutput.AppendLine("In " + currentResourceFilename + ":");
+                                whichWithinFile = 0;
+                            }
+                            ++whichWithinFile;
+                            currentResourcename = parsed[1];
+                            sbOutput.AppendLine("  " + whichWithinFile.ToString("00") + ": " + currentResourcename);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(Environment.NewLine + "ERROR in parsing resource stiring: " + resxResources[i] + Environment.NewLine);
+                            throw;
+                        }
+
+                        // sbOutput.AppendLine("  " + (i + 1).ToString("00") + ": " + resxResources[i]);
+                        sbReturned.AppendLine(resxResources[i]);
+                    }
+                }
+            }
+            if (outputLevel > 0)
+                Console.WriteLine(sbOutput.ToString());
+
+            if (outputLevel >= 5)
+            {
+                Console.WriteLine(Environment.NewLine + Environment.NewLine + "================ additional info & tests:" + Environment.NewLine);
+                Console.WriteLine("Assembly simple name: " + assembly.GetName().Name);
+                Console.WriteLine("Assembly path: " + assembly.Location);
                 try
                 {
-                    _onThreadPriorityChange -= onPriorityChangeMethod;
+                    //Console.WriteLine(Environment.NewLine + "Types in the assembly: ");
+                    //var types = assembly.GetTypes().Select(t => t.FullName);
+                    //foreach (string typeName in types)
+                    //    Console.WriteLine("  " + typeName);
+
+                    Console.WriteLine(Environment.NewLine + "All nmespaces used in the assembly:");
+                    var namespaces = assembly.GetTypes().Select(t => t.Namespace).Distinct();
+                    foreach (string ns in namespaces)
+                        Console.WriteLine("  " + ns);
+
+                    Console.WriteLine(Environment.NewLine + "Detailed information on resources:" + Environment.NewLine);
+                    var resNames = assembly.GetManifestResourceNames();
+
+                    Console.WriteLine(Environment.NewLine + ">>>> Detailed resource information on reources:");
+                    foreach (string resourceName in resNames)
+                    {
+                        Console.WriteLine("Resource: " + resourceName);
+                        ManifestResourceInfo resInfo = assembly.GetManifestResourceInfo(resourceName);
+                        Console.WriteLine("  File name:           " + resInfo.FileName);
+                        Console.WriteLine("  Resource location:   " + resInfo.ResourceLocation);
+                        Console.WriteLine("  Referenced assembly: " + resInfo.ReferencedAssembly);
+                    }
+
+                    Console.WriteLine(Environment.NewLine + ">>>> Resource files included in assembly (.resources):");
+                    var resourceFileNames = resNames.Select(p => p).Where(p => p.EndsWith(".resources"));
+                    foreach (string resFilename in resourceFileNames)
+                    {
+                        Console.WriteLine("  " + resFilename);
+                        string resFilenameWithoutExtension = Path.GetFileNameWithoutExtension(resFilename);
+                        var stream = assembly.GetManifestResourceStream(resFilename);
+                        var resReader = new ResourceReader(stream);
+                        IDictionaryEnumerator dict = resReader.GetEnumerator();
+                        int num = 0;
+                        while (dict.MoveNext())
+                        {
+                            num++;
+                            Console.WriteLine("    {0:00}: {1} = {2}", num, dict.Key, dict.Value);
+                        }
+                        resReader.Close();
+                    }
+                    Console.WriteLine();
+
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(Environment.NewLine + "ERROR: " + ex.Message + Environment.NewLine);
+                }
+
+
             }
+
+            return sbReturned.ToString();
+        }
+
+        #endregion AssemblyResources
+
+
+        #region ResourceOrFileTypes
+
+        // For supported types of images, see:
+        // Bitmap constructor, https://msdn.microsoft.com/en-us/library/0cbhe98f%28v=vs.110%29.aspx 
+        // Types of bitmaps: https://msdn.microsoft.com/en-us/library/at62haz6%28v=vs.110%29.aspx
+        // Bitmap constructor with stream argument: https://msdn.microsoft.com/en-us/library/z7ha67kw%28v=vs.110%29.aspx 
+
+        // ImageFormat Class: https://msdn.microsoft.com/en-us/library/system.drawing.imaging.imageformat%28v=vs.110%29.aspx
+
+        // File Extensions:
+
+
+
+        private static string[] _bitmapExtensionsDotNetDefault = { "BMP", "GIF", "EXIF", "JPG", "PNG", "TIFF" };
+
+
+        private static List<string> _imageExtensionsDotNet = new List<string>(_bitmapExtensionsDotNetDefault);
+
+        /// <summary>Returns true if the speicified file extesion (without a '.') represents one of the standard .NET recognized 
+        /// bitmap file extensions; false if not.</summary>
+        /// <param name="extension">File extension that is checked; should not contain '.', case does not matter.</param>
+        /// <returns></returns>
+        public static bool IsBitmapExtensionDotNet(string extension)
+        {
+            return _bitmapExtensionsDotNetDefault.Contains(extension.ToUpper());
         }
 
 
 
-        #endregion ThreadPriority
+        private static string[] _soundExtensionsDotNetDefault = { "WAV" };
+
+
+        private static List<string> _soundExtensionsDotNet = new List<string>(_soundExtensionsDotNetDefault);
+
+        /// <summary>Returns true if the speicified file extesion (without a '.') represents one of the standard .NET recognized 
+        /// sound file extensions; false if not.</summary>
+        /// <param name="extension">File extension that is checked; should not contain '.', case does not matter.</param>
+        /// <returns></returns>
+        public static bool IsSoundExtensionDotNet(string extension)
+        {
+            return _soundExtensionsDotNetDefault.Contains(extension.ToUpper());
+        }
+
+
+
+
+
+
+        #endregion ResourceOrFileTypes
+
 
         #region Files
 
@@ -3277,7 +4215,7 @@ namespace IG.Lib
         const int MinNumCheckedIsTextFile = 100;
 
         /// <summary>Detects if the specified file is a text file and detects the encoding.</summary>
-        /// <param name="inputFilePath">The file name.</param>
+        /// <param name="filePath">The file name.</param>
         /// <returns> true if the specified file is a text file text.</returns>
         public static bool IsTextFile(string filePath)
         {
@@ -3287,7 +4225,7 @@ namespace IG.Lib
 
 
         /// <summary>Detects if the specified file is a text file and detects the encoding.</summary>
-        /// <param name="inputFilePath">The file name.</param>
+        /// <param name="filePath">The file name.</param>
         /// <param name="numChecked">The max. number of bytes to use for testing (if 0 then complete file is used).</param>
         /// <returns> true if the specified file is a text file text.</returns>
         public static bool IsTextFile(string filePath, int numChecked)
@@ -3297,7 +4235,7 @@ namespace IG.Lib
         }
 
         /// <summary>Detects if the specified file is a text file and detects the encoding.</summary>
-        /// <param name="inputFilePath">The file name.</param>
+        /// <param name="filePath">The file name.</param>
         /// <param name="encoding">The detected encoding. </param>
         /// <returns> true if the specified file is a text file text.</returns>
         public static bool IsTextFile(string filePath, out Encoding encoding)
@@ -3306,7 +4244,7 @@ namespace IG.Lib
         }
 
         /// <summary>Detects if the specified file is a text file and detects the encoding.</summary>
-        /// <param name="inputFilePath">The file name.</param>
+        /// <param name="filePath">The file name.</param>
         /// <param name="numChecked">The max. number of bytes to use for testing (if 0 then complete file is used).</param>
         /// <param name="encoding">The detected encoding. </param>
         /// <returns> true if the specified file is a text file text.</returns>
@@ -3381,6 +4319,7 @@ namespace IG.Lib
         }
 
         #endregion Files
+
 
         #region Paths
 
@@ -4429,8 +5368,6 @@ namespace IG.Lib
 
 
         /// <summary>Examp</summary>
-        /// <param name="sourceDirPath"></param>
-        /// <param name="targetDirPath"></param>
         public static void ExampleCopyDir()
         {
             int storedOutputLevel = Util.OutputLevel;
@@ -4515,8 +5452,6 @@ namespace IG.Lib
 
         /// <summary>Loads the from specified file.</summary>
         /// <param name="fileName">File name to load network from.</param>
-        /// <returns>Returns instance of <see cref="Network"/> class with all properties initialized from file.</returns>
-        /// <typeparam name="ObjectType">Type of the object to be saved.</typeparam>
         /// <remarks><para>Neural network is loaded from file using .NET serialization (binary formater is used).</para></remarks>
         public static ObjectType LoadBinary<ObjectType>(string fileName)
         {
@@ -4528,7 +5463,7 @@ namespace IG.Lib
 
         /// <summary>Load network from specified file.</summary>
         /// <param name="stream">Stream to load network from.</param>
-        /// <returns>Returns instance of <see cref="ObjectType"/> class with all properties initialized from file.</returns>
+        /// <returns>Returns instance of the <typeparamref name="ObjectType"/> class with all properties initialized from file.</returns>
         /// <typeparam name="ObjectType">Type of the object to be saved.</typeparam>
         /// <remarks><para>Neural network is loaded from file using .NET serialization (binary formater is used).</para></remarks>
         public static ObjectType LoadBinary<ObjectType>(Stream stream)
@@ -4561,7 +5496,7 @@ namespace IG.Lib
 
         /// <summary>Loads the from specified file.</summary>
         /// <param name="fileName">File name to load network from.</param>
-        /// <returns>Returns instance of <see cref="Network"/> class with all properties initialized from file.</returns>
+        /// <returns>Returns instance of Network class with all properties initialized from file.</returns>
         /// <remarks><para>Neural network is loaded from file using .NET serialization (binary formater is used).</para></remarks>
         public static object LoadBinary(string fileName)
         {
@@ -4570,7 +5505,7 @@ namespace IG.Lib
 
         /// <summary>Load network from specified file.</summary>
         /// <param name="stream">Stream to load network from.</param>
-        /// <returns>Returns instance of <see cref="Network"/> class with all properties initialized from file.</returns>
+        /// <returns>Returns instance of Network class with all properties initialized from file.</returns>
         /// <remarks><para>Neural network is loaded from file using .NET serialization (binary formater is used).</para></remarks>
         public static object LoadBinary(Stream stream)
         {
