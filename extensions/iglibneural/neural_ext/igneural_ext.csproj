@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DA348BA9-F182-4730-B238-6220D9917A60}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IG.Neural</RootNamespace>
+    <AssemblyName>IGLibNeuralExt</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\IGLibNeuralExt.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\IGLibNeural.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MathNet.Numerics, Version=2.6.1.30, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ZedGraph, Version=5.1.5.27330, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\lib\ZedGraph.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\shelldev\lib\externalextended\NeuronDotNetGPL\source\Core\NeuronDotNet.csproj">
+      <Project>{d5b56684-0c33-4195-b3d6-d1576b739e42}</Project>
+      <Name>NeuronDotNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj">
+      <Project>{02B5E453-2085-4E41-86D9-C8E8A03FB1B9}</Project>
+      <Name>AForge.Neuro</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\igbase\iglib_base.csproj">
+      <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
+      <Name>iglib_base</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\reportermsg\ReporterMsg\ReporterMsg.csproj">
+      <Project>{AC130D8D-D656-4EA6-A940-3C261F589ACE}</Project>
+      <Name>ReporterMsg</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\iglibext\iglib_ext.csproj">
+      <Project>{4e4b240a-6994-4747-bb6c-0cc0d2578d04}</Project>
+      <Name>iglib_ext</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\igplot2d\plot2d\igplot2d.csproj">
+      <Project>{c9a09dbc-b304-42df-9cee-6ba0e856abc2}</Project>
+      <Name>igplot2d</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\igplot3d\plot3d\igplot3d.csproj">
+      <Project>{8bbf5c58-2562-4e9b-acb8-3f3a3b031f62}</Project>
+      <Name>igplot3d</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\neural\igneural.csproj">
+      <Project>{fbf3c5f7-a0ca-46a1-8973-7689fffaaeba}</Project>
+      <Name>igneural</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\00readme_developers_iglib.html">
+      <Link>00readme_developers_iglib.html</Link>
+    </Content>
+    <Content Include="0readme_igneural_ext.txt" />
+    <Content Include="License_IGLib_Partner.html" />
+    <Content Include="License_IGLib_Redistributable.html" />
+    <Content Include="ReadMe_IGLib.html" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

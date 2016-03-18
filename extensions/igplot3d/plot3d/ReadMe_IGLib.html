@@ -1,0 +1,785 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/TR/REC-html40"
+  xmlns:w="urn:schemas-microsoft-com:office:word"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:v="urn:schemas-microsoft-com:vml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;
+      charset=windows-1250">
+    <meta name="ProgId" content="Word.Document">
+    <meta name="Generator" content="Microsoft Word 11">
+    <meta name="Originator" content="Microsoft Word 11">
+    <link rel="File-List" href="license_ioptlib_files/filelist.xml">
+    <title>IGLib ReadMe</title>
+    <link rel="SHORTCUT ICON" href="ig.ico">
+    <!--[if gte mso 9]><xml>
+
+
+
+
+
+
+ <o:DocumentProperties>
+
+
+
+
+
+
+
+  <o:Author>Igor Grešovnik</o:Author>
+
+
+
+
+
+
+
+  <o:LastAuthor>T.R.</o:LastAuthor>
+
+
+
+
+
+
+
+  <o:Revision>2</o:Revision>
+
+
+
+
+
+
+
+  <o:TotalTime>5</o:TotalTime>
+
+
+
+
+
+
+
+  <o:Created>2008-04-17T13:16:00Z</o:Created>
+
+
+
+
+
+
+
+  <o:LastSaved>2008-04-17T13:16:00Z</o:LastSaved>
+
+
+
+
+
+
+
+  <o:Pages>1</o:Pages>
+
+
+
+
+
+
+
+  <o:Words>232</o:Words>
+
+
+
+
+
+
+
+  <o:Characters>1324</o:Characters>
+
+
+
+
+
+
+
+  <o:Lines>11</o:Lines>
+
+
+
+
+
+
+
+  <o:Paragraphs>3</o:Paragraphs>
+
+
+
+
+
+
+
+  <o:CharactersWithSpaces>1553</o:CharactersWithSpaces>
+
+
+
+
+
+
+
+  <o:Version>11.5606</o:Version>
+
+
+
+
+
+
+
+ </o:DocumentProperties>
+
+
+
+
+
+
+
+</xml><![endif]--><!--[if gte mso 9]><xml>
+
+
+
+
+
+
+
+ <w:WordDocument>
+
+
+
+
+
+
+
+  <w:SpellingState>Clean</w:SpellingState>
+
+
+
+
+
+
+
+  <w:GrammarState>Clean</w:GrammarState>
+
+
+
+
+
+
+
+  <w:HyphenationZone>21</w:HyphenationZone>
+
+
+
+
+
+
+
+  <w:DoNotHyphenateCaps/>
+
+
+
+
+
+
+
+  <w:PunctuationKerning/>
+
+
+
+
+
+
+
+  <w:ValidateAgainstSchemas>false</w:ValidateAgainstSchemas>
+
+
+
+
+
+
+
+  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+
+
+
+
+
+
+
+  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+
+
+
+
+
+
+
+  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+
+
+
+
+
+
+
+  <w:DoNotUnderlineInvalidXML/>
+
+
+
+
+
+
+
+  <w:Compatibility>
+
+
+
+
+
+
+
+   <w:SelectEntireFieldWithStartOrEnd/>
+
+
+
+
+
+
+
+   <w:UseWord2002TableStyleRules/>
+
+
+
+
+
+
+
+  </w:Compatibility>
+
+
+
+
+
+
+
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+
+
+
+
+
+
+
+ </w:WordDocument>
+
+
+
+
+
+
+
+</xml><![endif]--><!--[if gte mso 9]><xml>
+
+
+
+
+
+
+
+ <w:LatentStyles DefLockedState="false" LatentStyleCount="156">
+
+
+
+
+
+
+
+ </w:LatentStyles>
+
+
+
+
+
+
+
+</xml><![endif]-->
+    <style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-ansi-language:DE;
+	mso-fareast-language:DE;}
+h2
+	{mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	mso-outline-level:2;
+	font-size:18.0pt;
+	font-family:"Times New Roman";
+	mso-ansi-language:DE;
+	mso-fareast-language:DE;
+	font-weight:bold;}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:6.0pt;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-ansi-language:DE;
+	mso-fareast-language:DE;}
+p
+	{mso-margin-top-alt:auto;
+	margin-right:0cm;
+	mso-margin-bottom-alt:auto;
+	margin-left:0cm;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";
+	mso-ansi-language:DE;
+	mso-fareast-language:DE;}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+@page Section1
+	{size:595.3pt 841.9pt;
+	margin:70.85pt 70.85pt 2.0cm 70.85pt;
+	mso-header-margin:35.4pt;
+	mso-footer-margin:35.4pt;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+  </style><!--[if gte mso 10]>
+
+
+
+
+
+
+
+<style>
+
+
+
+
+
+
+
+ /* Style Definitions */
+
+
+
+
+
+
+
+ table.MsoNormalTable
+
+
+
+
+
+
+
+	{mso-style-name:"Table Normal";
+
+
+
+
+
+
+
+	mso-tstyle-rowband-size:0;
+
+
+
+
+
+
+
+	mso-tstyle-colband-size:0;
+
+
+
+
+
+
+
+	mso-style-noshow:yes;
+
+
+
+
+
+
+
+	mso-style-parent:"";
+
+
+
+
+
+
+
+	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+
+
+
+
+
+
+
+	mso-para-margin:0cm;
+
+
+
+
+
+
+
+	mso-para-margin-bottom:.0001pt;
+
+
+
+
+
+
+
+	mso-pagination:widow-orphan;
+
+
+
+
+
+
+
+	font-size:10.0pt;
+
+
+
+
+
+
+
+	font-family:"Times New Roman";
+
+
+
+
+
+
+
+	mso-ansi-language:#0400;
+
+
+
+
+
+
+
+	mso-fareast-language:#0400;
+
+
+
+
+
+
+
+	mso-bidi-language:#0400;}
+
+
+
+
+
+
+
+</style>
+
+
+
+
+
+
+
+<![endif]--><!--[if gte mso 9]><xml>
+
+
+
+
+
+
+
+ <o:shapedefaults v:ext="edit" spidmax="2050"/>
+
+
+
+
+
+
+
+</xml><![endif]--><!--[if gte mso 9]><xml>
+
+
+
+
+
+
+
+ <o:shapelayout v:ext="edit">
+
+
+
+
+
+
+
+  <o:idmap v:ext="edit" data="1"/>
+
+
+
+
+
+
+
+ </o:shapelayout></xml><![endif]-->
+    <meta content="Igor Grešovnik" name="author">
+    <meta content="IGLib - utility libraries in C# developed by Igor
+      Grešovnik et al." name="description">
+  </head>
+  <body style="" lang="SL">
+    <div class="Section1">
+      <h2><span style="" lang="EN-GB">&nbsp;<span style="font-style:
+            italic;">&nbsp;&nbsp;&nbsp; IGLib</span></span> README<br>
+      </h2>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB">&nbsp; <span style="font-style: italic;">IGLib.NET</span>
+          (Investigative Generic Library) is a set of utility libraries
+          that are particularly suited for development of technical
+          applications (see also the <a
+            href="http://www2.arnes.si/%7Eljc3m2/igor/iglib/">web page</a>
+          and <a
+href="http://www2.arnes.si/%7Eljc3m2/igor/software/codedoc/generated/iglib/html/classes.html">code
+            documentation</a>). <br>
+        </span></p>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB">&nbsp; The system has been designed and developed
+          by <a href="http://www2.arnes.si/%7Eljc3m2/igor/index.html"><span
+              style="font-style: italic;">Igor Grešovnik</span></a></span><span
+          style="" lang="EN-GB">, who set up its foundations in 2006 and
+          is leading its development. In longer term, the library is
+          intended&nbsp; for distribution as free open source under a
+          BSD-like license. However, the library will not be open for
+          public immediately because the author wants to achieve a
+          certain level of maturity first and stabilize library
+          development within a smaller group of dedicated developers.
+          Hopefully the library will be released as free open source
+          library by the end of 2015. Before this happens, groups and
+          individuals can join development or usage of the library by
+          individual agreement with the principal author. Up to now, a
+          small number of companies have been using the library for
+          developing applications. The author is open for collaboration
+          but would like to retain a good control over development until
+          a certain level of maturity is reached. He believes that such
+          position will be beneficial for future users and developers. <br>
+        </span></p>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB">&nbsp;&nbsp;&nbsp; Since 2011, the library has
+          been used by the <i><a
+              href="http://www.ung.si/en/research/multiphase-processes/">Laboratory
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              for Multiphase Processes</a></i> of the <i><a
+              href="http://www.ung.si/en/">University of Nova Gorica</a></i>,
+          and by the <i><a
+href="http://www.cobik.si/laboratoriji/laboratorij-za-sisteme-z-naprednimi-materiali?lang=eng">Laboratory
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              for Advanced Materials Systems</a></i> of the <i><a
+              href="http://www.cobik.si/index?lang=eng">Centre of
+              Excellence for Biosensors, Instrumentation and Process
+              Control</a></i>, where it is used as base library for
+          development of applications in the field of&nbsp; neural
+          networks and optimization. These groups use the code under a
+          customized license agreement that allows free use of the
+          binaries in order to create derived products.<br>
+        </span></p>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB">&nbsp; IGLib contains some basic utilities like
+          those for parsing of strings, generic I/O utilities, a couple
+          of utilities for building GUI, a numerical library, 2D and 3D
+          graphics modules, a parallel computing module, application
+          framework featuring a layered interpreter system, and other
+          components. It aims at providing a well designed base library
+          for developnent of complex numerical and other technical
+          applications. Parts of IGLib have also been used in other
+          areas such as a system for managing a histological laboratory
+          or large scale invoicing support system.</span></p>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB"> &nbsp; Historically, the initial motivation for
+          development of the library arose from the needs to have a good
+          base library for development of complex optimization software,
+          and development was first concentrated around
+          re-implementation of parts of <a
+            href="http://www2.arnes.si/%7Eljc3m2/igor/ioptlib/">IOptLib</a>.
+          However, the library was planned in a much broader sense since
+          the very beginning of its existence. For more information,
+          check the library home page at <br>
+        </span></p>
+      <p class="MsoBodyText" style="text-align: justify;">&nbsp; <a
+          href="http://www2.arnes.si/%7Eljc3m2/igor/iglib/">http://www2.arnes.si/~ljc3m2/igor/iglib/</a>,<br>
+        <span style="" lang="EN-GB"></span></p>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB">or check <a
+href="http://www2.arnes.si/%7Eljc3m2/igor/software/codedoc/generated/iglib/index.html">code
+
+
+
+
+
+
+
+            documentation</a> at <br>
+        </span></p>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB">&nbsp; <a
+href="http://www2.arnes.si/%7Eljc3m2/igor/software/codedoc/generated/iglib/html/index.html">http://www2.arnes.si/~ljc3m2/igor/software/codedoc/generated/iglib/html/index.html</a>.<br>
+        </span></p>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB"><br>
+        </span></p>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB"></span></p>
+      <h2>External Software Libraries<span style="" lang="EN-GB"></span></h2>
+      <p class="MsoBodyText" style="text-align: justify;">&nbsp; This
+        library depends on a number of external free open source
+        libraries. Authors of the code are grateful to all developers
+        that invested their work to develop these libraries and who made
+        them open and accessible to the public.</p>
+      <p class="MsoBodyText" style="text-align: justify;">&nbsp; The
+        following external libraries are used:<br>
+      </p>
+      <ul>
+        <li><a href="http://numerics.mathdotnet.com/">Math.Net Numerics</a>,
+          an excellent scientific library written entirely in C#,
+          development lead by Christoph Rüegg. Created by <a
+href="http://christoph.ruegg.name/blog/2009/8/3/dnanalytics-iridium-mathnet-numerics.html">merging</a>
+          two predecessor libraries, the <a
+            href="http://www.mathdotnet.com/Iridium.aspx">Math.Net
+            Iridium</a> and the <a
+            href="http://dnanalytics.codeplex.com/">dnAnalytics</a>. <br>
+        </li>
+        <li><a href="http://www.mathdotnet.com/">Math.Net</a>, a
+          scientific library written entirely in C#. Iridium and Neodym
+          libraries were used from this project before Iridium merged
+          with dnAnalytics into Math.Net Numerics. Now the latter
+          library is used.<br>
+        </li>
+        <li><a href="http://zedgraph.org/">ZedGraph</a>, a flexible
+          charting library for .NET. <br>
+        </li>
+        <li><a
+            href="http://netcontrols.org/nplot/wiki/index.php?n=Main.HomePage">NPlot</a>,
+          an easy to use 2D plotting library.</li>
+        <li><a href="http://www.kitware.com/products/activiz.html">Activiz</a>,
+          C# wrappers for the VTK 3D graphics library.</li>
+        <li><a href="http://www.aforgenet.com/aforge/framework/">Aforge.Net</a>,
+          a framework library for development of neural network-based
+          application.<br>
+        </li>
+        <li><a href="http://code.google.com/p/accord/">Accord.Net</a>,
+          an extension of the Aforge.Net framework.</li>
+        <li><a
+href="http://www.codeproject.com/Articles/42258/Particle-swarm-optimization-for-function-optimizat">ParticleSwarm</a>
+          project of Guinther M. Foidl, an implementation of a particle
+          swarm minimization algorithm.</li>
+        <li><a href="http://www.alglib.net/">ALGLIB</a>, a numerical
+          analysis and data processing library. Small portions of an old
+          version are used that were licensed under a more permissive
+          license (now the library is under the GPL).</li>
+      </ul>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB"><br>
+        </span></p>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB"></span></p>
+      <h3>Other External Works Used<span style="" lang="EN-GB"></span></h3>
+      &nbsp; Beside libraries, there are other external works used by
+      IGLib:<br>
+      <ul>
+        <li><a href="http://www.famfamfam.com/lab/icons/silk/">Silk
+            Icons</a>, a free icon library.&nbsp;</li>
+        <li>Some sounds from the <a href="https://freesound.org/">FreeSound</a>
+          library. <br>
+        </li>
+      </ul>
+      <p class="MsoBodyText" style="text-align: justify;"><br>
+        &nbsp; Please visit the web pages of these great libraries (just
+        follow the links above) and consider whether you can support
+        their development in some way. Check also the license agreements
+        for these referenced libraries for precise conditions for using
+        the libraries.</p>
+      <p class="MsoBodyText" style="text-align: justify;"><br>
+      </p>
+      <p class="MsoBodyText" style="text-align: justify;"><span style=""
+          lang="EN-GB"><br>
+        </span></p>
+    </div>
+  </body>
+</html>
