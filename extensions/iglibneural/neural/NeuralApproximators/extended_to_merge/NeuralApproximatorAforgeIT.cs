@@ -1,5 +1,10 @@
 ﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
+// WARNING: This file will be removed at some point. It is here only to support COBIK's code, but that code
+// is not supported any more.
+
+// #undef DefineNeuralApproximatorAforgeITasNew
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +21,26 @@ using AForge.Neuro.Learning;
 //using AForge.Neuro.Learning;
 
 
-namespace IG.Num
+namespace IG.Neural
 {
 
 
 
     /// <summary>Approximator of response by using neural networks, based on the AforgeDotNet library.
     /// $A Igor Mar11;</summary>
-    public class NeuralApproximatorAforgeIT : NeuralApproximatorBase,
+    [Obsolete("Use NeuralApproximatorAforge instead.")]
+    public class NeuralApproximatorAforgeIT : NeuralApproximatorAforge, //  NeuralApproximatorBase,
         INeuralApproximator, ILockable
     {
 
-        public NeuralApproximatorAforgeIT()
+        /// <summary>Constructor.</summary>
+        private NeuralApproximatorAforgeIT()
             : base()
         { }
 
+
+
+#if DefineNeuralApproximatorAforgeITasNew
 
         #region Data
 
@@ -518,6 +528,7 @@ namespace IG.Num
 
         #endregion Operation
 
+#endif // if DefineNeuralApproximatorAforgeITasNew
 
     }  // class NeuralApproximatorAforge
 

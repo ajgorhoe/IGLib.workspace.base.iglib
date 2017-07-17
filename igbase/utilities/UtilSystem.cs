@@ -4214,6 +4214,89 @@ namespace IG.Lib
         /// <summary>Minimal number of checked bytes when determining whether a file is a text file.</summary>
         const int MinNumCheckedIsTextFile = 100;
 
+
+        /// <summary>Returns true if the file with the specified path is existent and readable by the current process,
+        /// false otherwise.
+        /// <para>False is returned regardless of reasons why file is not readable for the process (permissions, existence,
+        /// drive errors, etc.)</para></summary>
+        /// <param name="filePath">Path to the file that is check for readibility. It can be path of a non-existent file, in which
+        /// case false is returned.</param>
+        /// <returns>True if the file at the specified path is actually readable by the current process, false otherwise.</returns>
+        public static bool IsReadableFile(string filePath)
+        {
+            try
+            {
+                using (FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    return true; 
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>Returns true if the file with the specified path is writable by the current process,
+        /// false otherwise.
+        /// <para>False is returned regardless of reasons why file is not writable for the process (permissions,
+        /// drive errors, etc.)</para>
+        /// <para>Parameter <paramref name="onlyExistent"/> controls whether file must exist in order to return true (default false).</para></summary>
+        /// <param name="filePath">Path to the file that is check for writability. It can be path of a non-existent file.</param>
+        /// <param name="onlyExistent">If true then function will automatically return false for non-existent files. 
+        /// If false (which is default) then true will also be returned for non-existent files that the process can open
+        /// for writing.
+        /// <para>Remark: If true then the function will not create a file if it does not exist, because it will first test 
+        /// for existence and will not attempt to open a file if it does not exist.</para></param>
+        /// <returns>True if the file at the specified path is actually writable by the current process, false otherwise.</returns>
+        public static bool IsWritableFile(string filePath, bool onlyExistent = false)
+        {
+            if (onlyExistent && !File.Exists(filePath))
+            { return false; }
+            try
+            {
+                using (FileStream stream = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.Write))
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>Returns true if the file with the specified path is both readable and writable by the current process,
+        /// false otherwise.
+        /// <para>False is returned regardless of reasons why file is not readable or writable for the process (permissions,
+        /// drive errors, etc.)</para>
+        /// <para>Parameter <paramref name="onlyExistent"/> controls whether file must exist in order to return true (default false).</para></summary>
+        /// <param name="filePath">Path to the file that is check for writability. It can be path of a non-existent file.</param>
+        /// <param name="onlyExistent">If true then function will automatically return false for non-existent files. 
+        /// If false (which is default) then true will also be returned for non-existent files that the process can open
+        /// for writing and reading.
+        /// <para>Remark: If true then the function will not create a file if it does not exist, because it will first test 
+        /// for existence and will not attempt to open a file if it does not exist.</para></param>
+        /// <returns>True if the file at the specified path is actually writable by the current process, false otherwise.</returns>
+        public static bool IsReadableAndWritableFile(string filePath, bool onlyExistent = false)
+        {
+            if (onlyExistent && !File.Exists(filePath))
+            { return false; }
+            try
+            {
+                using (FileStream stream = File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+
         /// <summary>Detects if the specified file is a text file and detects the encoding.</summary>
         /// <param name="filePath">The file name.</param>
         /// <returns> true if the specified file is a text file text.</returns>

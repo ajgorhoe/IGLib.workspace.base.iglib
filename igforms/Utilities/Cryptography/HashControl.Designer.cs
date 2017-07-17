@@ -1,4 +1,4 @@
-﻿// Copyright (c) Igor Grešovnik, IGLib license; http://www2.arnes.si/~ljc3m2/igor/ioptlib/
+﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 namespace IG.Forms
 {
@@ -30,7 +30,13 @@ namespace IG.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.grpHashGeneration = new System.Windows.Forms.GroupBox();
+            this.chkCalculateWhenTyping = new System.Windows.Forms.CheckBox();
+            this.indicatorLight1 = new IG.Forms.IndicatorLight();
+            this.btnHelp = new System.Windows.Forms.Button();
+            this.btnCancelCalculation = new System.Windows.Forms.Button();
+            this.btnAbout = new System.Windows.Forms.Button();
             this.chkMd5 = new System.Windows.Forms.CheckBox();
             this.chkSha1 = new System.Windows.Forms.CheckBox();
             this.chkSha256 = new System.Windows.Forms.CheckBox();
@@ -64,14 +70,24 @@ namespace IG.Forms
             this.grpTextPreview = new System.Windows.Forms.GroupBox();
             this.txtContents = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.backgroundWorker1 = new IG.Forms.AbortableBackgroundWorker();
+            this.menuMain = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grpHashGeneration.SuspendLayout();
             this.grpTextPreview.SuspendLayout();
+            this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpHashGeneration
             // 
             this.grpHashGeneration.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpHashGeneration.Controls.Add(this.chkCalculateWhenTyping);
+            this.grpHashGeneration.Controls.Add(this.indicatorLight1);
+            this.grpHashGeneration.Controls.Add(this.btnHelp);
+            this.grpHashGeneration.Controls.Add(this.btnCancelCalculation);
+            this.grpHashGeneration.Controls.Add(this.btnAbout);
             this.grpHashGeneration.Controls.Add(this.chkMd5);
             this.grpHashGeneration.Controls.Add(this.chkSha1);
             this.grpHashGeneration.Controls.Add(this.chkSha256);
@@ -110,6 +126,86 @@ namespace IG.Forms
             this.grpHashGeneration.TabIndex = 0;
             this.grpHashGeneration.TabStop = false;
             this.grpHashGeneration.Text = "Hash Generation";
+            // 
+            // chkCalculateWhenTyping
+            // 
+            this.chkCalculateWhenTyping.AutoSize = true;
+            this.chkCalculateWhenTyping.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.chkCalculateWhenTyping.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.chkCalculateWhenTyping.Location = new System.Drawing.Point(473, 181);
+            this.chkCalculateWhenTyping.Name = "chkCalculateWhenTyping";
+            this.chkCalculateWhenTyping.Size = new System.Drawing.Size(134, 17);
+            this.chkCalculateWhenTyping.TabIndex = 24;
+            this.chkCalculateWhenTyping.Text = "Calculate when Typing";
+            this.chkCalculateWhenTyping.UseVisualStyleBackColor = true;
+            this.chkCalculateWhenTyping.CheckedChanged += new System.EventHandler(this.chkCalculateWhenTyping_CheckedChanged);
+            // 
+            // indicatorLight1
+            // 
+            this.indicatorLight1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.indicatorLight1.AutoSize = true;
+            this.indicatorLight1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.indicatorLight1.BlinkIntervalMilliSeconds = 500;
+            this.indicatorLight1.BorderLabel = false;
+            this.indicatorLight1.BorderOut = false;
+            this.indicatorLight1.ColorLabel = System.Drawing.Color.Black;
+            this.indicatorLight1.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
+            this.indicatorLight1.HasBusy = true;
+            this.indicatorLight1.HasError = true;
+            this.indicatorLight1.HasOff = true;
+            this.indicatorLight1.HasOk = true;
+            this.indicatorLight1.IsBlinking = false;
+            this.indicatorLight1.LabelFont = null;
+            this.indicatorLight1.LabelText = null;
+            this.indicatorLight1.Location = new System.Drawing.Point(748, 8);
+            this.indicatorLight1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.indicatorLight1.MarginLabel = 2;
+            this.indicatorLight1.MarginOut = 2;
+            this.indicatorLight1.Name = "indicatorLight1";
+            this.indicatorLight1.PaddingLabel = 0;
+            this.indicatorLight1.PaddingOut = 0;
+            this.indicatorLight1.Size = new System.Drawing.Size(24, 29);
+            this.indicatorLight1.TabIndex = 23;
+            this.indicatorLight1.ThrowOnInvalidSwitch = false;
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnHelp.ForeColor = System.Drawing.Color.Blue;
+            this.btnHelp.Location = new System.Drawing.Point(619, 11);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(58, 23);
+            this.btnHelp.TabIndex = 22;
+            this.btnHelp.Text = "Help";
+            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
+            // btnCancelCalculation
+            // 
+            this.btnCancelCalculation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancelCalculation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnCancelCalculation.ForeColor = System.Drawing.Color.Red;
+            this.btnCancelCalculation.Location = new System.Drawing.Point(490, 11);
+            this.btnCancelCalculation.Name = "btnCancelCalculation";
+            this.btnCancelCalculation.Size = new System.Drawing.Size(123, 23);
+            this.btnCancelCalculation.TabIndex = 21;
+            this.btnCancelCalculation.Text = "Cancel Calculation";
+            this.btnCancelCalculation.UseVisualStyleBackColor = true;
+            this.btnCancelCalculation.Click += new System.EventHandler(this.btnCancelCalculation_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAbout.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.btnAbout.ForeColor = System.Drawing.Color.Blue;
+            this.btnAbout.Location = new System.Drawing.Point(683, 11);
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(58, 23);
+            this.btnAbout.TabIndex = 20;
+            this.btnAbout.Text = "About";
+            this.btnAbout.UseVisualStyleBackColor = true;
+            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
             // 
             // chkMd5
             // 
@@ -165,7 +261,7 @@ namespace IG.Forms
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(155, 23);
             this.btnGenerate.TabIndex = 15;
-            this.btnGenerate.Text = "Generate Hash Values";
+            this.btnGenerate.Text = "Calculate Hash Values";
             this.btnGenerate.UseVisualStyleBackColor = true;
             this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
@@ -505,6 +601,7 @@ namespace IG.Forms
             this.txtContents.DragEnter += new System.Windows.Forms.DragEventHandler(this.txtContents_DragEnter);
             this.txtContents.Enter += new System.EventHandler(this.txtContents_Enter);
             this.txtContents.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtContents_KeyDown);
+            this.txtContents.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtContents_KeyPress);
             this.txtContents.MouseEnter += new System.EventHandler(this.txtContents_MouseEnter);
             this.txtContents.Validated += new System.EventHandler(this.txtContents_Validated);
             // 
@@ -512,19 +609,49 @@ namespace IG.Forms
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // HashGeneratorControl
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // menuMain
+            // 
+            this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.helpToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.menuMain.Name = "contextMenuStrip1";
+            this.menuMain.Size = new System.Drawing.Size(108, 48);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click_1);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click_1);
+            // 
+            // HashControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.grpTextPreview);
             this.Controls.Add(this.grpHashGeneration);
             this.MinimumSize = new System.Drawing.Size(780, 360);
-            this.Name = "HashGeneratorControl";
+            this.Name = "HashControl";
             this.Size = new System.Drawing.Size(785, 480);
+            this.Load += new System.EventHandler(this.HashControl_Load);
+            // this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HashControl_KeyUp);
             this.grpHashGeneration.ResumeLayout(false);
             this.grpHashGeneration.PerformLayout();
             this.grpTextPreview.ResumeLayout(false);
             this.grpTextPreview.PerformLayout();
+            this.menuMain.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -565,5 +692,14 @@ namespace IG.Forms
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Button btnClearHashes;
         private System.Windows.Forms.CheckBox chkUpperCase;
+        private System.Windows.Forms.Button btnAbout;
+        private IG.Forms.AbortableBackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Button btnCancelCalculation;
+        private System.Windows.Forms.Button btnHelp;
+        private IndicatorLight indicatorLight1;
+        private System.Windows.Forms.CheckBox chkCalculateWhenTyping;
+        private System.Windows.Forms.ContextMenuStrip menuMain;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
     }
 }

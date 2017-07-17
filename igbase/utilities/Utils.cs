@@ -1,5 +1,4 @@
-﻿
-// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 using System;
 using System.Collections.Generic;
@@ -199,13 +198,13 @@ namespace IG.Lib
             }
         }
 
-        /// <summary>Returns an integer hashRet function of the specified object.
+        /// <summary>Returns an integer hash function of the specified object.
         /// <para>Returned integer is always positive.</para>
-        /// <para>This hashRet function is bound to the <see cref="object.ToString"/> method of the specified object,
+        /// <para>This hash function is bound to the <see cref="object.ToString"/> method of the specified object,
         /// which means that it returns the same value for any two objects that have the same string
         /// representation.</para></summary>
-        /// <param name="obj">Object whose hashRet function is returned.</param>
-        /// <remarks><para>This hashRet function is calculated in such a way that <see cref="object.ToString"/>() is
+        /// <param name="obj">Object whose hash function is returned.</param>
+        /// <remarks><para>This hash function is calculated in such a way that <see cref="object.ToString"/>() is
         /// called first on <paramref name="obj"/> in order to obtain object's string representation (or, if the object is
         /// null, the <see cref="Util.NullRepresentationString"/> is taken), and then the <see cref="string.GetHashCode"/> 
         /// is called on the obtained string and its value returned.</para></remarks>
@@ -228,12 +227,12 @@ namespace IG.Lib
         }
 
 
-        /// <summary>Returns a string-valued hashRet function of the specified object.
-        /// <para>This hashRet function is bound to the <see cref="object.ToString"/> method of the specified object,
+        /// <summary>Returns a string-valued hash function of the specified object.
+        /// <para>This hash function is bound to the <see cref="object.ToString"/> method of the specified object,
         /// which means that it returns the same value for any two objects that have the same string
         /// representation.</para></summary>
-        /// <param name="obj">Object whose string-valued hashRet function is returned.</param>
-        /// <remarks><para>This hashRet function is calculated in such a way that <see cref="object.ToString"/>() is
+        /// <param name="obj">Object whose string-valued hash function is returned.</param>
+        /// <remarks><para>This hash function is calculated in such a way that <see cref="object.ToString"/>() is
         /// called first on <paramref name="obj"/> in order to obtain object's string representation (or, if the object is
         /// null, the <see cref="Util.NullRepresentationString"/> is taken), and then the <see cref="string.GetHashCode"/> 
         /// is called on the obtained string and its value returned.</para></remarks>
@@ -258,7 +257,7 @@ namespace IG.Lib
             char[] returnedCode = new char[maxLength];
             for (int i = 1; i <= maxLength; i++)
             {
-                // Copy character representations of digits of generated hashRet code 
+                // Copy character representations of digits of generated hash code 
                 // to the (equilength) returned code, starting form the last one:
                 if (i <= length)
                 {

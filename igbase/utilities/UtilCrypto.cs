@@ -1,4 +1,4 @@
-﻿// Copyright (c) Igor Grešovnik (2009 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace IG.Crypto
     /// <para>  - For IGLib functions (IGLib specific supplements of standards), these should only be used through standard shell applications.
     /// In such a way security tools can not be broken, as shell functions are more guaranteed to behave constantly over time.</para>
     /// <para></para><para>See also: </para>
-    /// <para> - Cryptographic hashRet function: http://en.wikipedia.org/wiki/Cryptographic_hash_function </para>
+    /// <para> - Cryptographic hash function: http://en.wikipedia.org/wiki/Cryptographic_hash_function </para>
     /// <para>  - Password verification: http://en.wikipedia.org/wiki/Cryptographic_hash_function#Password_verification </para>
     /// <para>  - Storing passwords: http://www.aspheute.com/english/20040105.asp </para>
     /// <para>   - How to encrypt user passwords: http://www.jasypt.org/howtoencryptuserpasswords.html </para>
@@ -343,7 +343,7 @@ namespace IG.Crypto
 
         #region Hash.General
 
-        /// <summary>Returns length of the hashRet value, in bytes, for the specified hashRet algorithm.
+        /// <summary>Returns length of the hash value, in bytes, for the specified hash algorithm.
         /// <para>-1 is returned if the length is not known.</para></summary>
         /// <param name="hashType">Type of the hashing algorithm.</param>
         public static int GetHashLengthBytes(HashType hashType)
@@ -362,7 +362,7 @@ namespace IG.Crypto
             return -1;
         }
 
-        /// <summary>Returns length of the HEXADECIMAL hashRet string for the specified hashRet algorithm.
+        /// <summary>Returns length of the HEXADECIMAL hash string for the specified hash algorithm.
         /// <para>-1 is returned if the length is not known.</para></summary>
         /// <param name="hashType">Type of the hashing algorithm.</param>
         public static int GetHashLengthHex(HashType hashType)
@@ -398,7 +398,7 @@ namespace IG.Crypto
 
 
         /// <summary>Returns a <see cref="HashType"/> value corresponding to the specified string representation.</summary>
-        /// <param name="typeString">String that represents the hashRet type.</param>
+        /// <param name="typeString">String that represents the hash type.</param>
         public static HashType GetHashType(string typeString)
         {
             if (typeString != null)
@@ -451,7 +451,7 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Returns standard string representation of the specified hashRet type.</summary>
+        /// <summary>Returns standard string representation of the specified hash type.</summary>
         /// <param name="hashType">Hash type whose string representation is returned.</param>
         public static string HashTypeToString(HashType hashType)
         {
@@ -473,9 +473,9 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Returns the appropriate hashRet algorithm according to the specified hashRet type, or null 
+        /// <summary>Returns the appropriate hash algorithm according to the specified hash type, or null 
         /// if the type is not recognized or the method is not implemented for that type.</summary>
-        /// <param name="hashType">Specification of the hashRet algorithm type.</param>
+        /// <param name="hashType">Specification of the hash algorithm type.</param>
         public static HashAlgorithm GetHashAlgorithm(HashType hashType)
         {
             switch (hashType)
@@ -493,9 +493,9 @@ namespace IG.Crypto
             }
         }
 
-        /// <summary>Returns true if the specified cryptographic hashRet algorithm corresponds the type specification, false otherwise.
+        /// <summary>Returns true if the specified cryptographic hash algorithm corresponds the type specification, false otherwise.
         /// <para>If the specified algorithm is null or the specified type is unknown then false is returned.</para></summary>
-        /// <param name="algorithmType">Specification of the cryptographic hashRet algorithm type.</param>
+        /// <param name="algorithmType">Specification of the cryptographic hash algorithm type.</param>
         /// <param name="algorithm">Algorithm that is checked for type correctness.</param>
         public static bool IsCorrectHashAlgorithm(HashAlgorithm algorithm, HashType algorithmType)
         {
@@ -518,13 +518,13 @@ namespace IG.Crypto
 
 
 
-        /// <summary>Parses the file containing hashRet values of one or more files, and adds the parsed
-        /// pairs {hashRet, inputFilePath} to the specified list.
-        /// <para>File must be in the standard format where each line contains a hashRet value and the path to 
-        /// the corresponding file separated from hashRet value by one or more spaces.</para>
+        /// <summary>Parses the file containing hash values of one or more files, and adds the parsed
+        /// pairs {hash, inputFilePath} to the specified list.
+        /// <para>File must be in the standard format where each line contains a hash value and the path to 
+        /// the corresponding file separated from hash value by one or more spaces.</para>
         /// <para>List is allocated if necessary. Eventual existent pairs on the list are not affected.</para></summary>
         /// <param name="filePath">Path to the file that is parsed.</param>
-        /// <param name="hashList">List to which which parsed pairs {hashRet, inputFilePath} are added in form of arrays of 2 strings.</param>
+        /// <param name="hashList">List to which which parsed pairs {hash, inputFilePath} are added in form of arrays of 2 strings.</param>
         /// <remarks><para>Example contents of the file: </para>
         /// <para>595f44fec1e92a71d3e9e77456ba80d1  filetohashA.txt</para>
         /// <para>71f920fa275127a7b60fa4d4d41432a3  filetohashB.txt</para>
@@ -548,7 +548,7 @@ namespace IG.Crypto
                     int firstSpace = -1;
                     int firstNonSpace = -1;
                     int pos = 0;
-                    // Find the end of the hashRet string:
+                    // Find the end of the hash string:
                     while (pos < length && firstSpace < 0)
                     {
                         if (char.IsWhiteSpace(chars[pos]))
@@ -577,13 +577,13 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Parses the string containing hashRet values of one or more files, and adds the parsed
-        /// pairs {hashRet, inputFilePath} to the specified list.
-        /// <para>String must be in the standard format where each line contains a hashRet value and the path to 
-        /// the corresponding file separated from hashRet value by one or more spaces.</para>
+        /// <summary>Parses the string containing hash values of one or more files, and adds the parsed
+        /// pairs {hash, inputFilePath} to the specified list.
+        /// <para>String must be in the standard format where each line contains a hash value and the path to 
+        /// the corresponding file separated from hash value by one or more spaces.</para>
         /// <para>List is allocated if necessary. Eventual existent pairs on the list are not affected.</para></summary>
         /// <param name="str">String that is parsed.</param>
-        /// <param name="hashList">List to which which parsed pairs {hashRet, inputFilePath} are added in form of arrays of 2 strings.</param>
+        /// <param name="hashList">List to which which parsed pairs {hash, inputFilePath} are added in form of arrays of 2 strings.</param>
         /// <remarks><para>Example contents of the string: </para>
         /// <para>595f44fec1e92a71d3e9e77456ba80d1  filetohashA.txt</para>
         /// <para>71f920fa275127a7b60fa4d4d41432a3  filetohashB.txt</para>
@@ -604,7 +604,7 @@ namespace IG.Crypto
                     int firstSpace = -1;
                     int firstNonSpace = -1;
                     int pos = 0;
-                    // Find the end of the hashRet string:
+                    // Find the end of the hash string:
                     while (pos < length && firstSpace < 0)
                     {
                         if (char.IsWhiteSpace(chars[pos]))
@@ -639,9 +639,9 @@ namespace IG.Crypto
         #region Hash.ByteArray
 
 
-        /// <summary>Computes and returns the hashRet (in form of byte array) of the specified kind of the specified byte array.
-        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
-        /// <param name="bytesToHash">Byte array whose hashRet string is calculated.</param>
+        /// <summary>Computes and returns the hash (in form of byte array) of the specified kind of the specified byte array.
+        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hash type is not known or implemented.</para></summary>
+        /// <param name="bytesToHash">Byte array whose hash string is calculated.</param>
         /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
@@ -664,9 +664,9 @@ namespace IG.Crypto
             return resultBytes;
         }
 
-        /// <summary>Computes and returns the hashRet string of the specified kind of the specified byte array.
-        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
-        /// <param name="bytesToHash">Byte array whose hashRet string is calculated.</param>
+        /// <summary>Computes and returns the hash string of the specified kind of the specified byte array.
+        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hash type is not known or implemented.</para></summary>
+        /// <param name="bytesToHash">Byte array whose hash string is calculated.</param>
         /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
@@ -676,29 +676,29 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Computes and returns the MD5 hashRet string of the specified array of bytes.</summary>
-        /// <param name="bytesToHash">Byte array whose hashRet string is calculated.</param>
+        /// <summary>Computes and returns the MD5 hash string of the specified array of bytes.</summary>
+        /// <param name="bytesToHash">Byte array whose hash string is calculated.</param>
         public static string GetHashMd5Hex(byte[] bytesToHash)
         {
             return GetHashHex(bytesToHash, HashType.MD5);
         }
 
-        /// <summary>Computes and returns the SHA1 hashRet string of the specified array of bytes.</summary>
-        /// <param name="bytesToHash">Byte array whose hashRet string is calculated.</param>
+        /// <summary>Computes and returns the SHA1 hash string of the specified array of bytes.</summary>
+        /// <param name="bytesToHash">Byte array whose hash string is calculated.</param>
         public static string GetHashSha1Hex(byte[] bytesToHash)
         {
             return GetHashHex(bytesToHash, HashType.SHA1);
         }
 
-        /// <summary>Computes and returns the SHA256 hashRet string of the specified array of bytes.</summary>
-        /// <param name="bytesToHash">Byte array whose hashRet string is calculated.</param>
+        /// <summary>Computes and returns the SHA256 hash string of the specified array of bytes.</summary>
+        /// <param name="bytesToHash">Byte array whose hash string is calculated.</param>
         public static string GetHashSha256Hex(byte[] bytesToHash)
         {
             return GetHashHex(bytesToHash, HashType.SHA256);
         }
 
-        /// <summary>Computes and returns the SHA512 hashRet string of the specified array of bytes.</summary>
-        /// <param name="bytesToHash">Byte array whose hashRet string is calculated.</param>
+        /// <summary>Computes and returns the SHA512 hash string of the specified array of bytes.</summary>
+        /// <param name="bytesToHash">Byte array whose hash string is calculated.</param>
         public static string GetHashSha512Hex(byte[] bytesToHash)
         {
             return GetHashHex(bytesToHash, HashType.SHA512);
@@ -710,13 +710,13 @@ namespace IG.Crypto
 
         #region Hash.CeckByteArray
 
-        /// <summary>Chechs the specified type of hashRet value of a byte array.
-        /// <para>Returns true if the hashRet value matches the hashRet value of the byte array, and false otherwise.</para>
+        /// <summary>Chechs the specified type of hash value of a byte array.
+        /// <para>Returns true if the hash value matches the hash value of the byte array, and false otherwise.</para>
         /// </summary>
-        /// <param name="bytesToCheck">String whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose correctness is checked.</param>
-        /// <param name="hashAlgorithmType">Type of the hashRet value that is checked.</param>
-        /// <returns>True if the specified hashRet <paramref name="hashValue"/> actually matches the hashRet value
+        /// <param name="bytesToCheck">String whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose correctness is checked.</param>
+        /// <param name="hashAlgorithmType">Type of the hash value that is checked.</param>
+        /// <returns>True if the specified hash <paramref name="hashValue"/> actually matches the hash value
         /// of the type <paramref name="hashAlgorithmType"/> of the verified string <paramref name="bytesToCheck"/>, or
         /// false otherwise.</returns>
         public static bool CheckHashHex(byte[] bytesToCheck, string hashValue, HashType hashAlgorithmType)
@@ -729,15 +729,15 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Chechs all supported types of hashRet value of a string.
-        /// <para>Returns the hashRet type if the hashRet value matches the hashRet value of that type of the specified string, 
-        /// or <see cref="HashType.None"/> if the specified hashRet value doesn't match the hashRet value of any
+        /// <summary>Checks all supported types of hash value of a string.
+        /// <para>Returns the hash type if the hash value matches the hash value of that type of the specified string, 
+        /// or <see cref="HashType.None"/> if the specified hash value doesn't match the hash value of any
         /// supported type of the string.</para>
         /// </summary>
-        /// <param name="bytesToCheck">String whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose match with the specified string is checked.</param>
-        /// <returns>Type of the hashRet value that matches the specified hashRet value of the specified string, 
-        /// or <see cref="HashType.None"/> if the specified hashRet value doesn't match the hashRet value of any
+        /// <param name="bytesToCheck">String whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose match with the specified string is checked.</param>
+        /// <returns>Type of the hash value that matches the specified hash value of the specified string, 
+        /// or <see cref="HashType.None"/> if the specified hash value doesn't match the hash value of any
         /// supported type of the specified string.</returns>
         public static HashType CheckHashSupportedTypesHex(byte[] bytesToCheck, string hashValue)
         {
@@ -747,9 +747,12 @@ namespace IG.Crypto
             var values = Enum.GetValues(typeof(HashType)).Cast<HashType>();
             foreach (HashType hashType in values)
             {
-                string actualHahsh = GetHashHex(bytesToCheck, hashType);
-                if (Util.AreHexStringsEqual(hashValue, actualHahsh))
-                    return hashType;
+                if (hashType != HashType.None)
+                {
+                    string actualHahsh = GetHashHex(bytesToCheck, hashType);
+                    if (Util.AreHexStringsEqual(hashValue, actualHahsh))
+                        return hashType;
+                }
             }
             return HashType.None;
         }
@@ -761,9 +764,9 @@ namespace IG.Crypto
         #region Hash.String
 
 
-        /// <summary>Computes and returns the hashRet string of the specified kind of the specified string.
-        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
-        /// <param name="stringToHash">String whose hashRet string is calculated.</param>
+        /// <summary>Computes and returns the hash string of the specified kind of the specified string.
+        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hash type is not known or implemented.</para></summary>
+        /// <param name="stringToHash">String whose hash string is calculated.</param>
         /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
@@ -780,9 +783,9 @@ namespace IG.Crypto
             return resultBytes;
         }
 
-        /// <summary>Computes and returns the hashRet string of the specified kind of the specified string.
-        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
-        /// <param name="stringToHash">String whose hashRet string is calculated.</param>
+        /// <summary>Computes and returns the hash string of the specified kind of the specified string.
+        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hash type is not known or implemented.</para></summary>
+        /// <param name="stringToHash">String whose hash string is calculated.</param>
         /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
@@ -792,8 +795,8 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Computes and returns the MD5 hashRet string of the specified string.</summary>
-        /// <param name="stringToHash">String whose cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the MD5 hash string of the specified string.</summary>
+        /// <param name="stringToHash">String whose cryptographic hash is calculated.</param>
         public static string GetStringHashMd5Hex(string stringToHash)
         {
             return GetStringHashHex(stringToHash, HashType.MD5);
@@ -809,8 +812,8 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Computes and returns the SHA1 hashRet string of the specified string.</summary>
-        /// <param name="stringToHash">String whose cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the SHA1 hash string of the specified string.</summary>
+        /// <param name="stringToHash">String whose cryptographic hash is calculated.</param>
         public static string GetStringHashSha1Hex(string stringToHash)
         {
             return GetStringHashHex(stringToHash, HashType.SHA1);
@@ -826,8 +829,8 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Computes and returns the SHA256 hashRet string of the specified string.</summary>
-        /// <param name="stringToHash">String whose cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the SHA256 hash string of the specified string.</summary>
+        /// <param name="stringToHash">String whose cryptographic hash is calculated.</param>
         public static string GetStringHashSha256Hex(string stringToHash)
         {
             return GetStringHashHex(stringToHash, HashType.SHA256);
@@ -843,8 +846,8 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Computes and returns the SHA512 hashRet string of the specified string.</summary>
-        /// <param name="stringToHash">String whose cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the SHA512 hash string of the specified string.</summary>
+        /// <param name="stringToHash">String whose cryptographic hash is calculated.</param>
         public static string GetStringHashSha512Hex(string stringToHash)
         {
             return GetStringHashHex(stringToHash, HashType.SHA512);
@@ -860,18 +863,18 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Computes and returns the salted hashRet (in form of byte array) of the specified kind of the specified string, with the specified
+        /// <summary>Computes and returns the salted hash (in form of byte array) of the specified kind of the specified string, with the specified
         /// number of repetitions of the salted hashing algoriithm.
-        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
-        /// <param name="stringToHash">String whose salted hashRet is to be computed.</param>
+        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hash type is not known or implemented.</para></summary>
+        /// <param name="stringToHash">String whose salted hash is to be computed.</param>
         /// <param name="hashType">Type of hashing algorithm used.</param>
         /// <param name="salt">Salt string.</param>
         /// <param name="numIterations">Optional number of iterations. If hreater than 0 then hashing algorithm is
         /// reapplied to the salted result of the previous computation for the specified number of time.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
-        /// <returns>The salted hashRet of the specified string, with specified hashRet, and specified number of 
-        /// repetitions of the salted hashRet calculation.</returns>
+        /// <returns>The salted hash of the specified string, with specified hash, and specified number of 
+        /// repetitions of the salted hash calculation.</returns>
         public static byte[] GetStringSaltedHashBytes(string stringToHash, HashType hashType,
             string salt, int numIterations = 0, HashAlgorithm cryptoAlgorithm = null)
         {
@@ -914,18 +917,18 @@ namespace IG.Crypto
             return resultBytes;
         }
 
-        /// <summary>Computes and returns the salted hashRet of the specified kind of the specified string, with the specified
+        /// <summary>Computes and returns the salted hash of the specified kind of the specified string, with the specified
         /// number of repetitions of the salted hashing algoriithm.
-        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
-        /// <param name="stringToHash">String whose salted hashRet is to be computed.</param>
+        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hash type is not known or implemented.</para></summary>
+        /// <param name="stringToHash">String whose salted hash is to be computed.</param>
         /// <param name="hashType">Type of hashing algorithm used.</param>
         /// <param name="salt">Salt string.</param>
         /// <param name="numIterations">Optional number of iterations. If hreater than 0 then hashing algorithm is
         /// reapplied to the salted result of the previous computation for the specified number of time.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
-        /// <returns>The salted hashRet of the specified string, with specified hashRet, and specified number of 
-        /// repetitions of the salted hashRet calculation.</returns>
+        /// <returns>The salted hash of the specified string, with specified hash, and specified number of 
+        /// repetitions of the salted hash calculation.</returns>
         public static string GetStringSaltedHash(string stringToHash, HashType hashType,
             string salt, int numIterations = 0, HashAlgorithm cryptoAlgorithm = null)
         {
@@ -934,15 +937,15 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Computes and returns the MD5 salted hashRet of the specified string, with the specified
+        /// <summary>Computes and returns the MD5 salted hash of the specified string, with the specified
         /// number of repetitions of the salted hashing algoriithm.
-        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
-        /// <param name="stringToHash">String whose salted hashRet is to be computed.</param>
+        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hash type is not known or implemented.</para></summary>
+        /// <param name="stringToHash">String whose salted hash is to be computed.</param>
         /// <param name="salt">Salt string.</param>
         /// <param name="numIterations">Optional number of iterations. If hreater than 0 then hashing algorithm is
         /// reapplied to the salted result of the previous computation for the specified number of time.</param>
-        /// <returns>The salted hashRet of the specified string, with specified hashRet, and specified number of 
-        /// repetitions of the salted hashRet calculation.</returns>
+        /// <returns>The salted hash of the specified string, with specified hash, and specified number of 
+        /// repetitions of the salted hash calculation.</returns>
         public static string GetStringSaltedHashMd5Hex(string stringToHash,
             string salt, int numIterations = 0)
         {
@@ -950,15 +953,15 @@ namespace IG.Crypto
                 salt, numIterations);
         }
 
-        /// <summary>Computes and returns the SHA1 salted hashRet of the specified string, with the specified
+        /// <summary>Computes and returns the SHA1 salted hash of the specified string, with the specified
         /// number of repetitions of the salted hashing algoriithm.
-        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
-        /// <param name="stringToHash">String whose salted hashRet is to be computed.</param>
+        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hash type is not known or implemented.</para></summary>
+        /// <param name="stringToHash">String whose salted hash is to be computed.</param>
         /// <param name="salt">Salt string.</param>
         /// <param name="numIterations">Optional number of iterations. If hreater than 0 then hashing algorithm is
         /// reapplied to the salted result of the previous computation for the specified number of time.</param>
-        /// <returns>The salted hashRet of the specified string, with specified hashRet, and specified number of 
-        /// repetitions of the salted hashRet calculation.</returns>
+        /// <returns>The salted hash of the specified string, with specified hash, and specified number of 
+        /// repetitions of the salted hash calculation.</returns>
         public static string GetStringSaltedHashSha1Hex(string stringToHash,
             string salt, int numIterations = 0)
         {
@@ -966,15 +969,15 @@ namespace IG.Crypto
                 salt, numIterations);
         }
 
-        /// <summary>Computes and returns the SHA-256 salted hashRet of the specified string, with the specified
+        /// <summary>Computes and returns the SHA-256 salted hash of the specified string, with the specified
         /// number of repetitions of the salted hashing algoriithm.
-        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
-        /// <param name="stringToHash">String whose salted hashRet is to be computed.</param>
+        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hash type is not known or implemented.</para></summary>
+        /// <param name="stringToHash">String whose salted hash is to be computed.</param>
         /// <param name="salt">Salt string.</param>
         /// <param name="numIterations">Optional number of iterations. If hreater than 0 then hashing algorithm is
         /// reapplied to the salted result of the previous computation for the specified number of time.</param>
-        /// <returns>The salted hashRet of the specified string, with specified hashRet, and specified number of 
-        /// repetitions of the salted hashRet calculation.</returns>
+        /// <returns>The salted hash of the specified string, with specified hash, and specified number of 
+        /// repetitions of the salted hash calculation.</returns>
         public static string GetStringSaltedHashSha256Hex(string stringToHash,
             string salt, int numIterations = 0)
         {
@@ -982,15 +985,15 @@ namespace IG.Crypto
                 salt, numIterations);
         }
 
-        /// <summary>Computes and returns the SHA-512 salted hashRet of the specified string, with the specified
+        /// <summary>Computes and returns the SHA-512 salted hash of the specified string, with the specified
         /// number of repetitions of the salted hashing algoriithm.
-        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hashRet type is not known or implemented.</para></summary>
-        /// <param name="stringToHash">String whose salted hashRet is to be computed.</param>
+        /// <para>Exception (<see cref="InvalidOperationException"/>) is thrown if the specified hash type is not known or implemented.</para></summary>
+        /// <param name="stringToHash">String whose salted hash is to be computed.</param>
         /// <param name="salt">Salt string.</param>
         /// <param name="numIterations">Optional number of iterations. If hreater than 0 then hashing algorithm is
         /// reapplied to the salted result of the previous computation for the specified number of time.</param>
-        /// <returns>The salted hashRet of the specified string, with specified hashRet, and specified number of 
-        /// repetitions of the salted hashRet calculation.</returns>
+        /// <returns>The salted hash of the specified string, with specified hash, and specified number of 
+        /// repetitions of the salted hash calculation.</returns>
         public static string GetStringSaltedHashSha512Hex(string stringToHash,
             string salt, int numIterations = 0)
         {
@@ -1006,13 +1009,13 @@ namespace IG.Crypto
 
         #region Hash.CeckString
 
-        /// <summary>Chechs the specified type of hashRet value of a string.
-        /// <para>Returns true if the hashRet value matches the hashRet value of the string, and false otherwise.</para>
+        /// <summary>Chechs the specified type of hash value of a string.
+        /// <para>Returns true if the hash value matches the hash value of the string, and false otherwise.</para>
         /// </summary>
-        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose correctness is checked.</param>
-        /// <param name="hashAlgorithmType">Type of the hashRet value that is checked.</param>
-        /// <returns>True if the specified hashRet <paramref name="hashValue"/> actually matches the hashRet value
+        /// <param name="stringToCheck">String whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose correctness is checked.</param>
+        /// <param name="hashAlgorithmType">Type of the hash value that is checked.</param>
+        /// <returns>True if the specified hash <paramref name="hashValue"/> actually matches the hash value
         /// of the type <paramref name="hashAlgorithmType"/> of the verified string <paramref name="stringToCheck"/>, or
         /// false otherwise.</returns>
         public static bool CheckStringHashHex(string stringToCheck, string hashValue, HashType hashAlgorithmType)
@@ -1024,15 +1027,15 @@ namespace IG.Crypto
             return Util.AreHexStringsEqual(hashValue, actualHash);
         }
 
-        /// <summary>Chechs all supported types of hashRet value of a string.
-        /// <para>Returns the hashRet type if the hashRet value matches the hashRet value of that type of the specified string, 
-        /// or <see cref="HashType.None"/> if the specified hashRet value doesn't match the hashRet value of any
+        /// <summary>Chechs all supported types of hash value of a string.
+        /// <para>Returns the hash type if the hash value matches the hash value of that type of the specified string, 
+        /// or <see cref="HashType.None"/> if the specified hash value doesn't match the hash value of any
         /// supported type of the string.</para>
         /// </summary>
-        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose match with the specified string is checked.</param>
-        /// <returns>Type of the hashRet value that matches the specified hashRet value of the specified string, 
-        /// or <see cref="HashType.None"/> if the specified hashRet value doesn't match the hashRet value of any
+        /// <param name="stringToCheck">String whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose match with the specified string is checked.</param>
+        /// <returns>Type of the hash value that matches the specified hash value of the specified string, 
+        /// or <see cref="HashType.None"/> if the specified hash value doesn't match the hash value of any
         /// supported type of the specified string.</returns>
         public static HashType CheckStringHashSupportedTypesHex(string stringToCheck, string hashValue)
         {
@@ -1042,9 +1045,12 @@ namespace IG.Crypto
             var values = Enum.GetValues(typeof(HashType)).Cast<HashType>();
             foreach (HashType hashType in values)
             {
-                string actualHahsh = GetStringHashHex(stringToCheck, hashType);
-                if (Util.AreHexStringsEqual(hashValue, actualHahsh))
-                    return hashType;
+                if (hashType != HashType.None)
+                {
+                    string actualHahsh = GetStringHashHex(stringToCheck, hashType);
+                    if (Util.AreHexStringsEqual(hashValue, actualHahsh))
+                        return hashType;
+                }
             }
             return HashType.None;
 
@@ -1058,7 +1064,7 @@ namespace IG.Crypto
             //foreach (HashType hashType in values)
             //{
             //    int expectedLength = GetHashLengthHex(hashType);
-            //    if (!(expectedLength > 0 && expectedLength != hashLength)) // don't check hashRet type if length does not match
+            //    if (!(expectedLength > 0 && expectedLength != hashLength)) // don't check hash type if length does not match
             //    {
             //        if (CheckStringHashHex(stringToCheck, HashValue, hashType))
             //            return hashType;
@@ -1067,49 +1073,49 @@ namespace IG.Crypto
             //return HashType.None;
         }
 
-        /// <summary>Checks whether the specified MD5 hashRet value matches the actual hashRet value
+        /// <summary>Checks whether the specified MD5 hash value matches the actual hash value
         /// of the specified string.
-        /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
+        /// <para>Returns true if the specified hash value matches the actual hash value of 
         /// the string, and false otherwise.</para></summary>
-        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
-        /// <returns>True if the specified hashRet value matches the actual value, false otherwise.</returns>
+        /// <param name="stringToCheck">String whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose validity is checked for the specified string.</param>
+        /// <returns>True if the specified hash value matches the actual value, false otherwise.</returns>
         public static bool CheckStringHashMd5Hex(string stringToCheck, string hashValue)
         {
             return CheckStringHashHex(stringToCheck, hashValue, HashType.MD5);
         }
 
-        /// <summary>Checks whether the specified SHA-1 hashRet value matches the actual hashRet value
+        /// <summary>Checks whether the specified SHA-1 hash value matches the actual hash value
         /// of the specified string.
-        /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
+        /// <para>Returns true if the specified hash value matches the actual hash value of 
         /// the string, and false otherwise.</para></summary>
-        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
-        /// <returns>True if the specified hashRet value matches the actual value, false otherwise.</returns>
+        /// <param name="stringToCheck">String whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose validity is checked for the specified string.</param>
+        /// <returns>True if the specified hash value matches the actual value, false otherwise.</returns>
         public static bool CheckStringHashSha1Hex(string stringToCheck, string hashValue)
         {
             return CheckStringHashHex(stringToCheck, hashValue, HashType.SHA1);
         }
 
-        /// <summary>Checks whether the specified SHA-256 hashRet value matches the actual hashRet value
+        /// <summary>Checks whether the specified SHA-256 hash value matches the actual hash value
         /// of the specified string.
-        /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
+        /// <para>Returns true if the specified hash value matches the actual hash value of 
         /// the string, and false otherwise.</para></summary>
-        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
-        /// <returns>True if the specified hashRet value matches the actual value, false otherwise.</returns>
+        /// <param name="stringToCheck">String whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose validity is checked for the specified string.</param>
+        /// <returns>True if the specified hash value matches the actual value, false otherwise.</returns>
         public static bool CheckStringHashSha256Hex(string stringToCheck, string hashValue)
         {
             return CheckStringHashHex(stringToCheck, hashValue, HashType.SHA256);
         }
 
-        /// <summary>Checks whether the specified SHA-512 hashRet value matches the actual hashRet value
+        /// <summary>Checks whether the specified SHA-512 hash value matches the actual hash value
         /// of the specified string.
-        /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
+        /// <para>Returns true if the specified hash value matches the actual hash value of 
         /// the string, and false otherwise.</para></summary>
-        /// <param name="stringToCheck">String whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified string.</param>
-        /// <returns>True if the specified hashRet value matches the actual value, false otherwise.</returns>
+        /// <param name="stringToCheck">String whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose validity is checked for the specified string.</param>
+        /// <returns>True if the specified hash value matches the actual value, false otherwise.</returns>
         public static bool CheckStringHashSha512Hex(string stringToCheck, string hashValue)
         {
             return CheckStringHashHex(stringToCheck, hashValue, HashType.SHA512);
@@ -1122,8 +1128,8 @@ namespace IG.Crypto
         #region Hash.File
 
 
-        /// <summary>Computes and returns the hashRet (in form of byte array) of specified type of the specified stream.</summary>
-        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the hash (in form of byte array) of specified type of the specified stream.</summary>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hash is calculated.</param>
         /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
@@ -1139,8 +1145,8 @@ namespace IG.Crypto
             return hashBytes;
         }
 
-        /// <summary>Computes and returns the hashRet string of specified type of the specified stream.</summary>
-        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the hash string of specified type of the specified stream.</summary>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hash is calculated.</param>
         /// <param name="hashType">Specifies the type of the hashing algorithm to be used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
@@ -1156,8 +1162,8 @@ namespace IG.Crypto
             return hashString;
         }
 
-        /// <summary>Computes and returns the MD5 hashRet string of the specified stream.</summary>
-        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the MD5 hash string of the specified stream.</summary>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hash is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static string GetFileHashMd5Hex(string filePath, HashAlgorithm cryptoAlgorithm = null)
@@ -1172,8 +1178,8 @@ namespace IG.Crypto
             return hashString;
         }
 
-        /// <summary>Computes and returns the SHA1 hashRet string of the specified stream.</summary>
-        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the SHA1 hash string of the specified stream.</summary>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hash is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static string GetFileHashSha1Hex(string filePath, HashAlgorithm cryptoAlgorithm = null)
@@ -1188,8 +1194,8 @@ namespace IG.Crypto
             return hashString;
         }
 
-        /// <summary>Computes and returns the SHA256 hashRet string of the specified stream.</summary>
-        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the SHA256 hash string of the specified stream.</summary>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hash is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static string GetFileHashSha256Hex(string filePath, HashAlgorithm cryptoAlgorithm = null)
@@ -1204,8 +1210,8 @@ namespace IG.Crypto
             return hashString;
         }
 
-        /// <summary>Computes and returns the SHA512 hashRet string of the specified stream.</summary>
-        /// <param name="filePath">Path to the file whose contents' cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the SHA512 hash string of the specified stream.</summary>
+        /// <param name="filePath">Path to the file whose contents' cryptographic hash is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by teh method. Its type must correspond the specified type.</param>
         public static string GetFileHashSha512Hex(string filePath, HashAlgorithm cryptoAlgorithm = null)
@@ -1222,9 +1228,9 @@ namespace IG.Crypto
 
 
 
-        /// <summary>Computes and returns the hashRet (in form of byte array) of specified type of the specified stream.</summary>
-        /// <param name="stream">Stream whose contents' cryptographic hashRet is calculated.</param>
-        /// <param name="hashType">Type of the hashRet algorithm used.</param>
+        /// <summary>Computes and returns the hash (in form of byte array) of specified type of the specified stream.</summary>
+        /// <param name="stream">Stream whose contents' cryptographic hash is calculated.</param>
+        /// <param name="hashType">Type of the hash algorithm used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
         public static byte[] GetHashBytes(Stream stream, HashType hashType, HashAlgorithm cryptoAlgorithm = null)
@@ -1241,9 +1247,9 @@ namespace IG.Crypto
 
         }
 
-        /// <summary>Computes and returns the hexadecimal hashRet string of specified type of the specified stream.</summary>
-        /// <param name="stream">Stream whose contents' cryptographic hashRet is calculated.</param>
-        /// <param name="hashType">Type of the hashRet algorithm used.</param>
+        /// <summary>Computes and returns the hexadecimal hash string of specified type of the specified stream.</summary>
+        /// <param name="stream">Stream whose contents' cryptographic hash is calculated.</param>
+        /// <param name="hashType">Type of the hash algorithm used.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
         public static string GetHashHex(Stream stream, HashType hashType, HashAlgorithm cryptoAlgorithm = null)
@@ -1253,8 +1259,8 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Computes and returns the MD5 hashRet string of the specified stream.</summary>
-        /// <param name="stream">Stream whose contents' cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the MD5 hash string of the specified stream.</summary>
+        /// <param name="stream">Stream whose contents' cryptographic hash is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
         public static string GetHashMd5Hex(Stream stream, HashAlgorithm cryptoAlgorithm = null)
@@ -1274,8 +1280,8 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Computes and returns the SHA1 hashRet string of the specified stream.</summary>
-        /// <param name="stream">Stream whose contents' cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the SHA1 hash string of the specified stream.</summary>
+        /// <param name="stream">Stream whose contents' cryptographic hash is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
         public static string GetHashSha1Hex(Stream stream, HashAlgorithm cryptoAlgorithm = null)
@@ -1294,8 +1300,8 @@ namespace IG.Crypto
             //return sb.ToString();
         }
 
-        /// <summary>Computes and returns the SHA256 hashRet string of the specified stream.</summary>
-        /// <param name="stream">Stream whose contents' cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the SHA256 hash string of the specified stream.</summary>
+        /// <param name="stream">Stream whose contents' cryptographic hash is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
         public static string GetHashSha256Hex(Stream stream, HashAlgorithm cryptoAlgorithm = null)
@@ -1315,8 +1321,8 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Computes and returns the SHA512 hashRet string of the specified stream.</summary>
-        /// <param name="stream">Stream whose contents' cryptographic hashRet is calculated.</param>
+        /// <summary>Computes and returns the SHA512 hash string of the specified stream.</summary>
+        /// <param name="stream">Stream whose contents' cryptographic hash is calculated.</param>
         /// <param name="cryptoAlgorithm">Algorithm objedt used to perform the job. 
         /// If not specified then it is created by the method. Its type must correspond the specified type.</param>
         public static string GetHashSha512Hex(Stream stream, HashAlgorithm cryptoAlgorithm = null)
@@ -1341,14 +1347,14 @@ namespace IG.Crypto
 
         #region Hash.CeckHashFile
 
-        /// <summary>Chechs the specified type of hashRet value of a file.
-        /// <para>Returns true if the specified hashRet value matches the hashRet value of the file, and false otherwise.</para>
+        /// <summary>Chechs the specified type of hash value of a file.
+        /// <para>Returns true if the specified hash value matches the hash value of the file, and false otherwise.</para>
         /// </summary>
-        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose correctness is checked.</param>
-        /// <param name="hashType">Type of the hashRet value that is checked.</param>
+        /// <param name="filePath">Path to the file whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose correctness is checked.</param>
+        /// <param name="hashType">Type of the hash value that is checked.</param>
         /// <param name="cryptoAlgorithm">Hasihing algoriithm to be used.</param>
-        /// <returns>True if hashType specified hashRet <paramref name="hashValue"/> actually matches the hashRet value
+        /// <returns>True if hashType specified hash <paramref name="hashValue"/> actually matches the hash value
         /// of the type <paramref name="hashType"/> of the verified file <paramref name="filePath"/>, or
         /// false otherwise.</returns>
         public static bool CheckFileHashHex(string filePath, string hashValue, HashType hashType, HashAlgorithm cryptoAlgorithm = null)
@@ -1364,15 +1370,15 @@ namespace IG.Crypto
         }
 
 
-        /// <summary>Chechs all supported types of hashRet value of a file.
-        /// <para>Returns the hashRet type if the hashRet value matches the hashRet value of that type of the specified file, 
-        /// or <see cref="HashType.None"/> if the specified hashRet value doesn't match the hashRet value of any
+        /// <summary>Chechs all supported types of hash value of a file.
+        /// <para>Returns the hash type if the hash value matches the hash value of that type of the specified file, 
+        /// or <see cref="HashType.None"/> if the specified hash value doesn't match the hash value of any
         /// supported type of the specified file.</para>
         /// </summary>
-        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose match with the specified file is checked.</param>
-        /// <returns>Type of the hashRet value that matches the specified hashRet value of the specified file, 
-        /// or <see cref="HashType.None"/> if the specified hashRet value doesn't match the hashRet value of any
+        /// <param name="filePath">Path to the file whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose match with the specified file is checked.</param>
+        /// <returns>Type of the hash value that matches the specified hash value of the specified file, 
+        /// or <see cref="HashType.None"/> if the specified hash value doesn't match the hash value of any
         /// supported type of the specified file.</returns>
         public static HashType CheckFileHashSupportedTypesHex(string filePath, string hashValue)
         {
@@ -1382,56 +1388,59 @@ namespace IG.Crypto
             var values = Enum.GetValues(typeof(HashType)).Cast<HashType>();
             foreach (HashType hashType in values)
             {
-                string actualHahsh = GetFileHashHex(filePath, hashType);
-                if (Util.AreHexStringsEqual(hashValue, actualHahsh))
-                    return hashType;
+                if (hashType != HashType.None)
+                {
+                    string actualHahsh = GetFileHashHex(filePath, hashType);
+                    if (Util.AreHexStringsEqual(hashValue, actualHahsh))
+                        return hashType;
+                }
             }
             return HashType.None;
         }
 
-        /// <summary>Checks whether the specified MD5 hashRet value matches the actual hashRet value
+        /// <summary>Checks whether the specified MD5 hash value matches the actual hash value
         /// of the specified file.
-        /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
+        /// <para>Returns true if the specified hash value matches the actual hash value of 
         /// the file, and false otherwise.</para></summary>
-        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
-        /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
+        /// <param name="filePath">Path to the file whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose validity is checked for the specified file.</param>
+        /// <returns>True if the specified file hash value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashMd5Hex(string filePath, string hashValue)
         {
             return CheckFileHashHex(filePath, hashValue, HashType.MD5);
         }
 
-        /// <summary>Checks whether the specified SHA-1 hashRet value matches the actual hashRet value
+        /// <summary>Checks whether the specified SHA-1 hash value matches the actual hash value
         /// of the specified file.
-        /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
+        /// <para>Returns true if the specified hash value matches the actual hash value of 
         /// the file, and false otherwise.</para></summary>
-        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
-        /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
+        /// <param name="filePath">Path to the file whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose validity is checked for the specified file.</param>
+        /// <returns>True if the specified file hash value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashSha1Hex(string filePath, string hashValue)
         {
             return CheckFileHashHex(filePath, hashValue, HashType.SHA1);
         }
 
-        /// <summary>Checks whether the specified SHA-256 hashRet value matches the actual hashRet value
+        /// <summary>Checks whether the specified SHA-256 hash value matches the actual hash value
         /// of the specified file.
-        /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
+        /// <para>Returns true if the specified hash value matches the actual hash value of 
         /// the file, and false otherwise.</para></summary>
-        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
-        /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
+        /// <param name="filePath">Path to the file whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose validity is checked for the specified file.</param>
+        /// <returns>True if the specified file hash value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashSha256Hex(string filePath, string hashValue)
         {
             return CheckFileHashHex(filePath, hashValue, HashType.SHA256);
         }
 
-        /// <summary>Checks whether the specified SHA-512 hashRet value matches the actual hashRet value
+        /// <summary>Checks whether the specified SHA-512 hash value matches the actual hash value
         /// of the specified file.
-        /// <para>Returns true if the specified hashRet value matches the actual hashRet value of 
+        /// <para>Returns true if the specified hash value matches the actual hash value of 
         /// the file, and false otherwise.</para></summary>
-        /// <param name="filePath">Path to the file whose hashRet value is checked.</param>
-        /// <param name="hashValue">Supposed hashRet value whose validity is checked for the specified file.</param>
-        /// <returns>True if the specified file hashRet value matches the actual value, false otherwise.</returns>
+        /// <param name="filePath">Path to the file whose hash value is checked.</param>
+        /// <param name="hashValue">Supposed hash value whose validity is checked for the specified file.</param>
+        /// <returns>True if the specified file hash value matches the actual value, false otherwise.</returns>
         public static bool CheckFileHashSha512Hex(string filePath, string hashValue)
         {
             return CheckFileHashHex(filePath, hashValue, HashType.SHA512);
@@ -1605,7 +1614,7 @@ namespace IG.Crypto
             }
         }
 
-        /// <summary>Returns the appropriate symmetric encryption algorithm according to the specified hashRet type, or null 
+        /// <summary>Returns the appropriate symmetric encryption algorithm according to the specified hash type, or null 
         /// if the type is not recognized or the method is not implemented for that type.</summary>
         /// <param name="algorithmType">Specification of the symmetric encryption algorithm type.</param>
         public static SymmetricAlgorithm GetSymmetricEncryptionAlgorithm(SymmetricAlgorithmType algorithmType)
@@ -3821,7 +3830,7 @@ namespace IG.Crypto
             }
         }
 
-        /// <summary>Returns the appropriate asymmetric algorithm according to the specified hashRet type, or null 
+        /// <summary>Returns the appropriate asymmetric algorithm according to the specified hash type, or null 
         /// if the type is not recognized or the method is not implemented for that type.</summary>
         /// <param name="algorithmType">Specification of the asymmetric encryption algorithm type.</param>
         public static AsymmetricAlgorithm GetAsymmetricEncryptionAlgorithm(AsymmetricAlgorithmType algorithmType)
@@ -4036,7 +4045,7 @@ namespace IG.Crypto
             sb.AppendLine("  Signature algorithm: " + alg.SignatureAlgorithm);
             sb.AppendLine("  Legal key sizes: " + Util.ToString<KeySizes>(alg.LegalKeySizes));
             sb.AppendLine("  Public key hash:  " + GetAsymmetricalgorithmHash(alg));
-            // sb.AppendLine("  Private key hashRet: " + GetAsymmetricalgorithmHash(alg,true /* includePrivate */));
+            // sb.AppendLine("  Private key hash: " + GetAsymmetricalgorithmHash(alg,true /* includePrivate */));
 
             if (alg.CspKeyContainerInfo == null)
                 sb.AppendLine("  There is no information about the key pair.");
@@ -4587,7 +4596,7 @@ namespace IG.Crypto
         /// another.</para></summary>
         /// <remarks>See also: RSAParameters", 
         /// https://msdn.microsoft.com/en-us/library/system.security.cryptography.rsaparameters%28v=vs.110%29.aspx </remarks>
-        /// <param name="algorithm">Algorithm for which keys' hashRet is returned.</param>
+        /// <param name="algorithm">Algorithm for which keys' hash is returned.</param>
         /// <param name="includePrivate">Whether private parameters of the asymmetric key contained in the algorithm are taken into account while hassing.
         /// <para>Default is false and it is highly recommended to use only false for this parameter.</para>
         /// <para>Usually using only public parameters should be enough, because it is very unlikely that any key
@@ -4612,7 +4621,7 @@ namespace IG.Crypto
                     rsaParams = rsa.ExportParameters(true);
                 else
                     rsaParams = rsa.ExportParameters(false);
-                // First, hashRet the private parameters:
+                // First, hash the private parameters:
                 byte[] hashRet = GetHashBytes(rsaParams.Modulus, hashType);
                 byte[] hashExponent = GetHashBytes(rsaParams.Exponent, hashType);
                 int len = hashRet.Length;

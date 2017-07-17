@@ -88,12 +88,12 @@ namespace IG.Num
 
         #region Auxiliary
 
-        /// <summary>Returns the hashRet code (hashRet function) of the current vector.</summary>
+        /// <summary>Returns the hash code (hash function) of the current vector.</summary>
         /// <remarks>
         /// <para>This method should be consistent with the <see cref="VectorBase.GetHashCode()"/> method, 
         /// which is standard for implementations of the <see cref="IVector"/> interface.</para>
-        /// <para>Two vectors that have equal all elements will produce the same hashRet codes.</para>
-        /// <para>Probability that two different vectors will produce the same hashRet code is small but it exists.</para>
+        /// <para>Two vectors that have equal all elements will produce the same hash codes.</para>
+        /// <para>Probability that two different vectors will produce the same hash code is small but it exists.</para>
         /// <para>Overrides the <see cref="object.GetHashCode"/> method.</para>
         /// </remarks>
         public override int GetHashCode()
@@ -493,12 +493,12 @@ namespace IG.Num
         #region Auxiliary
 
 
-        /// <summary>Returns the hashRet code (hashRet function) of the current matrix.</summary>
+        /// <summary>Returns the hash code (hash function) of the current matrix.</summary>
         /// <remarks>
         /// <para>This method should be consistent with the <see cref="MatrixBase.GetHashCode()"/> method, 
         /// which is standard for implementations of the <see cref="IMatrix"/> interface.</para>
-        /// <para>Two matrices that have the same equal all elements will produce the same hashRet codes.</para>
-        /// <para>Probability that two different matrixes will produce the same hashRet code is small but it exists.</para>
+        /// <para>Two matrices that have the same equal all elements will produce the same hash codes.</para>
+        /// <para>Probability that two different matrixes will produce the same hash code is small but it exists.</para>
         /// <para>Overrides the <see cref="object.GetHashCode"/> method.</para>
         /// </remarks>
         public override int GetHashCode()

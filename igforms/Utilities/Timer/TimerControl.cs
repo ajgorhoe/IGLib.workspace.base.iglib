@@ -586,8 +586,7 @@ namespace IG.Forms
 
         #endregion Common
 
-
-
+        
 
 
         #region Stopwatch
@@ -1605,8 +1604,7 @@ namespace IG.Forms
 
         #endregion Stopwatch
 
-
-
+        
 
 
         #region Cowntdown
@@ -2388,9 +2386,7 @@ namespace IG.Forms
 
         #endregion Cowntdown
 
-
-
-
+        
 
 
         #region Clock

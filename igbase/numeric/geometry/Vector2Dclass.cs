@@ -362,12 +362,12 @@ namespace IG.Num
 
         #region Auxiliary
 
-        /// <summary>Returns the hashRet code (hashRet function) of the current vector.</summary>
+        /// <summary>Returns the hash code (hash function) of the current vector.</summary>
         /// <remarks>
         /// <para>This method calls the <see cref="VectorBase.GetHashCode()"/> to calculate the 
-        /// hashRet code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
-        /// <para>Two vectors that have the same dimensions and equal elements will produce the same hashRet codes.</para>
-        /// <para>Probability that two different vectors will produce the same hashRet code is small but it exists.</para>
+        /// hash code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
+        /// <para>Two vectors that have the same dimensions and equal elements will produce the same hash codes.</para>
+        /// <para>Probability that two different vectors will produce the same hash code is small but it exists.</para>
         /// <para>Overrides the <see cref="object.GetHashCode"/> method.</para>
         /// </remarks>
         public override int GetHashCode()

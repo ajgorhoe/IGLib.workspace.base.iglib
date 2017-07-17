@@ -32,14 +32,14 @@ namespace IG.Lib
         {  }
 
 
-        protected override void BeforeInitialization()
+        protected override void ModuleInitializationBefore()
         {
             Name = "IGLib Test Module";
             Version = 1;
             SubVersion = 2;
             Release = "debug";
             Expires = false;
-            base.BeforeInitialization();
+            base.ModuleInitializationBefore();
             Email = "inverse@gmail.com";  // program'result contact e-mail
             WebPage = "www2.arnes.si/~ljc3m2/igor/ioptlib/";  // program'result web page
             Phone = null;  // program'result contact telephone
@@ -53,9 +53,9 @@ namespace IG.Lib
             Authors = null;
         }
 
-        protected override void AfterInitialization()
+        protected override void ModuleInitializationAfter()
         {
-            base.AfterInitialization();
+            base.ModuleInitializationAfter();
         }
 
 
@@ -83,7 +83,7 @@ namespace IG.Lib
 
     }  // class ModuleTest
 
-    public class AppTest : App
+    public class AppTest : ApplicationBase
     {
 
         protected AppTest()
@@ -92,15 +92,15 @@ namespace IG.Lib
 
 
         /// <summary>Things performed before initialization of the application.</summary>
-        protected override void BeforeInitialization()
+        protected override void ModuleInitializationBefore()
         {
-            base.BeforeInitialization();
+            base.ModuleInitializationBefore();
             Expires = false;
         }
 
-        protected override void AfterInitialization()
+        protected override void ModuleInitializationAfter()
         {
-            base.AfterInitialization();
+            base.ModuleInitializationAfter();
             LaunchInitNotice();
             AddModule(ModuleTest.Get());
         }
@@ -132,7 +132,7 @@ namespace IG.Lib
             {
                 if (!InitializedGlobal)
                 {
-                    App.InitApp();
+                    ApplicationBase.InitApp();
                     Global = new AppTest();
                     Global.LaunchInitNotice();
                 }
@@ -149,9 +149,8 @@ namespace IG.Lib
     /// directories and basic files, etc.
     /// </summary>
     /// $A Igor Oct08;
-    public class App : ModuleBase, ILockable
+    public class ApplicationBase : Module, ILockable
     {
-
 
         #region Initialization
 
@@ -160,7 +159,7 @@ namespace IG.Lib
         /// <param name="programName">Full name of the program.</param>
         /// <param name="version">Version of the program.</param>
         /// <param name="subVersion">Sub-version of the program.</param>
-        public App(string programName, int version, int subVersion) :
+        public ApplicationBase(string programName, int version, int subVersion) :
             this(programName, DefaultApplicationCodeName, version, subVersion, 
                     DefaultSubSubVersion, DefaultRelease) { }
 
@@ -171,7 +170,7 @@ namespace IG.Lib
         /// <param name="subVersion">Sub-version of the program.</param>
         /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
         /// 
-        public App(string programName, int version, int subVersion, string release) :
+        public ApplicationBase(string programName, int version, int subVersion, string release) :
             this(programName, DefaultApplicationCodeName, version, subVersion, 
                     DefaultSubSubVersion, release) { }
 
@@ -183,7 +182,7 @@ namespace IG.Lib
         /// A negative number means that this messagelevel of versioning is not used.</param>
         /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
         /// 
-        public App(string programName, int version, int subVersion, int subSubVersion, string release) :
+        public ApplicationBase(string programName, int version, int subVersion, int subSubVersion, string release) :
             this(programName, DefaultApplicationCodeName, version, subVersion, subSubVersion, release) { }
 
         /// <summary>Initializes the global data for the current program.</summary>
@@ -194,7 +193,7 @@ namespace IG.Lib
         /// <param name="subVersion">Sub-version of the program.</param>
         /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
         /// 
-        public App(string programName, string codeName, int version, int subVersion, string release) :
+        public ApplicationBase(string programName, string codeName, int version, int subVersion, string release) :
             this(programName, codeName, version, subVersion, DefaultSubSubVersion, release) { }
 
         /// <summary>Constructs a new application object.</summary>
@@ -206,34 +205,35 @@ namespace IG.Lib
         /// <param name="subSubVersion">Sub-subversion of the program. 
         /// A negative number means that this messagelevel of versioning is not used.</param>
         /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
-        public App(string programName, string codeName, int version, int subVersion,
-                    int subSubVersion, string release)
+        public ApplicationBase(string programName, string codeName, int version, int subVersion,
+                    int subSubVersion, string release): base(programName, codeName, version, subVersion,
+                    subSubVersion, release)
         {
-            InitProgram(programName, codeName, version, subVersion, subSubVersion, release);
+            ModuleInitialization(programName, codeName, version, subVersion, subSubVersion, release);
         }
 
 
-        /// <summary>Constructs a new application object.</summary>
-        /// <param name="programName">Full name of the program.</param>
-        /// <param name="codeName">Short program codename, appropriate for use in directory names.
-        /// If not specified then it is automatically formed from the full name.</param>
-        /// <param name="version">Version of the program.</param>
-        /// <param name="subVersion">Sub-version of the program.</param>
-        /// <param name="subSubVersion">Sub-subversion of the program. 
-        /// A negative number means that this messagelevel of versioning is not used.</param>
-        /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
-        protected virtual void InitProgram(string programName, string codeName, int version, int subVersion,
-                                   int subSubVersion, string release)
-        {
-            InitModuleBase(programName, codeName, version, subVersion,
-                                   subSubVersion, release);
-        }
+        ///// <summary>Constructs a new application object.</summary>
+        ///// <param name="programName">Full name of the program.</param>
+        ///// <param name="codeName">Short program codename, appropriate for use in directory names.
+        ///// If not specified then it is automatically formed from the full name.</param>
+        ///// <param name="version">Version of the program.</param>
+        ///// <param name="subVersion">Sub-version of the program.</param>
+        ///// <param name="subSubVersion">Sub-subversion of the program. 
+        ///// A negative number means that this messagelevel of versioning is not used.</param>
+        ///// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
+        //protected virtual void InitProgram(string programName, string codeName, int version, int subVersion,
+        //                           int subSubVersion, string release)
+        //{
+        //    ModuleInitializationCore(programName, codeName, version, subVersion,
+        //                           subSubVersion, release);
+        //}
 
 
         /// <summary>Pre-initialization stage.</summary>
-        protected override void BeforeInitialization()
+        protected override void ModuleInitializationBefore()
         {
-            base.BeforeInitialization();
+            base.ModuleInitializationBefore();
             IsModule = false;
             IsApplication = true;
         }
@@ -292,6 +292,18 @@ namespace IG.Lib
 
         #endregion CommandlineArguments
 
+
+        #region IRunnable
+
+        /// <summary>Runs the application.
+        /// <para>This method should be overridden in each derived class.</para></summary>
+        /// <param name="args">Arguments of the application.</param>
+        public virtual void Run(string[] args)
+        {
+            throw new ArgumentException("This application can not be run, the Run(args) method is not implemented.");
+        }
+
+        #endregion IRunnable
 
         #region Actions
 
@@ -356,10 +368,10 @@ namespace IG.Lib
         /// <summary>Global application data lock.</summary>
         protected static object lockGlobal = new Object();
 
-        protected static App _global = new App(DefaultApplicationName, DefaultVersion, DefaultSubVersion);
+        protected static ApplicationBase _global = new ApplicationBase(DefaultApplicationName, DefaultVersion, DefaultSubVersion);
 
         /// <summary>Gets the global instance of the App class, representing the current program.</summary>
-        public static App Global
+        public static ApplicationBase Global
         // $A Igor Oct08;
         {
             get
@@ -420,7 +432,108 @@ namespace IG.Lib
 
 
 
-    }  // class App
+    }  // class ApplicationBase
+
+
+
+    ///// <summary>
+    ///// General module (or library) management class, a base class for specific module classes. 
+    ///// Provides some basic functionality such as keeping information about the module, managing module
+    ///// directories and basic files, etc.
+    ///// Global module object is not implemented (in contrary to global program object), but it should be
+    ///// implemented in speciffic module classes derived from this one.
+    ///// </summary>
+    ///// $A Igor Jul08;
+    //public class Module : ModuleBase, ILockable
+    //{
+
+
+    //    #region Initialization
+
+    //    /// <param name="moduleName">Full name of the module.</param>
+    //    /// <param name="version">Version of the program.</param>
+    //    /// <param name="subVersion">Sub-version of the program.</param>
+    //    public Module(string moduleName, int version, int subVersion) :
+    //        this(moduleName, DefaultApplicationCodeName, version, subVersion, 
+    //                DefaultSubSubVersion, DefaultRelease) { }
+
+
+    //    /// <param name="moduleName">Full name of the module.</param>
+    //    /// <param name="version">Version of the program.</param>
+    //    /// <param name="subVersion">Sub-version of the program.</param>
+    //    /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
+    //    /// 
+    //    public Module(string moduleName, int version, int subVersion, string release) :
+    //        this(moduleName, DefaultApplicationCodeName, version, subVersion, 
+    //                DefaultSubSubVersion, release) { }
+
+    //    /// <summary>Initializes the global data for the current module.</summary>
+    //    /// <param name="moduleName">Full name of the program.</param>
+    //    /// <param name="version">Version of the program.</param>
+    //    /// <param name="subVersion">Sub-version of the program.</param>
+    //    /// <param name="subSubVersion">Sub-subversion of the program. 
+    //    /// A negative number means that this messagelevel of versioning is not used.</param>
+    //    /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
+    //    /// 
+    //    public Module(string moduleName, int version, int subVersion, int subSubVersion, string release) :
+    //        this(moduleName, DefaultApplicationCodeName, version, subVersion, subSubVersion, release) { }
+
+    //    /// <param name="moduleName">Full name of the module.</param>
+    //    /// <param name="codeName">Short program codename, appropriate for use in directory names.
+    //    /// If not specified then it is automatically formed from the full name</param>
+    //    /// <param name="version">Version of the program.</param>
+    //    /// <param name="subVersion">Sub-version of the program.</param>
+    //    /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
+    //    public Module(string moduleName, string codeName, int version, int subVersion, string release) :
+    //        this(moduleName, codeName, version, subVersion, DefaultSubSubVersion, release) { }
+
+    //    /// <param name="moduleName">Full name of the module.</param>
+    //    /// <param name="codeName">Short program codename, appropriate for use in directory names.
+    //    /// If not specified then it is automatically formed from the full name.</param>
+    //    /// <param name="version">Version of the program.</param>
+    //    /// <param name="subVersion">Sub-version of the program.</param>
+    //    /// <param name="subSubVersion">Sub-subversion of the program. 
+    //    /// A negative number means that this messagelevel of versioning is not used.</param>
+    //    /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
+    //    public Module(string moduleName, string codeName, int version, int subVersion,
+    //                int subSubVersion, string release)
+    //    {
+    //        ModuleInitialization(moduleName, codeName, version, subVersion, subSubVersion, release);  
+    //    }
+
+
+    //    ///// <param name="moduleName">Full name of the module.</param>
+    //    ///// <param name="codeName">Short program codename, appropriate for use in directory names.
+    //    ///// If not specified then it is automatically formed from the full name.</param>
+    //    ///// <param name="version">Version of the program.</param>
+    //    ///// <param name="subVersion">Sub-version of the program.</param>
+    //    ///// <param name="subSubVersion">Sub-subversion of the program. 
+    //    ///// A negative number means that this messagelevel of versioning is not used.</param>
+    //    ///// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
+    //    //void InitModule(string moduleName, string codeName, int version, int subVersion,
+    //    //                           int subSubVersion, string release)
+    //    //{
+    //    //    ModuleInitialization(moduleName, codeName, version, subVersion,
+    //    //                           subSubVersion, release);
+    //    //}
+
+    //    /// <summary>Pre-initialization stage.</summary>
+    //    protected override void ModuleInitializationBefore()
+    //    {
+    //        base.ModuleInitializationBefore();
+    //        IsModule = true;
+    //        IsApplication = false;
+    //    }
+
+
+    //    // programName programName programName programName 
+
+    //    #endregion Initialization
+
+
+    //}  //  class Module
+
+
 
 
 
@@ -432,9 +545,15 @@ namespace IG.Lib
     /// implemented in speciffic module classes derived from this one.
     /// </summary>
     /// $A Igor Jul08;
-    public class Module : ModuleBase, ILockable
+    public class Module : ILockable
+    // Global clas provides basic application-messagelevel functionality.
     {
-
+        
+        /* Default creation date - update this manually with the current date when compiling! */
+        protected const int  
+            DD = 06,
+            MM = 08,
+            YYYY = 2016;
 
         #region Initialization
 
@@ -486,56 +605,14 @@ namespace IG.Lib
         public Module(string moduleName, string codeName, int version, int subVersion,
                     int subSubVersion, string release)
         {
-            InitModule(moduleName, codeName, version, subVersion, subSubVersion, release);
+            ModuleInitialization(moduleName, codeName, version, subVersion, subSubVersion, release);
         }
 
 
-        /// <param name="moduleName">Full name of the module.</param>
-        /// <param name="codeName">Short program codename, appropriate for use in directory names.
-        /// If not specified then it is automatically formed from the full name.</param>
-        /// <param name="version">Version of the program.</param>
-        /// <param name="subVersion">Sub-version of the program.</param>
-        /// <param name="subSubVersion">Sub-subversion of the program. 
-        /// A negative number means that this messagelevel of versioning is not used.</param>
-        /// <param name="release">Lifecycle stage of the program version (alpha, beta, release, etc.)</param>
-        protected virtual void InitModule(string moduleName, string codeName, int version, int subVersion,
-                                   int subSubVersion, string release)
-        {
-            InitModuleBase(moduleName, codeName, version, subVersion,
-                                   subSubVersion, release);
-        }
 
-        /// <summary>Pre-initialization stage.</summary>
-        protected override void BeforeInitialization()
-        {
-            base.BeforeInitialization();
-            IsModule = true;
-            IsApplication = false;
-        }
-
-
-        // programName programName programName programName 
 
         #endregion Initialization
 
-
-    }  //  class Module
-
-
-
-    /// <summary>Manages basic program informatin and resources such as directories, expiration time, etc.</summary>
-    /// <remarks>In derived classes, override the <see cref="BeforeInitialization"/> and <see cref="AfterInitialization"/> methods.</remarks>
-    /// $A Igor Jul08;
-    public class ModuleBase : ILockable
-    // Global clas provides basic application-messagelevel functionality.
-    {
-
-
-        /* Default creation date - update this manually with the current date when compiling! */
-        protected const int  
-            DD = 06,
-            MM = 05,
-            YYYY = 2013;
 
 
         #region ILockable
@@ -653,43 +730,47 @@ namespace IG.Lib
 
         // Initialization units:
 
-        private bool ModuleBaseBeforeInitializationCalled = false;
-
-        /// <summary> A method called before any s initializations in constructors.
-        /// Override this method in derived classes in order to achieve different behavior.</summary>
+ 
+        /// <summary>A method called before other initialization parts of the module.
+        /// <para>This method is called before <see cref="ModuleInitializationCore"/> and before <see cref="ModuleInitializationAfter"/>.</para>
+        /// <para>The method should not be called explicitly in derived classes. Instead, it is called from <see cref="ModuleInitialization"/>.</para>
+        /// <para>Override this method in derived classes.</para></summary>
         /// $A Igor Oct08;
-        protected virtual void BeforeInitialization()
+        protected virtual void ModuleInitializationBefore()
         {
-            if (!ModuleBaseBeforeInitializationCalled)
-            {
-                ModuleBaseBeforeInitializationCalled = true;
-                StartTime = DateTime.Now;
-                // In derived classes, override this method to set such things as IGHomeEnv or IGHomeIdFile;
-                // Global makes possible to derive new ProgramBase-like classes with somewhat different bahavior.
-            }
+            StartTime = DateTime.Now;
+            IsModule = true;
+            IsApplication = false;
+
+            //if (!ModuleInitializationBeforeCalled)
+            //{
+            //    ModuleInitializationBeforeCalled = true;
+            //    // In derived classes, override this method to set such things as IGHomeEnv or IGHomeIdFile;
+            //    // Global makes possible to derive new ProgramBase-like classes with somewhat different bahavior.
+            //}
         }
 
 
-        private bool ModuleBaseAfterInitializationCalled = false;
-
-        /// <summary>
-        /// A method called after any s initializations in constructors.
-        /// Override this method in derived classes in order to achieve different behavior.
-        /// </summary>
-        protected virtual void AfterInitialization()
+        /// <summary> A method called after other initializaton parts of the module.
+        /// <para>This method is called after <see cref="ModuleInitializationBefore"/> and before <see cref="ModuleInitializationCore"/>.</para>
+        /// <para>The method should not be called explicitly in derived classes. Instead, it is called from <see cref="ModuleInitialization"/>.</para>
+        /// <para>Override this method in derived classes.</para></summary>
+        protected virtual void ModuleInitializationAfter()
         // $A Igor Oct08;
         {
-            if (!ModuleBaseAfterInitializationCalled)
-            {
-                ModuleBaseAfterInitializationCalled = true;
-                // In derived classes, override this method to change initializers' behavior;
-                // Global makes possible to derive new ProgramBase-like classes with somewhat different bahavior.
-            }
+            //if (!ModuleInitializationAfterCalled)
+            //{
+            //    ModuleInitializationAfterCalled = true;
+            //    // In derived classes, override this method to change initializers' behavior;
+            //    // Global makes possible to derive new ProgramBase-like classes with somewhat different bahavior.
+            //}
         }
 
 
-        /// <summary>Performs complete initialization of the program or module, including the pre-initialization 
-        /// and post-initialization steps.</summary>
+        /// <summary>Performs the core initialization step of the program or module.
+        /// <para>This method is called after <see cref="ModuleInitializationBefore"/> and before <see cref="ModuleInitializationAfter"/>.</para>
+        /// <para>The method should not be called explicitly in derived classes. Instead, it is called from <see cref="ModuleInitialization"/>.</para>
+        /// <para>Override this method in derived classes.</para></summary>
         /// <param name="name">Name of the program or module.</param>
         /// <param name="codeName">Code name (short name, shoud not contain spaces).</param>
         /// <param name="version">Version numver.</param>
@@ -697,23 +778,55 @@ namespace IG.Lib
         /// <param name="subSubVersion">Sub-subversion number.</param>
         /// <param name="release">Release description (e.g. "pre-release", "alpha", "beta", "experimental")</param>
         /// $A Igor Oct08;
-        protected void InitModuleBase(string name, string codeName, int version, int subVersion, 
+        protected virtual void ModuleInitializationCore(string name, string codeName, int version, int subVersion, 
                                    int subSubVersion, string release)
         {
-            BeforeInitialization();
             if (!String.IsNullOrEmpty(name)) Name = name;
             if (!String.IsNullOrEmpty(codeName)) CodeName = codeName;
             if (version>=0) Version = version;
             if (subVersion>=0) SubVersion = subVersion;
             if (subSubVersion>0) SubSubVersion = subSubVersion;
             if (release!=null) if (release.Length>0) Release = release;
-            AfterInitialization();
+        }
+
+        private bool ModuleInitializationBeforeCalled = false;
+        private bool ModuleInitializationCoreCalled = false;
+        private bool ModuleInitializationAfterCalled = false;
+
+
+        /// <summary>Performs complete initialization of the program or module, including the pre-initialization, core
+        /// initializattion and post-initialization steps.</summary>
+        /// <param name="moduleName">Name of the program or module.</param>
+        /// <param name="codeName">Code name (short name, shoud not contain spaces).</param>
+        /// <param name="version">Version numver.</param>
+        /// <param name="subVersion">Subversion number.</param>
+        /// <param name="subSubVersion">Sub-subversion number.</param>
+        /// <param name="release">Release description (e.g. "pre-release", "alpha", "beta", "experimental")</param>
+        /// $A Igor Oct08;
+        protected void ModuleInitialization(string moduleName, string codeName, int version, int subVersion,
+                                   int subSubVersion, string release)
+        {
+            if (!ModuleInitializationBeforeCalled)
+            {
+                ModuleInitializationBefore();
+                ModuleInitializationBeforeCalled = true;
+            }
+            if (!ModuleInitializationCoreCalled)
+            {
+                ModuleInitializationCore(moduleName, codeName, version, subVersion, subSubVersion, release);
+                ModuleInitializationCoreCalled = true;
+            }
+            if (!ModuleInitializationAfterCalled)
+            {
+                ModuleInitializationAfter();
+                ModuleInitializationAfterCalled = true;
+            }
         }
 
 
         #endregion   // Initialization
-
-
+        
+            
         #region Constants
 
         public const string 
@@ -2290,8 +2403,8 @@ namespace IG.Lib
         {
             get
             {
-                if (App.Global != null)
-                    return App.Global.LoadableScriptShellIsLoadable;
+                if (ApplicationBase.Global != null)
+                    return ApplicationBase.Global.LoadableScriptShellIsLoadable;
                 else
                     return LoadableScriptShellIsLoadableDefault;
             }
@@ -2302,8 +2415,8 @@ namespace IG.Lib
         {
             get 
             {
-                if (App.Global != null)
-                    return App.Global.LoadableScriptShellIsRunnable;
+                if (ApplicationBase.Global != null)
+                    return ApplicationBase.Global.LoadableScriptShellIsRunnable;
                 else
                     return LoadableScriptShellIsRunnableDefault;
             }
@@ -2317,5 +2430,7 @@ namespace IG.Lib
 
 
     }  // class ModuleBase
+
+
 
 }  // namespace IG.Lib

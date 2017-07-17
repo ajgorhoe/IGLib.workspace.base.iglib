@@ -217,12 +217,12 @@ namespace IG.Num
         /// <param name="elementFormat">Format specification for printing individual element.</param>
         string ToStringMath(string elementFormat);
         
-        /// <summary>Returns an integer valued hashRet function of the current matrix object.
+        /// <summary>Returns an integer valued hash function of the current matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         int GetHashFunctionInt();
         
-        /// <summary>Returns a string valued hashRet function of the current matrix object.
+        /// <summary>Returns a string valued hash function of the current matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
         /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString()"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific matrix.</remarks>
@@ -745,12 +745,12 @@ namespace IG.Num
         #region Operations.Auxiliary
 
 
-        /// <summary>Returns the hashRet code (hashRet function) of the current matrix.</summary>
+        /// <summary>Returns the hash code (hash function) of the current matrix.</summary>
         /// <remarks>
         /// <para>This method calls the <see cref="MatrixBase.GetHashCode(IMatrix)"/> to calculate the 
-        /// hashRet code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
-        /// <para>Two matrices that have the same dimensions and equal elements will produce the same hashRet codes.</para>
-        /// <para>Probability that two different matrices will produce the same hashRet code is small but it exists.</para>
+        /// hash code, which is standard for all implementations of the <see cref="IMatrix"/> interface.</para>
+        /// <para>Two matrices that have the same dimensions and equal elements will produce the same hash codes.</para>
+        /// <para>Probability that two different matrices will produce the same hash code is small but it exists.</para>
         /// <para>Overrides the <see cref="object.GetHashCode"/> method.</para>
         /// </remarks>
         public override int GetHashCode()
@@ -769,7 +769,7 @@ namespace IG.Num
             return MatrixBase.Equals(this, obj as IMatrix);
         }
 
-        /// <summary>Returns an integer valued hashRet function of the current matrix object.
+        /// <summary>Returns an integer valued hash function of the current matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         public int GetHashFunctionInt()
@@ -777,7 +777,7 @@ namespace IG.Num
             return Util.GetHashFunctionInt(this);
         }
 
-        /// <summary>Returns a string valued hashRet function of the current matrix object.
+        /// <summary>Returns a string valued hash function of the current matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
         /// <remarks>The returned string is always of the same length, and is based on the <see cref="ToString()"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific matrix.</remarks>
@@ -4749,10 +4749,10 @@ namespace IG.Num
 
         #region Auxiliary
 
-        /// <summary>Returns hashRet code of the specified matrix.</summary>
+        /// <summary>Returns hash code of the specified matrix.</summary>
         /// <param name="mat">Matrix whose hath code is returned.</param>
         /// <remarks>This method should be used when overriding the GetHashCode() in  vector classes, 
-        /// in order to unify calculation of hashRet code over different vector classes.</remarks>
+        /// in order to unify calculation of hash code over different vector classes.</remarks>
         public static int GetHashCode(IMatrix mat)
         {
             if (mat == null)
@@ -4813,18 +4813,18 @@ namespace IG.Num
             }
         }
 
-        /// <summary>Returns an integer valued hashRet function of the specified matrix object.
+        /// <summary>Returns an integer valued hash function of the specified matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
-        /// <param name="mat">Matrix object whose hashRet function is calculated and returned.</param>
+        /// <param name="mat">Matrix object whose hash function is calculated and returned.</param>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         public static int GetHashFunctionInt(IMatrix mat)
         {
             return Util.GetHashFunctionInt(mat);
         }
 
-        /// <summary>Returns a string valued hashRet function of the specified matrix object.
+        /// <summary>Returns a string valued hash function of the specified matrix object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
-        /// <param name="mat">Matrix object whose hashRet function is calculated and returned.</param>
+        /// <param name="mat">Matrix object whose hash function is calculated and returned.</param>
         /// <seealso cref="Util.GetHashFunctionString"/>
         public static string GetHashFunctionString(IMatrix mat)
         {

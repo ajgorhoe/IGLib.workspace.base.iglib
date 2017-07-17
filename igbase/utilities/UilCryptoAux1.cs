@@ -1,4 +1,4 @@
-﻿// Copyright (c) Igor Grešovnik (2009 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 using System;
 using System.Collections.Generic;
@@ -1415,7 +1415,7 @@ namespace IG.Crypto
                     throw new NotImplementedException("Checking encryption of text is not yet implemented. Coming soon (hopefully :-)) ).");
 
                     //// REFERENCE BODY FROM the CkeckSum command:
-                    //// String hashRet verification:
+                    //// String hash verification:
                     //if (NumFreeParameters > 1)
                     //    ReportError("Redundant specification of hashed strings, only one will be used.");
                     //if (OutputPath != null)
@@ -1469,11 +1469,11 @@ namespace IG.Crypto
                     //    ReturnedString = checkPassed.ToString();
                     //    if (checkPassed)
                     //    {
-                    //        Console.WriteLine(HashAlgorithmType.ToString() + " hashRet: OK." + Environment.NewLine);
+                    //        Console.WriteLine(HashAlgorithmType.ToString() + " hash: OK." + Environment.NewLine);
                     //    }
                     //    else
                     //    {
-                    //        Console.WriteLine(HashAlgorithmType.ToString() + " hashRet: NOT PASSED!" + Environment.NewLine);
+                    //        Console.WriteLine(HashAlgorithmType.ToString() + " hash: NOT PASSED!" + Environment.NewLine);
                     //    }
                     //}
                 }  // Check encryption of text (strings or byte arrays):
@@ -1669,7 +1669,7 @@ namespace IG.Crypto
                     throw new NotImplementedException("Encryption checks for files are not yet implemented. Coming soon (hopefully :-)) ).");
 
                     //// REFERENCE BODY FROM the CkeckSum command:
-                    //// File hashRet verification:
+                    //// File hash verification:
                     //List<string> inputFilePaths = null;
                     //GetInputFilePaths(ref inputFilePaths, true  /* enableWildcards */, true /* addRecursive */, true /* clearBefore */);
                     //int numInputFiles = inputFilePaths.Count;
@@ -1679,7 +1679,7 @@ namespace IG.Crypto
                     //bool checkPassed = false;
                     //if (HashValue != null)
                     //{
-                    //    // Verify a single file whose hashRet is specified by command line:
+                    //    // Verify a single file whose hash is specified by command line:
                     //    if (numInputFiles < 1)
                     //    {
                     //        ReportError("No files for verification specified, there should be one file.");
@@ -1729,7 +1729,7 @@ namespace IG.Crypto
                     //        ReportError("Redundant output file specification, not used.");
                     //    if (numInputFiles < 1)
                     //    {
-                    //        ReportError("No files containing hashRet information are specified.");
+                    //        ReportError("No files containing hash information are specified.");
                     //        passedThis = false;
                     //    }
                     //    else
@@ -1740,7 +1740,7 @@ namespace IG.Crypto
                     //        for (int whichInputFile = 0; whichInputFile < numInputFiles; ++whichInputFile)
                     //        {
                     //            string inputFilePath = inputFilePaths[whichInputFile];
-                    //            // Read hashRet value / file pairs:
+                    //            // Read hash value / file pairs:
                     //            List<string[]> hashList = null;
                     //            UtilCrypto.ParseHashFile(inputFilePath, ref hashList);
                     //            Console.WriteLine(Environment.NewLine + "From input file " + Path.GetFileName(inputFilePath) + ":");
@@ -1754,11 +1754,11 @@ namespace IG.Crypto
                     //            {
                     //                foreach (string[] pair in hashList)
                     //                {
-                    //                    string hashRet = pair[0];
+                    //                    string hash = pair[0];
                     //                    string checkedFile = pair[1];
-                    //                    if (string.IsNullOrEmpty(hashRet) || string.IsNullOrEmpty(checkedFile))
+                    //                    if (string.IsNullOrEmpty(hash) || string.IsNullOrEmpty(checkedFile))
                     //                    {
-                    //                        if (string.IsNullOrEmpty(hashRet))
+                    //                        if (string.IsNullOrEmpty(hash))
                     //                            ReportError("Hash not specified.");
                     //                        if (string.IsNullOrEmpty(checkedFile))
                     //                            ReportError("FilePath not specified.");
@@ -1773,7 +1773,7 @@ namespace IG.Crypto
                     //                            ++numNotPassed;
                     //                        }
                     //                        else
-                    //                            if (UtilCrypto.CheckFileHashHex(checkedFile, hashRet, HashAlgorithmType))
+                    //                            if (UtilCrypto.CheckFileHashHex(checkedFile, hash, HashAlgorithmType))
                     //                            {
                     //                                Console.WriteLine(HashAlgorithmType.ToString() + " OK: " + checkedFile);
                     //                                ++numPassed;
@@ -2156,7 +2156,7 @@ namespace IG.Crypto
 
 
 
-        /// <summary>Executes command-line action - calculation of various hashRet values of a file.</summary>
+        /// <summary>Executes command-line action - calculation of various hash values of a file.</summary>
         /// <param name="appName">Name of the embedded application.</param>
         /// <param name="args">Arguments of the embedded application's command.</param>
         public virtual string AppGetFileHash(string appName, string[] args)
@@ -2260,7 +2260,7 @@ namespace IG.Crypto
             return null;
         }
 
-        /// <summary>Executes command-line action - calculation of various hashRet values of files or text.</summary>
+        /// <summary>Executes command-line action - calculation of various hash values of files or text.</summary>
         /// <param name="appName">Name of the embedded application.</param>
         /// <param name="args">Arguments of the embedded application's command.</param>
         public virtual string AppCheckSum(string appName, string[] args)
@@ -2279,7 +2279,7 @@ namespace IG.Crypto
                 //    ReportError("Hash files specified while checksum is calculated for a string.");
                 if (IsChecked)
                 {
-                    // String hashRet verification:
+                    // String hash verification:
                     if (NumFreeParameters > 1)
                         ReportError("Redundant specification of hashed strings, only one will be used.");
                     if (OutputPath != null)
@@ -2343,7 +2343,7 @@ namespace IG.Crypto
                 }
                 else
                 {
-                    // String hashRet calculation:
+                    // String hash calculation:
                     if (HashValue != null)
                         ReportError("Redundant hash value, not used.");
                     if (OutputPath != null)
@@ -2412,7 +2412,7 @@ namespace IG.Crypto
                 // File hashes:
                 if (IsChecked)
                 {
-                    // File hashRet verification:
+                    // File hash verification:
                     List<string> inputFilePaths = null;
                     GetInputFilePaths(ref inputFilePaths, true  /* enableWildcards */, true /* addRecursive */, true /* clearBefore */);
                     int numInputFiles = inputFilePaths.Count;
@@ -2422,7 +2422,7 @@ namespace IG.Crypto
                     bool checkPassed = false;
                     if (HashValue != null)
                     {
-                        // Verify a single file whose hashRet is specified by command line:
+                        // Verify a single file whose hash is specified by command line:
                         if (numInputFiles < 1)
                         {
                             ReportError("No files for verification specified, there should be one file.");
@@ -2483,7 +2483,7 @@ namespace IG.Crypto
                             for (int whichInputFile = 0; whichInputFile < numInputFiles; ++whichInputFile)
                             {
                                 string inputFilePath = inputFilePaths[whichInputFile];
-                                // Read hashRet value / file pairs:
+                                // Read hash value / file pairs:
                                 List<string[]> hashList = null;
                                 UtilCrypto.ParseHashFile(inputFilePath, ref hashList);
                                 Console.WriteLine(Environment.NewLine + "From input file " + Path.GetFileName(inputFilePath) + ":");
@@ -3150,7 +3150,7 @@ namespace IG.Crypto
             ParseCommandlineParameters(appName, args);
 
             //if (this.NumAppArguments < 1)
-            //    throw new ArgumentException("There should be at least 1 argument (file whose hashRet value is calculated).");
+            //    throw new ArgumentException("There should be at least 1 argument (file whose hash value is calculated).");
 
             // Arrrange obtained parameters: 
             PasswordAlgorithmType = PasswordAlgorithmType.Default;

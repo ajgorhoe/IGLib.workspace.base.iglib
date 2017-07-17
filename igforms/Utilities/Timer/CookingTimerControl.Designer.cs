@@ -30,18 +30,19 @@ namespace IG.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnCookingSw = new System.Windows.Forms.Button();
             this.floTimer = new System.Windows.Forms.FlowLayoutPanel();
             this.btnTimerFlow = new System.Windows.Forms.Button();
             this.timerControl1 = new IG.Forms.TimerControl();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.comboTimes = new System.Windows.Forms.ComboBox();
             this.btnCookingControls = new System.Windows.Forms.Button();
             this.flowOuter = new System.Windows.Forms.FlowLayoutPanel();
             this.flowImage = new System.Windows.Forms.FlowLayoutPanel();
             this.btnImageFlow = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnOuterFlow = new System.Windows.Forms.Button();
-            this.comboTimes = new System.Windows.Forms.ComboBox();
             this.floTimer.SuspendLayout();
             this.panel1.SuspendLayout();
             this.flowOuter.SuspendLayout();
@@ -71,7 +72,7 @@ namespace IG.Forms
             this.floTimer.Location = new System.Drawing.Point(0, 0);
             this.floTimer.Margin = new System.Windows.Forms.Padding(0);
             this.floTimer.Name = "floTimer";
-            this.floTimer.Size = new System.Drawing.Size(522, 509);
+            this.floTimer.Size = new System.Drawing.Size(521, 1060);
             this.floTimer.TabIndex = 1;
             // 
             // btnTimerFlow
@@ -95,15 +96,37 @@ namespace IG.Forms
             this.timerControl1.CdStartText = "Start";
             this.timerControl1.CdStopText = "Pause";
             this.timerControl1.ColorBgOk = System.Drawing.Color.Green;
+            this.timerControl1.ColorBgTitle = System.Drawing.Color.Transparent;
+            this.timerControl1.ColorBgTitleMain = System.Drawing.Color.LightBlue;
             this.timerControl1.ColorBgWarning = System.Drawing.Color.Red;
+            this.timerControl1.ColorFgTitle = System.Drawing.Color.Black;
+            this.timerControl1.ColorFgTitleMain = System.Drawing.Color.Black;
+            this.timerControl1.IsCdSoundAlarm = true;
+            this.timerControl1.IsCdSoundButtons = true;
+            this.timerControl1.IsCdSoundHourBell = true;
+            this.timerControl1.IsCdSoundMinuteBell = true;
+            this.timerControl1.IsCdSoundSecondTick = true;
+            this.timerControl1.IsClockMain = false;
+            this.timerControl1.IsClockShown = true;
+            this.timerControl1.IsClockSoundHourBell = true;
+            this.timerControl1.IsClockSoundMinuteBell = true;
+            this.timerControl1.IsClockSoundSecondTick = true;
+            this.timerControl1.IsCountdownMain = false;
+            this.timerControl1.IsCountdownShown = true;
+            this.timerControl1.IsSilent = true;
+            this.timerControl1.IsStopwatchMain = true;
+            this.timerControl1.IsStopwatchShown = true;
+            this.timerControl1.IsSwSoundButtons = true;
+            this.timerControl1.IsSwSoundHourBell = true;
+            this.timerControl1.IsSwSoundMinuteBell = true;
+            this.timerControl1.IsSwSoundSecondTick = true;
             this.timerControl1.Location = new System.Drawing.Point(4, 33);
             this.timerControl1.Margin = new System.Windows.Forms.Padding(4);
             this.timerControl1.MilliSecondsSizeRatio = 0.5D;
             this.timerControl1.MinimumSize = new System.Drawing.Size(100, 100);
             this.timerControl1.Name = "timerControl1";
             this.timerControl1.Padding = new System.Windows.Forms.Padding(2);
-            // this.timerControl1.PlaySystemSoundOnCountdownFinished = true;
-            this.timerControl1.Size = new System.Drawing.Size(514, 232);
+            this.timerControl1.Size = new System.Drawing.Size(311, 783);
             this.timerControl1.SwShowHoursWhenZero = true;
             this.timerControl1.SwShowMilliSeconds = true;
             this.timerControl1.SwStartText = "Start";
@@ -114,10 +137,37 @@ namespace IG.Forms
             // 
             this.panel1.Controls.Add(this.comboTimes);
             this.panel1.Controls.Add(this.btnCookingControls);
-            this.panel1.Location = new System.Drawing.Point(3, 272);
+            this.panel1.Location = new System.Drawing.Point(3, 823);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(515, 234);
             this.panel1.TabIndex = 3;
+            // 
+            // comboTimes
+            // 
+            this.comboTimes.FormattingEnabled = true;
+            this.comboTimes.Items.AddRange(new object[] {
+            "4 min - cooked egg, soft",
+            "6 min - cooked egg, medium",
+            "10 min - cooked egg, hard",
+            "15 min - ",
+            "20 min - ",
+            "25 min - ",
+            "30 min - ",
+            "45 min - ",
+            "1 h - ",
+            "1 h 15 min - ",
+            "1 h 30 min - ",
+            "1 h 45 min - ",
+            "2 h",
+            "2 h 15 min - ",
+            "2 h 30 min - "});
+            this.comboTimes.Location = new System.Drawing.Point(3, 5);
+            this.comboTimes.Name = "comboTimes";
+            this.comboTimes.Size = new System.Drawing.Size(133, 21);
+            this.comboTimes.TabIndex = 1;
+            this.comboTimes.Text = "Select countdoun time!";
+            this.comboTimes.Click += new System.EventHandler(this.comboTimes_Click);
+            this.comboTimes.Leave += new System.EventHandler(this.comboTimes_Leave);
             // 
             // btnCookingControls
             // 
@@ -140,7 +190,7 @@ namespace IG.Forms
             this.flowOuter.Controls.Add(this.btnOuterFlow);
             this.flowOuter.Location = new System.Drawing.Point(3, 32);
             this.flowOuter.Name = "flowOuter";
-            this.flowOuter.Size = new System.Drawing.Size(939, 509);
+            this.flowOuter.Size = new System.Drawing.Size(938, 1060);
             this.flowOuter.TabIndex = 1;
             // 
             // flowImage
@@ -152,7 +202,7 @@ namespace IG.Forms
             this.flowImage.Controls.Add(this.btnImageFlow);
             this.flowImage.Controls.Add(this.pictureBox1);
             this.flowImage.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowImage.Location = new System.Drawing.Point(522, 0);
+            this.flowImage.Location = new System.Drawing.Point(521, 0);
             this.flowImage.Margin = new System.Windows.Forms.Padding(0);
             this.flowImage.Name = "flowImage";
             this.flowImage.Padding = new System.Windows.Forms.Padding(4);
@@ -183,40 +233,13 @@ namespace IG.Forms
             // 
             // btnOuterFlow
             // 
-            this.btnOuterFlow.Location = new System.Drawing.Point(871, 3);
+            this.btnOuterFlow.Location = new System.Drawing.Point(870, 3);
             this.btnOuterFlow.Name = "btnOuterFlow";
             this.btnOuterFlow.Size = new System.Drawing.Size(65, 23);
             this.btnOuterFlow.TabIndex = 0;
             this.btnOuterFlow.Text = "Outer";
             this.btnOuterFlow.UseVisualStyleBackColor = true;
             this.btnOuterFlow.Visible = false;
-            // 
-            // comboTimes
-            // 
-            this.comboTimes.FormattingEnabled = true;
-            this.comboTimes.Items.AddRange(new object[] {
-            "4 min - cooked egg, soft",
-            "6 min - cooked egg, medium",
-            "10 min - cooked egg, hard",
-            "15 min - ",
-            "20 min - ",
-            "25 min - ",
-            "30 min - ",
-            "45 min - ",
-            "1 h - ",
-            "1 h 15 min - ",
-            "1 h 30 min - ",
-            "1 h 45 min - ",
-            "2 h",
-            "2 h 15 min - ",
-            "2 h 30 min - "});
-            this.comboTimes.Location = new System.Drawing.Point(3, 5);
-            this.comboTimes.Name = "comboTimes";
-            this.comboTimes.Size = new System.Drawing.Size(133, 21);
-            this.comboTimes.TabIndex = 1;
-            this.comboTimes.Text = "Select countdoun time!";
-            this.comboTimes.Click += new System.EventHandler(this.comboTimes_Click);
-            this.comboTimes.Leave += new System.EventHandler(this.comboTimes_Leave);
             // 
             // CookingTimerControl
             // 
@@ -227,7 +250,7 @@ namespace IG.Forms
             this.Controls.Add(this.flowOuter);
             this.Controls.Add(this.btnCookingSw);
             this.Name = "CookingTimerControl";
-            this.Size = new System.Drawing.Size(945, 544);
+            this.Size = new System.Drawing.Size(944, 1095);
             this.floTimer.ResumeLayout(false);
             this.floTimer.PerformLayout();
             this.panel1.ResumeLayout(false);

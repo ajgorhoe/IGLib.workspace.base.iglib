@@ -67,36 +67,25 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.JScript">
-      <HintPath>..\bin\Microsoft.JScript.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.JScript" />
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="MathNet.Numerics">
       <HintPath>..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
     </Reference>
-    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="0guests\Tako78\UtilCsv.cs" />
     <Compile Include="0guests\Tako78\datastructures\StringTable.cs" />
     <Compile Include="0unsorted\0NameSpaceIG.Lib.cs" />
+    <Compile Include="application\igshell\ApplicationIgShellBase.cs" />
+    <Compile Include="application\igshell\ShellIGLib.cs" />
     <Compile Include="application\SettingsRreader.cs" />
     <Compile Include="0guests\Tako78\datastructures\SampledDataCsv.cs" />
     <Compile Include="0obsolete\MultidimensionalArray.cs" />
@@ -158,6 +147,7 @@
     <Compile Include="interpreters\ExpressionEvaluatorJint.cs" />
     <Compile Include="interpreters\interfaces\InterfaceInterpreterBase.cs" />
     <Compile Include="interpreters\interfaces\InterfaceInv.cs" />
+    <Compile Include="interpreters\IRunnable.cs" />
     <Compile Include="interpreters\scriptloader\LoadableScriptExamnple.cs" />
     <Compile Include="interpreters\scriptloader\RealFunctionScriptBase.cs" />
     <Compile Include="interpreters\scriptloader\RealFunctionScriptExample.cs" />

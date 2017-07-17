@@ -365,9 +365,18 @@ namespace IG.Num
                 if (!IsAppropriateType(obj))
                 {
                     obj = CreateObject();
-                    if (!IsAppropriateType(obj))
-                        throw new InvalidOperationException("Can not create neural approimator of the appropriate type. Current type: \""
+                    if (!IsAppropriateType(obj))  // $$$$$$$$$$$$$$$$$$$$$$$$ : remove this semicolon because the test shoulld remain as it is!
+                    {
+
+                        Console.WriteLine(Environment.NewLine + Environment.NewLine 
+                            + "ERROR: Incorrect neural approximator when copying from DTO to approximator: " + Environment.NewLine
+                            + "  DTO type:           " + this.NeuralApproximatorType + Environment.NewLine
+                            + "  Target object type: " + obj.NeuralApproximatorType + Environment.NewLine + Environment.NewLine);
+
+                        throw new InvalidOperationException("Can not create neural approximator of the appropriate type. Current type: \""
                             + this.NeuralApproximatorType + "\".");
+
+                    }
                 }
                 lock (obj.Lock)
                 {

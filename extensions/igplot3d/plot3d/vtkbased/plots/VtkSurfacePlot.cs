@@ -442,6 +442,7 @@ namespace IG.Gr3d
                 {
                     Console.WriteLine();
                     Console.WriteLine("Preparing a surface plot...");
+
                     Timer.Reset();
                     Timer.Start();
                 }

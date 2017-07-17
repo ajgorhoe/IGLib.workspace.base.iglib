@@ -279,6 +279,29 @@ namespace IG.Num
         SampledDataSet TrainingData
         { get; set; }
 
+
+        /// <summary>Auxiliary function, sets training and verification data for training the network.</summary>
+        /// <param name="trainingData">Training data.</param>
+        /// <param name="verificationData">Verification data.</param>
+        void SetTrainingAndVerificationData(SampledDataSet trainingData, SampledDataSet verificationData);
+
+        /// <summary>Auxiliary function, returns network's training data.</summary>
+        /// <param name="trainingData"></param>
+        void GetTrainingData(ref SampledDataSet trainingData);
+
+
+
+        /// <summary>Auxliliary function, returns network's verification data.</summary>
+        /// <param name="veerificationData"></param>
+        void GetVerificationData(ref SampledDataSet veerificationData);
+
+
+        /// <summary>Auxiliary function, obtains network's training and verification data.</summary>
+        /// <param name="trainingData">Variable where training data is stored.</param>
+        /// <param name="verificationData">Variable where verificatio data is stored.</param>
+        void GetTrainingAndVerificationData(ref SampledDataSet trainingData, ref SampledDataSet verificationData);
+
+
         /// <summary>Saves network's training data to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
         /// <param name="filePath">Path to the file where training data is saved.</param>
@@ -452,6 +475,22 @@ namespace IG.Num
         #endregion Training
 
 
+        #region Events
+
+
+        /// <summary>Event that is fired after completion of each bundle of training epochs (after auxiliary data is
+        /// updated). Enables e.g. following training progress to subscribers, or additional interaction with training 
+        /// process such as stopping when enough converged, saving state, or increasing maximal number of epochs when
+        /// convergence is insufficient.</summary>
+        event EventHandler BundleCompleted;
+        
+
+        /// <summary>Event that is fired after completion of training procedure (after auxiliary data is updated).</summary>
+        event EventHandler TrainingCompleted;
+
+        #endregion Events
+
+
         #region Calculation 
 
 
@@ -465,7 +504,7 @@ namespace IG.Num
         ///// then performance configuratins should be taken into account carefully, and tracking input
         ///// for which input parameters the outputs have been calculated might be necessary.</remarks>
         //void CalculateOutput(IVector input, ref IVector output);
-        
+
         ///// <summary>Calculates and returns the specified output by using the neural network.</summary>
         ///// <param name="input">Vector of input parameters for which output values are calculated.</param>
         ///// <param name="whichElement">Specifies which output value is calculated.</param>
@@ -505,6 +544,7 @@ namespace IG.Num
         //public object Lock { get { return _mainLock; } }
 
         #endregion ThreadLocking
+
 
         #region Data
 
@@ -752,6 +792,7 @@ namespace IG.Num
 
 
         #endregion Data
+
 
         #region Operation
 
@@ -1093,6 +1134,7 @@ namespace IG.Num
             get { return _epochNumbers; }
             set { _epochNumbers = value; }
         }
+
         /// <summary>Convergence List of RMS errors calculated on training data. 
         /// Saved after every set of epochs. </summary>
         public List<IVector> ConvergenceErrorsTrainingRmsList
@@ -1387,7 +1429,10 @@ namespace IG.Num
             }
         }
 
-        // TODO: Tadej, komentiraj!
+
+        /// <summary>Auxiliary function, sets training and verification data for training the network.</summary>
+        /// <param name="trainingData">Training data.</param>
+        /// <param name="verificationData">Verification data.</param>
         public void SetTrainingAndVerificationData(SampledDataSet trainingData, SampledDataSet verificationData)
         {
             lock (Lock)
@@ -1407,6 +1452,8 @@ namespace IG.Num
             }
         }
 
+        /// <summary>Auxiliary function, returns network's training data.</summary>
+        /// <param name="trainingData"></param>
         public void GetTrainingData(ref SampledDataSet trainingData)
         {
             if (trainingData == null)
@@ -1420,6 +1467,8 @@ namespace IG.Num
             }
         }
 
+        /// <summary>Auxliliary function, returns network's verification data.</summary>
+        /// <param name="veerificationData"></param>
         public void GetVerificationData(ref SampledDataSet veerificationData)
         {
             if (veerificationData == null)
@@ -1433,14 +1482,15 @@ namespace IG.Num
             }
         }
 
+        /// <summary>Auxiliary function, obtains network's training and verification data.</summary>
+        /// <param name="trainingData">Variable where training data is stored.</param>
+        /// <param name="verificationData">Variable where verificatio data is stored.</param>
         public void GetTrainingAndVerificationData(ref SampledDataSet trainingData, ref SampledDataSet verificationData)
         {
             GetTrainingData(ref trainingData);
             GetVerificationData(ref verificationData);
         }
-
-
-
+        
 
         /// <summary>Saves network's training data to the specified JSON file.
         /// File is owerwritten if it exists.</summary>
@@ -2524,8 +2574,12 @@ namespace IG.Num
                         GetErrorsVerificationMax(ref tmpConvergence);
                         ConvergenceErrorsVerificationMaxList.Add(tmpConvergence);
                     }
+
+                    OnBundleCompleted();
+
                 }
             }
+            OnTrainingCompleted();
         }
 
         protected Vector _auxErrors = null;  // auxiliary vector for calculation of errors
@@ -2609,6 +2663,91 @@ namespace IG.Num
 
         #endregion Training
 
+
+        #region Events
+
+        private EventArgs _commonEventArgs;
+
+        /// <summary>Provides a commond object of type <see cref="EventArgs"/> for all events to avoid allocation each time
+        /// an event is fired.</summary>
+        protected EventArgs CommonEventArgs
+        {
+            get {
+                if (_commonEventArgs == null)
+                {
+                    lock(Lock)
+                    {
+                        if (_commonEventArgs == null)
+                            _commonEventArgs = new EventArgs();
+                    }
+                }
+                return _commonEventArgs;
+            }
+        }
+
+        /// <summary>Event that is fired after completion of each bundle of training epochs (after auxiliary data is
+        /// updated). Enables e.g. following training progress to subscribers, or additional interaction with training 
+        /// process such as stopping when enough converged, saving state, or increasing maximal number of epochs when
+        /// convergence is insufficient.</summary>
+        public event EventHandler BundleCompleted;
+
+        /// <summary>Called after completion of each bundle of training epochs (after auxiliary data is updated).</summary>
+        protected virtual void OnBundleCompleted()
+        {
+            if (OutputLevel >= 2)
+            {
+                string msg = Environment.NewLine + "Bundle of ANN training epochs completed. " + Environment.NewLine
+                    + "  Num. epochs: " + EpochCount + " / " + MaxEpochs + "(progress: " + ((double)EpochCount / (double)MaxEpochs) + ", it. " 
+                      + ((int) EpochCount / MaxEpochs) + ")"
+                    + Environment.NewLine;
+                if (BundleCompleted == null)
+                    msg += "  Event handlers NOT specified.";
+                else
+                    msg += "  Event handlers are specified.";
+                msg += Environment.NewLine;
+                Console.WriteLine(msg);
+            }
+            if (BundleCompleted != null)
+            {
+                // Raise the event:
+                if (BundleCompleted != null)
+                    BundleCompleted(this, CommonEventArgs);
+            }
+        }
+
+
+        /// <summary>Event that is fired after completion of training procedure (after auxiliary data is updated).</summary>
+        public event EventHandler TrainingCompleted;
+
+        /// <summary>Called after completion of training procedure (after all auxiliary data is updated, raises the 
+        /// <see cref="TrainingCompleted"/> event..</summary>
+        protected virtual void OnTrainingCompleted()
+        {
+            if (OutputLevel >= 2)
+            {
+                string msg = Environment.NewLine + "ANN training completed. " + Environment.NewLine
+                    + "  Num. epochs: " + EpochCount + " / " + MaxEpochs + "(iterations: " 
+                      + ((int) EpochCount / MaxEpochs) + ")"
+                    + Environment.NewLine;
+                if (TrainingCompleted == null)
+                    msg += "  Event handlers NOT specified.";
+                else
+                    msg += "  Event handlers are specified.";
+                msg += Environment.NewLine;
+                Console.WriteLine(msg);
+            }
+            if (TrainingCompleted != null)
+            {
+                // Raise the event:
+                if (TrainingCompleted != null)
+                    TrainingCompleted(this, CommonEventArgs);
+            }
+        }
+
+
+        #endregion Events
+        
+
         #region Calculation 
 
         ///// <summary>Calculates and returns the approximated outputs corresponding to the specified inputs,
@@ -2688,6 +2827,7 @@ namespace IG.Num
 
         #endregion Operation
 
+
         #region Misc
 
         /// <summary>Returns string describing the current neural network approximator.</summary>
@@ -2719,6 +2859,7 @@ namespace IG.Num
         }
 
         #endregion Misc
+
 
         #region StaticMethods
 
@@ -2979,6 +3120,7 @@ namespace IG.Num
 
 
         #endregion Tests
+
 
         #region Examples
 

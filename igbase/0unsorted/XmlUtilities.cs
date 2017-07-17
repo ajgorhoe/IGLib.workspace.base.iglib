@@ -854,7 +854,7 @@ namespace IG.Lib
     // $A Igor Aug08 Apr09;
     {
         /// <summary>Reporter for this class.</summary>
-        public virtual IG.Lib.IReporter R { get { return App.Rep; } }
+        public virtual IG.Lib.IReporter R { get { return ApplicationBase.Rep; } }
 
 
         #region NameSpaceResolution

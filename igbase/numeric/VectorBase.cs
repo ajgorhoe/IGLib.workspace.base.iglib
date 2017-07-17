@@ -199,12 +199,12 @@ namespace IG.Num
         /// <param name="elementFormat">Format specification for printing individual element.</param>
         string ToStringMath(string elementFormat);
         
-        /// <summary>Returns an integer valued hashRet function of the current vector object.
+        /// <summary>Returns an integer valued hash function of the current vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         int GetHashFunctionInt();
 
-        /// <summary>Returns a string valued hashRet function of the current vector object.
+        /// <summary>Returns a string valued hash function of the current vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
         /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString()"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific vector.</remarks>
@@ -862,12 +862,12 @@ namespace IG.Num
 
         #region Operations.Auxiliary
 
-        /// <summary>Returns the hashRet code (hashRet function) of the current vector.</summary>
+        /// <summary>Returns the hash code (hash function) of the current vector.</summary>
         /// <remarks>
         /// <para>This method calls the <see cref="VectorBase.GetHashCode()"/> to calculate the 
-        /// hashRet code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
-        /// <para>Two vectors that have the same dimensions and equal elements will produce the same hashRet codes.</para>
-        /// <para>Probability that two different vectors will produce the same hashRet code is small but it exists.</para>
+        /// hash code, which is standard for all implementations of the <see cref="IVector"/> interface.</para>
+        /// <para>Two vectors that have the same dimensions and equal elements will produce the same hash codes.</para>
+        /// <para>Probability that two different vectors will produce the same hash code is small but it exists.</para>
         /// <para>Overrides the <see cref="object.GetHashCode"/> method.</para>
         /// </remarks>
         public override int GetHashCode()
@@ -886,7 +886,7 @@ namespace IG.Num
             return VectorBase.Equals(this, obj as IVector);
         }
 
-        /// <summary>Returns an integer valued hashRet function of the current vector object.
+        /// <summary>Returns an integer valued hash function of the current vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         public int GetHashFunctionInt()
@@ -894,7 +894,7 @@ namespace IG.Num
             return Util.GetHashFunctionInt(this);
         }
 
-        /// <summary>Returns a string valued hashRet function of the current vector object.
+        /// <summary>Returns a string valued hash function of the current vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
         /// <remarks>The returned string is always on the same length, and is based on the <see cref="ToString()"/> method.
         /// Therefore it is convenient for use in file or directory names that have one part related to a specific vector.</remarks>
@@ -2184,7 +2184,7 @@ namespace IG.Num
 
         #region Static.Auxiliary
 
-        /// <summary>Returns hashRet code of the specified vector.</summary>
+        /// <summary>Returns hash code of the specified vector.</summary>
         /// <param name="vec">Vector whose hath code is returned.</param>
         /// <remarks>This method should be used when overriding the GetHashCode() in  vector classes, 
         /// in order to unify equality check over different vector classes.</remarks>
@@ -2208,7 +2208,7 @@ namespace IG.Num
         /// <param name="v2">The second of the two vectors that are checked for equality.</param>
         /// <remarks>
         /// <para>This method should be used when overriding the Equals() method in  vector classes, 
-        /// in order to unify calculation of hashRet code over different vector classes.</para>
+        /// in order to unify calculation of hash code over different vector classes.</para>
         /// <para>If both vectors are nulll or both have dimension less than 1 then vectors are considered equal.</para>
         /// <para>This method is consistent with the <see cref="VectorBase.Compare"/> method, i.e. it returns the 
         /// same value as the expression <see cref="VectorBase.Compare"/>(<paramref name="v1"/>, <paramref name="v2"/>==0).</para>
@@ -2239,18 +2239,18 @@ namespace IG.Num
             }
         }
 
-        /// <summary>Returns an integer valued hashRet function of the specified vector object.
+        /// <summary>Returns an integer valued hash function of the specified vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionInt"/> method.</para></summary>
-        /// <vec>Vector object whose hashRet function is calculated and returned.</vec>
+        /// <vec>Vector object whose hash function is calculated and returned.</vec>
         /// <seealso cref="Util.GetHashFunctionInt"/>
         public static int GetHashFunctionInt(IVector vec)
         {
             return Util.GetHashFunctionInt(vec);
         }
 
-        /// <summary>Returns a string valued hashRet function of the specified vector object.
+        /// <summary>Returns a string valued hash function of the specified vector object.
         /// <para>The returned value is calculated by the <see cref="Util.GetHashFunctionString"/> method.</para></summary>
-        /// <vec>Vector object whose hashRet function is calculated and returned.</vec>
+        /// <vec>Vector object whose hash function is calculated and returned.</vec>
         /// <seealso cref="Util.GetHashFunctionString"/>
         public static string GetHashFunctionString(IVector vec)
         {

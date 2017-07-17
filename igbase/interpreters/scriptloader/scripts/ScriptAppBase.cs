@@ -4,15 +4,12 @@
 // Original filename: ScriptExtFormats
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
 using System.Text;
 using System.Diagnostics;
 using System.Reflection;
 
-using IG.Num;
 using IG.Lib;
 using IG.Crypto;
 
@@ -1135,7 +1132,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
 
 
 
-        /// <summary>Executes embedded application - calculation of various hashRet values of a file.</summary>
+        /// <summary>Executes embedded application - calculation of various hash values of a file.</summary>
         /// <param name="appName">Name of the embedded application.</param>
         /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionGetFileHash(string appName, string[] args)
@@ -1172,7 +1169,7 @@ ConstRunFile + @" commandFile : Runs (interprets) the specified file by the scri
       containing hash values to be verified (in the case of -c option). Wildcard patterns can be used.";
 
 
-        /// <summary>Executes embedded application - calculation AND verification of various hashRet values of a file or a string.</summary>
+        /// <summary>Executes embedded application - calculation AND verification of various hash values of a file or a string.</summary>
         /// <param name="appName">Name of the embedded application.</param>
         /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionCheckSum(string appName, string[] args)
@@ -1840,9 +1837,9 @@ A number of other options are supported:
         //    List<string> inputFilePaths = new List<string>();
         //    bool isDecrypt = false;
         //    int numInputFiles = 0;
-        //    bool isChecked = false;  // hashRet is verified, not calculated
+        //    bool isChecked = false;  // hash is verified, not calculated
         //    bool isByteInput = false;
-        //    bool isStringInput = false;  // hashRet is calculated for the specified string
+        //    bool isStringInput = false;  // hash is calculated for the specified string
         //    bool isFileInput = false;
         //    string ret = null;
         //    List<string> recursivePathList = new List<string>();
@@ -2212,7 +2209,7 @@ A number of other options are supported:
         //            ReportError("Hash files specified while checksum is calculated for a string.");
         //        if (isChecked)
         //        {
-        //            // String hashRet verification:
+        //            // String hash verification:
         //            if (numInputFiles > 0)
         //                ReportError("Redundant specification of hashed files, will not be used.");
         //            if (outputPath != null)
@@ -2238,7 +2235,7 @@ A number of other options are supported:
         //        }
         //        else
         //        {
-        //            // String hashRet calculation:
+        //            // String hash calculation:
         //            if (hashValue != null)
         //                ReportError("Redundant hash value, not used.");
         //            if (outputPath != null)
@@ -2251,13 +2248,13 @@ A number of other options are supported:
         //    {
         //        if (isChecked)
         //        {
-        //            // File hashRet verification:
+        //            // File hash verification:
         //            if (outputPath != null)
         //                ReportError("Redundant output file specification, not used.");
         //            bool checkPassed = false;
         //            if (hashValue != null)
         //            {
-        //                // Verify a single file whose hashRet is specified by command line:
+        //                // Verify a single file whose hash is specified by command line:
         //                if (numInputFiles < 1)
         //                {
         //                    ReportError("No files for verification specified, there should be one file.");
@@ -2318,7 +2315,7 @@ A number of other options are supported:
         //                    for (int whichInputFile = 0; whichInputFile < numInputFiles; ++whichInputFile)
         //                    {
         //                        string inputFilePath = inputFilePaths[whichInputFile];
-        //                        // Read hashRet value / file pairs:
+        //                        // Read hash value / file pairs:
         //                        List<string[]> hashList = null;
         //                        UtilCrypto.ParseHashFile(inputFilePath, ref hashList);
         //                        Console.WriteLine(Environment.NewLine + "From input file " + Path.GetFileName(inputFilePath) + ":");
@@ -2486,7 +2483,7 @@ A number of other options are supported:
 
 
 
-        /// <summary>Executes embedded application - calculation of various hashRet values of a file.</summary>
+        /// <summary>Executes embedded application - calculation of various hash values of a file.</summary>
         /// <param name="appName">Name of the embedded application.</param>
         /// <param name="args">Arguments fo the embedded application's command.</param>
         [Obsolete("Use functions from CryptoManager instead!")]
@@ -2593,7 +2590,7 @@ A number of other options are supported:
 
 
 
-        /// <summary>Executes embedded application - calculation AND verification of various hashRet values of a file.</summary>
+        /// <summary>Executes embedded application - calculation AND verification of various hash values of a file.</summary>
         /// <param name="appName">Name of the embedded application.</param>
         /// <param name="args">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionCheckSum_OLD_TO_DELETE_LATER(string appName, string[] args)
@@ -2610,8 +2607,8 @@ A number of other options are supported:
             string hashedString = null;
             List<string> inputFilePaths = new List<string>();
             int numInputFiles = 0;
-            bool isChecked = false;  // hashRet is verified, not calculated
-            bool isStringHash = false;  // hashRet is calculated for the specified string
+            bool isChecked = false;  // hash is verified, not calculated
+            bool isStringHash = false;  // hash is calculated for the specified string
             string ret = null;
             List<string> recursivePathList = new List<string>();
             List<string> recursivePathListByLevels = new List<string>();
@@ -2834,7 +2831,7 @@ A number of other options are supported:
                     ReportError("Hash files specified while checksum is calculated for a string.");
                 if (isChecked)
                 {
-                    // String hashRet verification:
+                    // String hash verification:
                     if (numInputFiles > 0)
                         ReportError("Redundant specification of hashed files, will not be used.");
                     if (outputPath != null)
@@ -2857,7 +2854,7 @@ A number of other options are supported:
                     }
                 } else
                 {
-                    // String hashRet calculation:
+                    // String hash calculation:
                     if (hashValue != null)
                         ReportError("Redundant hash value, not used.");
                     if (outputPath != null)
@@ -2869,13 +2866,13 @@ A number of other options are supported:
             {
                 if (isChecked)
                 {
-                    // File hashRet verification:
+                    // File hash verification:
                     if (outputPath != null)
                         ReportError("Redundant output file specification, not used.");
                     bool checkPassed = false;
                     if (hashValue != null)
                     {
-                        // Verify a single file whose hashRet is specified by command line:
+                        // Verify a single file whose hash is specified by command line:
                         if (numInputFiles < 1)
                         {
                             ReportError("No files for verification specified, there should be one file.");
@@ -2933,7 +2930,7 @@ A number of other options are supported:
                             for (int whichInputFile = 0; whichInputFile < numInputFiles; ++whichInputFile)
                             {
                                 string inputFilePath = inputFilePaths[whichInputFile];
-                                // Read hashRet value / file pairs:
+                                // Read hash value / file pairs:
                                 List<string[]> hashList = null;
                                 UtilCrypto.ParseHashFile(inputFilePath, ref hashList);
                                 Console.WriteLine(Environment.NewLine + "From input file " + Path.GetFileName(inputFilePath) + ":");
@@ -5270,7 +5267,8 @@ A number of other options are supported:
     /// <para></para>
     /// </remarks>
     /// $A Igor xx;
-    public abstract class LoadableScriptSpecialFunctionBase : LoadableScriptBase, ILoadableScript
+    public abstract class LoadableScriptSpecialFunctionBase : LoadableScriptBase, 
+        ILoadableScript
     {
 
         #region Standard_TestScripts

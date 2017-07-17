@@ -1,19 +1,9 @@
-﻿// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/ioptlib/
+﻿// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Data;
-
-using System.Threading;
-using System.Text;
 using System.IO;
-using System.Xml;
-
-using IG.Forms;
 
 
 //using System.ComponentModel;
@@ -23,11 +13,11 @@ using IG.Forms;
 
 
 
-            /**************************************************************/
-            /*                                                            */
-            /*   QUICK COPY-PASTE TESTING OF CODE FROM EXTERNAL SOURCES   */
-            /*                                                            */
-            /**************************************************************/
+/**************************************************************/
+/*                                                            */
+/*   QUICK COPY-PASTE TESTING OF CODE FROM EXTERNAL SOURCES   */
+/*                                                            */
+/**************************************************************/
 
 
 namespace IG.Forms.Test

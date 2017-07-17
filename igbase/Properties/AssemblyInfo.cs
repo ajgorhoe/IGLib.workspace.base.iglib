@@ -34,5 +34,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 // See also (espec. T4 templating mechanisim): http://stackoverflow.com/questions/826777/how-to-have-an-auto-incrementing-version-number-visual-studio 
 //  http://stackoverflow.com/questions/356543/can-i-automatically-increment-the-file-build-version-when-using-visual-studio 
-[assembly: AssemblyVersion("1.7.1.*")]
+[assembly: AssemblyVersion("1.7.2.*")]
 // [assembly: AssemblyFileVersion("1.6.*")]

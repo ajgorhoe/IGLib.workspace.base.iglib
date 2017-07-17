@@ -1,4 +1,4 @@
-﻿// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/ioptlib/
+﻿// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,8 @@ namespace IG.Forms
 
     /// <summary>Test application for forms.
     /// Usage: AppTestForms.Init().</summary>
-    public class AppTestForms : App
+    /// $A Igor Sep15;
+    public class AppTestForms : IG.Lib.ApplicationBase
     {
 
         protected AppTestForms()
@@ -24,9 +25,9 @@ namespace IG.Forms
                 base(name, version, subversion)
         {  }
 
-        protected override void BeforeInitialization()
+        protected override void ModuleInitializationBefore()
         {
-            base.BeforeInitialization();
+            base.ModuleInitializationBefore();
             // Basic data:
             Expires = false;
 
@@ -35,9 +36,9 @@ namespace IG.Forms
             SubVersion = 2;
             Release = "debug";
             Expires = false;
-            base.BeforeInitialization();
+            base.ModuleInitializationBefore();
             Email = "inverse@gmail.com";  // program'result contact e-mail
-            WebPage = "www2.arnes.si/~ljc3m2/igor/ioptlib/";  // program'result web page
+            WebPage = "www2.arnes.si/~ljc3m2/igor/iglib/";  // program'result web page
             Phone = null;  // program'result contact telephone
             AuthorFirstName = "Igor";  // principal author'result first name
             AuthorMidName = null; // principal author'result middle name
@@ -54,9 +55,9 @@ namespace IG.Forms
             Reporter = rep;
         }
 
-        protected override void AfterInitialization()
+        protected override void ModuleInitializationAfter()
         {
-            base.AfterInitialization();
+            base.ModuleInitializationAfter();
         }
 
 
@@ -88,7 +89,7 @@ namespace IG.Forms
             {
                 if (!InitializedGlobal)
                 {
-                    App.InitApp();
+                    IG.Lib.ApplicationBase.InitApp();
                     Global = new AppTestForms();
                     Global.LaunchInitNotice();
                 }

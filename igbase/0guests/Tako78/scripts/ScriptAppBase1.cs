@@ -4,12 +4,8 @@
 // Original filename: ScriptExtFormats
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
-using System.Text;
-using System.Diagnostics;
 
 using IG.Num;
 using IG.Lib;

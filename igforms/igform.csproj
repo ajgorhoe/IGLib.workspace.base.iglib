@@ -63,23 +63,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.OracleClient" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Messaging" />
-    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="MathNet.Numerics">
       <HintPath>..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
@@ -87,6 +73,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicClasses\AbortableBackgroundWorker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Basic\AppForms.cs" />
     <Compile Include="Basic\BrowserSimpleControl.cs">
       <SubType>UserControl</SubType>
@@ -228,6 +217,65 @@
     </Compile>
     <Compile Include="Utilities\BasicControls\DialgControl.Designer.cs">
       <DependentUpon>DialgControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\DirectoryOperations\DirectoryData.cs" />
+    <Compile Include="Utilities\Cryptography\DirectoryOperations\DirectoryWorker.cs" />
+    <Compile Include="Utilities\Cryptography\DirectoryOperations\FileData.cs" />
+    <Compile Include="Utilities\Cryptography\DirectoryOperations\FileOrDirectoryDataBase.cs" />
+    <Compile Include="Utilities\Cryptography\HashAllControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAllControl.Designer.cs">
+      <DependentUpon>HashAllControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAllForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAllForm.Designer.cs">
+      <DependentUpon>HashAllForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashDirControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashDirControl.Designer.cs">
+      <DependentUpon>HashDirControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashDirForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashDirForm.Designer.cs">
+      <DependentUpon>HashDirForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAboutControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAboutControl.Designer.cs">
+      <DependentUpon>HashAboutControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAboutForm.Designer.cs">
+      <DependentUpon>HashAboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationPanel.Designer.cs">
+      <DependentUpon>NotificationPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationFrame.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationFrame.Designer.cs">
+      <DependentUpon>NotificationFrame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationParameters.cs" />
+    <Compile Include="Utilities\Notification\NotificationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationWindow.Designer.cs">
+      <DependentUpon>NotificationWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities\Timer\TimerControl.cs">
       <SubType>UserControl</SubType>
@@ -491,6 +539,33 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Utilities\BasicControls\DialgControl.resx">
       <DependentUpon>DialgControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashAllControl.resx">
+      <DependentUpon>HashAllControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashAllForm.resx">
+      <DependentUpon>HashAllForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashDirControl.resx">
+      <DependentUpon>HashDirControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashDirForm.resx">
+      <DependentUpon>HashDirForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashAboutControl.resx">
+      <DependentUpon>HashAboutControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashAboutForm.resx">
+      <DependentUpon>HashAboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Notification\NotificationPanel.resx">
+      <DependentUpon>NotificationPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Notification\NotificationFrame.resx">
+      <DependentUpon>NotificationFrame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Notification\NotificationWindow.resx">
+      <DependentUpon>NotificationWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Utilities\Timer\TimerControl.resx">
       <DependentUpon>TimerControl.cs</DependentUpon>

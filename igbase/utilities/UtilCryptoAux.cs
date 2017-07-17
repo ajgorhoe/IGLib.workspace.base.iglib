@@ -1,4 +1,4 @@
-﻿// Copyright (c) Igor Grešovnik (2009 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
+﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 using System;
 using System.Collections.Generic;
@@ -278,7 +278,7 @@ namespace IG.Crypto
         /// <summary>Default key length.</summary>
         public const int DefaultKeyLength = 64;
 
-        /// <summary>File extension for files containing the calculated hashRet codes.</summary>
+        /// <summary>File extension for files containing the calculated hash codes.</summary>
         public const string HashFileExtension = ".chk";
 
         /// <summary>File extension for encrypted files.</summary>
@@ -545,9 +545,9 @@ namespace IG.Crypto
         /// <summary>Specification of string that is worked follows.</summary>
         public const string ArgString1 = "/s";
 
-        /// <summary>Specification of hashRet value follows (only with -c, for a single input file).</summary>
+        /// <summary>Specification of hash value follows (only with -c, for a single input file).</summary>
         public const string ArgHashValue = "-h";
-        /// <summary>Specification of hashRet value follows (only with -c, for a single input file).</summary>
+        /// <summary>Specification of hash value follows (only with -c, for a single input file).</summary>
         public const string ArgHashValue1 = "/h";
 
         #endregion CommandlineOptions.Strings_ByteArrays

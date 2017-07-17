@@ -1,4 +1,4 @@
-﻿// Copyright (c) Igor Grešovnik, IGLib license; http://www2.arnes.si/~ljc3m2/igor/ioptlib/
+﻿// Copyright (c) Igor Grešovnik, IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 using System;
 using System.Collections.Generic;
@@ -552,7 +552,7 @@ namespace IG.Forms
 #region EventHandlers
 
 
-        /// <summary>Browses for the file whose hashRet values will be calculated.</summary>
+        /// <summary>Browses for the file whose hash values will be calculated.</summary>
         private void btnFileBrowse_Click(object sender, EventArgs e)
         {
             string oldFilePath = DirectoryPath;

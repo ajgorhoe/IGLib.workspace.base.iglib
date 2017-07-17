@@ -945,14 +945,22 @@ namespace IG.Script
 
 
         public const string CryptoHashForm = "HashForm";
+        public const string CryptoHashDirForm = "HashDirForm";
+        public const string CryptoHashAllForm = "HashAllForm";
 
         protected const string CryptoHelpHashForm = CryptoHashForm +
 @": Launches a GUI window for calculation of hash values for files and text.";
 
+        protected const string CryptoHelpHashDirForm = CryptoHashDirForm +
+@": Launches a GUI window for calculation of hash values for all files in a directory.";
+
+        protected const string CryptoHelpHashAllForm = CryptoHashAllForm +
+@": Launches a GUI window for calculation of hash values for files and text, or all files in a directory.";
+
         protected HashForm hashForm;
 
         /// <summary>Executes embedded application - launches a windows form for calculation of 
-        /// various hashRet values of a file.</summary>
+        /// various hash values of a file.</summary>
         /// <param name="AppName">Name of the embedded application.</param>
         /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
         protected virtual string CryptoFunctionHashForm(string appName, string[] args)
@@ -973,10 +981,72 @@ namespace IG.Script
                     UtilConsole.ShowConsoleWindow();
                 }
             }
+            Console.WriteLine("Form closed.");
+            return null;
+        }
+
+
+        protected HashDirForm hashDirForm;
+
+        /// <summary>Executes embedded application - launches a windows form for calculation of 
+        /// various hash values of all files in a directory.</summary>
+        /// <param name="AppName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fo the embedded application's command.</param>
+        protected virtual string CryptoFunctionHashDirForm(string appName, string[] args)
+        {
+            Console.WriteLine(Environment.NewLine + "Launching a form for calculation of hash values of all files in a directory..." + Environment.NewLine);
+
+            lock (Lock)
+            {
+                try
+                {
+                    UtilConsole.HideConsoleWindow();
+                    if (hashDirForm == null)
+                        hashDirForm = new HashDirForm();
+                    hashForm.ShowDialog();
+                }
+                finally
+                {
+                    UtilConsole.ShowConsoleWindow();
+                }
+            }
 
             Console.WriteLine("Form closed.");
             return null;
         }
+
+
+        protected HashAllForm hashAllForm;
+
+        /// <summary>Executes embedded application - launches a windows form for calculation of 
+        /// various hash values of a file, text, or all files in a drectory.</summary>
+        /// <param name="AppName">Name of the embedded application.</param>
+        /// <param name="AppArguments">Arguments fro the embedded application's command.</param>
+        protected virtual string CryptoFunctionHashAllForm(string appName, string[] args)
+        {
+            Console.WriteLine(Environment.NewLine + "Launching a form for calculation of hash values of text, file, or all files in a directory ..." + Environment.NewLine);
+
+            lock (Lock)
+            {
+                try
+                {
+                    UtilConsole.HideConsoleWindow();
+                    if (hashAllForm == null)
+                        hashAllForm = new HashAllForm();
+                    hashAllForm.ShowDialog();
+                }
+                finally
+                {
+                    UtilConsole.ShowConsoleWindow();
+                }
+            }
+
+            Console.WriteLine("Form closed.");
+            return null;
+        }
+
+
+
 
         /// <summary>Initializes commands for cryptography related utilities (embedded applications).
         /// <para>Here the method from the base class is overridden in order to add some additional utilities.</para></summary>
@@ -988,6 +1058,8 @@ namespace IG.Script
                 if (_appCryptoCommandsInitialized)
                     return;
                 AddCryptoCommand(CryptoHashForm, CryptoFunctionHashForm, CryptoHelpHashForm);
+                AddCryptoCommand(CryptoHashDirForm, CryptoFunctionHashDirForm, CryptoHelpHashDirForm);
+                AddCryptoCommand(CryptoHashAllForm, CryptoFunctionHashAllForm, CryptoHelpHashAllForm);
 
 
                 base.InitAppCrypto();

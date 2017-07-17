@@ -1,4 +1,4 @@
-// Copyright (c) Igor Grešovnik (2009), IGLib license; http://www2.arnes.si/~ljc3m2/igor/ioptlib/
+// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 using System;
 using System.Drawing;
@@ -358,6 +358,7 @@ namespace IG.Forms
 
         private bool _isTopMostWindow = true;
 
+        /// <summary>Whether or not the launched fading message is a topmost window.</summary>
         public bool IsTopMostWindow
         {
             get { return _isTopMostWindow; }
@@ -415,18 +416,33 @@ namespace IG.Forms
 
         #region Data
 
+        public static readonly Color DefaultForeGroundColorTitle = Color.Blue;
+
+        public static readonly Color DefaultForeGroundColorMessage = Color.Black;
+
+        public static readonly Color DefaultBackGroundColor = Color.LightYellow;
+
+        public static readonly Color DefaultInfoBackgroundColor = DefaultBackGroundColor;
+
+        public static readonly Color DefaultWarningBackgroundColor = Color.Orange;
+
+        public static readonly Color DefaultErrorBackgroundColor = Color.Red;
+
+        public static readonly Color DefaultFadeColor = Color.DarkGray;
+
+        // public static readonly color 
 
         /// <summary>Color of the title (if shown in fading message).</summary>
-        public Color ForeGroundColorTitle = Color.Blue;
+        public Color ForeGroundColorTitle = DefaultForeGroundColorTitle;
 
         /// <summary>Color of the message text shown in the fading message.</summary>
         public Color ForeGroundColorMsg = Color.Black;
 
         /// <summary>Active background color of the fading message.</summary>
-        public Color BackGroundColor = Color.LightYellow;
+        public Color BackGroundColor = DefaultBackGroundColor;
 
         /// <summary>Final (faded) color of the fading message.</summary>
-        public Color FadeColor = Color.DarkGray;
+        public Color FadeColor = DefaultFadeColor;
 
         public string MsgTitle = null, MsgText = null;
 
@@ -886,8 +902,11 @@ namespace IG.Forms
                         if (this.InvokeRequired)
                         {
                             // Delegate the method when called consform a thread not owning the consform.
-                            VoidDelegate fref = new VoidDelegate(CloseForm);
-                            this.Invoke(fref);
+                            //this.Invoke(new MethodInvoker(CloseForm));
+                            //this.Invoke(new MethodInvoker(() => CloseForm()) );
+
+                            this.Invoke((MethodInvoker) delegate { CloseForm(); });
+
                         }
                         else
                         {
@@ -932,22 +951,21 @@ namespace IG.Forms
         int m_PrevY;
 
         /// <summary>Enables dragging by mouse.</summary>
-        private void FadeMessage_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Left)
-                return;
-            Left = Left + (e.X - m_PrevX);
-            Top = Top + (e.Y - m_PrevY);
-
-        }
-
-        /// <summary>Enables dragging by mouse.</summary>
         private void FadeMessage_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
                 return;
             m_PrevX = e.X;
             m_PrevY = e.Y;
+        }
+
+        /// <summary>Enables dragging by mouse.</summary>
+        private void FadeMessage_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+                return;
+            Left = Left + (e.X - m_PrevX);
+            Top = Top + (e.Y - m_PrevY);
         }
 
 

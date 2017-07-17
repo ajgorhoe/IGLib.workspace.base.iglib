@@ -1,4 +1,4 @@
-﻿// Copyright (c) Igor Grešovnik, IGLib license; http://www2.arnes.si/~ljc3m2/igor/ioptlib/
+﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
 namespace IG.Forms
 {
@@ -30,8 +30,6 @@ namespace IG.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BrowserSimpleForm));
-
             this.hashGeneratorControl1 = new IG.Forms.HashControl();
             this.SuspendLayout();
             // 
@@ -45,17 +43,18 @@ namespace IG.Forms
             this.hashGeneratorControl1.Location = new System.Drawing.Point(0, 0);
             this.hashGeneratorControl1.MinimumSize = new System.Drawing.Size(780, 360);
             this.hashGeneratorControl1.Name = "hashGeneratorControl1";
-            this.hashGeneratorControl1.Size = new System.Drawing.Size(825, 522);
+            this.hashGeneratorControl1.Size = new System.Drawing.Size(878, 522);
             this.hashGeneratorControl1.TabIndex = 0;
             // 
-            // HashGeneratorForm
+            // HashForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(825, 522);
+            this.ClientSize = new System.Drawing.Size(879, 522);
             this.Controls.Add(this.hashGeneratorControl1);
-            this.Icon = IG.Forms.Properties.Resources.ig;
-            this.Name = "HashGeneratorForm";
+            this.Icon = global::IG.Forms.Properties.Resources.ig;
+            this.MinimumSize = new System.Drawing.Size(895, 506);
+            this.Name = "HashForm";
             this.Text = "Hash Generator for Files and Text";
             this.ResumeLayout(false);
 

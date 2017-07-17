@@ -61,10 +61,10 @@
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.AutoSize = true;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnCancel.Location = new System.Drawing.Point(286, 1);
+            this.btnCancel.Location = new System.Drawing.Point(299, 1);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(5);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(72, 30);
+            this.btnCancel.Size = new System.Drawing.Size(60, 26);
             this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.Click += new System.EventHandler(this.CancelBtn_Click);
@@ -74,7 +74,7 @@
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(4, 14);
+            this.lblStatus.Location = new System.Drawing.Point(3, 12);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(140, 15);
             this.lblStatus.TabIndex = 3;
@@ -86,16 +86,16 @@
             this.BodyPnl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BodyPnl.Controls.Add(this.lblMEssage);
             this.BodyPnl.Controls.Add(this.lblTitle);
-            this.BodyPnl.Location = new System.Drawing.Point(10, 13);
+            this.BodyPnl.Location = new System.Drawing.Point(8, 11);
             this.BodyPnl.Name = "BodyPnl";
-            this.BodyPnl.Size = new System.Drawing.Size(349, 163);
+            this.BodyPnl.Size = new System.Drawing.Size(349, 153);
             this.BodyPnl.TabIndex = 4;
             // 
             // lblMEssage
             // 
             this.lblMEssage.AutoSize = true;
             this.lblMEssage.Font = new System.Drawing.Font("Times New Roman", 10.5F);
-            this.lblMEssage.Location = new System.Drawing.Point(0, 77);
+            this.lblMEssage.Location = new System.Drawing.Point(0, 67);
             this.lblMEssage.Margin = new System.Windows.Forms.Padding(0);
             this.lblMEssage.MinimumSize = new System.Drawing.Size(100, 40);
             this.lblMEssage.Name = "lblMEssage";
@@ -125,17 +125,17 @@
             this.PnlStatus.Controls.Add(this.btnCancel);
             this.PnlStatus.Controls.Add(this.lblStatus);
             this.PnlStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.PnlStatus.Location = new System.Drawing.Point(8, 192);
+            this.PnlStatus.Location = new System.Drawing.Point(8, 196);
             this.PnlStatus.Name = "PnlStatus";
-            this.PnlStatus.Size = new System.Drawing.Size(363, 35);
+            this.PnlStatus.Size = new System.Drawing.Size(363, 31);
             this.PnlStatus.TabIndex = 5;
             // 
             // labelBottom
             // 
             this.labelBottom.AutoSize = true;
-            this.labelBottom.Location = new System.Drawing.Point(12, 192);
+            this.labelBottom.Location = new System.Drawing.Point(10, 166);
             this.labelBottom.Name = "labelBottom";
-            this.labelBottom.Size = new System.Drawing.Size(220, 16);
+            this.labelBottom.Size = new System.Drawing.Size(177, 13);
             this.labelBottom.TabIndex = 6;
             this.labelBottom.Text = "Label for forcing lower window edge";
             // 
@@ -205,7 +205,7 @@
             // 
             // FadingMessage
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(379, 235);
@@ -215,7 +215,7 @@
             this.Controls.Add(this.labelBottom);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(48, 23);
+            this.MinimumSize = new System.Drawing.Size(40, 20);
             this.Name = "FadingMessage";
             this.Padding = new System.Windows.Forms.Padding(8);
             this.ShowInTaskbar = false;

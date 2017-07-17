@@ -62,14 +62,10 @@
       <HintPath>..\..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Kitware.mummy.Runtime">
       <HintPath>..\..\externalextended\ActiViz\bin\Kitware.mummy.Runtime.dll</HintPath>
       <Private>False</Private>
@@ -88,6 +84,8 @@
     <Compile Include="00testscriptsext\examples\ScriptGraphics2dBase.cs" />
     <Compile Include="00testscriptsext\examples\ScriptGraphics3dBase.cs" />
     <Compile Include="00testscriptsext\examples\Test_To_Delete.cs" />
+    <Compile Include="Application\IGShell\AppEmbeddedCrypto.cs" />
+    <Compile Include="Application\IGShell\AppIGShellBaseExt.cs" />
     <Compile Include="Forms\Numeric\FromNeural\Basic\InputDataDefinitionControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

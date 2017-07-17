@@ -295,8 +295,8 @@ namespace IG.Lib
         /// <summary>Initialiyes the control flags of the script.</summary>
         private void InitControllable()
         {
-            _loadable = App.LoadableScriptShellIsLoadableS;
-            _runnable = App.LoadableScriptShellIsRunnableS;
+            _loadable = ApplicationBase.LoadableScriptShellIsLoadableS;
+            _runnable = ApplicationBase.LoadableScriptShellIsRunnableS;
         }
 
         #endregion Initialization
