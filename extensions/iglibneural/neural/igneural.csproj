@@ -87,7 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj">
-      <Project>{02B5E453-2085-4E41-86D9-C8E8A03FB1B9}</Project>
+      <Project>{02b5e453-2085-4e41-86d9-c8e8a03fb1b9}</Project>
       <Name>AForge.Neuro</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\igbase\iglib_base.csproj">
