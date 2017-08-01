@@ -110,7 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\AForge.Core.csproj">
-      <Project>{631AC093-430F-45F4-BA0C-AF0F0405918A}</Project>
+      <Project>{631ac093-430f-45f4-ba0c-af0f0405918a}</Project>
       <Name>AForge.Core</Name>
     </ProjectReference>
   </ItemGroup>
