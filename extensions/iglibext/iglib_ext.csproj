@@ -192,9 +192,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\igbase\iglib_base.csproj">
-      <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
+      <Project>{0ab31a6e-e0de-4f4e-8d0e-7ad60ae65e26}</Project>
       <Name>iglib_base</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\igforms\igform.csproj">
       <Project>{50235FC8-A69D-47AE-A557-6518B35CC7C9}</Project>

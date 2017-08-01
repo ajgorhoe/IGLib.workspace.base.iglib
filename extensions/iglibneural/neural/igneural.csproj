@@ -86,14 +86,25 @@
     <Compile Include="scripts_base\ScriptShellNeuralBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj">
+      <Project>{631ac093-430f-45f4-ba0c-af0f0405918a}</Project>
+      <Name>AForge.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Genetic\AForge.Genetic.csproj">
+      <Project>{2efaa327-1789-4438-b9f5-e83acae12db2}</Project>
+      <Name>AForge.Genetic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Math\AForge.Math.csproj">
+      <Project>{c0faf524-72e4-46f7-8c1b-a6b74dec5ebe}</Project>
+      <Name>AForge.Math</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj">
       <Project>{02b5e453-2085-4e41-86d9-c8e8a03fb1b9}</Project>
       <Name>AForge.Neuro</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\igbase\iglib_base.csproj">
-      <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
+      <Project>{0ab31a6e-e0de-4f4e-8d0e-7ad60ae65e26}</Project>
       <Name>iglib_base</Name>
-      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\reportermsg\ReporterMsg\ReporterMsg.csproj">
       <Project>{AC130D8D-D656-4EA6-A940-3C261F589ACE}</Project>
