@@ -328,12 +328,17 @@ div.Section1
         <br>
       </h2>
       <span style="" lang="EN-GB"><br>
+        <b>Warning</b>: currently, the official server </span><span
+        style="" lang="EN-GB"><a href="https://84.255.236.103:8443/svn/">https://84.255.236.103:8443/svn/</a>
+        is not used. Instead, the SVN server on Igor's laptop is used
+        (not accessible from external networks): <a
+          href="https://ipc:8443/">https://ipc:8443/</a>.<br>
         Below is the list of IGLib-related directories and their
         corresponding locations on the source control management server
         (SVN):</span><br>
       <p class="MsoBodyText" style="text-align: justify;"><br>
       </p>
-      <table width="100%" border="1" cellpadding="2" cellspacing="2">
+      <table width="100%" cellspacing="2" cellpadding="2" border="1">
         <tbody>
           <tr>
             <td valign="top"><b>Relative path (local)</b><br>
@@ -366,9 +371,23 @@ div.Section1
           <tr>
             <td valign="top">.../workspace/base/unittests/</td>
             <td valign="top"><a
-                href="https://84.255.236.103:8443/svn/ig_base/unittests/trunk">https://84.255.236.103:8443/svn/ig_base/unittests/trunk</a><br>
+                href="https://84.255.236.103:8443/svn/ig_base/unittests/trunk">https://84.255.236.103:8443/svn/ig_base/unittests/trunk
+              </a><br>
             </td>
             <td valign="top">Unit tests directtory.<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">.../workspace/base/output/ </td>
+            <td valign="top"><a
+                href="https://84.255.236.103:8443/svn/ig_base/output/trunk">https://84.255.236.103:8443/svn/ig_base/output/trunk
+              </a> </td>
+            <td valign="top">Compiled binaries. IGLib developers don't
+              need to check out this directory in all cases (if not
+              checked out, it will be generated when compiling some
+              projects), it is only needed for some projects because
+              compiled code directories contained in it might contain
+              test data for running projects.<br>
             </td>
           </tr>
           <tr>
