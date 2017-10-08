@@ -365,7 +365,7 @@ namespace IG.Num
                 if (!IsAppropriateType(obj))
                 {
                     obj = CreateObject();
-                    if (!IsAppropriateType(obj))  // $$$$$$$$$$$$$$$$$$$$$$$$ : remove this semicolon because the test shoulld remain as it is!
+                    if (!IsAppropriateType(obj) /* && false */)  // $$$$$$$$$$$$$$$$$$$$$$$$ : remove this semicolon because the test shoulld remain as it is!
                     {
 
                         Console.WriteLine(Environment.NewLine + Environment.NewLine 
