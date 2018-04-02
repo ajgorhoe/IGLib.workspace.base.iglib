@@ -57,6 +57,7 @@ namespace IG.Lib
         /// initializing the first time when referenced).</remarks>
         public static object LockStatic
         {
+
             get
             {
                 if (_lockStatic == null)
