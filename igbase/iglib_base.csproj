@@ -282,9 +282,7 @@
     <Compile Include="reporter\LoggerMsg.cs" />
     <Compile Include="reporter\ReporterMsg.cs" />
     <Compile Include="reporter\ReporterMsg_Derived.cs" />
-    <Compile Include="utilities\networking\PortScannerComplex\PortList.cs" />
     <Compile Include="utilities\networking\PortScannerComplex\PortScanner.cs" />
-    <Compile Include="utilities\networking\PortScannerComplex\Program.cs" />
     <Compile Include="utilities\networking\PortScannerSimple\PortScannerSimple.cs" />
     <Compile Include="utilities\networking\UtilNet.cs" />
     <Compile Include="utilities\UilCryptoAux1.cs" />

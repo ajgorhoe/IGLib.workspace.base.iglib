@@ -223,8 +223,6 @@ namespace IG.Net
 
 
 
-
-
         /// <summary>
         /// A Console type Multi Port TCP Scanner
         /// Author : Philip Murray
