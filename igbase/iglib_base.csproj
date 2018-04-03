@@ -282,6 +282,11 @@
     <Compile Include="reporter\LoggerMsg.cs" />
     <Compile Include="reporter\ReporterMsg.cs" />
     <Compile Include="reporter\ReporterMsg_Derived.cs" />
+    <Compile Include="utilities\networking\PortScannerComplex\PortList.cs" />
+    <Compile Include="utilities\networking\PortScannerComplex\PortScanner.cs" />
+    <Compile Include="utilities\networking\PortScannerComplex\Program.cs" />
+    <Compile Include="utilities\networking\PortScannerSimple\PortScannerSimple.cs" />
+    <Compile Include="utilities\networking\UtilNet.cs" />
     <Compile Include="utilities\UilCryptoAux1.cs" />
     <Compile Include="utilities\UtilCrypto.cs" />
     <Compile Include="utilities\UtilCryptoAux.cs" />
@@ -336,6 +341,7 @@
     <Content Include="License_IGLib_Partner.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="utilities\networking\PortScannerComplex\LICENSE.txt" />
     <EmbeddedResource Include="License_IGLib_Redistributable.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -359,6 +365,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="interpreters\scriptloader\scripts\script_examples.cmd" />
+    <None Include="utilities\networking\PortScannerComplex\README.md" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\external\jint\Jint\Jint.csproj">

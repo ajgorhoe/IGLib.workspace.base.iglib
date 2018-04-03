@@ -51,6 +51,7 @@ namespace IG.Forms
                 chkCalculateWhenTyping.Visible = true;
             }
 
+            txtFile.Text += "  - test mode 12.";
         }
 
 
@@ -1785,42 +1786,6 @@ namespace IG.Forms
             }
         }
 
-        ///// <summary>Sets mouse cursor shape on MouseMove event, according to the current status of modifier keys.</summary>
-        //void SetCursorMouseMove(object sender, MouseEventArgs e)
-        //{
-        //    if (e.Button == MouseButtons.Left)
-        //    {
-        //        if (!(ControlDown || ShiftDown || AltDown))
-        //        {
-        //            Cursor.Current = Cursors.SizeAll;
-        //        }
-        //        if (ControlDown && !(ShiftDown || AltDown))
-        //        {
-        //            Cursor.Current = Cursors.SizeNESW;
-        //        }
-        //        if (ShiftDown && !(ControlDown || AltDown))
-        //        {
-        //            Cursor.Current = Cursors.PanNE;
-        //        }
-        //        if (AltDown && !(ControlDown || ShiftDown))
-        //        {
-        //            Cursor.Current = Cursors.Hand;
-        //        }
-        //        if (ControlDown && ShiftDown && !AltDown)
-        //        {
-        //            Cursor.Current = Cursors.NoMove2D;
-        //        }
-        //        if (ControlDown && AltDown && !ShiftDown)
-        //        {
-        //            Cursor.Current = Cursors.NoMoveHoriz;
-        //        }
-        //        if (ShiftDown && AltDown && !ControlDown)
-        //        {
-        //            Cursor.Current = Cursors.Cross;
-        //        }
-        //    }
-        //}
-
 
 
         Form _form { get { return this.ParentForm; } }
@@ -1846,6 +1811,7 @@ namespace IG.Forms
         int _distSizeY;
 
         bool _isSizingOrMoving = false;
+
 
         /*
         int _distY;
@@ -2013,7 +1979,8 @@ namespace IG.Forms
                     //Cursor.Position = new Point(_mousePreviousX, _mousePreviousY);
                     // Change cursor shape until Alt key is released:
                     Cursor.Current = Cursors.Cross;
-                } else
+                }
+                else
                 {
                     if (ControlDown /* && !ShiftDown */)
                     {
