@@ -691,7 +691,7 @@
     </Content>
     <Content Include="0readme_igforms.txt" />
     <Content Include="License_IGLib_Partner.html" />
-    <Content Include="Utilities\Notification\0readme_bitification.txt" />
+    <Content Include="Utilities\Notification\0readme_notification.txt" />
     <EmbeddedResource Include="License_IGLib_Redistributable.html" />
     <EmbeddedResource Include="ReadMe_IGLib.html" />
     <EmbeddedResource Include="Resources\timer\alarm_5_beeps_freesound_221087_alarm.wav" />
