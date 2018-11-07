@@ -11,7 +11,6 @@ namespace JsonPrettyPrinterPlus
         public static string PrettyPrintJson(this string unprettyJson)
         {
                 var pp = new JsonPrettyPrinter(new JsonPPStrategyContext());
-
                 return pp.PrettyPrint(unprettyJson);
         }
     }
