@@ -39,27 +39,33 @@ https://gitlab.com/ajgorhoe/iglib.workspace.base.iglib.git
 git svn clone --stdlayout https://localhost:8443/svn/ig_base/iglib  iglib 
 
 
-unittests:
+unittests:  IGLib.workspace.base.unittests
+https://gitlab.com/ajgorhoe/iglib.workspace.base.unittests.git
 git svn clone --stdlayout https://localhost:8443/svn/ig_base/unittests  unittests 
 
-igsolutions:
+igsolutions:  IGLib.workspace.base.igsolutions
+https://gitlab.com/ajgorhoe/iglib.workspace.base.igsolutions.git
 git svn clone --stdlayout https://localhost:8443/svn/ig_base_testdevelop/igsolutions  igsolutions 
 
-shelldev:
+shelldev:  IGLib.workspace.base.shelldev
+https://gitlab.com/ajgorhoe/iglib.workspace.base.shelldev.git
 git svn clone --stdlayout https://localhost:8443/svn/ig_base/shelldev  shelldev 
 
-igapp:
-git svn clone --stdlayout https://localhost:8443/svn/ig_base/shelldev https://localhost:8443/svn/ig_base_testdevelop/igapp  igapp 
+igapp:  IGLib.workspace.base.igapp
+https://gitlab.com/ajgorhoe/iglib.workspace.base.igapp.git
+git svn clone --stdlayout https://localhost:8443/svn/ig_base_testdevelop/igapp  igapp 
 
 
-data:
+data:  IGLib.workspace.base.data
+https://gitlab.com/ajgorhoe/iglib.workspace.base.data.git
 git svn clone --stdlayout https://localhost:8443/svn/ig_base/data  data 
 
-igtest:
-https://localhost:8443/svn/ig_base_testdevelop/igtest
+igtest:  IGLib.workspace.base.igtest
+https://gitlab.com/ajgorhoe/iglib.workspace.base.igtest.git
 git svn clone --stdlayout  https://localhost:8443/svn/ig_base_testdevelop/igtest  igtest 
 
-igsandbox:
+igsandbox:  IGLib.workspace.base.igsandbox
+https://gitlab.com/ajgorhoe/iglib.workspace.base.igsandbox.git
 git svn clone --stdlayout  https://localhost:8443/svn/ig_base_testdevelop/igsandbox  igsandbox 
 
 
