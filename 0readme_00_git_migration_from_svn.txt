@@ -70,6 +70,15 @@ git svn clone --stdlayout  https://localhost:8443/svn/ig_base_testdevelop/igsand
 
 -------- workspace subdirectories
 
+doc/codedoc:  IGLib.workspace.codedoc
+https://gitlab.com/ajgorhoe/iglib.workspace.codedoc.git
+git svn clone --stdlayout  https://localhost:8443/svn/ig_base/codedoc   codedoc
+
+igcpp: IGLib.workspace.igcpp
+https://gitlab.com/ajgorhoe/iglib.workspace.igcpp.git
+git svn clone --stdlayout  https://localhost:8443/svn/ig_cpp igcpp
+
+
 
 
 
