@@ -1,0 +1,20 @@
+
+igor = Igor Grešovnik <gresovnik@gmail.com>
+tadejk = Tadej Kodelja <>
+marko = Marko Petek <>
+robert = Robert Vertnik <>
+umut = Umut Hanoglu <>
+katarina = Katarina Mramor <>
+gkosec = Gregor Kosec <>
+agnieszka = Agnieszka Lorbiecka <>
+stanislav = Stanislav Hartman <>
+liuqingguo = Qingguo Liu <>
+nejc = Nejc Košnik <>
+bostjan = Boštjan Mavrič <>
+kosak = Gregor Košak <>
+aga = Agnieszka Lorbiecka <>
+testuser = Testni Uporabnik <>
+ferdo = Ferdo Grešovnik <>
+
+
+
