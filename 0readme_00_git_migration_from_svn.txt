@@ -1,5 +1,5 @@
 
-This is a temporary directory that contains IGLib git repositories converted
+This is a directory that contains IGLib git repositories converted
 from the original SVN repositories.
 
 Conversion were done using git svn clone:
@@ -67,6 +67,10 @@ git svn clone --stdlayout  https://localhost:8443/svn/ig_base_testdevelop/igtest
 igsandbox:  IGLib.workspace.base.igsandbox
 https://gitlab.com/ajgorhoe/iglib.workspace.base.igsandbox.git
 git svn clone --stdlayout  https://localhost:8443/svn/ig_base_testdevelop/igsandbox  igsandbox 
+
+-------- workspace subdirectories
+
+
 
 
 ======== Remarks
