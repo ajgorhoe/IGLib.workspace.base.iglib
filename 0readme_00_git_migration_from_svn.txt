@@ -79,6 +79,17 @@ https://gitlab.com/ajgorhoe/iglib.workspace.igcpp.git
 git svn clone --stdlayout  https://localhost:8443/svn/ig_cpp igcpp
 
 
+applications: IGLib.workspace.applications
+https://gitlab.com/ajgorhoe/iglib.workspace.applications.git
+git svn clone --stdlayout https://localhost:8443/svn/ig_applications/workspace_applications applications
+
+develop_cobik_archive: IGLib.workspace.develop_cobik
+https://gitlab.com/ajgorhoe/iglib.workspace.develop_cobik.git
+git svn clone https://localhost:8443/svn/ig_develop develop_cobik
+
+z_courses: IGLib.workspace.z_courses
+https://gitlab.com/ajgorhoe/iglib.workspace.z_courses.git
+git svn clone https://localhost:8443/svn/ig_courses z_courses
 
 
 
