@@ -92,6 +92,20 @@ https://gitlab.com/ajgorhoe/iglib.workspace.z_courses.git
 git svn clone https://localhost:8443/svn/ig_courses z_courses
 
 
+-------- workspaceprojects subdirectories 
+
+00tests: IGLib.workspaceprojects.00tests
+https://gitlab.com/ajgorhoe/iglib.workspaceprojects.00tests.git
+git svn clone --stdlayout https://localhost:8443/svn/ig_projects/00tests 00tests
+
+00testsext: IGLib.workspaceprojects.00testsext
+https://gitlab.com/ajgorhoe/iglib.workspaceprojects.00testsext.git
+git svn clone --stdlayout https://localhost:8443/svn/ig_projects/00testsext 00testsext
+
+anka: IGLib.workspaceprojects.anka
+https://gitlab.com/ajgorhoe/iglib.workspaceprojects.anka.git
+git svn clone --stdlayout https://localhost:8443/svn/ig_projects/00projects_guests/trunk/anka anka
+
 
 ======== Remarks
 
