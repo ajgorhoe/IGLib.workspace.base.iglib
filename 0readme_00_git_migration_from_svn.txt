@@ -55,7 +55,6 @@ igapp:  IGLib.workspace.base.igapp
 https://gitlab.com/ajgorhoe/iglib.workspace.base.igapp.git
 git svn clone --stdlayout https://localhost:8443/svn/ig_base_testdevelop/igapp  igapp 
 
-
 data:  IGLib.workspace.base.data
 https://gitlab.com/ajgorhoe/iglib.workspace.base.data.git
 git svn clone --stdlayout https://localhost:8443/svn/ig_base/data  data 
