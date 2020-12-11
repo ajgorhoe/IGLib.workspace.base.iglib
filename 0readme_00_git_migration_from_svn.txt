@@ -32,6 +32,11 @@ Here is something on a similar problem (but it was not helpful):
 https://stackoverflow.com/questions/11037166/author-not-defined-when-importing-svn-repository-into-git
 
 
+======== IGLib CONTAINER for quickly checking out complete directory 
+         structure via scripts or git modules:
+https://gitlab.com/ajgorhoe/iglibcontainer.git 
+
+
 ======== List of actual conversion commands:
 
 iglib: IGLib.workspace.base.iglib
