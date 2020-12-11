@@ -90,6 +90,10 @@ z_courses: IGLib.workspace.z_courses
 https://gitlab.com/ajgorhoe/iglib.workspace.z_courses.git
 git svn clone https://localhost:8443/svn/ig_courses z_courses
 
+bin: IGLib.workspace.bin
+https://gitlab.com/ajgorhoe/iglib.workspace.bin.git
+git svn clone --stdlayout  https://localhost:8443/svn/ig_bin/bin  bin
+
 
 -------- workspaceprojects subdirectories 
 
