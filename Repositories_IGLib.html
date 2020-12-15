@@ -27,15 +27,14 @@
         <br>
       </h2>
       <span style="" lang="EN-GB"><br>
-        <b>Warning</b>: currently, the official server </span><span
+        <b>Warning</b>: currently, the official SVN server </span><span
         style="" lang="EN-GB"><a href="https://84.255.236.103:8443/svn/">https://84.255.236.103:8443/svn/</a>
         <b> is not used</b>. Instead, the SVN server on Igor's laptop is
         used (not accessible from external networks): <a
-          href="https://ipc:8443/">https://ipc:8443/</a>.<br>
-        Below is the list of IGLib-related directories and their
-        corresponding locations on the source control management server
-        (SVN):&nbsp; </span><br>
-      <br>
+          href="https://ipc:8443/">https://ipc:8443/</a>. However, most
+        of the IGLib projects <b>migrated to Git repositories</b>. See
+        the table below for locations on servers.<br>
+      </span><br>
       <h3>Table of IGLib Projects&nbsp; - Locations and Short
         Descriptions<br>
       </h3>
@@ -52,11 +51,19 @@
             </td>
           </tr>
           <tr>
+            <td valign="top"><br>
+            </td>
+            <td valign="top"><br>
+            </td>
+            <td valign="top"><br>
+            </td>
+          </tr>
+          <tr>
             <td valign="top">.../workspace/base/iglib/<br>
             </td>
-            <td valign="top"><a
-                href="https://ipc:8443/svn/ig_base/iglib/trunk"><span
-                  style="" lang="EN-GB"></span></a> <br>
+            <td valign="top">&nbsp;<a
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.base.iglib.git"><a>https://gitlab.com/ajgorhoe/iglib.workspace.base.iglib.git</a></a>&nbsp;
+              <br>
             </td>
             <td valign="top">Base IGLib directory containing the IGLiv
               libraries and dependencies.<br>
@@ -64,7 +71,9 @@
           </tr>
           <tr>
             <td valign="top">.../workspace/base/shelldev/</td>
-            <td valign="top"><br>
+            <td valign="top"><a
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.base.shelldev.git">https://gitlab.com/ajgorhoe/iglib.workspace.base.shelldev.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Development directory for higher level
               libraries and applications. This directory also contains
@@ -73,9 +82,38 @@
           </tr>
           <tr>
             <td valign="top">.../workspace/base/unittests/</td>
-            <td valign="top"><br>
+            <td valign="top"><a
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.base.unittests.git">https://gitlab.com/ajgorhoe/iglib.workspace.base.unittests.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Unit tests directtory.<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">.../workspace/base/iglearn/ <br>
+            </td>
+            <td valign="top"><a
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.base.iglearn.git">https://gitlab.com/ajgorhoe/iglib.workspace.base.iglearn.git</a>&nbsp;
+              <br>
+            </td>
+            <td valign="top">Experimentation, prototyping and learning
+              projects.<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">.../workspace/base/igsolutions/ </td>
+            <td valign="top"><a
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.base.igsolutions.git">https://gitlab.com/ajgorhoe/iglib.workspace.base.igsolutions.git</a>&nbsp;
+              <br>
+            </td>
+            <td valign="top">Contains various solutions (for Visual
+              Studio or Mono) for building IGLib projects. While the
+              basic solution s are located in the
+              .../workspace/base/shelldev/ directory, this directory
+              contains extended solutions with many projects that are
+              not yet included in IGLib libraries and are intended for
+              testing, and for commercial applications. Many of these
+              projects are not generally available to IGLib developers.
             </td>
           </tr>
           <tr>
@@ -84,13 +122,15 @@
                 href="https://ipc:8443/svn/ig_base/output/trunk">https://84.255.236.103:8443/svn/ig_base/output/trunk
 
 
+
               </a> </td>
-            <td valign="top">Compiled binaries. IGLib developers don't
-              need to check out this directory in all cases (if not
-              checked out, it will be generated when compiling some
-              projects), it is only needed for some projects because
-              compiled code directories contained in it might contain
-              test data for running projects.<br>
+            <td valign="top"><b>Repository not used</b>.<br>
+              Compiled binaries. IGLib developers don't need to check
+              out this directory in all cases (if not checked out, it
+              will be generated when compiling some projects), it is
+              only needed for some projects because compiled code
+              directories contained in it might contain test data for
+              running projects.&nbsp; <br>
             </td>
           </tr>
           <tr>
@@ -103,7 +143,9 @@
           </tr>
           <tr>
             <td valign="top">.../workspace/doc/codedoc/</td>
-            <td valign="top"><br>
+            <td valign="top"><a
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.codedoc.git">https://gitlab.com/ajgorhoe/iglib.workspace.codedoc.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Source code documentation directory.
               Contains Doxygen scripts for generating various code
@@ -114,9 +156,20 @@
             </td>
           </tr>
           <tr>
+            <td valign="top">.../workspace/codedoc_new/</td>
+            <td valign="top"><a
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.codedoc_new.git">https://gitlab.com/ajgorhoe/iglib.workspace.codedoc_new.git</a>&nbsp;
+              <br>
+            </td>
+            <td valign="top">Future replacement of
+              .../workspace/doc/codedoc/.<br>
+            </td>
+          </tr>
+          <tr>
             <td valign="top">.../workspace/bin/</td>
             <td valign="top"><a
-                href="https://ipc:8443/svn/ig_bin/bin/trunk">https://84.255.236.103:8443/svn/ig_bin/bin/trunk</a><br>
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.bin.git">https://gitlab.com/ajgorhoe/iglib.workspace.bin.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Compiled binary files (especially the
               generated DLL-s). This directory is used when DLL-s are
@@ -126,7 +179,9 @@
           </tr>
           <tr>
             <td valign="top">.../workspaceprojects/00tests/</td>
-            <td valign="top"><br>
+            <td valign="top"><a
+                href="https://gitlab.com/ajgorhoe/iglib.workspaceprojects.00tests.git">https://gitlab.com/ajgorhoe/iglib.workspaceprojects.00tests.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Contains various tests that are mainly run
               by an IGLib shell application through its command-line
@@ -161,7 +216,9 @@
           </tr>
           <tr>
             <td valign="top">.../workspaceprojects/00testsext</td>
-            <td valign="top"><br>
+            <td valign="top"><a
+href="https://gitlab.com/ajgorhoe/iglib.workspaceprojects.00testsext.git">https://gitlab.com/ajgorhoe/iglib.workspaceprojects.00testsext.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Extended tests. Aimed at testing new
               methodologies. Restricted access.<br>
@@ -169,7 +226,9 @@
           </tr>
           <tr>
             <td valign="top">.../workspaceprojects/anka</td>
-            <td valign="top"><br>
+            <td valign="top"><a
+                href="https://gitlab.com/ajgorhoe/iglib.workspaceprojects.anka.git">https://gitlab.com/ajgorhoe/iglib.workspaceprojects.anka.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Guest test directory - user anka<br>
             </td>
@@ -183,24 +242,10 @@
             </td>
           </tr>
           <tr>
-            <td valign="top">.../workspace/base/igsolutions/ </td>
-            <td valign="top"><a
-                href="https://ipc:8443/svn/ig_base_testdevelop/igsolutions/trunk">https://84.255.236.103:8443/svn/ig_base_testdevelop/igsolutions/trunk</a><br>
-            </td>
-            <td valign="top">Contains various solutions (for Visual
-              Studio or Mono) for building IGLib projects. While the
-              basic solution s are located in the
-              .../workspace/base/shelldev/ directory, this directory
-              contains extended solutions with many projects that are
-              not yet included in IGLib libraries and are intended for
-              testing, and for commercial applications. Many of these
-              projects are not generally available to IGLib developers.
-            </td>
-          </tr>
-          <tr>
             <td valign="top">.../workspace/base/igsandbox/</td>
             <td valign="top"><a
-                href="https://ipc:8443/svn/ig_base_testdevelop/igsandbox/trunk">https://84.255.236.103:8443/svn/ig_base_testdevelop/igsandbox/trunk</a><br>
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.base.igsandbox.git">https://gitlab.com/ajgorhoe/iglib.workspace.base.igsandbox.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Sandbox directory for testing things.<br>
             </td>
@@ -217,7 +262,8 @@
             <td valign="top">.../workspace/z_courses/testsvn/<br>
             </td>
             <td valign="top"><a
-                href="https://ipc:8443/svn/ig_courses/testsvn/trunk">https://84.255.236.103:8443/svn/ig_courses/testsvn/trunk</a><br>
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.z_courses.git">https://gitlab.com/ajgorhoe/iglib.workspace.z_courses.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Some directories for learning and testing
               SVN functionality (a SVN sandbox).<br>
@@ -226,7 +272,8 @@
           <tr>
             <td valign="top">.../workspace/z_courses/unimb/</td>
             <td valign="top"><a
-                href="https://ipc:8443/svn/ig_courses/unimb/trunk">https://84.255.236.103:8443/svn/ig_courses/unimb/trunk</a><br>
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.z_courses.git">https://gitlab.com/ajgorhoe/iglib.workspace.z_courses.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Code for undergraduate course on numerical
               methods (physics, university of Maribor).<br>
@@ -243,7 +290,8 @@
           <tr>
             <td valign="top">.../workspace/base/igtest/</td>
             <td valign="top"><a
-                href="https://ipc:8443/svn/ig_base_testdevelop/igtest/trunk">https://84.255.236.103:8443/svn/ig_base_testdevelop/igtest/trunk</a><br>
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.base.igtest.git">https://gitlab.com/ajgorhoe/iglib.workspace.base.igtest.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Various test projects for developing new
               functionality, testing new concepts, and development of
@@ -253,7 +301,8 @@
           <tr>
             <td valign="top">.../workspace/base/igapp/</td>
             <td valign="top"><a
-                href="https://ipc:8443/svn/ig_base_testdevelop/igapp/trunk">https://84.255.236.103:8443/svn/ig_base_testdevelop/igapp/trunk</a><br>
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.base.igapp.git">https://gitlab.com/ajgorhoe/iglib.workspace.base.igapp.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Various applications. Restricted access.<br>
             </td>
@@ -269,7 +318,8 @@
           <tr>
             <td valign="top">.../workspace/applications/</td>
             <td valign="top"><a
-                href="https://ipc:8443/svn/ig_applications/workspace_applications/trunk">https://84.255.236.103:8443/svn/ig_applications/workspace_applications/trunk</a><br>
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.applications.git">https://gitlab.com/ajgorhoe/iglib.workspace.applications.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Applications prepared for deployment.<br>
             </td>
@@ -285,7 +335,8 @@
           <tr>
             <td valign="top">.../workspace/igcpp/cppwls/</td>
             <td valign="top"><a
-                href="https://ipc:8443/svn/ig_cpp/trunk/cppwls/trunk">https://84.255.236.103:8443/svn/ig_cpp/trunk/cppwls/trunk</a><br>
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.igcpp.git">https://gitlab.com/ajgorhoe/iglib.workspace.igcpp.git</a>&nbsp;
+              <br>
             </td>
             <td valign="top">Some projects in C++ (only used by Igor).<br>
             </td>
@@ -293,7 +344,7 @@
           <tr>
             <td valign="top">.../workspace/igcpp/iginv/</td>
             <td valign="top"><a
-                href="https://ipc:8443/svn/ig_cpp/trunk/iginv/trunk">https://84.255.236.103:8443/svn/ig_cpp/trunk/iginv/trunk</a><br>
+                href="https://gitlab.com/ajgorhoe/iglib.workspace.igcpp.git">https://gitlab.com/ajgorhoe/iglib.workspace.igcpp.git</a>&nbsp;
             </td>
             <td valign="top">Some projects in C (only used by Igor).</td>
           </tr>
@@ -395,6 +446,7 @@ href="https://ipc:8443/svn/ig_supplementaryprojects/workspaceprojects/trunk">htt
                 href="https://ipc:8443/svn/ig_base/unittests/trunk">https://84.255.236.103:8443/svn/ig_base/unittests/trunk
 
 
+
               </a><br>
             </td>
             <td valign="top">Unit tests directtory.<br>
@@ -404,6 +456,7 @@ href="https://ipc:8443/svn/ig_supplementaryprojects/workspaceprojects/trunk">htt
             <td valign="top">.../workspace/base/output/ </td>
             <td valign="top"><a
                 href="https://ipc:8443/svn/ig_base/output/trunk">https://84.255.236.103:8443/svn/ig_base/output/trunk
+
 
 
               </a> </td>
