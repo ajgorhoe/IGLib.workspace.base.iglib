@@ -75,6 +75,7 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="MathNet.Numerics">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Extensions" />

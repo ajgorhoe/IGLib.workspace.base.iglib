@@ -676,11 +676,6 @@
       <Name>iglib_base</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\reportermsg\ReporterMsg\ReporterMsg.csproj">
-      <Project>{AC130D8D-D656-4EA6-A940-3C261F589ACE}</Project>
-      <Name>ReporterMsg</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\00readme_developers_iglib.html">
