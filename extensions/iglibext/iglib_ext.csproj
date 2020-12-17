@@ -70,10 +70,6 @@
       <HintPath>..\..\externalextended\ActiViz\bin\Kitware.VTK.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ZedGraph, Version=5.1.5.27330, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\lib\ZedGraph.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="00testscriptsext\AppExtBase.cs" />
@@ -190,6 +186,14 @@
     <ProjectReference Include="..\..\external\mathnet-numerics\src\Numerics\Numerics.csproj">
       <Project>{6f72849e-2136-4d6b-b482-f748e7336cff}</Project>
       <Name>Numerics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj">
+      <Project>{1086e89d-99b9-4afa-8ffe-064ef355e011}</Project>
+      <Name>ZedGraph.WinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\external\ZedGraph\source\ZedGraph\ZedGraph.csproj">
+      <Project>{7b58d480-a3a6-43b2-bb1d-5e014dc94fe0}</Project>
+      <Name>ZedGraph</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\igbase\iglib_base.csproj">
       <Project>{0ab31a6e-e0de-4f4e-8d0e-7ad60ae65e26}</Project>
