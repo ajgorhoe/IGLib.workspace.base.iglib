@@ -12,7 +12,7 @@ using System.Globalization;
 //using Matrix_MathNet = MathNet.Numerics.LinearAlgebra.Matrix;
 
 using Matrix_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix;
-using MatrixBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Generic.Matrix<double>;
+using MatrixBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Matrix<double>;
 
 
 namespace IG.Num

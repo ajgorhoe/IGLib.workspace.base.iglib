@@ -15,15 +15,20 @@ using IG.Lib;
 //using QRDecomposition_MathNet = MathNet.Numerics.LinearAlgebra.QRDecomposition;
 
 using Matrix_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix;
-using MatrixBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Generic.Matrix<double>;
+using MatrixBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Matrix<double>;
 using Vector_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.DenseVector;
-using VectorBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Generic.Vector<double>;
-using VectorComplexBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Generic.Vector<System.Numerics.Complex>;
-using LUDecomposition_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.Factorization.DenseLU;
-using QRDecomposition_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.Factorization.DenseQR;
-using CholeskyDecomposition_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.Factorization.DenseCholesky;
-using EigenValueDecomposition_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.Factorization.DenseEvd;
-using SingularValueDecomposition_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.Factorization.DenseSvd;
+using VectorBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Vector<double>;
+using VectorComplexBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Vector<System.Numerics.Complex>;
+using LUDecomposition_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Factorization.LU<double>;
+// MathNet.Numerics.LinearAlgebra.Double.Factorization.DenseLU;
+using QRDecomposition_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Factorization.QR<double>;
+// MathNet.Numerics.LinearAlgebra.Double.Factorization.DenseQR;
+using CholeskyDecomposition_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Factorization.Cholesky<double>;
+// MathNet.Numerics.LinearAlgebra.Double.Factorization.DenseCholesky;
+using EigenValueDecomposition_MathNetNumerics =  MathNet.Numerics.LinearAlgebra.Factorization.Evd<double>;
+    // MathNet.Numerics.LinearAlgebra.Double.Factorization.DenseEvd;
+using SingularValueDecomposition_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Factorization.Svd<double>;
+    // MathNet.Numerics.LinearAlgebra.Double.Factorization.DenseSvd;
 
 using MathNet.Numerics.LinearAlgebra.Double;
 using QRDecomposition_MathNetNumericx = MathNet.Numerics.LinearAlgebra.Double.Factorization;
@@ -338,7 +343,7 @@ namespace IG.Num
                 throw new ArgumentException("Inconsistent dimensions.");
             _rowCount = A.RowCount;
             _columnCount = A.ColumnCount;
-            Base = new LUDecomposition_MathNetNumerics(A);
+            Base = A.LU(); // new LUDecomposition_MathNetNumerics(A);
         }
 
         /// <summary>Constructor.</summary>
@@ -616,7 +621,7 @@ namespace IG.Num
                 throw new ArgumentException("Inconsistent dimensions.");
             _rowCount = A.RowCount;
             _columnCount = A.ColumnCount;
-            Base = new QRDecomposition_MathNetNumerics(A);
+            Base = A.QR(); // new QRDecomposition_MathNetNumerics(A);
         }
 
         /// <summary>Constructor.</summary>
@@ -870,7 +875,7 @@ namespace IG.Num
                 throw new ArgumentException("Inconsistent dimensions.");
             _rowCount = A.RowCount;
             _columnCount = A.ColumnCount;
-            Base = new CholeskyDecomposition_MathNetNumerics(A);
+            Base = A.Cholesky();// new CholeskyDecomposition_MathNetNumerics(A);
         }
 
         /// <summary>Constructor.</summary>
@@ -1133,7 +1138,7 @@ namespace IG.Num
                 throw new ArgumentException("Inconsistent dimensions.");
             _rowCount = A.RowCount;
             _columnCount = A.ColumnCount;
-            Base = new EigenValueDecomposition_MathNetNumerics(A);
+            Base = A.Evd(); // new EigenValueDecomposition_MathNetNumerics(A);
         }
 
         /// <summary>Constructor.</summary>
@@ -1164,7 +1169,7 @@ namespace IG.Num
             {
                 if (Base == null)
                     throw new Exception("Invalid data.");
-                return new Matrix(Base.EigenVectors());
+                return new Matrix(Base.EigenVectors);
 
             }
         }
@@ -1176,7 +1181,7 @@ namespace IG.Num
         {
             get
             {
-                VectorComplexBase_MathNetNumerics v = Base.EigenValues();
+                VectorComplexBase_MathNetNumerics v = Base.EigenValues;
                 int dim = v.Count;
                 System.Numerics.Complex[] ret = new System.Numerics.Complex[dim];
                 for (int i = 0; i < dim; ++i)
@@ -1192,7 +1197,7 @@ namespace IG.Num
         /// <param name="product">Matrix where re-calculated product of the decomposed matrix is stored.</param>
         public void GetProduct(ref IMatrix product)
         {
-            MatrixBase_MathNetNumerics prod = Base.EigenVectors() * Base.D() * Base.EigenVectors().Transpose();
+            MatrixBase_MathNetNumerics prod = Base.EigenVectors * Base.D * Base.EigenVectors.Transpose();
             Matrix.Copy(prod, ref product);
         }
 
@@ -1422,7 +1427,7 @@ namespace IG.Num
                 throw new ArgumentException("Inconsistent dimensions.");
             _rowCount = A.RowCount;
             _columnCount = A.ColumnCount;
-            Base = new SingularValueDecomposition_MathNetNumerics(A, true /* computeVectors */);
+            Base = A.Svd(); //new SingularValueDecomposition_MathNetNumerics(A, true /* computeVectors */);
         }
 
         /// <summary>Constructor.</summary>
@@ -1455,7 +1460,7 @@ namespace IG.Num
             {
                 if (Base == null)
                     throw new Exception("Invalid data.");
-                return new Matrix(Base.U());
+                return new Matrix(Base.U);
             }
         }
 
@@ -1467,7 +1472,7 @@ namespace IG.Num
             {
                 if (Base == null)
                     throw new Exception("Invalid data.");
-                return new Vector(Base.S());
+                return new Vector(Base.S);
             }
         }
 
@@ -1479,7 +1484,7 @@ namespace IG.Num
             {
                 if (Base == null)
                     throw new Exception("Invalid data.");
-                return new Matrix(Base.VT());
+                return new Matrix(Base.VT);
             }
         }
 
@@ -1490,7 +1495,7 @@ namespace IG.Num
         /// <param name="product">Matrix where re-calculated product of the decomposed matrix is stored.</param>
         public void GetProduct(ref IMatrix product)
         {
-            MatrixBase_MathNetNumerics prod = Base.U() * Base.W() * Base.VT();
+            MatrixBase_MathNetNumerics prod = Base.U * Base.W * Base.VT;
             Matrix.Copy(prod, ref product);
         }
 

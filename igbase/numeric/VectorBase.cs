@@ -11,7 +11,7 @@ using System.Globalization;
 using IG.Lib;
 
 using Vector_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.DenseVector;
-using VectorBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Generic.Vector<double>;
+using VectorBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Vector<double>;
 
 namespace IG.Num
 {

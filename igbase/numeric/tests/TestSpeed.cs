@@ -908,7 +908,7 @@ namespace IG.Num
             formatProvider.TextInfo.ListSeparator = " ";
 
             // Create square matrix
-            DenseMatrix matrix = new DenseMatrix(new[,] { { 1.0, 2.0 }, { 3.0, 4.0 } });
+            DenseMatrix matrix =  DenseMatrix.OfArray(new[,] { { 1.0, 2.0 }, { 3.0, 4.0 } });
             Console.WriteLine(@"Initial square matrix");
             Console.WriteLine(matrix.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
@@ -976,7 +976,7 @@ namespace IG.Num
             formatProvider.TextInfo.ListSeparator = " ";
 
             // Create 3 x 2 matrix
-            var matrix = new DenseMatrix(new[,] { { 1.0, 2.0 }, { 3.0, 4.0 }, { 5.0, 6.0 } });
+            var matrix = DenseMatrix.OfArray(new[,] { { 1.0, 2.0 }, { 3.0, 4.0 }, { 5.0, 6.0 } });
             Console.WriteLine(@"Initial 3x2 matrix");
             Console.WriteLine(matrix.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
@@ -1042,7 +1042,7 @@ namespace IG.Num
             formatProvider.TextInfo.ListSeparator = " ";
 
             // Create square symmetric matrix
-            var matrix = new DenseMatrix(new[,] { { 1.0, 2.0, 3.0 }, { 2.0, 1.0, 4.0 }, { 3.0, 4.0, 1.0 } });
+            var matrix = DenseMatrix.OfArray(new[,] { { 1.0, 2.0, 3.0 }, { 2.0, 1.0, 4.0 }, { 3.0, 4.0, 1.0 } });
             Console.WriteLine(@"Initial square symmetric matrix");
             Console.WriteLine(matrix.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
@@ -1053,27 +1053,27 @@ namespace IG.Num
 
             // 1. Eigen vectors
             Console.WriteLine(@"1. Eigen vectors");
-            Console.WriteLine(evd.EigenVectors().ToString("#0.00\t", formatProvider));
+            Console.WriteLine(evd.EigenVectors.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 2. Eigen values as a complex vector
             Console.WriteLine(@"2. Eigen values as a complex vector");
-            Console.WriteLine(evd.EigenValues().ToString("N", formatProvider));
+            Console.WriteLine(evd.EigenValues.ToString("N", formatProvider));
             Console.WriteLine();
 
             // 3. Eigen values as the block diagonal matrix
             Console.WriteLine(@"3. Eigen values as the block diagonal matrix");
-            Console.WriteLine(evd.D().ToString("#0.00\t", formatProvider));
+            Console.WriteLine(evd.D.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 4. Multiply V by its transpose VT
-            var identity = evd.EigenVectors().TransposeAndMultiply(evd.EigenVectors());
+            var identity = evd.EigenVectors.TransposeAndMultiply(evd.EigenVectors);
             Console.WriteLine(@"4. Multiply V by its transpose VT: V*VT = I");
             Console.WriteLine(identity.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 5. Reconstruct initial matrix: A = V*D*V'
-            var reconstruct = evd.EigenVectors() * evd.D() * evd.EigenVectors().Transpose();
+            var reconstruct = evd.EigenVectors * evd.D * evd.EigenVectors.Transpose();
             Console.WriteLine(@"5. Reconstruct initial matrix: A = V*D*V'");
             Console.WriteLine(reconstruct.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
@@ -1108,17 +1108,17 @@ namespace IG.Num
 
             // 8. Eigen vectors
             Console.WriteLine(@"8. Eigen vectors");
-            Console.WriteLine(evd.EigenVectors().ToString("#0.00\t", formatProvider));
+            Console.WriteLine(evd.EigenVectors.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 9. Eigen values as a complex vector
             Console.WriteLine(@"9. Eigen values as a complex vector");
-            Console.WriteLine(evd.EigenValues().ToString("N", formatProvider));
+            Console.WriteLine(evd.EigenValues.ToString("N", formatProvider));
             Console.WriteLine();
 
             // 10. Eigen values as the block diagonal matrix
             Console.WriteLine(@"10. Eigen values as the block diagonal matrix");
-            Console.WriteLine(evd.D().ToString("#0.00\t", formatProvider));
+            Console.WriteLine(evd.D.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 			
 			
@@ -1133,13 +1133,13 @@ namespace IG.Num
             //Console.WriteLine();
 
             // 12. Multiply V * D
-            var vd = evd.EigenVectors() * evd.D();
+            var vd = evd.EigenVectors * evd.D;
             Console.WriteLine(@"12. Multiply V * D");
             Console.WriteLine(vd.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 13. Reconstruct non-symmetriv matrix A = V * D * Vinverse
-            reconstruct = evd.EigenVectors() * evd.D() * evd.EigenVectors().Inverse();
+            reconstruct = evd.EigenVectors * evd.D * evd.EigenVectors.Inverse();
             Console.WriteLine(@"13. Reconstruct non-symmetriv matrix A = V * D * Vinverse");
             Console.WriteLine(reconstruct.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
@@ -1164,7 +1164,7 @@ namespace IG.Num
             formatProvider.TextInfo.ListSeparator = " ";
 
             // Create square matrix
-            var matrix = new DenseMatrix(new[,] { { 4.0, 1.0 }, { 3.0, 2.0 } });
+            var matrix = DenseMatrix.OfArray(new[,] { { 4.0, 1.0 }, { 3.0, 2.0 } });
             Console.WriteLine(@"Initial square matrix");
             Console.WriteLine(matrix.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
@@ -1175,38 +1175,38 @@ namespace IG.Num
 
             // 1. Left singular vectors
             Console.WriteLine(@"1. Left singular vectors");
-            Console.WriteLine(svd.U().ToString("#0.00\t", formatProvider));
+            Console.WriteLine(svd.U.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 2. Singular values as vector
             Console.WriteLine(@"2. Singular values as vector");
-            Console.WriteLine(svd.S().ToString("#0.00\t", formatProvider));
+            Console.WriteLine(svd.S.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 3. Singular values as diagonal matrix
             Console.WriteLine(@"3. Singular values as diagonal matrix");
-            Console.WriteLine(svd.W().ToString("#0.00\t", formatProvider));
+            Console.WriteLine(svd.W.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 4. Right singular vectors
             Console.WriteLine(@"4. Right singular vectors");
-            Console.WriteLine(svd.VT().ToString("#0.00\t", formatProvider));
+            Console.WriteLine(svd.VT.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 5. Multiply U matrix by its transpose
-            var identinty = svd.U() * svd.U().Transpose();
+            var identinty = svd.U * svd.U.Transpose();
             Console.WriteLine(@"5. Multiply U matrix by its transpose");
             Console.WriteLine(identinty.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 6. Multiply V matrix by its transpose
-            identinty = svd.VT().TransposeAndMultiply(svd.VT());
+            identinty = svd.VT.TransposeAndMultiply(svd.VT);
             Console.WriteLine(@"6. Multiply V matrix by its transpose");
             Console.WriteLine(identinty.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 7. Reconstruct initial matrix: A = U*Σ*VT
-            var reconstruct = svd.U() * svd.W() * svd.VT();
+            var reconstruct = svd.U * svd.W * svd.VT;
             Console.WriteLine(@"7. Reconstruct initial matrix: A = U*S*VT");
             Console.WriteLine(reconstruct.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
@@ -1223,7 +1223,7 @@ namespace IG.Num
 
             // 10. 2-norm of the matrix
             Console.WriteLine(@"10. 2-norm of the matrix");
-            Console.WriteLine(svd.Norm2);
+            Console.WriteLine(svd.L2Norm); 
             Console.WriteLine();
 
             // 11. Rank of the matrix
@@ -1237,19 +1237,19 @@ namespace IG.Num
 
             // 12. Singular values as vector
             Console.WriteLine(@"12. Singular values as vector");
-            Console.WriteLine(svd.S().ToString("#0.00\t", formatProvider));
+            Console.WriteLine(svd.S.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 13. Singular values as diagonal matrix
             Console.WriteLine(@"13. Singular values as diagonal matrix");
-            Console.WriteLine(svd.W().ToString("#0.00\t", formatProvider));
+            Console.WriteLine(svd.W.ToString("#0.00\t", formatProvider));
             Console.WriteLine();
 
             // 14. Access to left singular vectors when partial SVD decomposition was performed
             try
             {
                 Console.WriteLine(@"14. Access to left singular vectors when partial SVD decomposition was performed");
-                Console.WriteLine(svd.U().ToString("#0.00\t", formatProvider));
+                Console.WriteLine(svd.U.ToString("#0.00\t", formatProvider));
             }
             catch (Exception ex)
             {
@@ -1261,7 +1261,7 @@ namespace IG.Num
             try
             {
                 Console.WriteLine(@"15. Access to right singular vectors when partial SVD decomposition was performed");
-                Console.WriteLine(svd.VT().ToString("#0.00\t", formatProvider));
+                Console.WriteLine(svd.VT.ToString("#0.00\t", formatProvider));
             }
             catch (Exception ex)
             {
@@ -1280,7 +1280,7 @@ namespace IG.Num
             formatProvider.TextInfo.ListSeparator = " ";
 
             // Create square, symmetric, positive definite matrix
-            DenseMatrix matrix = new DenseMatrix(new[,] { { 2.0, 1.0 }, { 1.0, 2.0 } });
+            DenseMatrix matrix = DenseMatrix.OfArray(new[,] { { 2.0, 1.0 }, { 1.0, 2.0 } });
             Console.WriteLine(@"Initial square, symmetric, positive definite matrix");
             Console.WriteLine(matrix.ToString("#0.00\t", formatProvider));
             Console.WriteLine();

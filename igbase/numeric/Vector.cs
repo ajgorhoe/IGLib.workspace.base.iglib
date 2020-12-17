@@ -12,7 +12,7 @@ using System.Globalization;
 //using Vector_MathNet = MathNet.Numerics.LinearAlgebra.Vector;
 
 using Vector_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.DenseVector;
-using VectorBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Generic.Vector<double>;
+using VectorBase_MathNetNumerics = MathNet.Numerics.LinearAlgebra.Vector<double>;
 
 namespace IG.Num
 {
@@ -159,7 +159,7 @@ namespace IG.Num
         /// <summary>Constructs a vector from a 1-D array, directly using the provided array as internal data structure.</summary>
         /// <param name="vec">One-dimensional array of doubles.</param>
         /// <seealso cref="Create(double[])"/>
-        public Vector(VectorBase_MathNetNumerics vec) 
+        protected internal Vector(VectorBase_MathNetNumerics vec) 
         {
             if (vec==null)
                 throw new ArgumentNullException("Vector creation: array of components not specified (null argument).");
@@ -184,7 +184,7 @@ namespace IG.Num
 
 
         /// <summary>Constructs a vector as a copy of a MathNetVector object.</summary>
-        public static Vector Create(VectorBase_MathNetNumerics vec)
+        protected internal static Vector Create(VectorBase_MathNetNumerics vec)
         {
             Vector ret = null;
             if (vec == null)
@@ -361,7 +361,7 @@ namespace IG.Num
 
         #region MathNetNumerics
 
-        Vector_MathNetNumerics _copyMathNetNumerics;
+        protected Vector_MathNetNumerics _copyMathNetNumerics;
 
         protected bool _mathNetNumericsConsistent = false;
 
@@ -417,7 +417,7 @@ namespace IG.Num
         /// Representation is created on demand. However, the same copy is returned
         /// as long as it is consistent with the current matrix.
         /// Use GetCopyMathNet() to create a new copy each time.</summary>
-        public virtual Vector_MathNetNumerics CopyMathNetNumerics
+        protected internal virtual Vector_MathNetNumerics CopyMathNetNumerics
         {
             get
             {
@@ -432,7 +432,7 @@ namespace IG.Num
         }
 
         /// <summary>Creates and returns a newly allocated MathNet Numerics representation of the current vector.</summary>
-        protected Vector_MathNetNumerics GetCopyMathNetNumerics()
+        protected internal Vector_MathNetNumerics GetCopyMathNetNumerics()
         {
             Vector_MathNetNumerics ret = new Vector_MathNetNumerics(_length);
             for (int i = 0; i < _length; ++i)

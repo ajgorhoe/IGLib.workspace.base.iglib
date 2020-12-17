@@ -74,10 +74,12 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
+    <!--
     <Reference Include="MathNet.Numerics">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
     </Reference>
+	-->
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.XML" />
   </ItemGroup>
@@ -370,6 +372,10 @@
     <ProjectReference Include="..\external\jint\Jint\Jint.csproj">
       <Project>{678738da-f723-4920-b9e5-cad667104bda}</Project>
       <Name>Jint</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj">
+      <Project>{6f72849e-2136-4d6b-b482-f748e7336cff}</Project>
+      <Name>Numerics</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
