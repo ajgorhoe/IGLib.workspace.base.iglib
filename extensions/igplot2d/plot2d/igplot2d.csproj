@@ -105,11 +105,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\external\nplot\NPlot.csproj">
-      <Project>{E6867FF5-74EC-4464-8958-D71CB46232F3}</Project>
-      <Name>NPlot</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\igbase\iglib_base.csproj">
       <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
       <Name>iglib_base</Name>
