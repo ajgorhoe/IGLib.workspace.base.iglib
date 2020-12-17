@@ -60,10 +60,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="MathNet.Numerics">
-      <HintPath>..\..\..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Kitware.mummy.Runtime" Condition="'$(Platform)'!='x86'">
       <HintPath>..\..\..\externalextended\ActiViz\bin\Kitware.mummy.Runtime.dll</HintPath>
       <Private>True</Private>

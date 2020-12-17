@@ -374,7 +374,7 @@
       <Name>Jint</Name>
     </ProjectReference>
     <ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj">
-      <Project>{6f72849e-2136-4d6b-b482-f748e7336cff}</Project>
+      <Project>{d09bdc8f-a69b-4579-a574-f8e6bc9a5849}</Project>
       <Name>Numerics</Name>
     </ProjectReference>
   </ItemGroup>
