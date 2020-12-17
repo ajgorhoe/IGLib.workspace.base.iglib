@@ -1,0 +1,3 @@
+[submodule "external/mathnet-numerics"]
+	path = external/mathnet-numerics
+	url = https://github.com/mathnet/mathnet-numerics.git
