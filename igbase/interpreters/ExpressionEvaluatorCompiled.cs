@@ -4,7 +4,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Reflection;
 using System.IO;
-using Microsoft.JScript;
+// using Microsoft.JScript;
 
         /************************************************/
         /*                                              */
