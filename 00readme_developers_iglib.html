@@ -10,6 +10,7 @@
     <br>
     &nbsp; This file contains notes on various things interesting <u>for
 
+
       developers</u>. In January 2016, contents of some readme text
     files were moved into this file. <br>
     <br>
@@ -23,11 +24,37 @@
     consider necessary, you can add a style element to the head element
     (but keep it minimalistic if you do that). <br>
     <br>
-    <b>Contents</b>:&nbsp; <br>
+    See Also:<br>
+    <ul>
+      <li><b><a
+href="https://gresovnik.atlassian.net/wiki/spaces/IGLIB/pages/98316/Investigative%2BGeneric%2BLibrary%2BIGLib">IGLib
+            Wiki pages on Confluence</a></b> (only accessible to
+        developers) &nbsp; <br>
+      </li>
+      <li><a
+href="https://gresovnik.atlassian.net/wiki/spaces/IGLIB/pages/33190/IGLib+Issue+Tracking">IGLib
+          <b>Issue Tracking</b></a> on Confluence&nbsp; <br>
+      </li>
+      <ul>
+        <li><a
+href="https://gresovnik.atlassian.net/wiki/spaces/IGLIB/pages/33204/Tasks">Tasks</a>
+          <br>
+        </li>
+        <li><a
+href="https://gresovnik.atlassian.net/wiki/spaces/IGLIB/pages/327724/Bugs">Bugs</a>
+          <br>
+        </li>
+      </ul>
+    </ul>
+    <br>
+    <br>
+    <h3> <i><b>Contents</b></i><i>:</i> &nbsp; </h3>
+    <h3> </h3>
     <ul>
       <li><b><a href="../../doc/codedoc/code_documentation.html">Code
             Documentation</a></b>&nbsp;&nbsp;&nbsp;</li>
       <li><a href="Repositories_IGLib.html"><b>Repositories</b></a>&nbsp;
+
 
         <br>
       </li>
@@ -70,20 +97,39 @@
       <ul>
         <li><a
 href="file:///Z:/workspace/base/iglib/00readme_developers_iglib.html#igforms_problems_designer">Problems
+
             loading forms in designer</a>&nbsp;&nbsp;</li>
         <li><a
 href="file:///Z:/workspace/base/iglib/00readme_developers_iglib.html#igforms_multithreaded">Forms
+
             in multithreaded environment</a>&nbsp;&nbsp;</li>
         <ul>
           <li><a
 href="file:///Z:/workspace/base/iglib/00readme_developers_iglib.html#igforms_multithreaded_creation">Creating
+
               forms from parallel threads</a>&nbsp;&nbsp;</li>
           <li><a
 href="file:///Z:/workspace/base/iglib/00readme_developers_iglib.html#igforms_multithreaded_access">Accessing
+
               GUI components from parallel threads</a>&nbsp;&nbsp;</li>
           <li><a
 href="file:///Z:/workspace/base/iglib/00readme_developers_iglib.html#igforms_todo">IGForms
+
               To Do List</a>&nbsp; <br>
+          </li>
+        </ul>
+      </ul>
+      <li><b><a href="#task_management">Task Management</a></b>
+        (Important!)&nbsp; <br>
+      </li>
+      <ul>
+        <li><a href="#tasks">Tasks</a> <br>
+        </li>
+        <li><a href="#bugs">Bugs</a> <br>
+        </li>
+        <ul>
+          <li><a href="#bug_annnap_neurondotnet">AnnAp not working with
+              data created in NeuronDotNet</a> <br>
           </li>
         </ul>
       </ul>
@@ -300,6 +346,7 @@ href="file:///Z:/workspace/base/iglib/00readme_developers_iglib.html#igforms_tod
     <ul>
       <li><a
 href="http://www.mono-project.com/docs/getting-started/install/linux/#debian-ubuntu-and-derivatives">Install
+
           Mono on Linux: Debian, Ubuntu, and derivatives</a><br>
       </li>
     </ul>
@@ -363,6 +410,7 @@ href="http://www.mono-project.com/docs/getting-started/install/linux/#debian-ubu
     &nbsp; /usr/lib/mono/4.5/<b>Microsoft.Common.targets</b>: Error:
     Win32 IO returned ERROR_GEN_FAILURE. Path: ...&nbsp; <b>at
       System.IO.File.Delete</b> (System.String path) ...&nbsp;&nbsp; <b>at
+
 
       Microsoft.Build.Tasks.Copy.CopyFile</b> (System.String source,
     System.String dest, Boolean create_dir) ...<br>
@@ -481,10 +529,12 @@ workspace\base\iglib\external\MathNetNumerics\src\packages\zlib.net.1.0.3.0\lib\
       </li>
       <li><a
           href="https://technet.microsoft.com/en-us/magazine/ff629368.aspx">See
+
           this link</a>&nbsp;&nbsp;</li>
       <li>Too <b>switch </b><b>off Magnifier</b> and such tools: <b>Win-Escape</b>&nbsp;&nbsp;</li>
       <li>Follow <a
 href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn469266%28v=vs.85%29.aspx#appendix_a_setting_high_DPI_in_windows">this
+
 
           for more details</a>&nbsp; <br>
       </li>
@@ -498,16 +548,20 @@ href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn469266%28v=vs.8
     <ul>
       <li><a
 href="http://stackoverflow.com/questions/4075802/creating-a-dpi-aware-application?lq=1">Creating
+
           a DPI aware application</a>&nbsp; <br>
       </li>
       <li><a
 href="http://stackoverflow.com/questions/13228185/winforms-high-dpi-blurry-fonts">WinDorms
+
           high DPI blurry fonts</a>&nbsp;&nbsp;</li>
       <li><a
 href="http://stackoverflow.com/questions/185804/how-to-control-the-font-dpi-in-net-winforms-app">How
+
           to control the font DPI in WinForms</a>&nbsp;&nbsp;</li>
       <li><a
 href="http://stackoverflow.com/questions/20209905/making-an-existing-net-windows-application-to-be-dpi-aware?rq=1">Making
+
 
           an existing .NET Windows application to be DPI-aware</a> -
         this seems to have a good solution that is simple enough and
@@ -520,16 +574,19 @@ href="http://stackoverflow.com/questions/20209905/making-an-existing-net-windows
       </ul>
       <li><b><a
 href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn469266%28v=vs.85%29.aspx">Writing
+
             DPI-Aware Desktop and Win32 Applications</a></b> - bolj
         poglobljen&nbsp;&nbsp; <br>
       </li>
       <ul>
         <li><a
 href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn469266%28v=vs.85%29.aspx#setting_dpi_using_control_panel">Setting
+
             DPI Using Control Panel</a>&nbsp;&nbsp;</li>
       </ul>
       <li><a
 href="https://en.wikipedia.org/wiki/Dots_per_inch#How_Microsoft_Windows_handles_DPI_scaling">How
+
           MW Windows handle DPI scaling</a>&nbsp; - Wikipedia&nbsp; <br>
       </li>
       <ul>
@@ -540,6 +597,7 @@ href="https://en.wikipedia.org/wiki/Dots_per_inch#How_Microsoft_Windows_handles_
     <ul>
       <li><a
 href="https://msdn.microsoft.com/en-us/library/system.windows.forms.containercontrol.autoscaledimensions%28v=vs.110%29.aspx">ContainerControl.AutoScaleDimensions
+
           Property</a>&nbsp; <br>
       </li>
     </ul>
@@ -706,6 +764,65 @@ http://stackoverflow.com/questions/19009386/could-not-find-type-xxx-xxx-xxx-plea
     <br>
     Implementiraj funkcije za programsko kontrolo forme (ozadje,
     velikost, itd.)<br>
+    <br>
+    <br>
+    <br>
+    <h2><a name="task_management"></a>Task Management <br>
+    </h2>
+    Task management for IGLib is a bit more complicated because the
+    libraries are in several repositories. Currently, all IGLib
+    repositories are managed centrally rather than each repository
+    managing its own tasks. <br>
+    Currently, task management is done on Confluence (which allows
+    participation of up to 10 users for free). Address is the following:<br>
+    <ul>
+      <li><a
+href="https://gresovnik.atlassian.net/wiki/spaces/IGLIB/pages/33190/IGLib+Issue+Tracking">IGLib
+          Issue Tracking</a></li>
+      <ul>
+        <li><a
+href="https://gresovnik.atlassian.net/wiki/spaces/IGLIB/pages/33204/Tasks">Tasks</a>
+          <br>
+        </li>
+        <li><a
+href="https://gresovnik.atlassian.net/wiki/spaces/IGLIB/pages/327724/Bugs">Bugs</a>
+          <br>
+        </li>
+      </ul>
+    </ul>
+    <br>
+    <br>
+    <b>Note</b>: The old <a
+      href="https://en.wikipedia.org/wiki/Redmine"><i>ReadMine</i></a>
+    server for task management is not functional any more. <a
+      href="https://bitnami.com/stack/redmine/installer">Bitnami Redmine</a>
+    for Windows distribution was used previously. The server had to be
+    decommissioned due to lack of resources. <br>
+    <br>
+    <br>
+    <h2><a name="tasks"></a>Tasks<br>
+    </h2>
+    <br>
+    <h2><a name="bugs"></a>Bugs <br>
+    </h2>
+    <br>
+    <br>
+    <h3><a name="bug_annnap_neurondotnet"></a>Bug - Annap does not work
+      with Data from Štore Steel <br>
+    </h3>
+    Branch: bugs/21_06_Annap_NotWorkingWithNeuronDotNet<br>
+    Issue is now tracked on Confluence:<br>
+    <ul>
+      <li><a
+href="https://gresovnik.atlassian.net/wiki/spaces/IGLIB/pages/33227/21+06+Annap+Cannot+Import+Steel+Properties+ANN">https://gresovnik.atlassian.net/wiki/spaces/IGLIB/pages/33227/21+06+Annap+Cannot+Import+Steel+Properties+ANN</a>
+        <br>
+      </li>
+    </ul>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     <br>
     <br>
     <br>
