@@ -30,9 +30,19 @@ namespace IG.Neural
         { }
 
 
+        /// <summary>Static constructor. Ensures registration of neural approximator type by its names, which makes possible 
+        /// to construct an approximator based on its registered type name because name can resolve to type object used by 
+        /// <see cref="Activator"/> to construct the object. This is used e.g. in <see cref="NeuralApproximatorDtoBase.CreateObject()"/>,
+        /// which makes possible the existence of <see cref="NeuralApproximatorBase.LoadJson(string, ref INeuralApproximator)"/></summary>
+        static NeuralApproximatorAforge()
+        {
+            RegisterApproximatorType<NeuralApproximatorAforge>();
+        }
+
+
         #region Data
 
-        
+
         /// <summary>Network(s) used for approximation.</summary>
         protected ActivationNetwork[] _networks;
 
