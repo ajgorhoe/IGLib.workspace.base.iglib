@@ -553,9 +553,15 @@ namespace IG.Num
         public static void InitType()
         { }
 
+        /// <summary>Creates and returns a new instance of the neural approximator type specified by <paramref name="approximatorTypeName"/>.
+        /// Type regisyry <see cref="NeuralApproximatorBase.TypesRegistry"/> is utilised by this method, in order to get a <see cref="Type"/>
+        /// object from the specified name (<paramref name="approximatorTypeName"/>) and use it in reflection to create an object of the 
+        /// specified type. For this to work, registration must be performed for the given type under given name, which is done by calling the type's
+        /// <see cref="InitType"/> static method, which causes calling of static constructor that performs registration.</summary>
+        /// <param name="approximatorTypeName"></param>
         public static INeuralApproximator CreateApproximator(string approximatorTypeName)
         {
-            return NeuralApproximatorBase.TypesRegistry.CreateApproximator(approximatorTypeName);
+            return NeuralApproximatorBase.TypesRegistry.CreateInstance(approximatorTypeName);
         }
 
 
@@ -3027,7 +3033,7 @@ namespace IG.Num
             ISerializer serializerRestoring = new SerializerJson();
             NeuralApproximatorDtoBase dtoRestored = serializerRestoring.DeserializeFile<NeuralApproximatorDtoBase>
                 (filePath);
-            approximatorRestored = new NeuralApproximatorAforgeFake();
+            //approximatorRestored = new NeuralApproximatorAforgeFake();
 
             dtoRestored.CopyTo(ref approximatorRestored);
             if (!string.IsNullOrEmpty(approximatorRestored.NetworkStateRelativePath))

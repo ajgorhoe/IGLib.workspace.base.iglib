@@ -91,14 +91,14 @@ namespace IG.Lib
             }
             try
             {
-                Type DerivedType = Type.GetType(derivedTypeName);
-                if (DerivedType == null)
+                Type derivedType = Type.GetType(derivedTypeName);
+                if (derivedType == null)
                 {
                     throw new InvalidOperationException($"Could not find a neural network approximator type named {derivedTypeName}.");
                 }
-                if (!DerivedType.IsAssignableFrom(typeof(BaseType)))
+                if (!derivedType.IsAssignableFrom(typeof(BaseType)))
                 {
-                    throw new InvalidOperationException($"The type name {derivedTypeName} resolved to {DerivedType.FullName}: NOT an {nameof(BaseType)}.");
+                    throw new InvalidOperationException($"The type name {derivedTypeName} resolved to {derivedType.FullName}: NOT an {nameof(BaseType)}.");
                 }
             }
             catch
@@ -118,16 +118,16 @@ namespace IG.Lib
         /// Default is true.</param>
         /// <returns>Insance of the type whose name is provided, if successful. If not, either null is returned or exception thrown, dependent
         /// on value of <paramref name="throwIfCannotCreate"/></returns>
-        public virtual BaseType CreateApproximator(string derivedTypeName, bool throwIfCannotCreate = true)
+        public virtual BaseType CreateInstance(string derivedTypeName, bool throwIfCannotCreate = true)
         {
             try
             {
-                Type DerivedType = GetDerivedType(derivedTypeName, throwIfCannotCreate);
-                if (DerivedType == null)
+                Type derivedType = GetDerivedType(derivedTypeName, throwIfCannotCreate);
+                if (derivedType == null)
                 {
                     throw new InvalidOperationException($"Could not resolve a neural approximatior type name {derivedTypeName}.");
                 }
-                return (BaseType)Activator.CreateInstance(DerivedType);
+                return (BaseType)Activator.CreateInstance(derivedType);
             }
             catch
             {
