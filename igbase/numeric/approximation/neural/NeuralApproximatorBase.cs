@@ -534,102 +534,121 @@ namespace IG.Num
         public NeuralApproximatorBase() : base()
         { }
 
+        /// <summary>Registry of <see cref="INeuralApproximator"/> types, which enables to retrieve an ANN approximator
+        /// type based on its name, which is important for creation of instances via reflection, which is also used when
+        /// loading trained approximators from a serialized JSON file (functionality of <see cref="DerivedTypesRegistry{INeuralApproximator}"/>
+        /// is crucial when restoring internal state of embedded 3rd-party approximators).</summary>
+        public static DerivedTypesRegistry<INeuralApproximator> TypesRegistry { get; } = new DerivedTypesRegistry<INeuralApproximator>();
+
         /// <summary>Static constructor. Ensures registration of neural approximator type, which makes possible to construct
         /// an approximator based on its registered type name because name can resolve to type object used by <see cref="Activator"/>
         /// to construcht the object.</summary>
         static NeuralApproximatorBase()
         {
-            RegisterApproximatorType<NeuralApproximatorBase>();
+            // NeuralApproximatorBase.TypesRegistry.RegisterDerivedType<NeuralApproximatorBase>();
         }
 
-        #region TypeRegistration
 
-        protected static object StaticLockNeuralApproximator { get; } = new object();
+        /// <summary>Does nothing by itself, but causes call to static constructor, which causes the necessary type initializations.</summary>
+        public static void InitType()
+        { }
 
-        private static Dictionary<string, Type> ApproximatorTypeNames { get; } = new Dictionary<string, Type>();
-
-        protected static void RegisterApproximatorType(string typeName, Type approximatorType) 
+        public static INeuralApproximator CreateApproximator(string approximatorTypeName)
         {
-            if (string.IsNullOrWhiteSpace(typeName))
-                throw new ArgumentException("The neural approximator type name to be registered is not valid (null of empty or whitespace string).");
-            if (approximatorType == null)
-                throw new ArgumentNullException(nameof(approximatorType), "Approximator type to registe is not specified (null reference).");
-            if (!typeof(INeuralApproximator).IsAssignableFrom(approximatorType))
-            {
-                throw new InvalidOperationException($"Cannot register neural approximator type {approximatorType.FullName}: not an {nameof(INeuralApproximator)}.");
-            }
-            lock (StaticLockNeuralApproximator)
-            {
-                ApproximatorTypeNames[typeName] = approximatorType;
-            }
+            return NeuralApproximatorBase.TypesRegistry.CreateApproximator(approximatorTypeName);
         }
 
 
-        public static void RegisterApproximatorType(Type approximatorType)
-        {
-            if (approximatorType == null)
-            {
-                throw new ArgumentNullException(nameof(approximatorType), "Approximator type is not specified (nulll reference).");
-            }
-            RegisterApproximatorType(approximatorType.FullName, approximatorType);
-            RegisterApproximatorType(approximatorType.Name, approximatorType);
-            RegisterApproximatorType(approximatorType.AssemblyQualifiedName, approximatorType);
-        }
 
-        public static void RegisterApproximatorType<TApproximator>()
-            where TApproximator : INeuralApproximator
-        {
-            RegisterApproximatorType(typeof(TApproximator));
-        }
+        //#region TypeRegistration
+        //// Comment: Functionality in this commented region has move dto the DerivedTypesRegistry class (see the TypesRegistry propertyQ)
 
-        public static Type GetApproximatorType(string approximatorTypeName, bool throwIfCannotCreate = true)
-        {
-            if (ApproximatorTypeNames.ContainsKey(approximatorTypeName))
-            {
-                return ApproximatorTypeNames[approximatorTypeName];
-            }
-            try
-            {
-                Type approximatorType = Type.GetType(approximatorTypeName);
-                if (approximatorType == null)
-                {
-                    throw new InvalidOperationException($"Could not find a neural network approximator type named {approximatorTypeName}.");
-                }
-                if (!approximatorType.IsAssignableFrom(typeof(INeuralApproximator)))
-                {
-                    throw new InvalidOperationException($"The type name {approximatorTypeName} resolved to {approximatorType.FullName}: NOT an {nameof(INeuralApproximator)}.");
-                }
-            }
-            catch
-            {
-                if (throwIfCannotCreate)
-                    throw;
-            }
-            return null;
-        }
+        //protected static object StaticLockNeuralApproximator { get; } = new object();
 
-        public static INeuralApproximator CreateApproximator(string approximatorTypeName, bool throwIfCannotCreate = true)
-        {
-            try
-            {
-                Type approximatorType = GetApproximatorType(approximatorTypeName, throwIfCannotCreate);
-                if (approximatorType == null)
-                {
-                    throw new InvalidOperationException($"Could not resolve a neural approximatior type name {approximatorTypeName}.");
-                }
-                return (INeuralApproximator)Activator.CreateInstance(approximatorType);
-            }
-            catch
-            {
-                if (throwIfCannotCreate)
-                    throw;
-            }
-            return null;
-        }
+        //private static Dictionary<string, Type> ApproximatorTypeNames { get; } = new Dictionary<string, Type>();
 
-        #endregion TypeRegistration
+        //protected static void RegisterApproximatorType(string typeName, Type approximatorType) 
+        //{
+        //    if (string.IsNullOrWhiteSpace(typeName))
+        //        throw new ArgumentException("The neural approximator type name to be registered is not valid (null of empty or whitespace string).");
+        //    if (approximatorType == null)
+        //        throw new ArgumentNullException(nameof(approximatorType), "Approximator type to registe is not specified (null reference).");
+        //    if (!typeof(INeuralApproximator).IsAssignableFrom(approximatorType))
+        //    {
+        //        throw new InvalidOperationException($"Cannot register neural approximator type {approximatorType.FullName}: not an {nameof(INeuralApproximator)}.");
+        //    }
+        //    lock (StaticLockNeuralApproximator)
+        //    {
+        //        ApproximatorTypeNames[typeName] = approximatorType;
+        //    }
+        //}
 
-        
+
+        //public static void RegisterApproximatorType(Type approximatorType)
+        //{
+        //    if (approximatorType == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(approximatorType), "Approximator type is not specified (nulll reference).");
+        //    }
+        //    RegisterApproximatorType(approximatorType.FullName, approximatorType);
+        //    RegisterApproximatorType(approximatorType.Name, approximatorType);
+        //    RegisterApproximatorType(approximatorType.AssemblyQualifiedName, approximatorType);
+        //}
+
+        //public static void RegisterApproximatorType<TApproximator>()
+        //    where TApproximator : INeuralApproximator
+        //{
+        //    RegisterApproximatorType(typeof(TApproximator));
+        //}
+
+        //public static Type GetApproximatorType(string approximatorTypeName, bool throwIfCannotCreate = true)
+        //{
+        //    if (ApproximatorTypeNames.ContainsKey(approximatorTypeName))
+        //    {
+        //        return ApproximatorTypeNames[approximatorTypeName];
+        //    }
+        //    try
+        //    {
+        //        Type approximatorType = Type.GetType(approximatorTypeName);
+        //        if (approximatorType == null)
+        //        {
+        //            throw new InvalidOperationException($"Could not find a neural network approximator type named {approximatorTypeName}.");
+        //        }
+        //        if (!approximatorType.IsAssignableFrom(typeof(INeuralApproximator)))
+        //        {
+        //            throw new InvalidOperationException($"The type name {approximatorTypeName} resolved to {approximatorType.FullName}: NOT an {nameof(INeuralApproximator)}.");
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        if (throwIfCannotCreate)
+        //            throw;
+        //    }
+        //    return null;
+        //}
+
+        //public static INeuralApproximator CreateApproximator(string approximatorTypeName, bool throwIfCannotCreate = true)
+        //{
+        //    try
+        //    {
+        //        Type approximatorType = GetApproximatorType(approximatorTypeName, throwIfCannotCreate);
+        //        if (approximatorType == null)
+        //        {
+        //            throw new InvalidOperationException($"Could not resolve a neural approximatior type name {approximatorTypeName}.");
+        //        }
+        //        return (INeuralApproximator)Activator.CreateInstance(approximatorType);
+        //    }
+        //    catch
+        //    {
+        //        if (throwIfCannotCreate)
+        //            throw;
+        //    }
+        //    return null;
+        //}
+
+        //#endregion TypeRegistration
+
+
 
         #region ThreadLocking
 

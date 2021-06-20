@@ -578,11 +578,6 @@ namespace IG.Num
             : base()
         { }
 
-        #region Data
-
-        
-
-        #endregion Data
 
 
         #region Operation 

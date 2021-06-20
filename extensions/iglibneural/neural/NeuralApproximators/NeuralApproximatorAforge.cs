@@ -25,6 +25,7 @@ namespace IG.Neural
         INeuralApproximator, ILockable
     {
 
+        /// <summary>Consructor.</summary>
         public NeuralApproximatorAforge()
             : base()
         { }
@@ -36,8 +37,13 @@ namespace IG.Neural
         /// which makes possible the existence of <see cref="NeuralApproximatorBase.LoadJson(string, ref INeuralApproximator)"/></summary>
         static NeuralApproximatorAforge()
         {
-            RegisterApproximatorType<NeuralApproximatorAforge>();
+            NeuralApproximatorBase.TypesRegistry.RegisterDerivedType<NeuralApproximatorAforge>();
         }
+
+        /// <summary>Does nothing by itself, but causes call to static constructor, which causes the necessary type initializations, i.e., 
+        /// registers the current <see cref="INeuralApproximator"/> type in <see cref="NeuralApproximatorBase.TypesRegistry"/>.</summary>
+        public new static void InitType()
+        { }
 
 
         #region Data
