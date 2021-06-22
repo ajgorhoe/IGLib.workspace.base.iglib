@@ -284,6 +284,7 @@
     <Compile Include="reporter\LoggerMsg.cs" />
     <Compile Include="reporter\ReporterMsg.cs" />
     <Compile Include="reporter\ReporterMsg_Derived.cs" />
+    <Compile Include="types_reflection\DerivedTypesRegistry.cs" />
     <Compile Include="utilities\networking\PortScannerComplex\PortScanner.cs" />
     <Compile Include="utilities\networking\PortScannerSimple\PortScannerSimple.cs" />
     <Compile Include="utilities\networking\UtilNet.cs" />
