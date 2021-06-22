@@ -287,7 +287,8 @@
     <Compile Include="utilities\networking\PortScannerComplex\PortScanner.cs" />
     <Compile Include="utilities\networking\PortScannerSimple\PortScannerSimple.cs" />
     <Compile Include="utilities\networking\UtilNet.cs" />
-    <Compile Include="utilities\types_reflection\DerivedTypesRegistry.cs" />
+    <Compile Include="types_reflection\DerivedTypesRegistryPlain.cs" />
+    <Compile Include="types_reflection\SerializationBinding.cs" />
     <Compile Include="utilities\UilCryptoAux1.cs" />
     <Compile Include="utilities\UtilCrypto.cs" />
     <Compile Include="utilities\UtilCryptoAux.cs" />

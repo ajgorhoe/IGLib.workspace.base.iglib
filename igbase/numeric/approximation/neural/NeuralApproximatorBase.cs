@@ -7,7 +7,8 @@ using System.Text;
 using System.IO;
 
 using IG.Lib;
-
+using IG.Reflection;
+using System.Runtime.Serialization;
 
 namespace IG.Num
 {
@@ -526,6 +527,7 @@ namespace IG.Num
 
     /// <summary>Base class for neural network approximators.</summary>
     /// $A Igor Mar11;
+    [Serializable]
     public abstract class NeuralApproximatorBase : VectorApproximatorBase,
         INeuralApproximator,
         IVectorApproximator, ILockable
@@ -536,9 +538,9 @@ namespace IG.Num
 
         /// <summary>Registry of <see cref="INeuralApproximator"/> types, which enables to retrieve an ANN approximator
         /// type based on its name, which is important for creation of instances via reflection, which is also used when
-        /// loading trained approximators from a serialized JSON file (functionality of <see cref="DerivedTypesRegistry{INeuralApproximator}"/>
+        /// loading trained approximators from a serialized JSON file (functionality of <see cref="DerivedTypesRegistryPlain{INeuralApproximator}"/>
         /// is crucial when restoring internal state of embedded 3rd-party approximators).</summary>
-        public static DerivedTypesRegistry<INeuralApproximator> TypesRegistry { get; } = new DerivedTypesRegistry<INeuralApproximator>();
+        public static DerivedTypesRegistryPlain<INeuralApproximator> TypesRegistry { get; } = new DerivedTypesRegistryPlain<INeuralApproximator>();
 
         /// <summary>Static constructor. Ensures registration of neural approximator type, which makes possible to construct
         /// an approximator based on its registered type name because name can resolve to type object used by <see cref="Activator"/>
@@ -563,6 +565,15 @@ namespace IG.Num
         {
             return NeuralApproximatorBase.TypesRegistry.CreateInstance(approximatorTypeName);
         }
+
+        /// <summary>Serialization binder used for binary deserialization of objects of the current class.
+        /// <para>Thid serialization binder is useed wheen approximator objects of a given class may be binary-deserialized from 
+        /// files where objects were serialized by usiing a different assembly version and/or fully qualified type name than the 
+        /// current ones against which deserialiation is performed.</para>
+        /// <para>If null then no custom binder is used to assist binary deserialization of objects off the current class.</para>
+        /// <para>In types where this serialization binder is needed, it will usually be set in consructors in a hard-coded way, 
+        /// which will take into accont full assembly names which were eves used in serialization of objects of a given type.</para></summary>
+        protected SerializationBinderBase SerializationBinder { get; set; }
 
 
 
@@ -1486,7 +1497,8 @@ namespace IG.Num
 
         /// <summary>Restores neural network from a file where it has been stored before.</summary>
         /// <param name="filePath">Path to the file from which the neural network is read.</param>
-        protected abstract void LoadNetworkSpecific(string filePath);
+        /// <param name="useSerializationBinderIfSpecified">Whether the <see cref="SerializationBinder"/> should be used when specified.</param>
+        protected abstract void LoadNetworkSpecific(string filePath, bool useSerializationBinderIfSpecified = true);
 
 
         #region Training

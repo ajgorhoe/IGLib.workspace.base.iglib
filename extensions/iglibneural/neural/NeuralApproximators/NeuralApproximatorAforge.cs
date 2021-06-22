@@ -207,7 +207,8 @@ namespace IG.Neural
 
         /// <summary>Restores neural network from a file where it has been stored before.</summary>
         /// <param name="fileOrDirectoryPath">Path to the file from which the neural network is read.</param>
-        protected override void LoadNetworkSpecific(string fileOrDirectoryPath)
+        /// <param name="useSerializationBinderIfSpecified">Whether the <see cref="SerializationBinder"/> should be used when specified.</param>
+        protected override void LoadNetworkSpecific(string fileOrDirectoryPath, bool useSerializationBinderIfSpecified = true)
         {
             lock (Lock)
             {

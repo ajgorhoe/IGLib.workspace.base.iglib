@@ -10,6 +10,7 @@ namespace IG.Num
 
 
     /// <summary>Base class for vector function approximators.</summary>
+    [Serializable]
     public abstract class VectorApproximatorBase: IVectorApproximator, ILockable
     {
 

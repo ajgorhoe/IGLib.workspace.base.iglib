@@ -27,7 +27,7 @@ namespace IG.Num
             throw new NotImplementedException();
         }
 
-        protected override void LoadNetworkSpecific(string filePath)
+        protected override void LoadNetworkSpecific(string filePath, bool useSerializationBinderIfSpecified = true)
         {
             throw new NotImplementedException();
         }

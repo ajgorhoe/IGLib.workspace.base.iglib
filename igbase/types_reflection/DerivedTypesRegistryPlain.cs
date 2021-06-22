@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using IG.Lib;
 
 
-
-namespace IG.Lib
+namespace IG.Reflection
 {
 
     /// <summary>Registry of derived types in a certain type hierarchy.
@@ -18,7 +18,7 @@ namespace IG.Lib
     /// constructor, etc.</para>
     /// <para>Typically, a registry will be implemented as static property in some base class.</para></summary>
     /// <typeparam name="BaseType"></typeparam>
-    public class DerivedTypesRegistry<BaseType>: ILockable
+    public class DerivedTypesRegistryPlain<BaseType>: ILockable
     {
 
 
