@@ -56,7 +56,7 @@ namespace IG.Reflection
             }
         }
 
-        protected List<SerializationBinderPlain> BindingInformatin { get; }
+        protected List<SerializationBinderSingleVerbatim> BindingInformatin { get; }
 
 
         public override Type BindToType(string assemblyName, string typeName)
