@@ -11,21 +11,6 @@ using IG.Lib;
 namespace IG.Reflection
 {
 
-
-    /// <summary>Interface implemented by IGLib's classes based on the framework's <see cref="SerializationBinder"/> class.</summary>
-    public interface ISerializationBinder
-    {
-        Type BindToType(string assemblyName, string typeName);
-    }
-
-    /// <summary>Enables to reference classes that both inherit from the framework's <see cref="SerializationBinder"/>
-    /// (necessary for assigning the <see cref="IFormatter.Binder"/> property) and implement the <see cref="ISerializationBinder"/>
-    /// interface.</summary>
-    public abstract class SerializationBinderBase: SerializationBinder, ISerializationBinder
-    {
-
-    }
-
     public class SerializationBinderBasic: SerializationBinderBase, ISerializationBinder
     {
 

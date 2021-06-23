@@ -540,7 +540,7 @@ namespace IG.Num
         /// type based on its name, which is important for creation of instances via reflection, which is also used when
         /// loading trained approximators from a serialized JSON file (functionality of <see cref="DerivedTypesRegistryPlain{INeuralApproximator}"/>
         /// is crucial when restoring internal state of embedded 3rd-party approximators).</summary>
-        public static DerivedTypeRgistryBasic<INeuralApproximator> TypesRegistry { get; } = new DerivedTypeRgistryBasic<INeuralApproximator>();
+        public static DerivedTypesRgistryBasic<INeuralApproximator> TypesRegistry { get; } = new DerivedTypesRgistryBasic<INeuralApproximator>();
 
         /// <summary>Static constructor. Ensures registration of neural approximator type, which makes possible to construct
         /// an approximator based on its registered type name because name can resolve to type object used by <see cref="Activator"/>
