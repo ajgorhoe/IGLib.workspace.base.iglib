@@ -265,7 +265,7 @@ namespace IG.Num
                     // Stopping criteria for training:
                     this.MaxEpochs = obj.MaxEpochs;
                     this.EpochsInBundle = obj.EpochsInBundle;
-                    this.ToleranceRMS = null; // newly saved data will not use this field
+                    // this.ToleranceRMS = null; // newly saved data will not use this field
                     SerializationDto.CopyFromObject(obj.ToleranceRms, ref this.ToleranceRms);
                     SerializationDto.CopyFromObject(obj.ToleranceRmsRelativeToRange, ref this.ToleranceRmsRelativeToRange);
                     this.ToleranceRmsRelativeToRangeScalar = obj.ToleranceRmsRelativeToRangeScalar;
@@ -535,33 +535,33 @@ namespace IG.Num
         {
             return NeuralApproximatorBase.CreateApproximator(NeuralApproximatorType);
 
-            if (string.IsNullOrEmpty(NeuralApproximatorType))
-            {
-                throw new InvalidOperationException($"Neural approximator type is not specified on the {GetType().Name} object.");
-                //return new NeuralApproximatorAforge();
-            }
-            else
-            {
-                INeuralApproximator ret = null;
-                //try
-                //{
-                    Type approximatorType = Type.GetType(NeuralApproximatorType);
-                if (approximatorType == null)
-                {
-                    throw new InvalidOperationException($"Could not resolve the neural approximator ({typeof(INeuralApproximator).Name}) type from name {NeuralApproximatorType}."
-                        + Environment.NewLine + "  Maybe you are stating name that is not assembly-qualified in a different assembly than the one containing type definition.");
-                }
-                    ret = (INeuralApproximator)Activator.CreateInstance(approximatorType);
-                //}
-                //catch { }
-                //finally
-                //{
-                //    if (ret == null)
-                //        ret = new NeuralApproximatorAforgeFake();
-                //}
+            //if (string.IsNullOrEmpty(NeuralApproximatorType))
+            //{
+            //    throw new InvalidOperationException($"Neural approximator type is not specified on the {GetType().Name} object.");
+            //    //return new NeuralApproximatorAforge();
+            //}
+            //else
+            //{
+            //    INeuralApproximator ret = null;
+            //    //try
+            //    //{
+            //        Type approximatorType = Type.GetType(NeuralApproximatorType);
+            //    if (approximatorType == null)
+            //    {
+            //        throw new InvalidOperationException($"Could not resolve the neural approximator ({typeof(INeuralApproximator).Name}) type from name {NeuralApproximatorType}."
+            //            + Environment.NewLine + "  Maybe you are stating name that is not assembly-qualified in a different assembly than the one containing type definition.");
+            //    }
+            //        ret = (INeuralApproximator)Activator.CreateInstance(approximatorType);
+            //    //}
+            //    //catch { }
+            //    //finally
+            //    //{
+            //    //    if (ret == null)
+            //    //        ret = new NeuralApproximatorAforgeFake();
+            //    //}
 
-                return ret;
-            }
+            //    return ret;
+            //}
         }
 
     } // class NeuralApproximatorDtoBase

@@ -107,7 +107,7 @@ namespace IG.Reflection
         /// <param name="tryGetIfNotRegistered">If true then the method tries to infer the type from the specified <paramref name="derivedTypeName"/>
         /// even if the type information is not registered under <paramref name="derivedTypeName"/>.</param>
         /// <returns>The type that corresponds to the specified type name.</returns>
-        /// <param name="throwIfCannotResolve">If true then exception is thrown when the type name cannot be resolved. If false then nulll is returned instead.
+        /// <param name="throwIfCannotResolve">If true then exception is thrown when the type name cannot be resolved. If false then nulll is returned instead.</param>
         public virtual Type GetType(string derivedTypeName, bool tryGetIfNotRegistered = false, bool throwIfCannotResolve = true)
         {
             InfoType info = GetTypeData(derivedTypeName, throwIfCannotResolve = false);

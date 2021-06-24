@@ -11,20 +11,49 @@ using IG.Lib;
 namespace IG.Reflection
 {
 
+    /// <summary>A cascaded <see cref="SerializationBinder"/> class that maps the assembly and type information of the
+    /// serialized objects into classes into which objects shoulld be deserialized, based on definitions from a collection
+    /// of the contained elementary <see cref="ISerializationBinder"/> classes. 
+    /// Similar to <see cref="SerializationBinderCascadedImmutable"/>, except that binders can also be added (at the end of the
+    /// list) after creation.</summary>
+    /// <seealso cref="SerializationBinderCascadedImmutable"/>
     public class SerializationBinderCascaded : SerializationBinderCascadedImmutable, ISerializationBinder
     {
 
+        /// <summary>Calls base class' <see cref="SerializationBinderCascadedImmutable(SerializationBinderBase[])"/>
+        /// to construct the object.</summary>
         public SerializationBinderCascaded(params SerializationBinderBase[] binders) : base(binders)
         { }
 
+        /// <summary>Calls base class <see cref="SerializationBinderCascadedImmutable(IEnumerable{SerializationBinderBase})"/>
+        /// to construct the object.</summary>
         public SerializationBinderCascaded(IEnumerable<SerializationBinderBase> binders) : base(binders)
         { }
 
+        /// <summary>Adds the specified serialization binders at the end of the ordered set of contained binders, 
+        /// and returns the current  object to prrovide a fluent interface.</summary>
+        /// <param name="binders">Serialization binders (of type <see cref="SerializationBinderBase"/>) that will be 
+        /// contained in the constructed serialization binder (can be stated as an array, as comma-separated arguments of
+        /// variable number, or as enoty argument to include no builders).</param>
+        /// <returns>The current binder object (to provide fluent interface).</returns>
+        /// <seealso cref="SerializationBinderCascadedImmutable.AddBindersInternal(SerializationBinderBase[])"/>
         public virtual SerializationBinderCascaded AddSerializationBinders(params SerializationBinderBase[] binders)
         {
             AddBindersInternal(binders);
             return this;
         }
+
+        /// <summary>Adds the specified binders at the end of the ordered set of contained binders,
+        /// and returns the current  object to prrovide a fluent interface.</summary>
+        /// <param name="binders">Collection of serialization binders (of type <see cref="SerializationBinderBase"/>) that will be 
+        /// contained in the constructed serialization binder.</param>
+        /// <seealso cref="SerializationBinderCascadedImmutable.AddBindersInternal(IEnumerable{SerializationBinderBase})"/>
+        public SerializationBinderCascaded AddSerializationBinders(IEnumerable<SerializationBinderBase> binders)
+        {
+            AddBindersInternal(binders);
+            return this;
+        }
+
 
     }
 
@@ -44,42 +73,57 @@ namespace IG.Reflection
     public class SerializationBinderCascadedImmutable : SerializationBinderBase, ISerializationBinder
     {
 
-
-
-        /// <summary>Constructs the bider with all the specified binders added.</summary>
-        /// <param name="binders">Serialization binders (of type <see cref="SerializationBinderBase"/>) that are 
-        /// contained in the current serializattion binder.</param>
+        /// <summary>Constructs the serialization bider with all the specified binders added.</summary>
+        /// <param name="binders">Serialization binders (of type <see cref="SerializationBinderBase"/>) that will be 
+        /// contained in the constructed serialization binder (can be stated as an array, as comma-separated arguments of
+        /// variable number, or as enoty argument to include no builders).</param>
         public SerializationBinderCascadedImmutable(params SerializationBinderBase[] binders)
         {
             AddBindersInternal(binders);
         }
 
+        /// <summary>Constructs the serialization bider with all the specified binders added.</summary>
+        /// <param name="binders">Collection of serialization binders (of type <see cref="SerializationBinderBase"/>) that will be 
+        /// contained in the constructed serialization binder.</param>
         public SerializationBinderCascadedImmutable(IEnumerable<SerializationBinderBase> binders) : this(binders.ToArray())
         {
             AddBindersInternal(binders);
         }
 
 
-        private List<SerializationBinderBase> ContainedBinders = new List<SerializationBinderBase>();
+        /// <summary>List of contained serialization binders.</summary>
+        private List<SerializationBinderBase> ContainedBindersPrivate { get; } = new List<SerializationBinderBase>();
 
-        protected virtual void AddBindersInternal(params SerializationBinderBase[] binders)
+        /// <summary>Enumerable that enables iteration over contained serialization binders (elements of <see cref="ContainedBindersPrivate"/>).</summary>
+        protected IEnumerable<SerializationBinder> ContainedBinders { get { return ContainedBindersPrivate; } }
+
+        /// <summary>Adds the specified binders at the end of the ordered set of contained binders (<see cref="ContainedBindersPrivate"/>,
+        /// accessible via <see cref="ContainedBinders"/>).</summary>
+        /// <param name="binders">Serialization binders (of type <see cref="SerializationBinderBase"/>) that will be 
+        /// contained in the constructed serialization binder (can be stated as an array, as comma-separated arguments of
+        /// variable number, or as enoty argument to include no builders).</param>
+        protected void AddBindersInternal(params SerializationBinderBase[] binders)
         {
             if (binders != null)
             {
                 foreach (SerializationBinderBase binder in binders)
                 {
-                    ContainedBinders.Add(binder);
+                    ContainedBindersPrivate.Add(binder);
                 }
             }
         }
 
-        protected virtual void AddBindersInternal(IEnumerable<SerializationBinderBase> binders)
+        /// <summary>Adds the specified binders at the end of the ordered set of contained binders (<see cref="ContainedBindersPrivate"/>,
+        /// accessible via <see cref="ContainedBinders"/>).</summary>
+        /// <param name="binders">Collection of serialization binders (of type <see cref="SerializationBinderBase"/>) that will be 
+        /// contained in the constructed serialization binder.</param>
+        protected void AddBindersInternal(IEnumerable<SerializationBinderBase> binders)
         {
             if (binders != null)
             {
                 foreach (SerializationBinderBase binder in binders)
                 {
-                    ContainedBinders.Add(binder);
+                    ContainedBindersPrivate.Add(binder);
                 }
             }
         }
@@ -89,10 +133,10 @@ namespace IG.Reflection
         /// object into a type of an object into which it deserializes. This mapping is defined by a collection of elementary
         /// <see cref="ISerializationBinder"/> objects derived from <see cref="SerializationBinderBase"/> class, each of
         /// which defines its own mapping. The overall mapping is defined by this method in such a way that it iterates
-        /// (in order of elements) over all serialization binders on the <see cref="ContainedBinders"/>, and returns as target
+        /// (in order of elements) over all serialization binders on the <see cref="ContainedBindersPrivate"/>, and returns as target
         /// type the first non-null <see cref="Type"/> object returned by the <see cref="ISerializationBinder.BindToType(string, string)"/>
-        /// method returned by any of the objects contained in <see cref="ContainedBinders"/> called with the same parameters 
-        /// <paramref name="assemblyName"/> and <paramref name="typeName"/>.<summary>
+        /// method returned by any of the objects contained in <see cref="ContainedBindersPrivate"/> called with the same parameters 
+        /// <paramref name="assemblyName"/> and <paramref name="typeName"/>.</summary>
         /// <param name="assemblyName">Assembly name of the serialized object that is matched and combined with <paramref name="typeName"/>
         /// in order </param>
         /// <param name="typeName">Type name of the deserialized object that is matched and combined with <paramref name="assemblyName"/>

@@ -14,7 +14,7 @@ namespace IG.Reflection
 
     /// <summary>Registry of types with a common base type, similar to <see cref="DerivedTypesRegistry{BaseType, TypeInfoBase}"/>, 
     /// with the simple type info class <see cref="TypeInfoBase"/> and with added registration method based on type
-    /// (<see cref="RegisterDerivedType{TypeToRegister}"/>). Each type in is registered with a type info object (of type <see cref="TypeInfoBase>"/> 
+    /// (<see cref="RegisterDerivedType{TypeToRegister}"/>). Each type in is registered with a type info object (of type <see cref="TypeInfoBase"/> 
     /// and can be registered under differeent names (typically, simple type names and qualified names).</summary>
     /// <typeparam name="BaseType">Base type for types that can be registered in the current registry. Registered
     /// types must derive from this type.</typeparam>
