@@ -286,7 +286,8 @@
     <Compile Include="reporter\ReporterMsg_Derived.cs" />
     <Compile Include="types_reflection\SerializationBinders\ISerializationBinder.cs" />
     <Compile Include="types_reflection\SerializationBinders\SerializationBinderCascaded.cs" />
-    <Compile Include="types_reflection\SerializationBinders\SerializationBinderSingle.cs" />
+    <Compile Include="types_reflection\SerializationBinders\SerializationBinderBasic.cs" />
+    <Compile Include="types_reflection\SerializationBinders\SerializationBinderPlain.cs" />
     <Compile Include="types_reflection\TypeRegistry\DerivedTypesRgistryBasic.cs" />
     <Compile Include="types_reflection\TypeRegistry\TypeInfoBase.cs" />
     <Compile Include="types_reflection\TypeRegistry\DerivedTypesRegistry.cs" />

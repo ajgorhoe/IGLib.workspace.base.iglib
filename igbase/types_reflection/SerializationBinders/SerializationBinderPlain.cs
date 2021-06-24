@@ -12,13 +12,13 @@ namespace IG.Reflection
 {
 
     /// <summary>A simple <see cref="SerializationBinder"/>, defines a single mapping from the original assembly and
-    /// type name to a target type. Matching of assembly and type name is literal and case sensitive.
+    /// type name to a target type. Matching of assembly and type name is verbatim and case sensitive.
     /// <para>Use <see cref="SerializationBinderCascaded"/> to combine mulltiple binders of this type in order
     /// to extend the mapping.</para></summary>
-    public class SerializationBinderSingle: SerializationBinderBase, ISerializationBinder
+    public class SerializationBinderPlain: SerializationBinderBase, ISerializationBinder
     {
 
-        public SerializationBinderSingle(string originalTypeName, Type targetType) :
+        public SerializationBinderPlain(string originalTypeName, Type targetType) :
             this(null, originalTypeName, targetType)
         {  }
 
@@ -31,7 +31,7 @@ namespace IG.Reflection
         /// <see cref="OriginalTypeName"/> property.</param>
         /// <param name="targetType">The type into which deserialization is performed when the 
         /// <paramref name="origAssemblyName"/> and <paramref name="origTypeName"/> are matched.</param>
-        public SerializationBinderSingle(string origAssemblyName, string origTypeName, Type targetType)
+        public SerializationBinderPlain(string origAssemblyName, string origTypeName, Type targetType)
         {
             if (targetType == null)
             {
@@ -48,15 +48,15 @@ namespace IG.Reflection
 
         /// <summary>Stores the original assembly name of the serialized type defined in the mapping. Must be verbatm,
         /// as it appears in the serialized object.</summary>
-        public string OriginalAssemblyName { get; }
+        public string OriginalAssemblyName { get; protected set; }
 
         /// <summary>Contains the original type name of the serialized type defined in the mapping. Must be verbatm,
         /// as it appears in the serialized object.</summary>
-        public string OriginalTypeName { get; }
+        public string OriginalTypeName { get; protected set; }
 
         /// <summary>Target type of the mapping. When matching combination of <see cref="OriginalAssemblyName"/> and 
         /// <see cref="OriginalTypeName"/> are matched in the serialized stream, this part will be deserialized to this type.</summary>
-        public Type TargetType { get; }
+        public Type TargetType { get; protected set; }
 
 
         /// <summary>Defines a single mapping from the original assembly and type name to the target type. 
