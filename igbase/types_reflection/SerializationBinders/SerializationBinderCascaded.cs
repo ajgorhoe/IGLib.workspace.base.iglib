@@ -37,7 +37,7 @@ namespace IG.Reflection
         /// variable number, or as enoty argument to include no builders).</param>
         /// <returns>The current binder object (to provide fluent interface).</returns>
         /// <seealso cref="SerializationBinderCascadedImmutable.AddBindersInternal(SerializationBinderBase[])"/>
-        public virtual SerializationBinderCascaded AddSerializationBinders(params SerializationBinderBase[] binders)
+        public virtual SerializationBinderCascaded Add(params SerializationBinderBase[] binders)
         {
             AddBindersInternal(binders);
             return this;
@@ -48,7 +48,7 @@ namespace IG.Reflection
         /// <param name="binders">Collection of serialization binders (of type <see cref="SerializationBinderBase"/>) that will be 
         /// contained in the constructed serialization binder.</param>
         /// <seealso cref="SerializationBinderCascadedImmutable.AddBindersInternal(IEnumerable{SerializationBinderBase})"/>
-        public SerializationBinderCascaded AddSerializationBinders(IEnumerable<SerializationBinderBase> binders)
+        public SerializationBinderCascaded Add(IEnumerable<SerializationBinderBase> binders)
         {
             AddBindersInternal(binders);
             return this;
@@ -145,6 +145,7 @@ namespace IG.Reflection
         /// shoulld deserialize.</returns>
         public override Type BindToType(string assemblyName, string typeName)
         {
+            Type ret = null;
             foreach (SerializationBinderBase binder in ContainedBinders)
             {
                 if (binder != null)
@@ -153,12 +154,13 @@ namespace IG.Reflection
                     if (matchedBoundType != null)
                     {
                         // Console.WriteLine($"Binding succeeded: type name: {typeName}, assembly name: {assemblyName}, type: {matchedBoundType.FullName}");
-                        return matchedBoundType;
+                        ret = matchedBoundType;
+                        break;
                     }
                 }
             }
             // Console.WriteLine($"Binding not succeeded: type name: {typeName}, assembly name: {assemblyName}");
-            return null;
+            return ret;
         }
 
     }
