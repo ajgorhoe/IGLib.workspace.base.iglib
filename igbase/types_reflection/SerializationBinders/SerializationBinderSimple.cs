@@ -15,7 +15,7 @@ namespace IG.Reflection
     /// type name to a target type. Matching of assembly and type name is literal and case sensitive.
     /// <para>Use <see cref="SerializationBinderCascaded"/> to combine mulltiple binders of this type in order
     /// to extend the mapping.</para></summary>
-    public class SerializationBinderSingleVerbatim: SerializationBinderBase, ISerializationBinder
+    public class SerializationBinderSimple: SerializationBinderBase, ISerializationBinder
     {
 
 
@@ -27,15 +27,12 @@ namespace IG.Reflection
         /// <see cref="OriginalTypeName"/> property.</param>
         /// <param name="targetType">The type into which deserialization is performed when the 
         /// <paramref name="origAssemblyName"/> and <paramref name="origTypeName"/> are matched.</param>
-        public SerializationBinderSingleVerbatim(string origAssemblyName, string origTypeName, Type targetType)
+        public SerializationBinderSimple(string origAssemblyName, string origTypeName, Type targetType)
         {
             if (targetType == null)
             {
-                throw new ArgumentNullException("Target type for serialization binding is not specified (null refeeence).");
-            }
-            if (origAssemblyName == null)
-            {
-                origAssemblyName =Assembly.GetExecutingAssembly().FullName;
+                if (!(string.IsNullOrEmpty(origAssemblyName) && string.IsNullOrEmpty(origTypeName)))
+                    throw new ArgumentNullException("Target type for serialization binding is not specified (null refeeence).");
             }
             OriginalAssemblyName = origAssemblyName;
             OriginalTypeName = origTypeName;
@@ -72,7 +69,7 @@ namespace IG.Reflection
             {
                 if (TargetType == null)
                 {
-                    throw new InvalidOperationException($"The {nameof(TargetType)} proerty is not specified on {nameof(SerializationBinderSingleVerbatim)}." + Environment.NewLine
+                    throw new InvalidOperationException($"The {nameof(TargetType)} proerty is not specified on {nameof(SerializationBinderSimple)}." + Environment.NewLine
                         + $"  Original type: {OriginalTypeName}, assembly name: {OriginalAssemblyName}.");
                 }
                 return TargetType;

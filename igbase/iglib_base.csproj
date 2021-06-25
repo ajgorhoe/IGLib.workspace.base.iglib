@@ -286,15 +286,14 @@
     <Compile Include="reporter\ReporterMsg_Derived.cs" />
     <Compile Include="types_reflection\SerializationBinders\ISerializationBinder.cs" />
     <Compile Include="types_reflection\SerializationBinders\SerializationBinderCascaded.cs" />
-    <Compile Include="types_reflection\SerializationBinders\SerializationBinderBasic.cs" />
-    <Compile Include="types_reflection\SerializationBinders\SerializationBinderPlain.cs" />
+    <Compile Include="types_reflection\SerializationBinders\SerializationBinderElementary.cs" />
     <Compile Include="types_reflection\TypeRegistry\DerivedTypesRgistryBasic.cs" />
     <Compile Include="types_reflection\TypeRegistry\TypeInfoBase.cs" />
     <Compile Include="types_reflection\TypeRegistry\DerivedTypesRegistry.cs" />
     <Compile Include="utilities\networking\PortScannerComplex\PortScanner.cs" />
     <Compile Include="utilities\networking\PortScannerSimple\PortScannerSimple.cs" />
     <Compile Include="utilities\networking\UtilNet.cs" />
-    <Compile Include="types_reflection\SerializationBinders\SerializationBinderSingleVerbatim.cs" />
+    <Compile Include="types_reflection\SerializationBinders\SerializationBinderSimple.cs" />
     <Compile Include="utilities\UilCryptoAux1.cs" />
     <Compile Include="utilities\UtilCrypto.cs" />
     <Compile Include="utilities\UtilCryptoAux.cs" />
