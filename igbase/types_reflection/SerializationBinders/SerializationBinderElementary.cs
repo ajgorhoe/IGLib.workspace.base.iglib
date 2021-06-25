@@ -14,6 +14,7 @@ namespace IG.Reflection
     /// <summary>A <see cref="SerializationBinder"/>, defines a single mapping from the original assembly and
     /// type name to a target type. Matching of assembly and type name may be literal (as in <see cref="SerializationBinderSimple"/>) 
     /// but can be fine tunned with parameters.
+    /// <para>Type is immutable.</para>
     /// <para>Properties used to fine tune the behaior:</para>
     /// <para><see cref="IsAssemblyNameIgnored"/></para>
     /// <para><see cref="IsAssemblyNameIgnored"/></para>
@@ -24,7 +25,9 @@ namespace IG.Reflection
     public class SerializationBinderElementary: SerializationBinderSimple, ISerializationBinder
     {
 
-
+        /// <summary></summary>
+        /// <param name="origTypeName">Type name for which mapping is provided.</param>
+        /// <param name="targetType">Type into which the matched type is deserialized.</param>
         public SerializationBinderElementary(string origTypeName, Type targetType) :
             this(origAssemblyName: null, isAssemblyNameSimple: false, isAssemblyNameIgnored: true, origTypeName: origTypeName,
                 isTypeNameSimple: false, targetType: targetType)
@@ -32,12 +35,24 @@ namespace IG.Reflection
             IsAssemblyNameIgnored = true;
         }
 
+        /// <summary>Constructs serialization binder where assembly name is ignored.</summary>
+        /// <param name="origTypeName">Type name for which mapping is provided.</param>
+        /// <param name="isTypeNameSimple">Whether only simple type name, without namespace information, is matched.</param>
+        /// <param name="targetType">Type into which the matched type is deserialized.</param>
         public SerializationBinderElementary(string origTypeName, bool isTypeNameSimple, Type targetType) :
             this(origAssemblyName: null, isAssemblyNameSimple: false, isAssemblyNameIgnored: true, origTypeName: origTypeName, 
                 isTypeNameSimple: isTypeNameSimple, targetType: targetType)
         { }
 
-        public SerializationBinderElementary(string origAssemblyName, bool isAssemblyNameSimple, bool isAssemblyNameIgnored, string origTypeName, bool isTypeNameSimple, Type targetType):
+        /// <summary>Construct serialization binder with a most general set of adjustable type matching parameters.</summary>
+        /// <param name="origAssemblyName">Assembly name that is matched.</param>
+        /// <param name="isAssemblyNameSimple">Whether only simple assembly name is matched, rather than full name.</param>
+        /// <param name="isAssemblyNameIgnored">Whether assembly name is ignored (and thus only type name is matched).</param>
+        /// <param name="origTypeName">Type name that is matched.</param>
+        /// <param name="isTypeNameSimple">Whether only simple type name, without namespace information, is matched.</param>
+        /// <param name="targetType">Type into which the matched type is deserialized.</param>
+        public SerializationBinderElementary(string origAssemblyName, bool isAssemblyNameSimple, bool isAssemblyNameIgnored, 
+            string origTypeName, bool isTypeNameSimple, Type targetType):
             base(origAssemblyName, origTypeName, targetType)
         {
             IsAssemblyNameSimple = isAssemblyNameSimple;
