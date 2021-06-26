@@ -450,8 +450,8 @@ package " + PackageName +
 
         #endregion BasicOperations
 
-        #region IRegistrableImplementation
-        // Comment: this includes IIdrntifiable implementation, for which _idProxy is used in addition.
+        #region IRegistrable Implementation
+        // Comment: this includes IIdentifiable implementation, for which _idProxy is used in addition.
 
         /// <summary>Static object that providees object register and generates IDs 
         /// for this class:</summary>

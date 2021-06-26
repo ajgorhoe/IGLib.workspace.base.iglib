@@ -298,7 +298,7 @@ namespace IG.Lib
             return result;
         }
 
-        /// <summary>Recompiles the basic script where evaluatin is plugged in, with added definitions.
+        /// <summary>Recompiles the basic script where evaluation is plugged in, with added definitions.
         /// Throws exceptions if errors occur when compiling code.
         /// After execution, user definitions are added to the base script if compilatin is successful,
         /// so that they can be used in subsequent evaluations of code.</summary>

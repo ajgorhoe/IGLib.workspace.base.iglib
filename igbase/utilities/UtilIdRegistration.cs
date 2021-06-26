@@ -16,7 +16,7 @@ namespace IG.Lib
     }
 
     /// <summary>Objects of this type have a unique ID (unique for all objects of a given type)
-    /// and can be registered in the register of existent objects of the specified type.
+    /// and can be registered in the register of existing objects of the specified type.
     /// Implementation notes: 
     /// Registerable.Example contains an example of how to do that, or can even be inherited
     /// to provide all functionality automatically (but this may not be feasible because multiple 
