@@ -236,3 +236,7 @@ project.lock.json
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
 
+/externalextended/ann/aforge.net/Sources/Core/AForge.xml
+/externalextended/ann/aforge.net/Sources/Genetic/AForge.Genetic.xml
+/externalextended/ann/aforge.net/Sources/Math/AForge.Math.xml
+/externalextended/ann/aforge.net/Sources/Neuro/AForge.Neuro.xml
