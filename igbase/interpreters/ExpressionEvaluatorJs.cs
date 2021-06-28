@@ -81,7 +81,7 @@ Quit with '\q' .";
 
     // WARNING:
     // When using Jint, it does not work correctly if the initiallization string is longer than the below string.
-    // Therefore, do not add anything more to the initialization string, but try ro execure additional things
+    // Therefore, do not add anything more to the initialization string, but try ro execute additional things
     // separately!
 
      protected string _baseDefinitionsJs = @"
