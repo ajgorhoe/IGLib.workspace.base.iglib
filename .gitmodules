@@ -4,3 +4,6 @@
 [submodule "external/ZedGraph"]
 	path = external/ZedGraph
 	url = https://github.com/ZedGraph/ZedGraph.git
+[submodule "modules/IGLibCore"]
+	path = modules/IGLibCore
+	url = https://gitlab.com/ajgorhoe/iglib.modules.iglibcore.git
