@@ -699,6 +699,10 @@
       <Project>{0ab31a6e-e0de-4f4e-8d0e-7ad60ae65e26}</Project>
       <Name>iglib_base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\modules\IGLibCore\IGLibCore.csproj">
+      <Project>{aaa3e637-50ae-4f42-9771-a34975dbb3f0}</Project>
+      <Name>IGLibCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

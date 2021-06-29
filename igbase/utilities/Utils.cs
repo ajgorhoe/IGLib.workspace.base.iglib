@@ -15,12 +15,12 @@ using System.Collections.Concurrent;
 namespace IG.Lib
 {
 
-    /// <summary>Lockable object, has a Lock property that returns object on which
-    /// lock must be performed in order to lock the object.</summary>
-    public interface ILockable
-    {
-        object Lock { get; }
-    }
+    ///// <summary>Lockable object, has a Lock property that returns object on which
+    ///// lock must be performed in order to lock the object.</summary>
+    //public interface ILockable
+    //{
+    //    object Lock { get; }
+    //}
 
     /// <summary>General utilities.</summary>
     /// $A Igor Apr10 Jun15;

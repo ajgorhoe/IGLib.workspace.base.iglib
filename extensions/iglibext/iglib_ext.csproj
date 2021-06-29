@@ -204,6 +204,10 @@
       <Name>igform</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\modules\IGLibCore\IGLibCore.csproj">
+      <Project>{aaa3e637-50ae-4f42-9771-a34975dbb3f0}</Project>
+      <Name>IGLibCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\igplot2d\plot2d\igplot2d.csproj">
       <Project>{C9A09DBC-B304-42DF-9CEE-6BA0E856ABC2}</Project>
       <Name>igplot2d</Name>
