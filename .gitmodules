@@ -7,3 +7,6 @@
 [submodule "modules/IGLibCore"]
 	path = modules/IGLibCore
 	url = https://gitlab.com/ajgorhoe/iglib.modules.iglibcore.git
+[submodule "modules/IGLibEventAggregator"]
+	path = modules/IGLibEventAggregator
+	url = https://gitlab.com/ajgorhoe/IGLib.misc.EventAggregator.git
