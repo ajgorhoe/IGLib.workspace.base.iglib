@@ -383,9 +383,13 @@
       <Project>{d09bdc8f-a69b-4579-a574-f8e6bc9a5849}</Project>
       <Name>Numerics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\modules\IGLibCore\IGLibCore.csproj">
+    <ProjectReference Include="..\modules\IGLibCore\src\IGLibCore.csproj">
       <Project>{aaa3e637-50ae-4f42-9771-a34975dbb3f0}</Project>
       <Name>IGLibCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\modules\IGLibEventAggregator\EventAggregator\EventAggregator.csproj">
+      <Project>{bcd247b4-4a29-4174-9884-c2444a534a5b}</Project>
+      <Name>EventAggregator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
