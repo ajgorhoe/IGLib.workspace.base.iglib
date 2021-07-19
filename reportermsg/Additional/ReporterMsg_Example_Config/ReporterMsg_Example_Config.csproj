@@ -91,9 +91,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\igbase\iglib_base.csproj">
+    <ProjectReference Include="..\..\..\igbase\IGLib.csproj">
       <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
-      <Name>iglib_base</Name>
+      <Name>IGLib</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\ReporterMsg\ReporterMsg.csproj">

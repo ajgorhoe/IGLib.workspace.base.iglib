@@ -195,9 +195,9 @@
       <Project>{7b58d480-a3a6-43b2-bb1d-5e014dc94fe0}</Project>
       <Name>ZedGraph</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\igbase\iglib_base.csproj">
+    <ProjectReference Include="..\..\igbase\IGLib.csproj">
       <Project>{0ab31a6e-e0de-4f4e-8d0e-7ad60ae65e26}</Project>
-      <Name>iglib_base</Name>
+      <Name>IGLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\igforms\igform.csproj">
       <Project>{50235FC8-A69D-47AE-A557-6518B35CC7C9}</Project>
