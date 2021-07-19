@@ -1,4 +1,73 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--
+    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>net40</TargetFramework>
+    -->
+
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>net48</TargetFrameworks>
+  </PropertyGroup>
+  
+  
+  <PropertyGroup>
+    <!-- Attributes previously in AsemblyInfo.cs: -->
+    <Version>1.8.0</Version>
+    <Authors>Igor Grešovnik et al.</Authors>
+    <Company>Igor Grešovnik</Company>
+    <Product>Investigative Generic Library - IGLibBase</Product>
+    <PackageId>IGLibBase</PackageId>
+    <AssemblyVersion>1.8.0</AssemblyVersion>
+    <FileVersion>1.8.0</FileVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description>Basic IGLib library.</Description>
+    <Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl></RepositoryUrl>
+    <RepositoryType>Hit</RepositoryType>
+    <PackageTags>Tags</PackageTags>
+    <PackageReleaseNotes>Release</PackageReleaseNotes>
+  </PropertyGroup>
+  
+  
+  <ItemGroup>
+    <ProjectReference Include="..\external\jint\Jint\Jint.csproj" />
+    <ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
+    <ProjectReference Include="..\modules\IGLibCore\src\IGLibCore.csproj" />
+  </ItemGroup>
+  
+  
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Extensions">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Web.Extensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  
+  
+  <!--
+  <ItemGroup>
+    <Compile Remove="FromIGLibBase\**" />
+    <EmbeddedResource Remove="FromIGLibBase\**" />
+    <None Remove="FromIGLibBase\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ToArrange\TypeConversion\" />
+  </ItemGroup>
+  -->
+  
+</Project>
+
+
+
+<!--
+
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -73,12 +142,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
-    <!--
-    <Reference Include="MathNet.Numerics">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\mumerics_2_6_1\Net40\MathNet.Numerics.dll</HintPath>
-    </Reference>
-	-->
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.XML" />
   </ItemGroup>
@@ -393,11 +456,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
+
+-->
