@@ -32,6 +32,21 @@
     <RepositoryType>Hit</RepositoryType>
     <PackageTags>Tags</PackageTags>
     <PackageReleaseNotes>Release</PackageReleaseNotes>
+    <RootNamespace>IG.Lib</RootNamespace>
+    
+    <AssemblyName>IGLib</AssemblyName>
+
+  </PropertyGroup>
+  
+  
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
+  </PropertyGroup>
+  
+  
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
+    <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
   </PropertyGroup>
   
   
