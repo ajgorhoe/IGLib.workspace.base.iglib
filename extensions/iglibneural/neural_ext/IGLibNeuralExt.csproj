@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DA348BA9-F182-4730-B238-6220D9917A60}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IG.Neural</RootNamespace>
+    <AssemblyName>IGLibNeuralExt</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\IGLibNeuralExt.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\Debug\IGLibNeural.xml</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ZedGraph, Version=5.1.5.27330, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\lib\ZedGraph.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj">
+      <Project>{631ac093-430f-45f4-ba0c-af0f0405918a}</Project>
+      <Name>AForge.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Genetic\AForge.Genetic.csproj">
+      <Project>{2efaa327-1789-4438-b9f5-e83acae12db2}</Project>
+      <Name>AForge.Genetic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Math\AForge.Math.csproj">
+      <Project>{c0faf524-72e4-46f7-8c1b-a6b74dec5ebe}</Project>
+      <Name>AForge.Math</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj">
+      <Project>{02b5e453-2085-4e41-86d9-c8e8a03fb1b9}</Project>
+      <Name>AForge.Neuro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\igbase\IGLib.csproj">
+      <Project>{0ab31a6e-e0de-4f4e-8d0e-7ad60ae65e26}</Project>
+      <Name>IGLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj">
+      <Project>{aaa3e637-50ae-4f42-9771-a34975dbb3f0}</Project>
+      <Name>IGLibCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\reportermsg\ReporterMsg\ReporterMsg.csproj">
+      <Project>{AC130D8D-D656-4EA6-A940-3C261F589ACE}</Project>
+      <Name>ReporterMsg</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\neural\IGLibNeural.csproj">
+      <Project>{fbf3c5f7-a0ca-46a1-8973-7689fffaaeba}</Project>
+      <Name>IGLibNeural</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\00readme_developers_iglib.html">
+      <Link>00readme_developers_iglib.html</Link>
+    </Content>
+    <Content Include="0readme_igneural_ext.txt" />
+    <Content Include="License_IGLib_Partner.html" />
+    <Content Include="License_IGLib_Redistributable.html" />
+    <Content Include="ReadMe_IGLib.html" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

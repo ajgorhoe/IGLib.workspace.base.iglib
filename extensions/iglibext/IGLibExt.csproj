@@ -53,17 +53,12 @@
     <ProjectReference Include="..\..\igbase\IGLib.csproj" />
     <ProjectReference Include="..\..\igforms\IGLibForms.csproj" />
     <ProjectReference Include="..\..\modules\IGLibCore\src\IGLibCore.csproj" />
-    <ProjectReference Include="..\igplot2d\plot2d\igplot2d.csproj" />
-    <ProjectReference Include="..\igplot3d\plot3d\igplot3d.csproj" />
+    <ProjectReference Include="..\igplot2d\plot2d\IGLibPlot2D.csproj" />
+    <ProjectReference Include="..\igplot3d\plot3d\IGLibPlot3D.csproj" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Web.Extensions">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Web.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
