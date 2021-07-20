@@ -1,0 +1,715 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{50235FC8-A69D-47AE-A557-6518B35CC7C9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IG.Forms</RootNamespace>
+    <AssemblyName>IGLibForms</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BasicClasses\AbortableBackgroundWorker.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Basic\AppForms.cs" />
+    <Compile Include="Basic\BrowserSimpleControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Basic\BrowserSimpleControl.Designer.cs">
+      <DependentUpon>BrowserSimpleControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Basic\BrowserSimpleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Basic\BrowserSimpleForm.Designer.cs">
+      <DependentUpon>BrowserSimpleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Basic\BrowserFormOld.cs" />
+    <Compile Include="Basic\ConsoleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Basic\ControlManipulator.cs" />
+    <Compile Include="Basic\ControlPropertyStore.cs" />
+    <Compile Include="Basic\FadingMessage.Designer.cs">
+      <DependentUpon>FadingMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Basic\Old\FadingMessageOld.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Basic\Old\FadingMessageOld.Designer.cs">
+      <DependentUpon>FadingMessageOld.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Basic\ReporterForms.cs" />
+    <Compile Include="Basic\IFileViewer.cs" />
+    <Compile Include="Basic\ReporterConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Basic\UtilEvents.cs" />
+    <Compile Include="Basic\UtilForms.cs" />
+    <Compile Include="Basic\IClosableFromContainedForm.cs" />
+    <Compile Include="Basic\igform_quick_tests.cs" />
+    <Compile Include="Basic\FadingMessage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Basic\XmlTreeViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Basic\XmlTreeViewControl.Designer.cs">
+      <DependentUpon>XmlTreeViewControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Basic\XmlTreeViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Basic\XmlTreeViewForm.Designer.cs">
+      <DependentUpon>XmlTreeViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TestTestControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TestTestControl.Designer.cs">
+      <DependentUpon>TestTestControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\AssemblySelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\AssemblySelector.Designer.cs">
+      <DependentUpon>AssemblySelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\DialogFormDemoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\DialogFormDemoControl.Designer.cs">
+      <DependentUpon>DialogFormDemoControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\DirectorySelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\DirectorySelector.Designer.cs">
+      <DependentUpon>DirectorySelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\FileSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\FileSelector.Designer.cs">
+      <DependentUpon>FileSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\FontSelectorSimple.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\FontSelectorSimple.Designer.cs">
+      <DependentUpon>FontSelectorSimple.cs</DependentUpon>
+    </Compile>
+    <Compile Include="0Testing\TestLayoutControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="0Testing\TestLayoutControl.Designer.cs">
+      <DependentUpon>TestLayoutControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="0Testing\TestLayoutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="0Testing\TestLayoutForm.Designer.cs">
+      <DependentUpon>TestLayoutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\IndicatorLight.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\IndicatorLight.Designer.cs">
+      <DependentUpon>IndicatorLight.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\IndicatorLightTestControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\IndicatorLightTestControl.Designer.cs">
+      <DependentUpon>IndicatorLightTestControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\IndicatorLightTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\IndicatorLightTestForm.Designer.cs">
+      <DependentUpon>IndicatorLightTestForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\DialogFormDemoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\DialogFormDemoForm.Designer.cs">
+      <DependentUpon>DialogFormDemoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\DialgForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\DialgForm.Designer.cs">
+      <DependentUpon>DialgForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\DialgControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\DialgControl.Designer.cs">
+      <DependentUpon>DialgControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\DirectoryOperations\DirectoryData.cs" />
+    <Compile Include="Utilities\Cryptography\DirectoryOperations\DirectoryWorker.cs" />
+    <Compile Include="Utilities\Cryptography\DirectoryOperations\FileData.cs" />
+    <Compile Include="Utilities\Cryptography\DirectoryOperations\FileOrDirectoryDataBase.cs" />
+    <Compile Include="Utilities\Cryptography\HashAllControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAllControl.Designer.cs">
+      <DependentUpon>HashAllControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAllForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAllForm.Designer.cs">
+      <DependentUpon>HashAllForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashDirControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashDirControl.Designer.cs">
+      <DependentUpon>HashDirControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashDirForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashDirForm.Designer.cs">
+      <DependentUpon>HashDirForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAboutControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAboutControl.Designer.cs">
+      <DependentUpon>HashAboutControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashAboutForm.Designer.cs">
+      <DependentUpon>HashAboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationPanel.Designer.cs">
+      <DependentUpon>NotificationPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationFrame.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationFrame.Designer.cs">
+      <DependentUpon>NotificationFrame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationParameters.cs" />
+    <Compile Include="Utilities\Notification\NotificationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Notification\NotificationWindow.Designer.cs">
+      <DependentUpon>NotificationWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Timer\TimerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Timer\TimerControl.Designer.cs">
+      <DependentUpon>TimerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\AssemblyInfoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\AssemblyInfoControl.Designer.cs">
+      <DependentUpon>AssemblyInfoControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\ResourceSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\BasicControls\ResourceSelector.Designer.cs">
+      <DependentUpon>ResourceSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashControl.Designer.cs">
+      <DependentUpon>HashControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Cryptography\HashForm.Designer.cs">
+      <DependentUpon>HashForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ControlViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ControlViewerControl.Designer.cs">
+      <DependentUpon>ControlViewerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ControlViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ControlViewerForm.Designer.cs">
+      <DependentUpon>ControlViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\FileViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\FileViewerControl.Designer.cs">
+      <DependentUpon>FileViewerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ImageViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ImageViewerControl.Designer.cs">
+      <DependentUpon>ImageViewerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\FileViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\FileViewerForm.Designer.cs">
+      <DependentUpon>FileViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ResourceViewerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ResourceViewerControl.Designer.cs">
+      <DependentUpon>ResourceViewerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\AssemblyInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\AssemblyInfoForm.Designer.cs">
+      <DependentUpon>AssemblyInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ResourceViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ResourceViewerForm.Designer.cs">
+      <DependentUpon>ResourceViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\SoundPlayerFormSimple.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\SoundPlayerFormSimple.Designer.cs">
+      <DependentUpon>SoundPlayerFormSimple.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\SoundPlayControlSimple.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\SoundPlayControlSimple.Designer.cs">
+      <DependentUpon>SoundPlayControlSimple.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\MessageBoxLauncher.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\MessageBoxLauncher.Designer.cs">
+      <DependentUpon>MessageBoxLauncher.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Timer\CookingTimerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\Timer\CookingTimerControl.Designer.cs">
+      <DependentUpon>CookingTimerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Timer\CookingTimerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Timer\CookingTimerForm.Designer.cs">
+      <DependentUpon>CookingTimerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Timer\TimerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Timer\TimerForm.Designer.cs">
+      <DependentUpon>TimerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ImageViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\Viewers\ImageViewerForm.Designer.cs">
+      <DependentUpon>ImageViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\AlignmentControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\AlignmentControl.Designer.cs">
+      <DependentUpon>AlignmentControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\AlignmentTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\AlignmentTestForm.Designer.cs">
+      <DependentUpon>AlignmentTestForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\Old\AlignmentControlOld.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\Old\AlignmentControlOld.Designer.cs">
+      <DependentUpon>AlignmentControlOld.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\Old\ShiftControlNumeric.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\Old\ShiftControlNumeric.Designer.cs">
+      <DependentUpon>ShiftControlNumeric.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\ShiftControlText.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\ShiftControlText.Designer.cs">
+      <DependentUpon>ShiftControlText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TestControl.Designer.cs">
+      <DependentUpon>TestControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestForm.Designer.cs">
+      <DependentUpon>TestForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\WindowPositioner.cs" />
+    <Compile Include="Utilities\WindowPositioner\WindowPositionerControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\WindowPositionerControl.Designer.cs">
+      <DependentUpon>WindowPositionerControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\WindowPositionerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilities\WindowPositioner\WindowPositionerForm.Designer.cs">
+      <DependentUpon>WindowPositionerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Basic\XMLTreeViewFormOld_Keep_Some_time.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Basic\XMLTestPathForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Basic\BrowserSimpleControl.resx">
+      <DependentUpon>BrowserSimpleControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Basic\BrowserSimpleForm.resx">
+      <DependentUpon>BrowserSimpleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Basic\BrowserFormOld.resx">
+      <DependentUpon>BrowserFormOld.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Basic\ConsoleForm.resx">
+      <DependentUpon>ConsoleForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Basic\FadingMessage.resx">
+      <DependentUpon>FadingMessage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Basic\Old\FadingMessageOld.resx">
+      <DependentUpon>FadingMessageOld.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Basic\XmlTreeViewControl.resx">
+      <DependentUpon>XmlTreeViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Basic\XmlTreeViewForm.resx">
+      <DependentUpon>XmlTreeViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Basic\ReporterConfigurationForm.resx">
+      <DependentUpon>ReporterConfigurationForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestTestControl.resx">
+      <DependentUpon>TestTestControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\AssemblySelector.resx">
+      <DependentUpon>AssemblySelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\DialogFormDemoControl.resx">
+      <DependentUpon>DialogFormDemoControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\DirectorySelector.resx">
+      <DependentUpon>DirectorySelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\FileSelector.resx">
+      <DependentUpon>FileSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\FontSelectorSimple.resx">
+      <DependentUpon>FontSelectorSimple.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="0Testing\TestLayoutControl.resx">
+      <DependentUpon>TestLayoutControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="0Testing\TestLayoutForm.resx">
+      <DependentUpon>TestLayoutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\IndicatorLight.resx">
+      <DependentUpon>IndicatorLight.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\IndicatorLightTestControl.resx">
+      <DependentUpon>IndicatorLightTestControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\IndicatorLightTestForm.resx">
+      <DependentUpon>IndicatorLightTestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\DialogFormDemoForm.resx">
+      <DependentUpon>DialogFormDemoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\DialgForm.resx">
+      <DependentUpon>DialgForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\DialgControl.resx">
+      <DependentUpon>DialgControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashAllControl.resx">
+      <DependentUpon>HashAllControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashAllForm.resx">
+      <DependentUpon>HashAllForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashDirControl.resx">
+      <DependentUpon>HashDirControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashDirForm.resx">
+      <DependentUpon>HashDirForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashAboutControl.resx">
+      <DependentUpon>HashAboutControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashAboutForm.resx">
+      <DependentUpon>HashAboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Notification\NotificationPanel.resx">
+      <DependentUpon>NotificationPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Notification\NotificationFrame.resx">
+      <DependentUpon>NotificationFrame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Notification\NotificationWindow.resx">
+      <DependentUpon>NotificationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Timer\TimerControl.resx">
+      <DependentUpon>TimerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\AssemblyInfoControl.resx">
+      <DependentUpon>AssemblyInfoControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\BasicControls\ResourceSelector.resx">
+      <DependentUpon>ResourceSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashControl.resx">
+      <DependentUpon>HashControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Cryptography\HashForm.resx">
+      <DependentUpon>HashForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\ControlViewerControl.resx">
+      <DependentUpon>ControlViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\ControlViewerForm.resx">
+      <DependentUpon>ControlViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\FileViewerControl.resx">
+      <DependentUpon>FileViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\ImageViewerControl.resx">
+      <DependentUpon>ImageViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\FileViewerForm.resx">
+      <DependentUpon>FileViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\ResourceViewerControl.resx">
+      <DependentUpon>ResourceViewerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\AssemblyInfoForm.resx">
+      <DependentUpon>AssemblyInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\ResourceViewerForm.resx">
+      <DependentUpon>ResourceViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\SoundPlayerFormSimple.resx">
+      <DependentUpon>SoundPlayerFormSimple.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\SoundPlayControlSimple.resx">
+      <DependentUpon>SoundPlayControlSimple.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\MessageBoxLauncher.resx">
+      <DependentUpon>MessageBoxLauncher.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Timer\CookingTimerControl.resx">
+      <DependentUpon>CookingTimerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Timer\CookingTimerForm.resx">
+      <DependentUpon>CookingTimerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Timer\TimerForm.resx">
+      <DependentUpon>TimerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\Viewers\ImageViewerForm.resx">
+      <DependentUpon>ImageViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\AlignmentControl.resx">
+      <DependentUpon>AlignmentControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\AlignmentTestForm.resx">
+      <DependentUpon>AlignmentTestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\Old\AlignmentControlOld.resx">
+      <DependentUpon>AlignmentControlOld.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\Old\ShiftControlNumeric.resx">
+      <DependentUpon>ShiftControlNumeric.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\ShiftControlText.resx">
+      <DependentUpon>ShiftControlText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestControl.resx">
+      <DependentUpon>TestControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestForm.resx">
+      <DependentUpon>TestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\WindowPositionerControl.resx">
+      <DependentUpon>WindowPositionerControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\WindowPositioner\WindowPositionerForm.resx">
+      <DependentUpon>WindowPositionerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Basic\XMLTreeViewFormOld_Keep_Some_time.resx">
+      <DependentUpon>XMLTreeViewFormOld_Keep_Some_time.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Basic\XMLTestPathForm.resx">
+      <DependentUpon>XMLTestPathForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Resources\xml_root.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\xml_element.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\00readme_developers_iglib.html">
+      <Link>00readme_developers_iglib.html</Link>
+    </Content>
+    <Content Include="..\Repositories_IGLib.html">
+      <Link>Repositories_IGLib.html</Link>
+    </Content>
+    <Content Include="0readme_igforms.txt" />
+    <Content Include="License_IGLib_Partner.html" />
+    <Content Include="Utilities\Notification\0readme_notification.txt" />
+    <EmbeddedResource Include="License_IGLib_Redistributable.html" />
+    <EmbeddedResource Include="ReadMe_IGLib.html" />
+    <EmbeddedResource Include="Resources\timer\alarm_5_beeps_freesound_221087_alarm.wav" />
+    <EmbeddedResource Include="Resources\timer\signal_button_freesound_148694_lastsecond.wav" />
+    <EmbeddedResource Include="Resources\timer\signal_end_freesound_191589_buttonreset.wav" />
+    <EmbeddedResource Include="Resources\timer\signal_gentle_beep_freesound_141121_buttonstartstop.wav" />
+    <EmbeddedResource Include="Resources\timer\tick_short_freesound_2076_second.wav" />
+    <EmbeddedResource Include="Resources\timer\tick_signal_freesound_146721_lastseconds.wav" />
+    <None Include="Resources\TemporaryStopwatch\Cow_clip_art_medium.png" />
+    <EmbeddedResource Include="Resources\ig.ico" />
+    <EmbeddedResource Include="Resources\iglib_small.jpg" />
+    <None Include="Resources\icon_iglib.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="0TestNumeric\" />
+    <Folder Include="Basic\TmpDev\" />
+    <Folder Include="Resources\sounds\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\igbase\IGLib.csproj">
+      <Project>{0ab31a6e-e0de-4f4e-8d0e-7ad60ae65e26}</Project>
+      <Name>IGLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\modules\IGLibCore\src\IGLibCore.csproj">
+      <Project>{aaa3e637-50ae-4f42-9771-a34975dbb3f0}</Project>
+      <Name>IGLibCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
