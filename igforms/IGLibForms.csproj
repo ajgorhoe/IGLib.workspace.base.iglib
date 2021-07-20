@@ -61,11 +61,6 @@
   </ItemGroup>
 
 
-  <ItemGroup>
-    <Folder Include="00_ToBeScrapped\" />
-  </ItemGroup>
-
-
 
 </Project>
 
