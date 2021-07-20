@@ -47,6 +47,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
     <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
   </PropertyGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\..\external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj" />
     <ProjectReference Include="..\..\external\ZedGraph\source\ZedGraph\ZedGraph.csproj" />
@@ -63,9 +64,11 @@
   </ItemGroup>
 
 
+  <!--
   <ItemGroup>
     <Folder Include="System\Windows\" />
   </ItemGroup>
+  -->
 
 
 
