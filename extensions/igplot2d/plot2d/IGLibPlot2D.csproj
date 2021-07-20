@@ -1,135 +1,78 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C9A09DBC-B304-42DF-9CEE-6BA0E856ABC2}</ProjectGuid>
+    <!--
+    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>net40</TargetFramework>
+    -->
+
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IG.Plot2d</RootNamespace>
+    <TargetFrameworks>net48</TargetFrameworks>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <!-- Attributes previously in AsemblyInfo.cs: -->
     <AssemblyName>IGLibPlot2D</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <PackageId>IGLibPlot2D</PackageId>
+    <Version>1.9.1</Version>
+    <AssemblyVersion>1.9.1</AssemblyVersion>
+    <FileVersion>1.9.1</FileVersion>
+    <RootNamespace>IG.Lib</RootNamespace>
+    <Authors>Igor Grešovnik et al.</Authors>
+    <Company>Igor Grešovnik</Company>
+    <Product>Investigative Generic Library - IGLibPlot2D</Product>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description>IGLibPlot2D library - extension of basic IGLib library that contains 2D plotting tools.</Description>
+    <Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl></RepositoryUrl>
+    <RepositoryType>Hit</RepositoryType>
+    <PackageTags>Tags</PackageTags>
+    <PackageReleaseNotes>Release</PackageReleaseNotes>
+
+    <PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
+    <PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
+
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <WarningLevel>4</WarningLevel>
-    <Optimize>false</Optimize>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>..\..\..\..\output\bin\$(Platform)\$(Configuration)</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
+    <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
+    <!--
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj" />
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Genetic\AForge.Genetic.csproj" />
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Math\AForge.Math.csproj" />
+    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj" />
+    <ProjectReference Include="..\..\..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
+    -->
+    <ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj" />
+    <ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph\ZedGraph.csproj" />
+    <ProjectReference Include="..\..\..\igbase\IGLib.csproj" />
+    <ProjectReference Include="..\..\..\igforms\IGLibForms.csproj" />
+    <ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="develop\graph\GraphAxisItem.cs" />
-    <Compile Include="develop\graph\GraphBase.cs" />
-    <Compile Include="develop\graph\GraphItem.cs" />
-    <Compile Include="develop\graph\GraphLineItem.cs" />
-    <Compile Include="develop\graph\GraphPlotItem.cs" />
-    <Compile Include="TestProgramPlot2d.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="zedgraph\PlotterZedgraph.cs" />
-    <Compile Include="zedgraph\PlotZedgraphBase.cs" />
-    <Compile Include="zedgraph\PlotZedgraphCurve.cs" />
-    <Compile Include="zedgraph\ZedGraphWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="zedgraph\ZedGraphWindow.designer.cs">
-      <DependentUpon>ZedGraphWindow.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj">
-      <Project>{1086e89d-99b9-4afa-8ffe-064ef355e011}</Project>
-      <Name>ZedGraph.WinForms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph\ZedGraph.csproj">
-      <Project>{7b58d480-a3a6-43b2-bb1d-5e014dc94fe0}</Project>
-      <Name>ZedGraph</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\igbase\IGLib.csproj">
-      <Project>{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}</Project>
-      <Name>IGLib</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj">
-      <Project>{aaa3e637-50ae-4f42-9771-a34975dbb3f0}</Project>
-      <Name>IGLibCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="examples\" />
-    <Folder Include="graph\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="zedgraph\ZedGraphWindow.resx">
-      <DependentUpon>ZedGraphWindow.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\..\..\00readme_developers_iglib.html">
-      <Link>00readme_developers_iglib.html</Link>
-    </Content>
-    <Content Include="..\..\..\Repositories_IGLib.html">
-      <Link>Repositories_IGLib.html</Link>
-    </Content>
-    <Content Include="License_IGLib_Partner.html" />
-    <Content Include="License_IGLib_Redistributable.html" />
-    <Content Include="ReadMe_IGLib.html" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+
 </Project>
+
+
+<!--
+  REMARK:
+  Older version of this project file (before migration to SDK-style)
+  is in the file IGLibPlot2D_COPY.csproj11 .
+-->
+
+

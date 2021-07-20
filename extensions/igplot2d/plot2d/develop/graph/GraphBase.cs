@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using System.Threading;
 
 using ICollection	= System.Collections.ICollection;
@@ -14,6 +13,7 @@ using System.Collections;
 
 
 using IG.Lib;
+using System.Windows.Forms;
 
 namespace IG.Plot2d
 {
