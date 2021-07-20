@@ -384,6 +384,7 @@ namespace IG.Lib
             base.AddDefaultAssemblies();
             ScriptLoaderBase.AddDefaultAssemblies(
                 "IGLib.dll",
+                "IGLibCore.dll",
                 //"IGLibReporterMsg.dll",
                 "MathNet.Numerics.dll"
                 );

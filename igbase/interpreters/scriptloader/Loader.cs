@@ -29,6 +29,7 @@ namespace IG.Lib
 
             AddReferencedAssemblies(
                 "IGLib.dll",
+                "IGLibCore.dll",
                 "MathNet.Numerics.dll"
                 );
         }

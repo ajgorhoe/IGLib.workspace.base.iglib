@@ -13,6 +13,34 @@
   </PropertyGroup>
 
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
+    <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
+  </PropertyGroup>
+  
+  
+  <!--  Remark: comment or uncomment this block to switch visibility of project directory 00_ToBeScrapped\AlreadyExcluded
+  <ItemGroup>
+    <Compile Remove="00_ToBeScrapped\AlreadyExcluded\**" />
+    <EmbeddedResource Remove="00_ToBeScrapped\AlreadyExcluded\**" />
+    <None Remove="00_ToBeScrapped\AlreadyExcluded\**" />
+  </ItemGroup>
+  -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
+    <ProjectReference Include="..\igbase\IGLib.csproj" />
+    <ProjectReference Include="..\modules\IGLibCore\src\IGLibCore.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
   <PropertyGroup>
     <!-- Attributes previously in AsemblyInfo.cs: -->
     <AssemblyName>IGLibForms</AssemblyName>
@@ -40,31 +68,13 @@
 
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
-    <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
-  </PropertyGroup>
-
-
-  <ItemGroup>
-    <ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
-    <ProjectReference Include="..\igbase\IGLib.csproj" />
-    <ProjectReference Include="..\modules\IGLibCore\src\IGLibCore.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-
-
-
 </Project>
 
-
+<!--
+  REMARK:
+  Older version of this project file (before migration to SDK-style)
+  is in the file IGLibForms - Copy.csproj11 .
+-->
 
 <!--
 <?xml version="1.0" encoding="utf-8"?>
