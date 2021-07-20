@@ -6,7 +6,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
 using System.Reflection;
 
 using IG.Num;
@@ -15,6 +14,7 @@ using IG.Forms;
 
 using IG.Plot2d;
 using IG.Gr3d;
+using System.Windows.Forms;
 
 namespace IG.Script
 {

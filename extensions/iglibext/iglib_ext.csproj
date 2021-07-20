@@ -1,4 +1,99 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--
+    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <TargetFramework>net40</TargetFramework>
+    -->
+
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>net48</TargetFrameworks>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <!-- Attributes previously in AsemblyInfo.cs: -->
+    <AssemblyName>IGLibExt</AssemblyName>
+    <PackageId>IGLibExt</PackageId>
+    <Version>1.9.1</Version>
+    <AssemblyVersion>1.9.1</AssemblyVersion>
+    <FileVersion>1.9.1</FileVersion>
+    <RootNamespace>IG.Lib</RootNamespace>
+    <Authors>Igor Grešovnik et al.</Authors>
+    <Company>Igor Grešovnik</Company>
+    <Product>Investigative Generic Library - IGLibExt</Product>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description>IGLibExt library - extended basic IGLib library that has dependencies that are less portable.</Description>
+    <Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl></RepositoryUrl>
+    <RepositoryType>Hit</RepositoryType>
+    <PackageTags>Tags</PackageTags>
+    <PackageReleaseNotes>Release</PackageReleaseNotes>
+
+    <PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
+    <PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
+
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
+    <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj" />
+    <ProjectReference Include="..\..\external\ZedGraph\source\ZedGraph\ZedGraph.csproj" />
+    <ProjectReference Include="..\..\igbase\IGLib.csproj" />
+    <ProjectReference Include="..\..\igforms\IGLibForms.csproj" />
+    <ProjectReference Include="..\..\modules\IGLibCore\src\IGLibCore.csproj" />
+    <ProjectReference Include="..\igplot2d\plot2d\igplot2d.csproj" />
+    <ProjectReference Include="..\igplot3d\plot3d\igplot3d.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Extensions">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Web.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+
+  <!--
+  <ItemGroup>
+    <Compile Remove="FromIGLibBase\**" />
+    <EmbeddedResource Remove="FromIGLibBase\**" />
+    <None Remove="FromIGLibBase\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ToArrange\TypeConversion\" />
+  </ItemGroup>
+  -->
+
+</Project>
+
+
+<!--
+  REMARK:
+  Older version of this project file (before migration to SDK-style)
+  is in the file IGLibExt_COPY.csproj11 .
+-->
+
+
+
+
+<!--
+
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -292,11 +387,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
+
+-->

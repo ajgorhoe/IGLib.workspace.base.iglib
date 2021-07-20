@@ -7,11 +7,10 @@ using System.Drawing;
 using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 using IG.Lib;
 using IG.Num;
-
+using System.Windows.Forms;
 
 namespace IG.Forms
 {
