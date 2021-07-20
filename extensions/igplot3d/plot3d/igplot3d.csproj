@@ -176,9 +176,9 @@
       <Name>IGLib</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\igforms\igform.csproj">
+    <ProjectReference Include="..\..\..\igforms\IGLibForms.csproj">
       <Project>{50235FC8-A69D-47AE-A557-6518B35CC7C9}</Project>
-      <Name>igform</Name>
+      <Name>IGLibForms</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj">

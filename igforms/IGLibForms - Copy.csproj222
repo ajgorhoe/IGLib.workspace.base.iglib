@@ -51,18 +51,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
-    <ProjectReference Include="..\igbase\IGLib.csproj" />
     <ProjectReference Include="..\modules\IGLibCore\src\IGLibCore.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="00_ToBeScrapped\" />
   </ItemGroup>
 
 

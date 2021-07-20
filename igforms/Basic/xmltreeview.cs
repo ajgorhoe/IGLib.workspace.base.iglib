@@ -11,7 +11,10 @@ using System.Threading ;
 using System.Text; 
 using System.IO ;
 using System.Xml;
+using IG.Forms;
 
+
+// $$$$Excluded
 
 //
 // Read an XML Document and display the file as a Tree.
@@ -20,7 +23,7 @@ using System.Xml;
 // Date : May 15, 2002
 // 
 
-namespace IG.Forms
+namespace IG.Forms11
 {
 
     /// <summary>
@@ -211,7 +214,7 @@ namespace IG.Forms
             fm.MsgTitle = "Error in XMLTreeView";
             fm.MsgText = str;
             fm.BackGroundColor = Color.Orange;
-            fm.ShowThread(str, 4000);
+            // $$$$Excluded: fm.ShowThread(str, 4000);
         }
 
         private void ReportError(string str)
@@ -2790,7 +2793,7 @@ namespace IG.Forms
                     try
                     {
                         PathTester.Activate();
-                        UtilForms.BlinkForm(PathTester);
+                        //$$$$Exclude: UtilForms.BlinkForm(PathTester);
                         DialogResult res = MessageBox.Show("An XPath tester is already open.\r\nOpen another PathTester window?", "Opening confirmation", MessageBoxButtons.YesNo,
                             MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
                         if (res == DialogResult.No)

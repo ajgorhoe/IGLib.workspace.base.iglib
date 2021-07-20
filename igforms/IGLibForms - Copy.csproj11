@@ -1,4 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  REMARK:
+  This iis the original project file for IGLibForms.
+  DO NOT DELETE this file, possibliy at least until 30. 9. 2025!
+  This file should be kept for some time in orderr to be able to check whetherr something was omitted from the
+  project file when the current SDK-style project file was created.
+-->
+
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>

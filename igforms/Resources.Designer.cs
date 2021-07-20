@@ -8,7 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace XMLTree.Properties {
+// $$$$Excluded
+
+namespace XMLTree.Properties11 {
     using System;
     
     
