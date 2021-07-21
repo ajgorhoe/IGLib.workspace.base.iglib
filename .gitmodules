@@ -6,7 +6,7 @@
 	url = https://github.com/ZedGraph/ZedGraph.git
 [submodule "modules/IGLibCore"]
 	path = modules/IGLibCore
-	url = https://gitlab.com/ajgorhoe/iglib.modules.iglibcore.git
+	url = https://github.com/ajgorhoe/IGLib.modules.IGLibCore.git
 [submodule "modules/IGLibEventAggregator"]
 	path = modules/IGLibEventAggregator
-	url = https://gitlab.com/ajgorhoe/IGLib.misc.EventAggregator.git
+	url = https://github.com/ajgorhoe/IGLib.modules.IGLibEventAggregator.git
