@@ -60,7 +60,7 @@
     <PackageProjectUrl></PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
     <RepositoryUrl></RepositoryUrl>
-    <RepositoryType>Hit</RepositoryType>
+    <RepositoryType>Git</RepositoryType>
     <PackageTags>Tags</PackageTags>
     <PackageReleaseNotes>Release</PackageReleaseNotes>
 
