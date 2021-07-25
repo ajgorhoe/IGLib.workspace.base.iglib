@@ -4,9 +4,3 @@
 [submodule "external/ZedGraph"]
 	path = external/ZedGraph
 	url = https://github.com/ZedGraph/ZedGraph.git
-[submodule "modules/IGLibCore"]
-	path = modules/IGLibCore
-	url = https://github.com/ajgorhoe/IGLib.modules.IGLibCore.git
-[submodule "modules/IGLibEventAggregator"]
-	path = modules/IGLibEventAggregator
-	url = https://github.com/ajgorhoe/IGLib.modules.IGLibEventAggregator.git
