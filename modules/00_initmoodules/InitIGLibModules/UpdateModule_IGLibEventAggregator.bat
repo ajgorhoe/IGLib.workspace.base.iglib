@@ -23,6 +23,11 @@ set ModuleContainingDir=%ScriptDir%
 set ModuleDir=%ModuleContainingDir%%ModuleDirRelative%
 set ModuleGitSubdir=%ModuleDir%\.git\refs\remotes
 
+rem Derived parameters:
+set ModuleContainingDir=%ScriptDir%
+set ModuleDir=%ModuleContainingDir%%ModuleDirRelative%
+set ModuleGitSubdir=%ModuleDir%\.git\refs\remotes
+
 rem Defaults for eventually missing information:
 set IsDefinedCheckoutBranch=0
 if defined CheckoutBranch (
@@ -138,14 +143,6 @@ if %IsClonedAlready% EQU 0 (
 )
 echo.
 
-
-echo.
-echo IsClonedAlready: %IsClonedAlready%
-echo FINALIZING... (remove this later)
-goto finalize
-
-
-
 REM echo.
 REM echo Fetching from %Remote%...
 REM git fetch %Remote%
@@ -154,6 +151,8 @@ echo.
 echo Try to check out remote branch...
 rem Checkout the remote branch (case when not yet checked out):
 git checkout -b "%CheckoutBranch%" "remotes/%Remote%/%CheckoutBranch%" --
+
+
 
 echo.
 echo Switching to local branch...
@@ -166,7 +165,6 @@ git pull %Remote%
 
 
 :finalize
-
 
 echo.
 echo Update script completed for %ModuleDirRelative%/.
