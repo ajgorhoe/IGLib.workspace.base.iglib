@@ -98,7 +98,6 @@ if not exist "%ModuleGitSubdir%" (
     echo.
 )
 
-
 if not exist "%ModuleGitSubdir%" (
   echo.
   echo ERROR Could not clone the repository.
