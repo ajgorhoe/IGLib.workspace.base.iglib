@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!--
+    <TargetFrameworks>net5.0;net48;netstandard2.0;netstandard1.4</TargetFrameworks>
+    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
+    
+    Currently used:
+    <TargetFrameworks>net5.0;net48;netstandard2.0;netstandard1.4</TargetFrameworks>
+    -->
+    <TargetFrameworks>net48</TargetFrameworks>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  
+</PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="echo POST BUILD:&#xD;&#xA;echo EXITING IMMEDIATELY.&#xD;&#xA;exit&#xD;&#xA;&#xD;&#xA;echo.&#xD;&#xA;echo Post-build step, project $(ProjectName):&#xD;&#xA;echo Executing: del /F /Q &quot;$(TargetDir)$(TargetName).*&quot;&#xD;&#xA;del /F /Q &quot;$(TargetDir)$(TargetName).*&quot;&#xD;&#xA;cd&#xD;&#xA;echo.&#xD;&#xA;echo TargetDir: &quot;$(TargetDir)&quot;&#xD;&#xA;echo ProjectDir: &quot;$(ProjectDir)&quot;&#xD;&#xA;echo.&#xD;&#xA;echo executing: dir &quot;$(ProjectDir)&quot;&#xD;&#xA;dir &quot;$(ProjectDir)&quot;" />
+  </Target>
+
+  <ItemGroup>
+    <None Update="InfoInitializationIGLibModules.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="echo .&#xD;&#xA;echo IGLib modules INITIALIZATION:&#xD;&#xA;echo Calling module updating scripts...&#xD;&#xA;echo .&#xD;&#xA;rem &quot;$(ProjectDir)UpdateModule_IGLibCore.bat&quot;&#xD;&#xA;&quot;$(ProjectDir)UpdateModule_IGLibEventAggregator&quot;&#xD;&#xA;echo .&#xD;&#xA;echo ... module update scripts completed.&#xD;&#xA;echo .&#xD;&#xA;" />
+  </Target>
+
+</Project>
