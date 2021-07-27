@@ -11,7 +11,7 @@ set ScriptDir=%~dp0
 set InitialDir=%CD%
 
 rem Parameters for the update:
-set ModuleDirRelative=..\..\IGLibEventAggregator
+set ModuleDirRelative=..\..\modules\IGLibEventAggregator
 set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibEventAggregator.git
 set RepositoryAddressLocal=d:/backup_sync/bk_code/git/ig/misc/iglib_misc/EventAggregator/
 set CheckoutBranch=master

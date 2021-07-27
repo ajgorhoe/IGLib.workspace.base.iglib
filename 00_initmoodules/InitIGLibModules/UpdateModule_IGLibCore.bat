@@ -11,7 +11,7 @@ set ScriptDir=%~dp0
 set InitialDir=%CD%
 
 rem Parameters for the update:
-set ModuleDirRelative=..\..\IGLibCore
+set ModuleDirRelative=..\..\modules\IGLibCore
 set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibCore.git
 set RepositoryAddressLocal=d:/backup_sync/bk_code/git/ig/misc/iglib_modules/IGLibCore/
 set CheckoutBranch=master
