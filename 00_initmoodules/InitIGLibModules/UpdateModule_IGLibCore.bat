@@ -12,11 +12,22 @@ set InitialDir=%CD%
 
 rem Parameters for the update:
 set ModuleDirRelative=..\..\modules\IGLibCore
-set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibCore.git
-set RepositoryAddressLocal=d:/backup_sync/bk_code/git/ig/misc/iglib_modules/IGLibCore/
 set CheckoutBranch=master
+set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibCore.git
+set RepositoryAddressSecondary=https://ajgorhoe@bitbucket.org/ajgorhoe/iglib.modules.iglibcore.git
+set RepositoryAddressLocal=d:/backup_sync/bk_code/git/ig/misc/iglib_modules/IGLibCore/
 set Remote=origin
+set RemoteSecondary=originBitBucket
 set RemoteLocal=local
+
+
+Rem Basic checks if something is forgotten
+if not defined Remote (set Remote=origin)
+if "%Remote%" EQU "" (set Remote=origin)
+if not defined RemoteSecondary (set RemoteSecondary=originsecondary)
+if "%RemoteSecondary%" EQU "" (set RemoteSecondary=originsecondary)
+if not defined RemoteLocal (set RemoteLocal=local)
+if "%RemoteLocal%" EQU "" (set RemoteLocal=local)
 
 rem Derived parameters:
 set ModuleContainingDir=%ScriptDir%
@@ -47,6 +58,20 @@ if %IsDefinedRemote% EQU 0 (
   set Remote=origin
 )
 
+set IsDefinedRepositoryAddressSecondary=0
+if defined RepositoryAddressSecondary (
+  if "%RepositoryAddressSecondary%" NEQ "" (
+    set IsDefinedRepositoryAddressSecondary=1
+  )
+)
+if %IsDefinedRepositoryAddressSecondary% NEQ 0 (
+    echo.
+    echo Secondary repository address: %RepositoryAddressSecondary%
+    echo.
+) else (
+    echo.
+    echo Secondary repository address is not defined.
+)
 set IsDefinedRepositoryAddressLocal=0
 if defined RepositoryAddressLocal (
   if "%RepositoryAddressLocal%" NEQ "" (
@@ -60,6 +85,21 @@ if %IsDefinedRepositoryAddressLocal% NEQ 0 (
 ) else (
     echo.
     echo Local repository address is not defined.
+)
+
+set IsDefinedRepositoryAddressSecondary=0
+if defined RepositoryAddressSecondary (
+  if "%RepositoryAddressSecondary%" NEQ "" (
+    set IsDefinedRepositoryAddressSecondary=1
+  )
+)
+if %IsDefinedRepositoryAddressSecondary% NEQ 0 (
+    echo.
+    echo Secondary repository address: %RepositoryAddressSecondary%
+    echo.
+) else (
+    echo.
+    echo Secondary repository address is not defined.
 )
 
 set IsClonedAlready=0
@@ -113,7 +153,7 @@ cd "%ModuleDir%"
 
 echo.
 if %IsClonedAlready% EQU 0 (
-    echo aa
+    rem Set the first remote if named differently than origin:
     if "%Remote%" EQU "origin" (
         echo Remote %Remote% not set, since remote "origin" is already set by default.
     ) else (
@@ -122,6 +162,14 @@ if %IsClonedAlready% EQU 0 (
         rem ver > nul
         git remote add %Remote% "%RepositoryAddress%"
         ver > nul
+    )
+    rem Set the two alternative remotes when specified:
+    if %IsDefinedRepositoryAddressSecondary% EQU 0 (
+        echo Remote %RemoteSecondary% is not specified, not set.
+    ) else (
+        echo setting remote %RemoteSecondary% to   %RepositoryAddressSecondary% ...
+        git remote add %RemoteSecondary% "%RepositoryAddressSecondary%"
+        echo.
     )
     if %IsDefinedRepositoryAddressLocal% EQU 0 (
         echo Remote %RemoteLocal% is not specified, not set.
@@ -149,8 +197,8 @@ git checkout -b "%CheckoutBranch%" "remotes/%Remote%/%CheckoutBranch%" --
 
 
 echo.
-echo Switching to local branch...
-rem Switch to local branch  (case when not yet checked out):
+rem Switch to checkout branch  (in case not yet checked out):
+echo Switching to branch "%CheckoutBranch%"...
 git switch "%CheckoutBranch%"
 
 echo.
