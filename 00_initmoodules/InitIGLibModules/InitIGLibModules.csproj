@@ -25,8 +25,12 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="scripts\" />
+  </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="echo .&#xD;&#xA;echo IGLib modules INITIALIZATION:&#xD;&#xA;echo Calling module updating scripts...&#xD;&#xA;echo .&#xD;&#xA;call &quot;$(ProjectDir)UpdateModule_IGLibCore.bat&quot;&#xD;&#xA;call &quot;$(ProjectDir)UpdateModule_IGLibEventAggregator&quot;&#xD;&#xA;echo .&#xD;&#xA;echo ... module update scripts completed.&#xD;&#xA;echo .&#xD;&#xA;" />
+    <Exec Command="echo .&#xD;&#xA;echo IGLib modules INITIALIZATION:&#xD;&#xA;echo Calling module updating script...&#xD;&#xA;echo .&#xD;&#xA;call &quot;$(ProjectDir)UpdateIGLibModuleRepos.bat&quot;&#xD;&#xA;echo .&#xD;&#xA;echo ... module update scripts completed.&#xD;&#xA;echo .&#xD;&#xA;" />
   </Target>
 
 </Project>
