@@ -90,14 +90,15 @@ set ModuleDir=%~dp0%ModuleDirRelative%
 
 rem If command-line arguments were specified then take them as another command and run the command:
 if "%~1" NEQ "" (
+    rem See: https://stackoverflow.com/questions/14731877/to-call-or-not-to-call-a-batch-file
     echo.
-    echo Execuring:
-    echo   echo   %~1 %~2 %~3 %~4 %~5 %~6 %~7 %~8 %~9
-    call "%~1" "%~2" "%~3" "%~4" "%~5" "%~6" "%~7" "%~8" "%~9" "%~10"
+    echo Executing:
+    echo   echo   call %~1 %~2 %~3 %~4 %~5 %~6 %~7 %~8 %~9
+    call  "%~1" "%~2" "%~3" "%~4" "%~5" "%~6" "%~7" "%~8" "%~9" "%~10"
     echo.
 )
 
-call %~dp0PrintRepoSettings.bat
+call  %~dp0PrintRepoSettings.bat
 
 
 Rem Basic checks if something is forgotten
@@ -277,9 +278,9 @@ REM git fetch %Remote%
 
 echo.
 echo Try to check out remote branch...
-rem Checkout the remote branch (case when not yet checked out):
+rem Checkout the remote branch (in case not yet checked out):
 git checkout -b "%CheckoutBranch%" "remotes/%Remote%/%CheckoutBranch%" --
-
+ver > nul
 
 
 echo.
