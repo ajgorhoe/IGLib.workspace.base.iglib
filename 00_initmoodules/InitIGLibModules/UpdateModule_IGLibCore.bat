@@ -19,6 +19,7 @@ set RepositoryAddressLocal=d:/backup_sync/bk_code/git/ig/misc/iglib_modules/IGLi
 set Remote=origin
 set RemoteSecondary=originBitBucket
 set RemoteLocal=local
+set ModuleDir=%~dp0%ModuleDirRelative%
 
 
 Rem Basic checks if something is forgotten

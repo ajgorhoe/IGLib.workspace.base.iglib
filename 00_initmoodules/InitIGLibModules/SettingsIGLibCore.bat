@@ -9,7 +9,7 @@ rem set ScriptDir=%~dp0
 rem set InitialDir=%CD%
 
 echo.
-echo Defining env. variables: SETTINGS for module repository: IGLibCore
+echo Defining env. variables: SETTINGS for updating repository: IGLibCore
 echo.
 
 rem Parameters for the update:
@@ -23,5 +23,17 @@ set RemoteSecondary=originBitBucket
 set RemoteLocal=local
 
 set ModuleDir=%~dp0%ModuleDirRelative%
+
+
+
+rem If command-line arguments were specified then interpret them as another command and run the command:
+if "%~1" NEQ "" (
+    echo.
+    echo Settings script: Executing recursve commnd specified by arguments:
+    echo   call "%~1" "%~2" "%~3" "%~4" "%~5" "%~6" "%~7" "%~8" "%~9"
+    echo.
+    call "%~1" "%~2" "%~3" "%~4" "%~5" "%~6" "%~7" "%~8" "%~9"
+)
+
 
 
