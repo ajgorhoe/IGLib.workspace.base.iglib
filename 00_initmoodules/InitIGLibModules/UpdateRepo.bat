@@ -12,6 +12,7 @@ set InitialDir=%CD%
 
 rem Skip the settings section:
 goto afterSettings
+:afterSettings
 rem Parameters for the update:
 set ModuleDirRelative=..\..\modules\IGLibCore
 set CheckoutBranch=master
@@ -21,13 +22,14 @@ set RepositoryAddressLocal=d:/backup_sync/bk_code/git/ig/misc/iglib_modules/IGLi
 set Remote=origin
 set RemoteSecondary=originBitBucket
 set RemoteLocal=local
-:afterSettings
+
+set ModuleDir=%~dp0%ModuleDirRelative%
 
 rem If command-line arguments were specified then take them as another command and run the command:
 if "%~1" NEQ "" (
     echo.
     echo Execuring:
-    echo   "%~1" "%~2" "%~3" "%~4" "%~5" "%~6" "%~7" "%~8" "%~9" "%~10"
+    echo   echo   %~1 %~2 %~3 %~4 %~5 %~6 %~7 %~8 %~9
     call "%~1" "%~2" "%~3" "%~4" "%~5" "%~6" "%~7" "%~8" "%~9" "%~10"
     echo.
 )
