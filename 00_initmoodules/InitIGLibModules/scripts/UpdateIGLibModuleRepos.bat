@@ -18,9 +18,9 @@ echo   ScriptDir: %ScriptDir%
 echo   UpdateScript: %UpdateScript%
 echo.
 
-call "%UpdateScript%" "%ScriptDir%SettingsIGLibScripts.bat"
+rem call "%UpdateScript%" "%ScriptDir%SettingsIGLibScripts.bat"
 call "%UpdateScript%" "%ScriptDir%SettingsIGLibCore.bat"
-call "%UpdateScript%" "%ScriptDir%SettingsIGLibEventAggregator.bat"
+rem call "%UpdateScript%" "%ScriptDir%SettingsIGLibEventAggregator.bat"
 
 endlocal
 

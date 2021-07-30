@@ -1,7 +1,7 @@
 
 @echo off
 
-rem Sets parameters for cloning or updating the IGLibEventAggregator repository.
+rem Sets parameters for cloning or updating the IGLibScripts repository.
 
 rem Parameters are set as environment variables with agreed names.
 rem These settings are used by scripts such as:
@@ -27,23 +27,33 @@ echo.
 echo Defining env. variables: SETTINGS for updating repository: IGLibCore
 echo.
 
-set ModuleDirRelative=..\..\modules\IGLibEventAggregator
+rem Parameters for the update:
+set ModuleDirRelative=..\..\..\modules\IGLibScripts
 set CheckoutBranch=master
-set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibEventAggregator.git
-set RepositoryAddressSecondary=https://ajgorhoe@bitbucket.org/ajgorhoe/iglib.modules.iglibeventaggregator.git
-set RepositoryAddressLocal=d:/backup_sync/bk_code/git/ig/misc/iglib_misc/EventAggregator/
+set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibScripts.git
+set RepositoryAddressSecondary=https://ajgorhoe@bitbucket.org/ajgorhoe/iglib.modules.iglibscripts.git
+set RepositoryAddressLocal=d:\backup_sync\bk_code\git\ig\misc\iglib_modules\IGLibScripts
 set Remote=origin
-set RemoteSecondary=originBitBucket
+set RemoteSecondary=originSecondary
 set RemoteLocal=local
 
-set ModuleDir=%~dp0%ModuleDirRelative%
+set ModuleDir=%~dp0\%ModuleDirRelative%
 
-rem If command-line arguments were specified then interpret them as another command and run the command:
-if "%~1" NEQ "" (
-    echo.
-    echo Settings script: Executing recursve commnd specified by arguments:
-    echo   cmd /c "%~1" "%~2" "%~3" "%~4" "%~5" "%~6" "%~7" "%~8" "%~9"
-    echo.
-    cmd /c "%~1" "%~2" "%~3" "%~4" "%~5" "%~6" "%~7" "%~8" "%~9"
-)
+
+if "%~1" EQU "" goto AfterCommandCall
+	:: If any command-line arguments were specified then assemble a 
+	:: command-line from these arguments and execute it:
+
+	:: Assemble command-line from the remaining arguments....
+	set CommandLine6945="%~1"
+	:loop
+	shift
+	if [%1]==[] goto afterloop
+	set CommandLine6945=%CommandLine6945% "%~1"
+	goto loop
+	:afterloop
+
+	:: Call the assembled command-line:
+	call %CommandLine6945%
+:AfterCommandCall
 

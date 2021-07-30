@@ -1,7 +1,7 @@
 
 @echo off
 
-rem Sets parameters for cloning or updating the IGLibScripts repository.
+rem Sets parameters for cloning or updating the IGLibEventAggregator repository.
 
 rem Parameters are set as environment variables with agreed names.
 rem These settings are used by scripts such as:
@@ -27,26 +27,32 @@ echo.
 echo Defining env. variables: SETTINGS for updating repository: IGLibCore
 echo.
 
-rem Parameters for the update:
-set ModuleDirRelative=..\..\modules\IGLibScripts
+set ModuleDirRelative=..\..\..\modules\IGLibEventAggregator
 set CheckoutBranch=master
-set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibScripts.git
-set RepositoryAddressSecondary=https://github.com/ajgorhoe/IGLib.workspace.scripts.git
-set RepositoryAddressLocal=d:/backup_sync/bk_code/git/ig/workspace/scripts.git/
+set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibEventAggregator.git
+set RepositoryAddressSecondary=https://ajgorhoe@bitbucket.org/ajgorhoe/iglib.modules.iglibeventaggregator.git
+set RepositoryAddressLocal=d:/backup_sync/bk_code/git/ig/misc/iglib_misc/EventAggregator
 set Remote=origin
-set RemoteSecondary=originSecondary
+set RemoteSecondary=originBitBucket
 set RemoteLocal=local
 
 set ModuleDir=%~dp0%ModuleDirRelative%
 
 
+if "%~1" EQU "" goto AfterCommandCall
+	:: If any command-line arguments were specified then assemble a 
+	:: command-line from these arguments and execute it:
 
-rem If command-line arguments were specified then interpret them as another command and run the command:
-if "%~1" NEQ "" (
-    echo.
-    echo Settings script: Executing recursve commnd specified by arguments:
-    echo   cmd /c "%~1" "%~2" "%~3" "%~4" "%~5" "%~6" "%~7" "%~8" "%~9"
-    echo.
-    cmd /c "%~1" "%~2" "%~3" "%~4" "%~5" "%~6" "%~7" "%~8" "%~9"
-)
+	:: Assemble command-line from the remaining arguments....
+	set CommandLine6945="%~1"
+	:loop
+	shift
+	if [%1]==[] goto afterloop
+	set CommandLine6945=%CommandLine6945% "%~1"
+	goto loop
+	:afterloop
+
+	:: Call the assembled command-line:
+	call %CommandLine6945%
+:AfterCommandCall
 
