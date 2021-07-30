@@ -8,19 +8,18 @@ setlocal
 rem Reset the error level (by running an always successfull command):
 ver > nul
 
-set ScriptDir=%~dp0
-set InitialDir=%CD%
-set UpdateScript=%ScriptDir%UpdateRepo.bat
+rem Call bootstrapping script to define basic directories and strings:
+call "%~dp0BootStrapScripting.bat"
 
 echo.
 echo Updating IGLib modules...
-echo   ScriptDir: %ScriptDir%
+echo   IGLibScripts: %IGLibScripts%
 echo   UpdateScript: %UpdateScript%
 echo.
 
-rem call "%UpdateScript%" "%ScriptDir%SettingsIGLibScripts.bat"
-call "%UpdateScript%" "%ScriptDir%SettingsIGLibCore.bat"
-rem call "%UpdateScript%" "%ScriptDir%SettingsIGLibEventAggregator.bat"
+call "%UpdateScript%" "%~dp0SettingsIGLibScripts.bat"
+call "%UpdateScript%" "%~dp0SettingsIGLibCore.bat"
+call "%UpdateScript%" "%~dp0SettingsIGLibEventAggregator.bat"
 
 endlocal
 
