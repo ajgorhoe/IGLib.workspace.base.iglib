@@ -17,7 +17,7 @@ ver > nul
 call "%~dp0BootStrapScripting.bat"
 
 :: Then update IGLibScripts, even if the repo is already cloned:
-"%UpdateRepo%"  "%~dp0SettingsIGLibScripts.bat" "%SetVar%" ModuleDir "%IntendedLocationIGLibScripts%" "%SetVar%" CheckoutBranch master
+"%UpdateRepo%" "%~dp0\SettingsIGLibScriptsBootstrap.bat"
 
 :: Alternative CheckoutBranch: release/latestrelease
 
