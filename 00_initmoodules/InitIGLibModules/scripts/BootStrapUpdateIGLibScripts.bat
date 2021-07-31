@@ -17,6 +17,8 @@ ver > nul
 call "%~dp0BootStrapScripting.bat"
 
 :: Then update IGLibScripts, even if the repo is already cloned:
-"%UpdateRepo%"  "%~dp0SettingsIGLibScripts.bat" "%SetVar%" ModuleDir "%IntendedLocationIGLibScripts%"
+"%UpdateRepo%"  "%~dp0SettingsIGLibScripts.bat" "%SetVar%" ModuleDir "%IntendedLocationIGLibScripts%" "%SetVar%" CheckoutBranch master
+
+:: Alternative CheckoutBranch: release/latestrelease
 
 endlocal

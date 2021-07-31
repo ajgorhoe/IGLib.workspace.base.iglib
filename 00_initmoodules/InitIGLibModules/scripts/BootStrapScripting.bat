@@ -36,9 +36,9 @@ if exist "%IntendedLocationIGLibScriptsGitSubdir%" (
 	
 	call "%IntendedLocationIGLibScripts%\SetScriptReferences.bat"
 
-	echo.
-	echo CONTROL OUTPUT:
-	echo.
+	rem echo.
+	rem echo CONTROL OUTPUT:
+	rem echo.
 	
 	rem Also print the variables by using a script from IGLibScripts; we can
 	rem now use the variable containing printing script path:
