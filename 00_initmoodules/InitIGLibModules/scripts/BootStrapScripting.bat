@@ -34,10 +34,12 @@ call "%BootstrapSettings%"
 :: Print settings for bootstrapping IGLib repo:
 call "%PrintRepoSettings%"
 
+set BootstrapRepoUpdated=0
 if exist "%ModuleGitSubdir%" goto :SkipUpdate
   :: The IGLibScripts for bootstrapping not yet properly cloned, 
   :: perform repo update (cloning):
-  call "%UpdateRepo%"
+  call "%UpdateRepo%" "%BootstrapSettings%"
+  set BootstrapRepoUpdated=1
 :SkipUpdate
 
 
@@ -59,6 +61,14 @@ if not exist "%ModuleGitSubdir%" goto ErrorScriptRepo
 
 :: Skip the remaining block - shall be removed later.
 goto finalize
+
+
+
+
+
+
+
+
 
 
 
