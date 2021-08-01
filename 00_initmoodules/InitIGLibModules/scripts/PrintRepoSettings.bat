@@ -17,8 +17,6 @@ setlocal
 :: Reset the error level (by running an always successfull command):
 ver > nul
 :: Base directories:
-set ScriptDir=%~dp0
-set InitialDir=%CD%
 
 if "%~1" EQU "" goto AfterCommandCall
 	:: If any command-line arguments were specified then assemble a 
@@ -50,6 +48,8 @@ echo.
 echo RepositoryAddress: "%RepositoryAddress%"
 echo RepositoryAddressSecondary: "%RepositoryAddressSecondary%"
 echo RepositoryAddressLocal: "%RepositoryAddressLocal%"
+echo.
+echo ModuleGitSubdir: "%ModuleGitSubdir%"
 echo.
 
 :finalize

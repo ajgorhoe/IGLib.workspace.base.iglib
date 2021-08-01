@@ -1,68 +1,6 @@
 
 @echo off
 
-:: Prepares environment for execution of repository updating scripts.
-
-echo.
-echo BootStrapScripting.bat:
-echo   bootstrapping essential scripts...
-echo.
-echo Obtaining bootstrapping script repository settins...
-
-:: Define initially script locations for bootstrapping:
-set BootstrapSettings=%~dp0\SettingsIGLibScriptsBootstrap.bat
-set UpdateRepo=%~dp0\UpdateRepo.bat
-set SetVar=%~dp0\SetVar.bat
-set PrintRepoSettings=%~dp0\PrintRepoSettings.bat
-
-if 1 NEQ 0 (
-  echo.
-  echo Initial script paths:
-  echo BootstrapSettings: "%BootstrapSettings%"
-  echo UpdateRepo: "%UpdateRepo%"
-  echo SetVar: "%SetVar%"
-  echo PrintRepoSettings: "%PrintRepoSettings%"
-)
-
-:: Obtain for IGLibScripting repository for bootstrapping:
-:: call "%~dp0\SettingsIGLibScriptsBootstrap.bat"
-call "%BootstrapSettings%"
-
-:: Derived variable - already defined in settings::
-:: set ModuleGitSubdir=%ModuleDir%\.git\refs
-
-:: Print settings for bootstrapping IGLib repo:
-call "%PrintRepoSettings%"
-
-if exist "%ModuleGitSubdir%" goto :SkipUpdate
-  :: The IGLibScripts for bootstrapping not yet properly cloned, 
-  :: perform repo update (cloning):
-  call "%UpdateRepo%"
-:SkipUpdate
-
-
-if not exist "%ModuleGitSubdir%" goto ErrorScriptRepo
-  rem Update script locations to point intto IGLibScripts
-  rem by calling SetScriptReferences.bat in IGLibScripts:
-  call "%ModuleDir%\SetScriptReferences.bat"
-  call "%PrintScriptReferences%"
-  goto AfterScriptReferencesUpdate
-:ErrorScriptRepo
-  echo.
-  echo ERROR in BOOTSTRAPPING scripts:
-  echo   IGLibScripts module could not be cloned.
-  echo   Fallback to bootstrapping scripts; may not work properly.
-  echo.
-
-:AfterScriptReferencesUpdate
-
-
-:: Skip the remaining block - shall be removed later.
-goto finalize
-
-
-
-
 :: Define location of IGLibScripts repo in the current directory:
 
 set IntendedLocationIGLibScripts=%~dp0IGLibScripts
@@ -88,7 +26,7 @@ if not exist "%IntendedLocationIGLibScriptsGitSubdir%" (
 	echo.
 	echo.
 	echo The following directory indicating IGLibScripts existence does not exist, 
-	echo need to clone the IGLibScripts repository into:
+	echo need to clone the IGLibScrippts repository into:
 	echo   "%IntendedLocationIGLibScriptsGitSubdir%"
 	call "%UpdateRepo%" "%~dp0\SettingsIGLibScriptsBootstrap.bat"
 )
@@ -129,8 +67,4 @@ if exist "%IntendedLocationIGLibScriptsGitSubdir%" (
 	echo.
 )
 
-:finalize
 
-echo.
-echo   ... bootstrappping essential scripts completed.
-echo.
