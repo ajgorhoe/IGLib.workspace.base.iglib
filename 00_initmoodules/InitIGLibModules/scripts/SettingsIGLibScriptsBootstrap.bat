@@ -9,7 +9,7 @@
 ver > nul
 
 echo.
-echo Defining env. variables: SETTINGS for BOOTSTRAPPING repository: IGLibCore
+echo SETTINGS for BOOTSTRAPPING repository: IGLibScripts
 echo.
 
 

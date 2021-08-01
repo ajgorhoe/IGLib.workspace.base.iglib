@@ -24,7 +24,7 @@ rem Reset the error level (by running an always successfull command):
 ver > nul
 
 echo.
-echo Defining env. variables: SETTINGS for updating repository: IGLibCore
+echo SETTINGS for updating repository: IGLibEventAggregator
 echo.
 
 set ModuleDirRelative=..\..\..\modules\IGLibEventAggregator

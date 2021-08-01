@@ -14,12 +14,12 @@ call "%~dp0\BootStrapScripting.bat"
 echo.
 echo Updating IGLib modules...
 echo   IGLibScripts: %IGLibScripts%
-echo   UpdateScript: %UpdateScript%
+echo   UpdateRepo: %UpdateRepo%
 echo.
 
-rem call "%UpdateScript%" "%~dp0SettingsIGLibScripts.bat"
-rem call "%UpdateScript%" "%~dp0SettingsIGLibCore.bat"
-rem call "%UpdateScript%" "%~dp0SettingsIGLibEventAggregator.bat"
+call "%UpdateRepo%" "%~dp0\SettingsIGLibScripts.bat"
+call "%UpdateRepo%" "%~dp0\SettingsIGLibCore.bat"
+call "%UpdateRepo%" "%~dp0\SettingsIGLibEventAggregator.bat"
 
 endlocal
 
