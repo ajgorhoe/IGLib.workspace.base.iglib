@@ -16,11 +16,14 @@ ver > nul
 :: Call bootstrapping script to define basic directories and strings:
 call "%~dp0BootStrapScripting.bat"
 
-rem if %BootstrapRepoUpdated% 
-:: Then update IGLibScripts, even if the repo is already cloned:
-:: Old code: "%UpdateRepo%" "%~dp0\SettingsIGLibScriptsBootstrap.bat"
-"%UpdateRepo%" "%BootstrapSettings%"
+:: Skip updating if BootStrapScripting indicated that it has been 
+:: performed already:
+if %BootstrapRepoUpdated% neq 0 goto SkipUpdating
+	:: Update IGLibScripts, even if the repo is already cloned:
+	:: Old code: "%UpdateRepo%" "%~dp0\SettingsIGLibScriptsBootstrap.bat"
+	"%UpdateRepo%" "%BootstrapSettings%"
+:SkipUpdating
 
-:: Alternative CheckoutBranch: release/latestrelease
+BootStrapScripting
 
 endlocal
