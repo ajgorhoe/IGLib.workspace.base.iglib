@@ -1,9 +1,9 @@
 ﻿
-using IG.Forms;
+// using IG.Forms;
 
 // $$$$Excluded
 
-namespace IG.Forms11
+namespace IG.Forms
 {
     partial class BrowserSimpleWindow
     {

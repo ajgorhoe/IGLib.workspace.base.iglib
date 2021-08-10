@@ -11,7 +11,7 @@ using IG.Forms;
 // $$$$Excluded
 
 
-namespace IG.Forms11
+namespace IG.Forms
 {
     public partial class BrowserSimpleWindow : Form
     {
