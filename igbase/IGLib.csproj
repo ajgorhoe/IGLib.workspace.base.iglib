@@ -52,7 +52,7 @@
   <ItemGroup>
     <ProjectReference Include="..\external\jint\Jint\Jint.csproj" />
     <ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
-    <ProjectReference Include="..\modules\00_initmoodules\InitIGLibModules\InitIGLibModules.csproj" />
+    <ProjectReference Include="..\00_initmoodules\InitIGLibModules\InitIGLibModules.csproj" />
     <ProjectReference Include="..\modules\IGLibCore\src\IGLibCore.csproj" />
   </ItemGroup>
   
