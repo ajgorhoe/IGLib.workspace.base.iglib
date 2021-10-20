@@ -11,7 +11,7 @@
     <TargetFrameworks>net5.0;net48;netstandard2.0;netstandard1.4</TargetFrameworks>
     -->
     <TargetFrameworks>net48</TargetFrameworks>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   
 </PropertyGroup>
 
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="echo .&#xD;&#xA;echo IGLib modules INITIALIZATION:&#xD;&#xA;echo Calling module updating script...&#xD;&#xA;echo .&#xD;&#xA;call &quot;$(ProjectDir)scripts\UpdateIGLibModuleRepos.bat&quot;&#xD;&#xA;echo .&#xD;&#xA;echo ... module update scripts completed.&#xD;&#xA;echo .&#xD;&#xA;" />
+    <Exec Command="echo.&#xD;&#xA;echo IGLib modules INITIALIZATION:&#xD;&#xA;echo Calling module updating script...&#xD;&#xA;echo.&#xD;&#xA;call &quot;$(ProjectDir)scripts\UpdateIGLibModuleRepos.bat&quot;&#xD;&#xA;echo.&#xD;&#xA;echo ... module update scripts completed.&#xD;&#xA;echo.&#xD;&#xA;" />
   </Target>
 
   
