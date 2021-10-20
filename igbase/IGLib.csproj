@@ -17,9 +17,9 @@
     <!-- Attributes previously in AsemblyInfo.cs: -->
     <AssemblyName>IGLib</AssemblyName>
     <PackageId>IGLib</PackageId>
-    <Version>1.9.1</Version>
-    <AssemblyVersion>1.9.1</AssemblyVersion>
-    <FileVersion>1.9.1</FileVersion>
+    <Version>1.9.1.2</Version>
+    <AssemblyVersion>1.9.1.2</AssemblyVersion>
+    <FileVersion>1.9.1.2</FileVersion>
     <RootNamespace>IG.Lib</RootNamespace>
     <Authors>Igor Grešovnik et al.</Authors>
     <Company>Igor Grešovnik</Company>
