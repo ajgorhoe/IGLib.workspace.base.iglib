@@ -15,10 +15,6 @@
   
 </PropertyGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="exit /b&#xD;&#xA;&#xD;&#xA;echo.&#xD;&#xA;echo Post-build step, project $(ProjectName):&#xD;&#xA;rem echo Executing: del /F /Q &quot;$(TargetDir)$(TargetName).*&quot;&#xD;&#xA;rem del /F /Q &quot;$(TargetDir)$(TargetName).*&quot;&#xD;&#xA;cd&#xD;&#xA;echo.&#xD;&#xA;echo TargetDir: &quot;$(TargetDir)&quot;&#xD;&#xA;echo ProjectDir: &quot;$(ProjectDir)&quot;&#xD;&#xA;echo.&#xD;&#xA;" />
-  </Target>
-
   <ItemGroup>
     <None Update="InfoInitializationIGLibModules.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -28,5 +24,18 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="echo .&#xD;&#xA;echo IGLib modules INITIALIZATION:&#xD;&#xA;echo Calling module updating script...&#xD;&#xA;echo .&#xD;&#xA;call &quot;$(ProjectDir)scripts\UpdateIGLibModuleRepos.bat&quot;&#xD;&#xA;echo .&#xD;&#xA;echo ... module update scripts completed.&#xD;&#xA;echo .&#xD;&#xA;" />
   </Target>
+
+  
+  <!--
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&#xD;&#xA;" />
+  </Target>
+  
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="&#xD;&#xA;" />
+  </Target>
+  
+  -->
 
 </Project>
