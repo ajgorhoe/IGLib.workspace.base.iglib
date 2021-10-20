@@ -4,3 +4,41 @@ Initialization of the following modules have been triggered:
   IGLibEventAggregator
 
 
+
+
+
+
+========== Stored scripts:
+
+========== Prebuild:
+
+echo .
+echo IGLib modules INITIALIZATION:
+echo Calling module updating script...
+echo .
+call "$(ProjectDir)scripts\UpdateIGLibModuleRepos.bat"
+echo .
+echo ... module update scripts completed.
+echo .
+
+
+
+
+
+========== Postbuild:
+
+exit /b
+
+echo.
+echo Post-build step, project $(ProjectName):
+rem echo Executing: del /F /Q "$(TargetDir)$(TargetName).*"
+rem del /F /Q "$(TargetDir)$(TargetName).*"
+cd
+echo.
+echo TargetDir: "$(TargetDir)"
+echo ProjectDir: "$(ProjectDir)"
+echo.
+
+
+
+
