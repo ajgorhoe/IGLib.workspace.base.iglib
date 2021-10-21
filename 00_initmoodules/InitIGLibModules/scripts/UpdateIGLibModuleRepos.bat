@@ -22,11 +22,18 @@ call "%UpdateRepo%" "%~dp0\SettingsIGLibEventAggregator.bat"
 echo.
 echo   ... updating IGLib modules completed.
 echo.
-echo Updating Git submodules...
-git.exe submodule update --progress --init -- "%~dp0/../../../external/mathnet-numerics"
-git.exe submodule update --progress --init -- "%~dp0/../../../external/ZedGraph"
-echo   ... updating Git modules done.
+echo Updating external modules...
 echo.
+call "%UpdateRepo%" "%~dp0\SettingsExternalMatnNetNumerics.bat"
+call "%UpdateRepo%" "%~dp0\SettingsExternalZedGraph.bat"
+echo.
+echo   ... Updating external modules completeed.
+echo.
+REM echo Updating Git submodules...
+REM git.exe submodule update --progress --init -- "%~dp0/../../../external/mathnet-numerics"
+REM git.exe submodule update --progress --init -- "%~dp0/../../../external/ZedGraph"
+REM echo   ... updating Git modules done.
+REM echo.
 
 
 endlocal
