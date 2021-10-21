@@ -11,15 +11,10 @@
     <TargetFrameworks>net5.0;net48;netstandard2.0;netstandard1.4</TargetFrameworks>
     -->
     <TargetFrameworks>net48</TargetFrameworks>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   
 </PropertyGroup>
 
-  <ItemGroup>
-    <None Update="InfoInitializationIGLibModules.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="echo.&#xD;&#xA;echo IGLib modules INITIALIZATION:&#xD;&#xA;echo Calling module updating script...&#xD;&#xA;echo.&#xD;&#xA;call &quot;$(ProjectDir)scripts\UpdateIGLibModuleRepos.bat&quot;&#xD;&#xA;echo.&#xD;&#xA;echo ... module update scripts completed.&#xD;&#xA;echo.&#xD;&#xA;" />
