@@ -1,7 +1,7 @@
 
 @echo off
 
-rem Updates all IGLib modulles.
+rem Updates all IGLib modules.
 
 setlocal
 
@@ -16,15 +16,20 @@ echo Updating IGLib modules...
 echo   IGLibScripts: %IGLibScripts%
 echo   UpdateRepo: %UpdateRepo%
 echo.
+echo    Updating module IGLibScripts ...
 call "%UpdateRepo%" "%~dp0\SettingsIGLibScripts.bat"
+echo    Updating module IGLibCore ...
 call "%UpdateRepo%" "%~dp0\SettingsIGLibCore.bat"
+echo    Updating module IGLibEventAggregator ...
 call "%UpdateRepo%" "%~dp0\SettingsIGLibEventAggregator.bat"
 echo.
 echo   ... updating IGLib modules completed.
 echo.
 echo Updating external modules...
 echo.
+echo    Updating module MatnNetNumerics ...
 call "%UpdateRepo%" "%~dp0\SettingsExternalMatnNetNumerics.bat"
+echo    Updating module ZedGraph ...
 call "%UpdateRepo%" "%~dp0\SettingsExternalZedGraph.bat"
 echo.
 echo   ... Updating external modules completeed.
