@@ -1,7 +1,7 @@
 
 @echo off
 
-rem Sets parameters for cloning or updating the IGLibCore repository.
+rem Sets parameters for cloning or updating the Nath.NET Numerics repository.
 
 rem Parameters are set as environment variables with agreed names.
 rem These settings are used by scripts such as:
