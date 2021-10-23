@@ -28,12 +28,15 @@ echo.
 echo Updating external modules...
 echo.
 echo    Updating module MatnNetNumerics ...
-call "%UpdateRepo%" "%~dp0\SettingsExternalMatnNetNumerics.bat"
+call "%UpdateRepo%" "%~dp0\SettingsExternalMathNetNumerics.bat"
 echo    Updating module ZedGraph ...
 call "%UpdateRepo%" "%~dp0\SettingsExternalZedGraph.bat"
 echo.
 echo   ... Updating external modules completeed.
 echo.
+
+REM The block below is commented because explicit clone / checkout is used
+REM instead of Git submodules.
 REM echo Updating Git submodules...
 REM git.exe submodule update --progress --init -- "%~dp0/../../../external/mathnet-numerics"
 REM git.exe submodule update --progress --init -- "%~dp0/../../../external/ZedGraph"
