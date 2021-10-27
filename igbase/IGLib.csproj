@@ -12,7 +12,6 @@
     <TargetFrameworks>net48</TargetFrameworks>
   </PropertyGroup>
   
-  
   <PropertyGroup>
     <!-- Attributes previously in AsemblyInfo.cs: -->
     <AssemblyName>IGLib</AssemblyName>
