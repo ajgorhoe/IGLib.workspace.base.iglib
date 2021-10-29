@@ -42,6 +42,8 @@
 
   <PropertyGroup>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>../../output/bin</OutputPath>
+    
     <!--
     Remark: Without setting AppendRuntimeIdentifierToOutputPath to false, net5.0 would e.g. set bin\Debug\net5.0-windows
     as output path. To prevent this, set:
