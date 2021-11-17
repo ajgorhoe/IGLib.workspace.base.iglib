@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <!--
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<!--
     <TargetFrameworks>net5.0;net48;netstandard2.0;netstandard1.4</TargetFrameworks>
     <TargetFramework>net5.0</TargetFramework>
     <TargetFramework>net5.0</TargetFramework>
@@ -11,14 +11,16 @@
     <TargetFrameworks>net5.0;net48;netstandard2.0;netstandard1.4</TargetFrameworks>
     net48;netstandard2.0;
     -->
-    <TargetFrameworks>netstandard1.0;</TargetFrameworks>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-  
-</PropertyGroup>
+		<TargetFrameworks>netstandard1.0;</TargetFrameworks>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+
+	</PropertyGroup>
 
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="echo.&#xD;&#xA;echo IGLib modules INITIALIZATION:&#xD;&#xA;echo Calling module updating script...&#xD;&#xA;echo.&#xD;&#xA;call &quot;$(ProjectDir)scripts\UpdateIGLibModuleRepos.bat&quot;&#xD;&#xA;echo.&#xD;&#xA;echo ... module update scripts completed.&#xD;&#xA;echo.&#xD;&#xA;" />
-  </Target>
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<!--
+	  -->
+		<Exec Command="echo.&#xD;&#xA;echo IGLib modules INITIALIZATION:&#xD;&#xA;echo Calling module updating script...&#xD;&#xA;echo.&#xD;&#xA;call &quot;$(ProjectDir)scripts\UpdateIGLibModuleRepos.bat&quot;&#xD;&#xA;echo.&#xD;&#xA;echo ... module update scripts completed.&#xD;&#xA;echo.&#xD;&#xA;" />
+	</Target>
 
 </Project>
