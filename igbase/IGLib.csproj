@@ -5,7 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net40</TargetFramework>
+    <TargetFramework>net40</TargetFramework>  
     -->
 
     <OutputType>Library</OutputType>
@@ -38,7 +38,28 @@
     <PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
     
   </PropertyGroup>
+
+  <PropertyGroup>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>../../output/bin</OutputPath>
+    
+    <!--
+    Remark: Without setting AppendRuntimeIdentifierToOutputPath to false, net5.0 would e.g. set bin\Debug\net5.0-windows
+    as output path. To prevent this, set:
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    Remark: the following would also exclude target framework from output path, but this is not always a good idea for
+    multi-targeted projects (it is probably noy a good idea) because output targets would overwrite each other.
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>bin/</OutputPath>
+    Remark: default output path is simply (if this is OK it does not need to be stated): 
+    <OutputPath>bin/</OutputPath>
+    For IGLib, default path should be the the common output directory:
+    <OutputPath>../../output/bin</OutputPath>
+    -->
+  </PropertyGroup>
   
+  
+  <!--
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
@@ -46,6 +67,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
     <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
   </PropertyGroup>
+  -->
   
   
   <ItemGroup>
