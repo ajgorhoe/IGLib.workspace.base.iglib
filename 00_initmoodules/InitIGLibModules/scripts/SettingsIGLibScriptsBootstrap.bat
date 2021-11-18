@@ -20,7 +20,7 @@ call "%~dp0\SettingsIGLibScripts.bat"
 
 set ModuleDirRelative=IGLibScripts
 set ModuleDir=%~dp0\%ModuleDirRelative%
-set CheckoutBranch=master
+set CheckoutBranch=release/IGLib1.9.9_21_11_18_MainApplicationsWork
 :: Alternative  CheckoutBranch: release/latestrelease
 set RepositoryAddressLocal=
 
