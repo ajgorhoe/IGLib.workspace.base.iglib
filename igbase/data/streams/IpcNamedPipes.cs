@@ -720,7 +720,9 @@ namespace IG.Lib
                         Console.WriteLine("  ... CONNECTED to server.");
                     }
                     else
+                    {
                         pipe.Connect();
+                    }
                 }
                 if (OutputLevel >= 2)
                 {
