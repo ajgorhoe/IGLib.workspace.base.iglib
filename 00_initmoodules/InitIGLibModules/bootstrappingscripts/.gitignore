@@ -13,4 +13,4 @@
 # scripts can still work in this way, reverting to the stored copy that is
 # committed in the repository containing this file)
 
-# /IGLibScripts
+/IGLibScripts
