@@ -46,3 +46,5 @@ REM echo.
 
 endlocal
 
+ver > nul
+
