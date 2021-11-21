@@ -24,18 +24,18 @@ rem Reset the error level (by running an always successfull command):
 ver > nul
 
 echo.
-echo SETTINGS for updating repository: IGLibCore
+echo SETTINGS for updating repository: Math
 echo.
 
 rem Parameters for the update:
-set ModuleDirRelative=..\..\..\modules\IGLibCore
-set CheckoutBranch=master
-set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibCore.git
-set RepositoryAddressSecondary=https://ajgorhoe@bitbucket.org/ajgorhoe/iglib.modules.iglibcore.git
-set RepositoryAddressLocal=d:/backup_sync/bk_code/git/ig/misc/iglib_modules/IGLibCore
+set ModuleDirRelative=..\..\external\ZedGraph
+set CheckoutBranch=f7160203e2c400020046c97f61a01f470edcb4ce
+set RepositoryAddress=https://github.com/ZedGraph/ZedGraph.git
+set RepositoryAddressSecondary=
+set RepositoryAddressLocal=
 set Remote=origin
-set RemoteSecondary=originBitBucket
-set RemoteLocal=local
+set RemoteSecondary=
+set RemoteLocal=
 
 set ModuleDir=%~dp0%ModuleDirRelative%
 

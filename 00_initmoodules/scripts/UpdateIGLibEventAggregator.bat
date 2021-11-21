@@ -1,7 +1,7 @@
 
 @echo off
 
-rem Updates all the specific IGLib module.
+rem Updates all the specific IGLib module. For testing purposes.
 
 setlocal
 
@@ -18,8 +18,8 @@ echo   IGLibScripts: %IGLibScripts%
 echo   UpdateRepo: %UpdateRepo%
 echo.
 
-echo    Updating module IGLibCore ...
-call "%UpdateRepo%" "%~dp0\SettingsIGLibCore.bat"
+echo    Updating module IGLibEventAggregator ...
+call "%UpdateRepo%" "%~dp0\SettingsIGLibEventAggregator.bat"
 echo.
 
 echo.

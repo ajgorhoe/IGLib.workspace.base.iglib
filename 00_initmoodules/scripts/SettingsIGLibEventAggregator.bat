@@ -27,7 +27,7 @@ echo.
 echo SETTINGS for updating repository: IGLibEventAggregator
 echo.
 
-set ModuleDirRelative=..\..\..\modules\IGLibEventAggregator
+set ModuleDirRelative=..\..\modules\IGLibEventAggregator
 set CheckoutBranch=master
 set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibEventAggregator.git
 set RepositoryAddressSecondary=https://ajgorhoe@bitbucket.org/ajgorhoe/iglib.modules.iglibeventaggregator.git

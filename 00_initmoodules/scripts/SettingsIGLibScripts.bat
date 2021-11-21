@@ -1,7 +1,7 @@
 
 @echo off
 
-rem Sets parameters for cloning or updating the IGLibCore repository.
+rem Sets parameters for cloning or updating the IGLibScripts repository.
 
 rem Parameters are set as environment variables with agreed names.
 rem These settings are used by scripts such as:
@@ -24,20 +24,20 @@ rem Reset the error level (by running an always successfull command):
 ver > nul
 
 echo.
-echo SETTINGS for updating repository: Math
+echo SETTINGS for updating repository: IGLibScripts
 echo.
 
 rem Parameters for the update:
-set ModuleDirRelative=..\..\..\external\ZedGraph
-set CheckoutBranch=f7160203e2c400020046c97f61a01f470edcb4ce
-set RepositoryAddress=https://github.com/ZedGraph/ZedGraph.git
-set RepositoryAddressSecondary=
-set RepositoryAddressLocal=
+set ModuleDirRelative=..\..\modules\IGLibScripts
+set CheckoutBranch=master
+set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibScripts.git
+set RepositoryAddressSecondary=https://ajgorhoe@bitbucket.org/ajgorhoe/iglib.modules.iglibscripts.git
+set RepositoryAddressLocal=d:\backup_sync\bk_code\git\ig\misc\iglib_modules\IGLibScripts
 set Remote=origin
-set RemoteSecondary=
-set RemoteLocal=
+set RemoteSecondary=originSecondary
+set RemoteLocal=local
 
-set ModuleDir=%~dp0%ModuleDirRelative%
+set ModuleDir=%~dp0\%ModuleDirRelative%
 
 
 if "%~1" EQU "" goto AfterCommandCall

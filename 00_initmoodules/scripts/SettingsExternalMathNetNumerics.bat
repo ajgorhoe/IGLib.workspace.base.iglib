@@ -28,7 +28,7 @@ echo SETTINGS for updating repository: Math
 echo.
 
 rem Parameters for the update:
-set ModuleDirRelative=..\..\..\external\mathnet-numerics
+set ModuleDirRelative=..\..\external\mathnet-numerics
 set CheckoutBranch=8cdd91d37f36cb4daecc7838898a08ef9c3aa1a4
 set RepositoryAddress=https://github.com/mathnet/mathnet-numerics.git
 set RepositoryAddressSecondary=
