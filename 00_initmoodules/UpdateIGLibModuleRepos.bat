@@ -11,6 +11,11 @@ ver > nul
 rem Call bootstrapping script to define basic directories and strings:
 call "%~dp0\bootstrappingscripts\BootStrapScripting.bat"
 
+rem also make sure that iglibexternal/ is checked out / updated:
+if not exist "%~dp0\..\..\iglibexternal\IGLibExternal\UpdateNeuronDotNet.bat" (
+  call "%~dp0\..\..\UpdateModule_iglibexternal.bat"
+)
+
 echo.
 echo Updating IGLib modules...
 echo   IGLibScripts: %IGLibScripts%
