@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>Exe</OutputType>
+		<OutputType>Library</OutputType>
 		<!--
     <TargetFrameworks>net5.0;net48;netstandard2.0;netstandard1.4</TargetFrameworks>
     <TargetFramework>net5.0</TargetFramework>
