@@ -9,7 +9,7 @@ rem Reset the error level (by running an always successfull command):
 ver > nul
 
 rem Call bootstrapping script to define basic directories and strings:
-call "%~dp0\BootStrapScripting.bat"
+call "%~dp0\..\bootstrappingscripts\BootStrapScripting.bat"
 
 echo.
 echo Updating IGLib modules...
