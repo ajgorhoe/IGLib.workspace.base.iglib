@@ -29,6 +29,8 @@ echo    Updating module IGLibEventAggregator ...
 call "%UpdateRepo%" "%~dp0\scripts\SettingsIGLibEventAggregator.bat"
 echo.
 echo   ... updating IGLib modules completed.
+
+
 echo.
 echo Updating external modules...
 echo.
