@@ -11,11 +11,6 @@ ver > nul
 rem Call bootstrapping script to define basic directories and strings:
 call "%~dp0\bootstrappingscripts\BootStrapScripting.bat"
 
-rem also make sure that iglibexternal/ is checked out / updated:
-if not exist "%~dp0\..\..\iglibexternal\IGLibExternal\UpdateNeuronDotNet.bat" (
-  call "%~dp0\..\..\UpdateModule_iglibexternal.bat"
-)
-
 echo.
 echo Updating IGLib modules...
 echo   IGLibScripts: %IGLibScripts%
@@ -42,8 +37,13 @@ call "%UpdateRepo%" "%~dp0\scripts\SettingsExternalZedGraph.bat"
 
 rem Lines below are new. When solutions are changed, remove the 
 rem corresponding lines above for local updates!
+
+echo    Updating external libraries container...
+call "%~dp0\scripts\UpdateIGLibExternal.bat"
+
 echo    Updating external MatnNetNumerics ...
 call "%~dp0\..\..\iglibexternal\IGLibExternal\UpdateMathNetNumerics.bat" %*
+
 echo    Updating external ZedGraph ...
 call "%~dp0\..\..\iglibexternal\IGLibExternal\UpdateZedGraph.bat" %*
 
