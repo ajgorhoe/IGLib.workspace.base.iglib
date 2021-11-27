@@ -43,7 +43,7 @@ call "%UpdateRepo%" "%~dp0\scripts\SettingsExternalZedGraph.bat"
 rem Lines below are new. When solutions are changed, remove the 
 rem corresponding lines above for local updates!
 echo    Updating external MatnNetNumerics ...
-call "%~dp0\..\..\iglibexternal\IGLibExternal\UpdateMatnNetNumerics.bat" %*
+call "%~dp0\..\..\iglibexternal\IGLibExternal\UpdateMathNetNumerics.bat" %*
 echo    Updating external ZedGraph ...
 call "%~dp0\..\..\iglibexternal\IGLibExternal\UpdateZedGraph.bat" %*
 
