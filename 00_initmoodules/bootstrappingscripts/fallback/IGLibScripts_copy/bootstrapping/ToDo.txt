@@ -1,0 +1,17 @@
+
+TO DO:
+
+Consider whether the bootstrapping scripts can be simplified!
+
+Currently, the bootstrapping directory contains scripts that are sufficient
+to perform the updating job.
+
+This should not be needed, in fact these scripts should only need to make sure
+to clone and simply update the IGLibScripts and then call into that repository
+to delegate real work there. 
+
+See e.g. how binaries repo is updated in codedoc repository, in GenerateCodeDoc
+script (though there is a deficiency because it is not possible to tell the
+script which branch / commit to check out).
+
+
