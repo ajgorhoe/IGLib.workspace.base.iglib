@@ -1,15 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>netstandard1.0</TargetFrameworks>
-		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+		<RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
 	</PropertyGroup>
 
-	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<!--
-		-->
-		<Exec Command="call &quot;$(ProjectDir)UpdateIGLibModuleRepos.bat&quot;" />
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="call $(ProjectDir)UpdateIGLibModuleRepos.bat" />
 	</Target>
 
 </Project>
