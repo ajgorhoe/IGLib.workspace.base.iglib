@@ -49,6 +49,7 @@ call "%~dp0\..\..\iglibexternal\IGLibExternal\UpdateZedGraph.bat" %*
 
 echo    Updating external NeuronDotNet ...
 call "%~dp0\..\..\iglibexternal\IGLibExternal\UpdateNeuronDotNet.bat" %*
+
 echo.
 echo   ... Updating external modules completeed.
 echo.
