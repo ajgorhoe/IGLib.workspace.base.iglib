@@ -9,6 +9,26 @@ echo   bootstrapping essential scripts...
 echo.
 echo Obtaining bootstrapping script repository settins...
 
+rem Check conditions for needing to bootstrap / skip bootstrapping...
+rem Bootstrapping is performed conservatively: if bootstrappng script
+rem locations are already defined (via environment pre-agreed variables) 
+rem and scripts actually exist at these locations then bootstrapping
+rem is skipped. This saves time when bootstrappiing is called in a script 
+rem that was called by another script that already performed bootstrapping.
+rem Call BootstrapUpdate to override this and clone/update the IGLibScripts
+rem repository unconditionally.
+if not defined IGLibScripts goto ContinueBootStrapScripting
+if not exist "%IGLibScripts%" goto ContinueBootStrapScripting
+if not defined SetScriptReferences goto ContinueBootStrapScripting
+if not exist "%SetScriptReferences%" goto ContinueBootStrapScripting
+rem no need to continue:
+echo.
+echo Scripting is already bootsttrapped, skipping the remainder 
+echo   off BootStrapScripting.
+echo.
+goto AfterScriptReferencesUpdate
+:ContinueBootStrapScripting
+
 :: Define initially script locations for bootstrapping:
 set BootstrapSettings=%~dp0\SettingsIGLibScriptsBootstrap.bat
 set UpdateRepo=%~dp0\UpdateRepo.bat
@@ -43,18 +63,27 @@ if exist "%ModuleGitSubdir%" goto :SkipUpdate
 :SkipUpdate
 
 
-if not exist "%ModuleGitSubdir%" goto ErrorScriptRepo
+if not exist "%ModuleGitSubdir%" goto Fallback
   rem Update script locations to point intto IGLibScripts
   rem by calling SetScriptReferences.bat in IGLibScripts:
   call "%ModuleDir%\SetScriptReferences.bat"
   rem call "%PrintScriptReferences%"
   goto AfterScriptReferencesUpdate
+
+:Fallback
+if not exist "%~dp0\fallback\FallbackBootStrapScripting.bat" goto ErrorScriptRepo
+
+rem Call the falback bootstrapping script:
+call "%~dp0\fallback\FallbackBootStrapScripting.bat"
+goto AfterScriptReferencesUpdate
+
 :ErrorScriptRepo
   echo.
   echo ERROR in BOOTSTRAPPING scripts:
   echo   IGLibScripts module could not be cloned.
   echo   Fallback to bootstrapping scripts; may not work properly.
   echo.
+
 :AfterScriptReferencesUpdate
 
 

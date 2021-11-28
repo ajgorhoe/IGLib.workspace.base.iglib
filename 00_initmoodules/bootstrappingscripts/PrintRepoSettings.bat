@@ -16,7 +16,10 @@ setlocal
 
 :: Reset the error level (by running an always successfull command):
 ver > nul
-:: Base directories:
+
+echo.
+echo ======================================== %~n0%~x0:
+echo.
 
 if "%~1" EQU "" goto AfterCommandCall
 	:: If any command-line arguments were specified then assemble a 
@@ -34,6 +37,9 @@ if "%~1" EQU "" goto AfterCommandCall
 	:: Call the assembled command-line:
 	call %CommandLine6945%
 :AfterCommandCall
+
+echo.
+echo ======== Rpository settings: (%~n0%~x0):
 
 echo.
 echo Parameters for repository update:
@@ -54,6 +60,10 @@ echo.
 
 :finalize
 ver > nul
+
+echo.
+echo ======== End: %~n0%~x0
+echo.
 
 endlocal
 
