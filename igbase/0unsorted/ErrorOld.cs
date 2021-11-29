@@ -20,6 +20,8 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 
+//using System.Diagnostics.EventLog;
+
 namespace IG.Lib.Old
 {
 
@@ -75,6 +77,9 @@ namespace IG.Lib.Old
    // /// <param name="ex1">Exception that was thrwn by the error reporting function.</param>
    // public delegate void ReserveReportErrorDelegate(Reporter reporter, ReportType messagetype,
    //             string location, string message, Exception ex, Exception ex1);
+
+
+#if USE_OLD_REPORTER
 
 
     #region Types
@@ -139,13 +144,12 @@ namespace IG.Lib.Old
     #endregion  // Types
 
 
-
     /// <summary>Interface from which all reporters inherit.</summary>
     /// $A Igor Aug08;
     public interface IReporter
     {
 
-        #region Initialization
+    #region Initialization
 
         // Default initialization
 
@@ -203,9 +207,9 @@ namespace IG.Lib.Old
            ReserveReportErrorDelegate reservereportdelegate);
 
 
-        #endregion // Initialization
+    #endregion // Initialization
 
-        #region Reporter_Data
+    #region Reporter_Data
 
 
         // Levels of various kinds of reporting (User interface reporting, logging and tracing):
@@ -256,7 +260,7 @@ namespace IG.Lib.Old
         bool this[ReportLevel level] { get; set; }
 
 
-        #region TraceSwitch
+    #region TraceSwitch
 
         /// <summary>Returns the System.Diagnostics.EventLogEntryType value corresponding to the given <see cref="ReportType"/>.
         /// Remark: FailureAudit and SuccessAudit can not be generated because they don't have representation in ReportType.</summary>
@@ -308,7 +312,7 @@ namespace IG.Lib.Old
         TraceSwitch TracingSwitch { get; set; }
 
 
-        #endregion  // TraceSwitch
+    #endregion  // TraceSwitch
 
 
 
@@ -322,10 +326,10 @@ namespace IG.Lib.Old
         /// <summary>Object used for locking.</summary>
         object lockobj { get; }
 
-        #endregion  // Reporter_Data
+    #endregion  // Reporter_Data
 
 
-        #region Reporting
+    #region Reporting
         // ACTUAL REPORTING METHDS; Specific methods are not included in the interface.
 
         // GENERAL REPORTING METHODS (for all kinds of reports):
@@ -461,7 +465,7 @@ namespace IG.Lib.Old
         /// <param name="message">User provided message included in the report.</param>
         void ReportInfo(string message);
 
-        #endregion // Reporting
+    #endregion // Reporting
 
 
     }   // interface IReporter
@@ -477,7 +481,7 @@ namespace IG.Lib.Old
     // $A Igor Oct08;
     {
 
-        #region Erorr_Reporting_Global
+    #region Erorr_Reporting_Global
 
         // Global error reporter of this class:
         // In derived classes, this block should be repeated, only with classs name of _Global and Global set to the
@@ -523,10 +527,10 @@ namespace IG.Lib.Old
             protected set { _Global = value; if (value != null) _GlobalInitialized = true; }
         }
 
-        #endregion Erorr_Reporting_Global
+    #endregion Erorr_Reporting_Global
 
 
-        #region Error_Reporting_Definition
+    #region Error_Reporting_Definition
 
         // Replaceable methods implemented through delagates:
 
@@ -551,9 +555,9 @@ namespace IG.Lib.Old
         /// or at least to use the DefaultReserveReportMessage() method for assembly of the message shown.</summary>
         public ReserveReportErrorDelegate ReserveReportErrorDlg = null;  // new ReserveReportErrorDelegate(DefaultReserveReportError);
 
-        #region Initialization
+    #region Initialization
 
-        #region Constructors
+    #region Constructors
 
         // Constructors - this region will be literally included in derived classes, except in special cases):
 
@@ -627,10 +631,10 @@ namespace IG.Lib.Old
             Init(obj, reportdelegate, reservereportdelegate);
         }
 
-        #endregion  // Constructors
+    #endregion  // Constructors
 
 
-        #region Initialization_Overridden
+    #region Initialization_Overridden
 
         // Setting default error reporting behavior, these methods should be overridden in derived classes:
 
@@ -700,10 +704,10 @@ namespace IG.Lib.Old
             }
         }
 
-        #endregion  // Initialization_Overridden
+    #endregion  // Initialization_Overridden
 
 
-        #region Initialization_Overloaded
+    #region Initialization_Overloaded
 
         // Initialization functions (overloaded) to be called in constructors:
 
@@ -801,15 +805,15 @@ namespace IG.Lib.Old
             }
         }
 
-        #endregion  // Initialization_Overloaded
+    #endregion  // Initialization_Overloaded
 
 
-        #endregion  // Initialization
+    #endregion  // Initialization
 
-        #endregion // Error_Reporting_Definition
+    #endregion // Error_Reporting_Definition
 
 
-        #region Reporter_Data
+    #region Reporter_Data
 
 
         /// <summary>Indicates that reporting suitable for debugging mode should be performed.
@@ -1002,7 +1006,7 @@ namespace IG.Lib.Old
 
 
 
-        #region TraceSwitch
+    #region TraceSwitch
 
         // Properties of the type TraceSwitch that are synchronized with the levels of reporting of different types
         // (i.e. reporting, logging and tracing). These properties are not in use if not explicitly accessed, therefore
@@ -1202,7 +1206,7 @@ namespace IG.Lib.Old
             }
         }
 
-        #endregion TraceSwitch
+    #endregion TraceSwitch
 
 
 
@@ -1229,13 +1233,13 @@ namespace IG.Lib.Old
             get { return _lockobj; }
         }
 
-        #endregion  // Reporter_Data
+    #endregion  // Reporter_Data
 
 
-        #region Reporting
+    #region Reporting
         // ACTUAL REPORTING METHDS
 
-        #region Reporting_General
+    #region Reporting_General
 
         // ACTUAL REPORTING METHODS (utilizing delegates):
 
@@ -1379,7 +1383,7 @@ namespace IG.Lib.Old
             Report(messagetype, null /* location */, message, null /* ex */ );
         }
 
-        #region Reporting_Types
+    #region Reporting_Types
 
         // ERROR REPORTING FUNCTIONS:
 
@@ -1532,16 +1536,16 @@ namespace IG.Lib.Old
             Report(ReportType.Info, null /* location */, message, null /* ex */ );
         }
 
-        #endregion  // Reporting_Types
+    #endregion  // Reporting_Types
 
-        #endregion   // Reporting_General
-
-
-        #region Reporting_Specific
+    #endregion   // Reporting_General
 
 
+    #region Reporting_Specific
 
-        #region Reporting_TextWriter
+
+
+    #region Reporting_TextWriter
 
         //Data & its manipulation: 
 
@@ -1828,16 +1832,16 @@ namespace IG.Lib.Old
         }
 
 
-        #endregion   // Reporting_TextWriter
+    #endregion   // Reporting_TextWriter
 
 
-        #endregion  // Reporting_Specific
+    #endregion  // Reporting_Specific
 
 
-        #endregion   //  Reporting
+    #endregion   //  Reporting
 
 
-        #region Error_Default_methods  // Auxiliary methods, default methods to assign to delegates, etc.
+    #region Error_Default_methods  // Auxiliary methods, default methods to assign to delegates, etc.
 
         // A SET OF PRE-DEFINEd (DEFAULT) METHODS FOR ASSIGNMENT TO DELEGATES: 
 
@@ -2158,10 +2162,10 @@ namespace IG.Lib.Old
             catch { }
         }
 
-        #endregion Error_Default_methods  // Default methods to assign to delegates.
+    #endregion Error_Default_methods  // Default methods to assign to delegates.
 
 
-        #region Error_Auxiliary  // Auxiliary functions, default functions to assign to delegates, etc.
+    #region Error_Auxiliary  // Auxiliary functions, default functions to assign to delegates, etc.
 
         /// <summary>Returns location string derived from ex, which includes information about the location where error occurred,
         /// specified by the source file name, function and line and column numbers.</summary>
@@ -2236,7 +2240,7 @@ namespace IG.Lib.Old
             return ret;
         }
 
-        #endregion Error_Auxiliary  // Auxiliary methods, default methods to assign to delegates, etc.
+    #endregion Error_Auxiliary  // Auxiliary methods, default methods to assign to delegates, etc.
 
 
         //#region Reporting_Static
@@ -2489,7 +2493,7 @@ namespace IG.Lib.Old
 
 
 
-        #region Error_Reporter_Old
+    #region Error_Reporter_Old
 
         // GLOBAL ERROR REPORTER:
 
@@ -2626,22 +2630,22 @@ namespace IG.Lib.Old
         //}
 
 
-        #endregion Error_Reporter_Old
+    #endregion Error_Reporter_Old
 
 
 
-        #region Testing
+    #region Testing
 
         static void Test()
         {
         }
 
-        #endregion  // Testing
+    #endregion  // Testing
 
 
     }  //  class Reporter
 
-
+#endif
 
     ///// <summary>Utilities for error reporting and a global error reporter.</summary>
     //public class Reporter_Old
@@ -2679,13 +2683,13 @@ namespace IG.Lib.Old
     //    #region Error_Reporting_Definition
 
     //    // Replaceable methods implemented through delagates:
-        
+
     //    /// <summary>Delegate that performs error reporting.
     //    /// It calls delegates ReportDlg to assemble error location information and ReportMessageDlg to 
     //    /// assemble error message. Then it uses both to assemble the final decorated error message and launches
     //    /// it in its own way.</summary>
     //    public ReportDelegate ReportDlg = new ReportDelegate(DefaultReportConsole);
-        
+
     //    /// <summary>Delegate that assembles the error location string.</summary>
     //    public ReportLocationDelegate ReportLocationDlg = new ReportLocationDelegate(DefaultLocationString);
 
@@ -2794,7 +2798,7 @@ namespace IG.Lib.Old
     //                reservereportdelegate);
     //        }
     //    }
-        
+
 
 
 
@@ -2964,7 +2968,7 @@ namespace IG.Lib.Old
     //        }
     //    }
 
-        
+
 
     //    #endregion  // Initialization
 
@@ -3882,8 +3886,8 @@ namespace IG.Lib.Old
     //                            "Error in Report_ConsoleForm. " + message, ex, ex1);
     //                    }
     //                }
-                    
-                    
+
+
     //                if (ThrowTestException)
     //                {
     //                    // Throw a test exception:
@@ -4114,8 +4118,8 @@ namespace IG.Lib.Old
 
     //    private bool _UseTextWriter = false;
 
-        ///// <summary>Gets or sets the flag specifying whether reporting using a text writer is performed or not.</summary>
-        //public bool UseTextWriter { get { return _UseTextWriter; } set { _UseTextWriter = value; } }
+    ///// <summary>Gets or sets the flag specifying whether reporting using a text writer is performed or not.</summary>
+    //public bool UseTextWriter { get { return _UseTextWriter; } set { _UseTextWriter = value; } }
 
     //    private List<TextWriter> Writers = new List<TextWriter>();
 
@@ -4168,7 +4172,7 @@ namespace IG.Lib.Old
     //        return ReturnedString;
     //    }
 
-        
+
 
     //    /// <summary>Creates a TextWriter upon a file and sets it as the text writer to which reporting is also performed.</summary>
     //    /// <param name="writer">Stream to which reporting will be performed.</param>
@@ -4191,7 +4195,7 @@ namespace IG.Lib.Old
     //            ReturnedString = true;
     //        return ReturnedString;
     //    }
-        
+
     //    /// <summary>Creates a TextWriter upon a file and sets it as the text writer to which reporting is also performed.</summary>
     //    /// <param name="writer">Stream to which reporting will be performed.</param>
     //    /// <param name="overwrite">If true then eventual existing contents of the file are overwritten. Otherwise,

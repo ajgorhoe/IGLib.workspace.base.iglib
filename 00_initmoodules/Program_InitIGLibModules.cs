@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InitIGLibModules
+namespace InitIGLibModules 
 {
     class Program
     {
