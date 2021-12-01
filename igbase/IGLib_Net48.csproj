@@ -1,0 +1,85 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--
+    <TargetFrameworks>net5.0;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    -->
+
+    <OutputType>Library</OutputType>
+    <TargetFrameworks>net48</TargetFrameworks>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <!-- Attributes previously in AsemblyInfo.cs: -->
+    <AssemblyName>IGLib</AssemblyName>
+    <PackageId>IGLib</PackageId>
+    <Version>1.9.1.2</Version>
+    <AssemblyVersion>1.9.1.2</AssemblyVersion>
+    <FileVersion>1.9.1.2</FileVersion>
+    <RootNamespace>IG.Lib</RootNamespace>
+    <Authors>Igor Grešovnik et al.</Authors>
+    <Company>Igor Grešovnik</Company>
+    <Product>Investigative Generic Library - IGLib</Product>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Description>Basic IGLib library.</Description>
+    <Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl></RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>Tags</PackageTags>
+    <PackageReleaseNotes>Release</PackageReleaseNotes>
+    
+    <PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
+    <PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
+    
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>../../output/bin</OutputPath>
+    <!--
+    Remark: Without setting AppendRuntimeIdentifierToOutputPath to false, net5.0 would e.g. set bin\Debug\net5.0-windows
+    as output path. To prevent this, set:
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    Remark: the following would also exclude target framework from output path, but this is not always a good idea for
+    multi-targeted projects (it is probably noy a good idea) because output targets would overwrite each other.
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <OutputPath>bin/</OutputPath>
+    Remark: default output path is simply (if this is OK it does not need to be stated): 
+    <OutputPath>bin/</OutputPath>
+    For IGLib, default path should be the the common output directory:
+    <OutputPath>../../output/bin</OutputPath>
+    -->
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\external\jint\Jint\Jint.csproj" />
+    <ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
+    <ProjectReference Include="..\modules\IGLibCore\src\IGLibCore.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Extensions">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.Web.Extensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  
+  
+  <!--
+  <ItemGroup>
+    <Compile Remove="FromIGLibBase\**" />
+    <EmbeddedResource Remove="FromIGLibBase\**" />
+    <None Remove="FromIGLibBase\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ToArrange\TypeConversion\" />
+  </ItemGroup>
+  -->
+  
+</Project>
+
+
