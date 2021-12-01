@@ -70,6 +70,31 @@
 	</ItemGroup>
 
 
+	<ItemGroup>
+		<Content Remove="*\**" />
+		<None Remove="*\**" />
+		<Compile Remove="*\**" />
+		<EmbeddedResource Remove="*\**" />
+		<Content Remove="*.cs1" />
+		<None Remove="*.cs1" />
+		<Compile Remove="*.cs" />
+		<EmbeddedResource Remove="*" />
+		<!--
+		-->
+	</ItemGroup>
+
+
+	<!--
+	-->
+	<ItemGroup>
+		<Content Include="00_net48\**" />
+		<Compile Include="00_net48\**\*.cs" />
+		<EmbeddedResource Include="00_net48\**" />
+		<None Include="00_net48\**" />
+	</ItemGroup>
+
+
+
 
 	<!--
 	<ItemGroup>
