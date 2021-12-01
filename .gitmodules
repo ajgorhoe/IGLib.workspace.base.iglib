@@ -1,6 +1,6 @@
-[submodule "external/mathnet-numerics"]
-	path = external/mathnet-numerics
-	url = https://github.com/mathnet/mathnet-numerics.git
-[submodule "external/ZedGraph"]
-	path = external/ZedGraph
-	url = https://github.com/ZedGraph/ZedGraph.git
+# [submodule "external/mathnet-numerics"]
+# 	path = external/mathnet-numerics
+# 	url = https://github.com/mathnet/mathnet-numerics.git
+# [submodule "external/ZedGraph"]
+# 	path = external/ZedGraph
+# 	url = https://github.com/ZedGraph/ZedGraph.git
