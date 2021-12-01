@@ -2,14 +2,8 @@
 
   <PropertyGroup>
     <!--
-    <TargetFramework>net5.0</TargetFramework>
-    <TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net5.0;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net40</TargetFramework>  
-    <TargetFrameworks>net5.0;net48</TargetFrameworks>
-	
-	
-    <TargetFrameworks>net48;net5.0</TargetFrameworks>
     -->
 
     <OutputType>Library</OutputType>
@@ -46,7 +40,6 @@
   <PropertyGroup>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <OutputPath>../../output/bin</OutputPath>
-    
     <!--
     Remark: Without setting AppendRuntimeIdentifierToOutputPath to false, net5.0 would e.g. set bin\Debug\net5.0-windows
     as output path. To prevent this, set:
@@ -62,24 +55,11 @@
     -->
   </PropertyGroup>
   
-  
-  <!--
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
-    <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
-  </PropertyGroup>
-  -->
-  
-  
   <ItemGroup>
     <ProjectReference Include="..\external\jint\Jint\Jint.csproj" />
     <ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
     <ProjectReference Include="..\modules\IGLibCore\src\IGLibCore.csproj" />
   </ItemGroup>
-  
   
   <ItemGroup>
     <Reference Include="System.Configuration" />
@@ -101,12 +81,5 @@
   -->
   
 </Project>
-
-
-<!--
-  REMARK:
-  Older version of this project file (before migration to SDK-style)
-  is in the file IGLib_COPY.csproj11 .
--->
 
 

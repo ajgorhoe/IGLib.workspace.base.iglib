@@ -2,10 +2,8 @@
 
   <PropertyGroup>
     <!--
-    <TargetFramework>net5.0</TargetFramework>
-    <TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net5.0;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net40</TargetFramework>
     -->
 
     <OutputType>Library</OutputType>
@@ -63,22 +61,6 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
-
-  <!--
-  <ItemGroup>
-    <Folder Include="System\Windows\" />
-  </ItemGroup>
-  -->
-
-
-
 </Project>
-
-
-<!--
-  REMARK:
-  Older version of this project file (before migration to SDK-style)
-  is in the file IGLibExt_COPY.csproj11 .
--->
 
 

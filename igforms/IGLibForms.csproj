@@ -2,10 +2,8 @@
 
   <PropertyGroup>
     <!--
-    <TargetFramework>net5.0</TargetFramework>
-    <TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net5.0;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net40</TargetFramework>
     -->
 
     <OutputType>Library</OutputType>
@@ -23,12 +21,12 @@
   
   
   <!--  Remark: comment or uncomment this block to switch visibility of project directory 00_ToBeScrapped\AlreadyExcluded
+  -->
   <ItemGroup>
     <Compile Remove="00_ToBeScrapped\AlreadyExcluded\**" />
     <EmbeddedResource Remove="00_ToBeScrapped\AlreadyExcluded\**" />
     <None Remove="00_ToBeScrapped\AlreadyExcluded\**" />
   </ItemGroup>
-  -->
 
   <ItemGroup>
     <ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
@@ -70,10 +68,4 @@
   </PropertyGroup>
 
 </Project>
-
-<!--
-  REMARK:
-  Older version of this project file (before migration to SDK-style)
-  is in the file IGLibForms_COPY.csproj11 .
--->
 

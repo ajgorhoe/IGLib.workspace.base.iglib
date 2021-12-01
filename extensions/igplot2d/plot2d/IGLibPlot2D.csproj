@@ -2,10 +2,8 @@
 
   <PropertyGroup>
     <!--
-    <TargetFramework>net5.0</TargetFramework>
-    <TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net5.0;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <TargetFramework>net40</TargetFramework>
     -->
 
     <OutputType>Library</OutputType>
@@ -48,13 +46,6 @@
     <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <!--
-    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj" />
-    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Genetic\AForge.Genetic.csproj" />
-    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Math\AForge.Math.csproj" />
-    <ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj" />
-    <ProjectReference Include="..\..\..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
-    -->
     <ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj" />
     <ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph\ZedGraph.csproj" />
     <ProjectReference Include="..\..\..\igbase\IGLib.csproj" />
@@ -67,12 +58,3 @@
 
 
 </Project>
-
-
-<!--
-  REMARK:
-  Older version of this project file (before migration to SDK-style)
-  is in the file IGLibPlot2D_COPY.csproj11 .
--->
-
-
