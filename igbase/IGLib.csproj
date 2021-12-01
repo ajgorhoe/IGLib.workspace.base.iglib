@@ -71,17 +71,25 @@
 		</Reference>
 	</ItemGroup>
 
+	<ItemGroup>
+		<Content Remove="00_net48\**" />
+		<Compile Remove="00_net48\**" />
+		<EmbeddedResource Remove="00_net48\**" />
+		<None Remove="00_net48\**" />
+	</ItemGroup>
+
+
 
 	<!--
-  <ItemGroup>
-    <Compile Remove="FromIGLibBase\**" />
-    <EmbeddedResource Remove="FromIGLibBase\**" />
-    <None Remove="FromIGLibBase\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ToArrange\TypeConversion\" />
-  </ItemGroup>
-  -->
+	<ItemGroup>
+	<Compile Remove="FromIGLibBase\**" />
+	<EmbeddedResource Remove="FromIGLibBase\**" />
+	<None Remove="FromIGLibBase\**" />
+	</ItemGroup>
+	<ItemGroup>
+	<Folder Include="ToArrange\TypeConversion\" />
+	</ItemGroup>
+    -->
 
 </Project>
 
