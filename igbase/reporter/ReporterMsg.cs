@@ -49,6 +49,37 @@ namespace IG.Lib
     /// <summary>Defines the type of a report.</summary>
     public enum ReportType { Error = 1, Warning, Info, Undefined }
 
+#if !NETFRAMEWORK
+    /// <summary>Specifies the event type of an event log entry.</summary>
+    public enum EventLogEntryType
+    {
+
+        /// <summary>An error event. This indicates a significant problem the user should know about;
+        //     usually a loss of functionality or data.</summary>
+        Error = 1,
+
+
+        /// <summary>A warning event. This indicates a problem that is not immediately significant,
+        //     but that may signify conditions that could cause future problems.</summary>
+        Warning = 2,
+        //
+        // Summary:
+        //     An information event. This indicates a significant, successful operation.
+
+        /// <summary>An information event. This indicates a significant, successful operation.</summary>
+        Information = 4,
+
+        /// <summary>A success audit event. This indicates a security event that occurs when an audited
+        //     access attempt is successful; for example, logging on successfully.</summary>
+        SuccessAudit = 8,
+
+        /// <summary>A failure audit event. This indicates a security event that occurs when an audited
+        //     access attempt fails; for example, a failed attempt to open a file.</summary>
+        FailureAudit = 0x10
+
+    }
+#endif
+
     /// <summary>Defines the level of output when launching reports.</summary>
     public enum ReportLevel { Off = 0, Error, Warning, Info, Verbose }
 
@@ -104,10 +135,10 @@ namespace IG.Lib
                 string location, string message, Exception ex, Exception ex1);
 
 
-    #endregion  // Types
+#endregion  // Types
 
 
-    #region Interfaces
+#region Interfaces
 
 
 
@@ -120,11 +151,11 @@ namespace IG.Lib
     /// <summary>Reporters that utilize system's trace utility.</summary>
     public interface IReporterTrace : IReporterBase
     {
-        #region Reporting_Trace
+#region Reporting_Trace
 
         bool UseTrace { get; set; }
 
-        #endregion
+#endregion
     }
 
     /// <summary>Reporters that utilize writing messages to files.
@@ -132,7 +163,7 @@ namespace IG.Lib
     /// For one-line possibly indented messages, IReporterTextLogger should be used.</summary>
     public interface IReporterTextWriter : IReporterBase
     {
-        #region Reporting_TextWriter
+#region Reporting_TextWriter
 
         /// <summary>Specifies whether or not TextWriter(s) are used by the Reporter to log messages.</summary>
         bool UseTextWriter { get; set; }
@@ -366,7 +397,7 @@ namespace IG.Lib
         bool RemoveTextWriter(string filename);
 
 
-        #region TextWriter_Custom_Operations
+#region TextWriter_Custom_Operations
 
         // This provides support for performing custom operations on TextWriter's output streams. 
         // These are operations taht are not in the scope of commonly supported by teh Repoirter, and
@@ -412,9 +443,9 @@ namespace IG.Lib
         /// <summary>Similar to TextWriterWrite(), except that a newline is added at the end of the string.</summary>
         int TextWriterWriteLine(string str);
 
-        #endregion  // TextWriter_Custom_Operations
+#endregion  // TextWriter_Custom_Operations
 
-        #endregion  // Reporting_TextWriter
+#endregion  // Reporting_TextWriter
     }  // interface IReporterTextWriter
 
 
@@ -423,7 +454,7 @@ namespace IG.Lib
     /// while IReporterTextWriter typically outputs multi-line messages formatted for increased visibility. </summary>
     public interface IReporterTextLogger : IReporterBase
     {
-        #region Reporting_TextLogger
+#region Reporting_TextLogger
 
         /// <summary>Specifies whether or not TextLogger(s) are used by the Reporter to log messages.</summary>
         bool UseTextLogger { get; set; }
@@ -670,7 +701,7 @@ namespace IG.Lib
         bool RemoveTextLogger(string filename);
 
 
-        #region TextLogger_Custom_Operations
+#region TextLogger_Custom_Operations
 
         // This provides support for performing custom operations on TextLogger's output streams. 
         // These are operations taht are not in the scope of commonly supported by teh Repoirter, and
@@ -717,10 +748,10 @@ namespace IG.Lib
         /// <summary>Similar to TextLoggerWrite(), except that a newline is added at the end of the string.</summary>
         int TextLoggerWriteLine(string str);
 
-        #endregion  // TextLogger_Custom_Operations
+#endregion  // TextLogger_Custom_Operations
 
 
-        #endregion  // Reporting_TextLogger
+#endregion  // Reporting_TextLogger
     }  // interface IReporterTextLogger
 
 
@@ -728,7 +759,7 @@ namespace IG.Lib
     public interface IReporterBase 
     {
         
-        #region Initialization
+#region Initialization
 
         // Default initialization
 
@@ -786,10 +817,10 @@ namespace IG.Lib
             ReserveReportErrorDelegate reservereportdelegate);
 
 
-        #endregion // Initialization
+#endregion // Initialization
 
 
-        #region Reporter_ReadConfiguration
+#region Reporter_ReadConfiguration
 
 
         /// <summary>Reads settings for a specified named group of reporters from the application configuration file.</summary>
@@ -822,10 +853,10 @@ namespace IG.Lib
         /// settings is attempted more than once for the same named group of settings.</summary>
         bool AppSettingsWarnings { get; set; }
 
-        #endregion // Reporter_ReadConfiguration
+#endregion // Reporter_ReadConfiguration
 
 
-        #region Reporter_Data
+#region Reporter_Data
 
         /// <summary>Indicates whether the current reporter is used as a global reporter or not.</summary>
         /// <remarks>This flag is set when the global reporter is initialized.</remarks>
@@ -923,7 +954,7 @@ namespace IG.Lib
         bool this[ReportLevel level] { get; set; }
 
 
-        #region TraceSwitch
+#region TraceSwitch
 
         ///// <summary>Returns the System.Diagnostics.EventLogEntryType value corresponding to the given ReportType.
         ///// Remark: FailureAudit and SuccessAudit can not be generated because they don't have representation in ReportType.</summary>
@@ -975,7 +1006,7 @@ namespace IG.Lib
         TraceSwitch TracingSwitch { get; set; }
 
 
-        #endregion  // TraceSwitch
+#endregion  // TraceSwitch
 
 
 
@@ -989,13 +1020,13 @@ namespace IG.Lib
         /// <summary>Object used for locking.</summary>
         object lockobj { get; }
 
-        #endregion  // Reporter_Data
+#endregion  // Reporter_Data
 
 
-        #region Reporting
+#region Reporting
         // ACTUAL REPORTING METHDS; Specific methods are not included in this interface.
 
-        #region Reporting_General
+#region Reporting_General
         // GENERAL REPORTING METHODS (for all kinds of reports):
 
         /// <summary>Basic reporting method (overloaded). Launches an error report, a warning report or other kind of report/message.
@@ -1129,16 +1160,16 @@ namespace IG.Lib
         /// <param name="message">User provided message included in the report.</param>
         void ReportInfo(string message);
 
-        #endregion  // Reporting_General
+#endregion  // Reporting_General
 
         // IReporterBase does not include specific reporting utilities.
 
-        #endregion // Reporting
+#endregion // Reporting
 
     }   // interface IReporter
 
 
-    #endregion  // Interfaces
+#endregion  // Interfaces
 
 
 
@@ -1151,7 +1182,7 @@ namespace IG.Lib
     // $A Igor Oct08;
     {
 
-        #region Error_Reporting_Definition
+#region Error_Reporting_Definition
 
         // Replaceable methods implemented through delagates:
 
@@ -1177,9 +1208,9 @@ namespace IG.Lib
         /// or at least to use the DefaultReserveReportMessage() method for assembly of the message shown.</summary>
         public ReserveReportErrorDelegate ReserveReportErrorDlg = null; // new ReserveReportErrorDelegate(DefaultReserveReportError);
 
-        #region Initialization
+#region Initialization
 
-        #region Constructors
+#region Constructors
 
         // Constructors - this region will be literally included in derived classes, except in special cases):
 
@@ -1253,10 +1284,10 @@ namespace IG.Lib
                 Init(obj, reportdelegate, reservereportdelegate);
         }
 
-        #endregion  // Constructors
+#endregion  // Constructors
 
 
-        #region Initialization_Overridden
+#region Initialization_Overridden
 
         // Setting default error reporting behavior, these methods should be overridden in derived classes:
 
@@ -1326,10 +1357,10 @@ namespace IG.Lib
             catch { }
         }
 
-        #endregion  // Initialization_Overridden
+#endregion  // Initialization_Overridden
 
 
-        #region Initialization_Overloaded
+#region Initialization_Overloaded
 
         // Initialization functions (overloaded) to be called in constructors:
 
@@ -1427,16 +1458,16 @@ namespace IG.Lib
             }
         }
 
-        #endregion  // Initialization_Overloaded
+#endregion  // Initialization_Overloaded
 
 
-        #endregion  // Initialization
+#endregion  // Initialization
 
 
-        #endregion // Error_Reporting_Definition
+#endregion // Error_Reporting_Definition
 
 
-        #region Finalization
+#region Finalization
 
 
          ~ReporterBase()
@@ -1505,10 +1536,10 @@ namespace IG.Lib
 
 
        
-         #endregion  // Finalization
+#endregion  // Finalization
 
 
-        #region Erorr_Reporting_Global
+#region Erorr_Reporting_Global
 
         // Global error reporter of this class:
         // In derived classes, this block should be repeated, only with classs name of _Global and Global set to the
@@ -1752,14 +1783,14 @@ namespace IG.Lib
         }
 
 
-        #endregion Erorr_Reporting_Global
+#endregion Erorr_Reporting_Global
 
 
 
-        #region Reporter_ReadConfiguration
+#region Reporter_ReadConfiguration
         // Reading of reporter settings from configuration files
 
-        #region Reporter_ReadConfiguration_General
+#region Reporter_ReadConfiguration_General
 
 
         // Reading values of different types from the application configuration files:
@@ -1772,7 +1803,7 @@ namespace IG.Lib
         // $A Igor Feb09;
         {
             assigned = false;
-            string str = ConfigurationManager.AppSettings.Get(key);
+            string str = GetAppSettingsValue(key);
             if (!string.IsNullOrEmpty(str))
                 assigned = true;
         }
@@ -1787,7 +1818,7 @@ namespace IG.Lib
         {
             assigned = false;
             // Read the string value corresponding to the key (if defined):
-            string str = ConfigurationManager.AppSettings.Get(key);
+            string str = GetAppSettingsValue(key);
             if (!string.IsNullOrEmpty(str))
             {
                 if (str.Length != 1)
@@ -1808,7 +1839,7 @@ namespace IG.Lib
         {
             assigned = false;
             // Read the string value corresponding to the key (if defined):
-            string str = ConfigurationManager.AppSettings.Get(key);
+            string str = GetAppSettingsValue(key);
             if (!string.IsNullOrEmpty(str))
             {
                 if (value == null)
@@ -1834,7 +1865,7 @@ namespace IG.Lib
         {
             assigned = false;
             // Read the string value corresponding to the key (if defined):
-            string str = ConfigurationManager.AppSettings.Get(key);
+            string str = GetAppSettingsValue(key);
             if (!string.IsNullOrEmpty(str))
             {
                 // The key is defined in the settings file, convert it to the appropriate type:
@@ -1855,7 +1886,7 @@ namespace IG.Lib
         {
             assigned = false;
                 // Read the string value corresponding to the key (if defined):
-                string str = ConfigurationManager.AppSettings.Get(key);
+                string str = GetAppSettingsValue(key);
                 if (!string.IsNullOrEmpty(str))
                 {
                     // The key is defined in the settings file, convert it to the appropriate type:
@@ -1889,7 +1920,7 @@ namespace IG.Lib
         {
             assigned = false;
             // Read the string value corresponding to the key (if defined):
-            string str = ConfigurationManager.AppSettings.Get(key);
+            string str = GetAppSettingsValue(key);
             if (!string.IsNullOrEmpty(str))
             {
                 str = str.ToLower();
@@ -1936,6 +1967,21 @@ namespace IG.Lib
         }
 
 
+        /// <summary>Returns configuration value corresponding to the configuration key in AppSettings (specified by 
+        /// <paramref name="key"/>)</summary>
+        /// <param name="key">The key for which the value is retrieved from AppSettings.</param>
+        /// <exception cref="FrameworkDependencyException">Thrown when code is not compiled against the .NET full framework.</exception>
+        public static string GetAppSettingsValue(string key)
+        {
+#if NETFRAMEWORK
+            return ConfigurationManager.AppSettings.Get(key);
+#else
+            throw new FrameworkDependencyException($"Coulld not read the value for key {key} from the ConfigurationManager.");
+#endif
+
+        }
+
+
         /// <summary>Reads an integer value from the application configuration file and assigns it to the specified variable.</summary>
         /// <param name="key">Key in the application configuration file.</param>
         /// <param name="value">Reference to the variable to which the read-in value is assigned.</param>
@@ -1945,7 +1991,7 @@ namespace IG.Lib
         {
             assigned = false;
             // Read the string value corresponding to the key (if defined):
-            string str = ConfigurationManager.AppSettings.Get(key);
+            string str = GetAppSettingsValue(key);
             if (!string.IsNullOrEmpty(str))
             {
                 // The key is defined in the settings file, convert it to the appropriate type:
@@ -2251,7 +2297,7 @@ namespace IG.Lib
 
 
 
-        #endregion Reporter_ReadConfiguration_General
+#endregion Reporter_ReadConfiguration_General
 
         // Key roots for various settings that are recognized:
         protected const string
@@ -2408,10 +2454,10 @@ namespace IG.Lib
             ReadAppSettings(null, true);
         }
 
-        #endregion // Reporter_ReadConfiguration
+#endregion // Reporter_ReadConfiguration
 
 
-        #region Reporter_Data
+#region Reporter_Data
 
 
         /// <summary>Indicates that reporting suitable for debugging mode should be performed.
@@ -2783,13 +2829,17 @@ namespace IG.Lib
 
 
 
-        #region TraceSwitch
+#region TraceSwitch
 
-        // Properties of the type TraceSwitch that are synchronized with the levels of reporting of different types
-        // (i.e. reporting, logging and tracing). These properties are not in use if not explicitly accessed, therefore
-        // they just contribute to the Reporter's API for those users used to deal with the TraceSwitch class.
-        // It is not yet clear whether this feature will be kept in the futre.
+// Properties of the type TraceSwitch that are synchronized with the levels of reporting of different types
+// (i.e. reporting, logging and tracing). These properties are not in use if not explicitly accessed, therefore
+// they just contribute to the Reporter's API for those users used to deal with the TraceSwitch class.
+// It is not yet clear whether this feature will be kept in the futre.
 
+
+#if !NETFRAMEWORK
+    private double DDD;
+#endif
 
         /// <summary>Returns the System.Diagnostics.EventLogEntryType value corresponding to the given ReportType.
         /// Remark: FailureAudit and SuccessAudit can not be generated because they don't have representation in ReportType.</summary>
@@ -2983,7 +3033,7 @@ namespace IG.Lib
             }
         }
 
-        #endregion TraceSwitch
+#endregion TraceSwitch
 
 
 
@@ -3010,14 +3060,14 @@ namespace IG.Lib
             get { return _lockobj; }
         }
 
-        #endregion  // Reporter_Data
+#endregion  // Reporter_Data
 
 
-        #region Reporting
+#region Reporting
         // ACTUAL REPORTING METHDS
 
 
-        #region Reporting_General
+#region Reporting_General
 
         // ACTUAL REPORTING METHODS (utilizing delegates):
 
@@ -3200,7 +3250,7 @@ namespace IG.Lib
             Report(messagetype, null /* location */, message, null /* ex */ );
         }
 
-        #region Reporting_Types
+#region Reporting_Types
 
         // ERROR REPORTING FUNCTIONS:
 
@@ -3353,16 +3403,16 @@ namespace IG.Lib
             Report(ReportType.Info, null /* location */, message, null /* ex */ );
         }
 
-        #endregion  // Reporting_Types
+#endregion  // Reporting_Types
 
-        #endregion   // Reporting_General
-
-
-        #region Reporting_Specific
+#endregion   // Reporting_General
 
 
+#region Reporting_Specific
 
-        #region Reporting_TextWriter_TextLogger
+
+
+#region Reporting_TextWriter_TextLogger
         // Functionality that is common for both TextWriter and TextLogger
 
 
@@ -3907,10 +3957,10 @@ namespace IG.Lib
 
 
 
-        #endregion // Reporting_TextWriter_TextLogger
+#endregion // Reporting_TextWriter_TextLogger
 
 
-        #region Reporting_TextWriter
+#region Reporting_TextWriter
 
         //Data & its manipulation: 
 
@@ -4394,7 +4444,7 @@ namespace IG.Lib
         }
 
 
-        #region TextWriter_Custom_Operations
+#region TextWriter_Custom_Operations
 
         // This provides support for performing custom operations on TextWriter's output streams. 
         // These are operations taht are not in the scope of commonly supported by teh Repoirter, and
@@ -4609,7 +4659,7 @@ namespace IG.Lib
             return TextWriterWrite(str + Environment.NewLine);
         }
 
-        #endregion  // TextWriter_Custom_Operations
+#endregion  // TextWriter_Custom_Operations
 
 
         // Delegates with default values:
@@ -4724,13 +4774,13 @@ namespace IG.Lib
         }
 
 
-        #endregion   // Reporting_TextWriter
+#endregion   // Reporting_TextWriter
 
 
 
 
 
-        #region Reporting_TextLogger
+#region Reporting_TextLogger
 
         //Data & its manipulation: 
 
@@ -5220,7 +5270,7 @@ namespace IG.Lib
         }
 
 
-        #region TextLogger_Custom_Operations
+#region TextLogger_Custom_Operations
 
         // This provides support for performing custom operations on TextLogger's output streams. 
         // These are operations taht are not in the scope of commonly supported by teh Repoirter, and
@@ -5435,7 +5485,7 @@ namespace IG.Lib
             return TextLoggerWrite(str + Environment.NewLine);
         }
 
-        #endregion  // TextLogger_Custom_Operations
+#endregion  // TextLogger_Custom_Operations
 
         // Delegates with default values:
 
@@ -5604,13 +5654,13 @@ namespace IG.Lib
         }
 
 
-        #endregion   // Reporting_TextLogger
+#endregion   // Reporting_TextLogger
 
 
 
 
 
-        #region Reporting_Trace
+#region Reporting_Trace
 
         // REPORTING BY Trace:
 
@@ -5787,16 +5837,16 @@ namespace IG.Lib
         }
 
 
-        #endregion  // Reporting_Trace
+#endregion  // Reporting_Trace
 
 
-        #endregion  // Reporting_Specific
+#endregion  // Reporting_Specific
 
 
-        #endregion   //  Reporting
+#endregion   //  Reporting
 
 
-        #region Error_Default_methods  // Auxiliary methods, default methods to assign to delegates, etc.
+#region Error_Default_methods  // Auxiliary methods, default methods to assign to delegates, etc.
 
         // A SET OF PRE-DEFINEd (DEFAULT) METHODS FOR ASSIGNMENT TO DELEGATES: 
 
@@ -6147,10 +6197,10 @@ namespace IG.Lib
             catch { }
         }
 
-        #endregion Error_Default_methods  // Default methods to assign to delegates.
+#endregion Error_Default_methods  // Default methods to assign to delegates.
 
 
-        #region Error_Auxiliary  // Auxiliary functions, default functions to assign to delegates, etc.
+#region Error_Auxiliary  // Auxiliary functions, default functions to assign to delegates, etc.
 
         /// <summary>Returns location string derived from ex, which includes information about the location where error occurred,
         /// specified by the source file name, function and line and column numbers.</summary>
@@ -6255,7 +6305,7 @@ namespace IG.Lib
 
 
 
-        #endregion Error_Auxiliary  // Auxiliary methods, default methods to assign to delegates, etc.
+#endregion Error_Auxiliary  // Auxiliary methods, default methods to assign to delegates, etc.
 
 
         //#region Reporting_Static
@@ -6508,7 +6558,7 @@ namespace IG.Lib
 
 
 
-        #region Error_Reporter_Old
+#region Error_Reporter_Old
 
         // GLOBAL ERROR REPORTER:
 
@@ -6645,17 +6695,17 @@ namespace IG.Lib
         //}
 
 
-        #endregion Error_Reporter_Old
+#endregion Error_Reporter_Old
 
 
 
-        #region Testing
+#region Testing
 
         static void Test()
         {
         }
 
-        #endregion  // Testing
+#endregion  // Testing
 
 
     }  //  class Reporter

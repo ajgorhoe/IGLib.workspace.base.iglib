@@ -19,7 +19,9 @@ using MatrixMathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix;
 using IG.Lib;
 using IG.Num;
 
+#if NETFRAMEWORK
 using AsyncResult = System.Runtime.Remoting.Messaging.AsyncResult;
+#endif
 
 namespace IG.Lib
 {
@@ -217,7 +219,7 @@ namespace IG.Lib
         /// <summary>Removes all commands from the current interpreter.</summary>
         void RemoveAllCommands();
 
-        #region Modules
+#region Modules
 
         /// <summary>Adds a new module to the interpreter. This adds an initialization function (via a delegate)
         /// which is executed when module module initialization is performed.</summary>
@@ -234,9 +236,9 @@ namespace IG.Lib
         /// <param name="moduleName">Name of the module.</param>
         bool IsModuleLoaded(string moduleName);
 
-        #endregion Modules
+#endregion Modules
 
-        #region LoadableScripts
+#region LoadableScripts
 
         /// <summary>Interprater based on dynamically loadable scripts.
         /// This enables installation and running of commands that are based on C# code that is 
@@ -286,7 +288,7 @@ namespace IG.Lib
         /// <returns></returns>
         string[] GetLoadableScriptReferencedAssemblies();
 
-        #endregion LoadableScripts
+#endregion LoadableScripts
 
     }  // interface ICommandLineApplication
 

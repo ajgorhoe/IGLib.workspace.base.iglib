@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!--
+    <TargetFrameworks>net5.0;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    -->
+
+		<OutputType>Library</OutputType>
+		<TargetFrameworks>net48;net5.0</TargetFrameworks>
+	</PropertyGroup>
+
+
+</Project>

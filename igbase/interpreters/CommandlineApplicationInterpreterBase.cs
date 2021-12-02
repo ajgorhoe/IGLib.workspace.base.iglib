@@ -19,7 +19,9 @@ using MatrixMathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix;
 using IG.Lib;
 using IG.Num;
 
+#if NETFRAMEWORK
 using AsyncResult = System.Runtime.Remoting.Messaging.AsyncResult;
+#endif
 
 namespace IG.Lib
 {
@@ -104,7 +106,7 @@ namespace IG.Lib
         }
 
 
-        #region IIdentifiable
+#region IIdentifiable
 
         private static object _lockIdCommandLine;
 
@@ -145,10 +147,10 @@ namespace IG.Lib
         public override int Id
         { get { return _id; } }
 
-        #endregion IIdentifiable
+#endregion IIdentifiable
 
 
-        #region Data
+#region Data
 
         /// <summary>Command-line interpreter that executes the command.</summary>
         public ICommandLineApplicationInterpreter Interpreter;
@@ -172,9 +174,9 @@ namespace IG.Lib
         /// by scheduling the command for parallel execution.</summary>
         public double ExecutionTime;
 
-        #endregion Data
+#endregion Data
 
-        #region Operation
+#region Operation
 
         /// <summary>Executes the command that is represented by the current command data, and
         /// stores the results.</summary>
@@ -202,9 +204,9 @@ namespace IG.Lib
             return input;
         }
 
-        #endregion Operation
+#endregion Operation
 
-        #region Auxiliary
+#region Auxiliary
 
 
         /// <summary>Returns the string that represents the command line, where command is followed
@@ -239,7 +241,7 @@ namespace IG.Lib
             return sb.ToString();
         }
 
-        #endregion Auxiliary
+#endregion Auxiliary
 
     }  // class CommandExecutionData
 
@@ -852,7 +854,7 @@ namespace IG.Lib
             this.StackLevel = stackLevel;
         }
 
-        #region Data.GenericTypesBypass
+#region Data.GenericTypesBypass
 
         /// <summary>Returns the commans-line interpreter to which the current command thread belongs.
         /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
@@ -866,7 +868,7 @@ namespace IG.Lib
         public override CommandThreadBase GetThreadBase()
         { return InterpreterThread; }
 
-        #endregion Data.GenericTypesBypass
+#endregion Data.GenericTypesBypass
 
 
         private ThreadType _interpreterThread = null;
@@ -897,7 +899,7 @@ namespace IG.Lib
         public CommandStackFrameBase() {  }
 
 
-        #region Data.GenericTypesBypass
+#region Data.GenericTypesBypass
 
         /// <summary>Returns the commans-line interpreter to which the current command thread belongs.
         /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
@@ -911,10 +913,10 @@ namespace IG.Lib
         /// command block or function call increments the stack level by creating a new stack frame.</para></summary>
         public abstract CommandThreadBase GetThreadBase();
 
-        #endregion Data.GenericTypesBypass
+#endregion Data.GenericTypesBypass
 
 
-        #region ILockable
+#region ILockable
 
         private object _mainLock = new object();
 
@@ -923,7 +925,7 @@ namespace IG.Lib
         /// InternalLock.</summary>
         public object Lock { get { return _mainLock; } }
 
-        #endregion ILockable
+#endregion ILockable
 
 
         private int _stackLevel = 0;
@@ -931,7 +933,7 @@ namespace IG.Lib
         public int StackLevel
         { get { return _stackLevel; } protected set { _stackLevel = value; } }
 
-        #region  BlockEnterAndExit
+#region  BlockEnterAndExit
 
         // This part controls blodk entries and exits even if the comands are not executed.
 
@@ -1187,10 +1189,10 @@ namespace IG.Lib
         }
 
 
-        #endregion BlockEnterAndExit
+#endregion BlockEnterAndExit
 
 
-        #region Data.Execution 
+#region Data.Execution 
 
         // Data that controls execution of the iinterpreter, and are bound to stack frames.
         
@@ -1250,10 +1252,10 @@ namespace IG.Lib
         /// from the While block entering command is fulfilled.</summary>
         public string BlockCommanddLine { get { return _blockCommandLine; } set { _blockCommandLine = value; } }
 
-        #endregion Data.Execution
+#endregion Data.Execution
 
 
-        #region Data.Operation
+#region Data.Operation
 
         // Data that affects operation of the interpreter (data that interpreter and its commands woulld want
         // to save or exchange on stack frames).
@@ -1461,7 +1463,7 @@ namespace IG.Lib
         }
 
 
-        #endregion Data.Operaton
+#endregion Data.Operaton
 
 
 
@@ -1617,7 +1619,7 @@ namespace IG.Lib
         }
 
 
-        #region Data.GenericTypesBypass
+#region Data.GenericTypesBypass
 
         /// <summary>Returns the commans-line interpreter to which the current command thread belongs.
         /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
@@ -1635,10 +1637,10 @@ namespace IG.Lib
         { return this[level]; }
 
 
-        #endregion Data.GenericTypesBypass
+#endregion Data.GenericTypesBypass
 
 
-        #region Data.Basic
+#region Data.Basic
 
         private InterpreterType _interpreter;
 
@@ -1714,7 +1716,7 @@ namespace IG.Lib
         }
 
 
-        #endregion Data.Basic
+#endregion Data.Basic
 
 
     }  // abstract class CommandThread<InterpreterType, FrameType, ThreadType>
@@ -1730,7 +1732,7 @@ namespace IG.Lib
 
         public CommandThreadBase() { }
 
-        #region Data.GenericTypesBypass
+#region Data.GenericTypesBypass
 
         /// <summary>Returns the commans-line interpreter to which the current command thread belongs.
         /// <para>WARNING: This method is intended for use in the base classes; use more specific (type 
@@ -1746,11 +1748,11 @@ namespace IG.Lib
         public abstract CommandStackFrameBase GetStackFrameBase(int level);
 
 
-        #endregion Data.GenericTypesBypass
+#endregion Data.GenericTypesBypass
 
 
 
-        #region Data.Basic
+#region Data.Basic
 
 
         private int _topFrameIndex = -1;
@@ -1762,10 +1764,10 @@ namespace IG.Lib
         }
 
 
-        #endregion Data.Basic
+#endregion Data.Basic
 
 
-        #region ThreadLocking
+#region ThreadLocking
 
         private object _mainLock = new object();
 
@@ -1774,10 +1776,10 @@ namespace IG.Lib
         /// InternalLock.</summary>
         public object Lock { get { return _mainLock; } }
 
-        #endregion ThreadLocking
+#endregion ThreadLocking
 
 
-        #region IIdentifiable
+#region IIdentifiable
 
         private static object _lockIdThread;
 
@@ -1818,11 +1820,11 @@ namespace IG.Lib
         public virtual int Id
         { get { return _id; } }
 
-        #endregion IIdentifiable
+#endregion IIdentifiable
 
 
 
-        #region Data.Operational
+#region Data.Operational
 
         private bool _wasCommandExecuted = false;
 
@@ -1900,10 +1902,10 @@ namespace IG.Lib
         }
 
 
-        #endregion Data.Operational
+#endregion Data.Operational
 
 
-        #region Data.StoredParameters
+#region Data.StoredParameters
 
         // This defines a stack of parameters that commands can send ot each other.
         // For example, command for beginning of a code block can store its parameters 
@@ -2025,10 +2027,10 @@ namespace IG.Lib
             }
         }
 
-        #endregion Data.StoredParameters
+#endregion Data.StoredParameters
 
 
-        #region Data.Auxiliary
+#region Data.Auxiliary
 
 
         private bool _threadSuppressInteractive = false;
@@ -2079,7 +2081,7 @@ namespace IG.Lib
             get { if (_timer == null) _timer = new StopWatch1(); return _timer; }
         }
 
-        #endregion Data.Auxiliary
+#endregion Data.Auxiliary
 
 
         /// <summary>Returns a string containing information about the current command thread.</summary>

@@ -19,7 +19,7 @@ using MatrixMathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix;
 using IG.Lib;
 using IG.Num;
 
-using AsyncResult = System.Runtime.Remoting.Messaging.AsyncResult;
+// using AsyncResult = System.Runtime.Remoting.Messaging.AsyncResult;
 
 
 namespace IG.Lib

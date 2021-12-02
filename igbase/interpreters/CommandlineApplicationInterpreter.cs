@@ -19,7 +19,9 @@ using MatrixMathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix;
 using IG.Lib;
 using IG.Num;
 
+#if NETFRAMEWORK
 using AsyncResult = System.Runtime.Remoting.Messaging.AsyncResult;
+#endif
 
 namespace IG.Lib
 {
@@ -194,7 +196,7 @@ namespace IG.Lib
             protected set { _caseSensitive = value; }
         }
 
-        #region ThreadLocking
+#region ThreadLocking
 
         private object _mainLock = new object();
 
@@ -203,10 +205,10 @@ namespace IG.Lib
         /// InternalLock.</summary>
         public object Lock { get { return _mainLock; } }
 
-        #endregion ThreadLocking
+#endregion ThreadLocking
 
 
-        #region Data
+#region Data
 
         protected static List<CommandLineApplicationInterpreter> _interpreters = new List<CommandLineApplicationInterpreter>();
 
@@ -372,10 +374,10 @@ namespace IG.Lib
         public bool WarnCommandReplacement
         { get { return _warnCommandReplacement; } set { _warnCommandReplacement = value; } }
 
-        #endregion Data
+#endregion Data
 
 
-        #region Operation
+#region Operation
 
 
 
@@ -2024,7 +2026,7 @@ namespace IG.Lib
 
 
 
-        #region ParallelExecution
+#region ParallelExecution
 
 
         protected List<CommandLineJobContainer> _parallelCommands;
@@ -2165,7 +2167,7 @@ namespace IG.Lib
         }
 
 
-        #region ThreadPriority
+#region ThreadPriority
 
 
 
@@ -2241,7 +2243,7 @@ namespace IG.Lib
         }
 
 
-        #endregion ThreadPriority
+#endregion ThreadPriority
 
 
         protected int _maxNumParallelServers = 0;
@@ -2386,10 +2388,10 @@ namespace IG.Lib
         }
 
 
-        #endregion ParallelExecution
+#endregion ParallelExecution
 
 
-        #region AsynchronousExecution
+#region AsynchronousExecution
 
         /// <summary>List of asynchronous results objects from individual asynchronous executions.</summary>
         private List<IAsyncResult> _asyncCommandResults;
@@ -2559,6 +2561,8 @@ namespace IG.Lib
                 AsyncWait(i);
         }
 
+#if NETFRAMEWORK
+
         /// <summary>Waits for the specified asynchronous command (specified by command ID) to complete.</summary>
         /// <param name="callId">ID of the asynchronous command execution.</param>
         /// <returns>Results of the command if the command has not completed before, null otherwise.</returns>
@@ -2622,7 +2626,20 @@ namespace IG.Lib
             return commandResult;
         }
 
-        /// <summary>Callback method for asynchronous command executions.</summary>
+#else
+        /// <summary>Waits for the specified asynchronous command (specified by command ID) to complete.</summary>
+        /// <param name="callId">ID of the asynchronous command execution.</param>
+        /// <returns>Results of the command if the command has not completed before, null otherwise.</returns>
+        /// <remarks>Thows exception when full .NET Framework is not present.</remarks>
+        public string AsyncWait(int callId)
+        {
+            throw new IG.Lib.FrameworkDependencyException("AsyncResult is not defined.");
+        }
+#endif // if NETFRAMEWORK
+
+
+#if NETFRAMEWORK
+       /// <summary>Callback method for asynchronous command executions.</summary>
         /// <param name="ar">Asynchronous results that are passed to the method.</param>
         protected void AsyncRunCallback(IAsyncResult ar)
         {
@@ -2664,6 +2681,17 @@ namespace IG.Lib
                 }
             }
         }
+#else
+
+        /// <summary>Callback method for asynchronous command executions.</summary>
+        /// <param name="ar">Asynchronous results that are passed to the method.</param>
+        protected void AsyncRunCallback(IAsyncResult ar)
+        {
+            throw new IG.Lib.FrameworkDependencyException("AsyncResult is not defined.");
+        }
+#endif
+
+
 
         #endregion AsynchronousExecution
 
@@ -2766,7 +2794,7 @@ namespace IG.Lib
         }
 
 
-        #region Modules
+#region Modules
 
         /// <summary>Adds a new module to the interpreter. This adds an initialization function (via a delegate)
         /// which is executed when module module initialization is performed.</summary>
@@ -2834,9 +2862,9 @@ namespace IG.Lib
             return _loadedModules.Contains(moduleName);
         }
 
-        #endregion Modules
+#endregion Modules
 
-        #region ScriptLoading
+#region ScriptLoading
 
         // TODO: 
         // replace class with interface when interface is defined!
@@ -2932,18 +2960,18 @@ namespace IG.Lib
             return LoadableScriptInterpreter.ScriptLoader.GetReferencedAssemblies();
         }
 
-        #endregion ScriptLoading
+#endregion ScriptLoading
 
-        #endregion Operation
-
-
-        #region StaticMethods
+#endregion Operation
 
 
-        #endregion StaticMethods
+#region StaticMethods
 
 
-        #region CommandMethods
+#endregion StaticMethods
+
+
+#region CommandMethods
 
         /// <summary>Command.
         /// Sets the specified interpreter variable to the specified value. <br/>
@@ -5015,7 +5043,7 @@ namespace IG.Lib
         }
 
 
-        #region ModuleCommands
+#region ModuleCommands
 
         /// <summary>Command.
         /// Loads the specified module (whos name must be the first argument) and performs its initialization.
@@ -5187,12 +5215,12 @@ namespace IG.Lib
             return "Return from the 'Test' command for testing modules.";
         }
 
-        #endregion ModuleCommands
+#endregion ModuleCommands
 
 
 
 
-        #region NamedPipes
+#region NamedPipes
 
 
 
@@ -5201,7 +5229,7 @@ namespace IG.Lib
         public class InterpreterPipeClient : NamedPipeClientBase
         {
 
-            #region Construction
+#region Construction
 
             /// <summary>Constructs a new named pipe client with the specified pipe name, default server address (<see cref="NamedPipeClientBase.DefaultServerAddress"/>)
             /// and default values for other paramters.</summary>
@@ -5231,9 +5259,9 @@ namespace IG.Lib
                 base(pipeName, serverAddress, requestEnd, responseEnd, errorBegin)
             { }
 
-            #endregion Construction
+#endregion Construction
 
-            #region Data
+#region Data
 
             protected string _interpretersName = null;
 
@@ -5243,7 +5271,7 @@ namespace IG.Lib
                 set { _interpretersName = value; }
             }
 
-            #endregion Data
+#endregion Data
 
         }  // class InterpreterPipeClient
 
@@ -5375,7 +5403,7 @@ namespace IG.Lib
         }
 
 
-        #region NamedPipes.InterpreterCommandsServer
+#region NamedPipes.InterpreterCommandsServer
 
 
         /// <summary>Creates and registers a new interpreter's named pipe server.</summary>
@@ -5602,11 +5630,11 @@ namespace IG.Lib
         }
 
 
-        #endregion NamedPipes.InterpreterCommandsServer
+#endregion NamedPipes.InterpreterCommandsServer
 
 
 
-        #region NamedPipes.InterpreterCommandsClient
+#region NamedPipes.InterpreterCommandsClient
 
 
         /// <summary>Creates and registers a new interpreter's named pipe client.</summary>
@@ -5903,15 +5931,15 @@ namespace IG.Lib
 
 
 
-        #endregion NamedPipes.InterpreterCommandsClient
+#endregion NamedPipes.InterpreterCommandsClient
 
 
 
-        #endregion NamedPipes
+#endregion NamedPipes
 
 
 
-        #region LoadableScriptCommands
+#region LoadableScriptCommands
 
 
         /// <summary>Interpreter command.
@@ -6153,7 +6181,7 @@ namespace IG.Lib
         }  // CmdLoadScript()
 
 
-        #endregion LoadableScriptCommands
+#endregion LoadableScriptCommands
 
 
         /// <summary>Execution method that exits the interpreter.</summary>
@@ -6765,10 +6793,10 @@ namespace IG.Lib
 
 
 
-        #endregion CommandMethods
+#endregion CommandMethods
 
 
-        #region Modules
+#region Modules
 
         /// <summary>Loads the first built-in test module (just for testing modules).</summary>
         /// <param name="name">Name under which the module is being loaded.</param>
@@ -6817,7 +6845,7 @@ namespace IG.Lib
         }
 
 
-        #endregion Modules
+#endregion Modules
 
 
     }  // class CommandLineApplicationInterpreter
