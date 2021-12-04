@@ -1353,8 +1353,9 @@ namespace " + ClassNamespace + @"
                 {
                     AppDomainSetup ads = new AppDomainSetup();
                     ads.ShadowCopyFiles = "false";
-                    // ads.ShadowCopyFiles();
-                    // AppDomain.CurrentDomain.SetShadowCopyFiles();
+                    //Remark: Code beloow (2 lines) was excluded before porting to .NET Core:
+                    //// ads.ShadowCopyFiles();
+                    //// AppDomain.CurrentDomain.SetShadowCopyFiles();
                     System.Security.Policy.Evidence securityInfo = new System.Security.Policy.Evidence();
                     ApplicationDomain = AppDomain.CreateDomain(AppDomainName, securityInfo, ads);
                 }
