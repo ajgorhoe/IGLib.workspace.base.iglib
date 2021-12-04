@@ -55,9 +55,6 @@
     -->
 	</PropertyGroup>
 
-
-
-
 	<ItemGroup>
 		<ProjectReference Include="..\external\jint\Jint\Jint.csproj" />
 		<ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
@@ -77,6 +74,12 @@
 		<EmbeddedResource Remove="00_net48\**" />
 		<None Remove="00_net48\**" />
 	</ItemGroup>
+
+	<!--
+	<ItemGroup>
+	  <PackageReference Include="System.CodeDom" Version="6.0.0" />
+	</ItemGroup>
+	-->
 
 
 

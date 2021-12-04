@@ -1351,6 +1351,7 @@ namespace " + ClassNamespace + @"
 
                 if (ApplicationDomain == null)
                 {
+#if NETFRAMEWORK
                     AppDomainSetup ads = new AppDomainSetup();
                     ads.ShadowCopyFiles = "false";
                     //Remark: Code beloow (2 lines) was excluded before porting to .NET Core:
@@ -1358,6 +1359,9 @@ namespace " + ClassNamespace + @"
                     //// AppDomain.CurrentDomain.SetShadowCopyFiles();
                     System.Security.Policy.Evidence securityInfo = new System.Security.Policy.Evidence();
                     ApplicationDomain = AppDomain.CreateDomain(AppDomainName, securityInfo, ads);
+#else
+                    ApplicationDomain = AppDomain.CreateDomain("myDomain");
+#endif
                 }
 
 
