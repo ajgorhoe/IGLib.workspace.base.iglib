@@ -6,7 +6,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
+
+#if NETFRAMEWORK
 using AsyncResult = System.Runtime.Remoting.Messaging.AsyncResult;
+#endif
 
 using IG.Lib;
 using IG.Num;
@@ -27,9 +30,10 @@ namespace IG.Script
         ILoadableScript, INeuralModel
     {
 
+
         // public string BaseDirectory = "train";
 
-        #region Initialization
+#region Initialization
 
         public LoadableScriptShellNeuralBase()
             : base()
@@ -44,11 +48,11 @@ namespace IG.Script
             base.InitializeThis(arguments);  // this sets the working directory to the first argument
         }
 
-        #endregion Initialization
+#endregion Initialization
         
 
 
-        #region NeuralApproximatorDependencies
+#region NeuralApproximatorDependencies
 
         // in this region we handle the code that depends on the kind of neural network approxomator.
 
@@ -121,13 +125,13 @@ namespace IG.Script
         }
 
 
-        #endregion NeuralApproximatorDependencies
+#endregion NeuralApproximatorDependencies
 
         
 
 
 
-        #region DummyImplementations
+#region DummyImplementations
 
         /// <summary>Dummy analysis, jsut throws the  exception.</summary>
         /// <param name="anRes"></param><see cref="NotImplementedException"/>
@@ -136,10 +140,10 @@ namespace IG.Script
             throw new NotImplementedException("The analysis method is not implemeted by this class (" + this.GetType().Name + ").");
         }
 
-        #endregion DummyImplementations
+#endregion DummyImplementations
 
 
-        #region Commands
+#region Commands
 
         /// <summary>Prints internal command being executed and its actual arguments</summary>
         /// <param name="arguments">Script run arguments, the first one is command name.</param>
@@ -387,10 +391,10 @@ namespace IG.Script
         }
 
 
-        #endregion Commands
+#endregion Commands
 
 
-        #region Tests
+#region Tests
 
         /// <summary>Performs a test approximation at the specified vector of parameters and outputs and returns results.</summary>
         /// <param name="parameters">Parameters at which approximation output vector is calculated.</param>
@@ -625,7 +629,7 @@ namespace IG.Script
 
         }
 
-        #endregion Tests
+#endregion Tests
 
 
 
@@ -633,7 +637,7 @@ namespace IG.Script
 
 
 
-        #region ParameterMap
+#region ParameterMap
 
         /* This region defines how neural network input parameters are mapped to optimization parameters and vice versa.
          * Description of mapping:
@@ -697,10 +701,10 @@ namespace IG.Script
             throw new NotImplementedException("Transformation from optimization to neural parameters is not yet implemented.");
         }
 
-        #endregion ParameterMap
+#endregion ParameterMap
 
 
-        #region SimulationData
+#region SimulationData
 
         private InputOutputDataDefiniton _simulationDataDefinition;
 
@@ -850,10 +854,10 @@ namespace IG.Script
         }
 
 
-        #endregion SimulationData
+#endregion SimulationData
 
 
-        #region NeuralParallel
+#region NeuralParallel
 
         protected string _parallelResultsFilename = "ParallelResults";
 
@@ -867,11 +871,11 @@ namespace IG.Script
             protected set { _parallelResultsFileExtension = value; }
         }
 
-        #endregion NeuralParallel
+#endregion NeuralParallel
 
 
 
-        #region ParallelSimulations
+#region ParallelSimulations
 
         public delegate string ParallelRunDelegate(int threadIndex);
 
@@ -903,6 +907,10 @@ namespace IG.Script
         /// parallel threads (jobs are executed in background threads via async. invoke mechanism).</para></summary>
         protected virtual void ParSimWaitAllCompletion()
         {
+#if !NETFRAMEWORK
+            throw new IG.Lib.FrameworkDependencyException("ParSimWaitAllCompletion(...): AsyncResult is not defined.");
+#else
+
             int numThreads = 0;
             lock (Lock)
             {
@@ -937,6 +945,7 @@ namespace IG.Script
                     Console.WriteLine("... finished, result = " + jobResult);
                 }
             }
+#endif
         }
 
 
@@ -991,6 +1000,10 @@ namespace IG.Script
         /// <param name="ar">Asynchronous results that are passed to the method.</param>
         protected virtual void ParSimAsyncCallback(IAsyncResult ar)
         {
+#if !NETFRAMEWORK
+            throw new IG.Lib.FrameworkDependencyException("AsyncWait(...): AsyncResult is not defined.");
+#else
+
             lock (Lock)
             {
                 int Id = -1;
@@ -1024,6 +1037,7 @@ namespace IG.Script
                 {
                 }
             }
+#endif
         }
 
 
@@ -1293,7 +1307,7 @@ namespace IG.Script
         }
 
 
-        #region ToOverride
+#region ToOverride
 
         /// <summary>Generates the next vector of neural input parameters that will be used for 
         /// calculation of a new training element.</summary>
@@ -1321,12 +1335,12 @@ namespace IG.Script
             return simulator;
         }
 
-        #endregion ToOverride
+#endregion ToOverride
 
-        #endregion ParallelSimulations
+#endregion ParallelSimulations
 
 
-        #region Transformations
+#region Transformations
 
         /// <summary>Transforms the specified vector of simulation input parameters to the vector of neural 
         /// input parameters and stores the vector to the specified variable.</summary>
@@ -1363,10 +1377,10 @@ namespace IG.Script
         }
 
 
-        #endregion Transformations
+#endregion Transformations
 
 
-        #region NeuralData
+#region NeuralData
 
         NeuraApproximationFileManager _neuralFileManager;
 
@@ -2851,10 +2865,10 @@ namespace IG.Script
             }
         }
 
-        #endregion NeuralData
+#endregion NeuralData
 
 
-        #region NeuralTraining
+#region NeuralTraining
 
         /// <summary>Train the artificial neural network.</summary>
         /// <param name="annType">1 - NeuronDotNet, 2 - Aforge.</param>
@@ -2983,10 +2997,10 @@ namespace IG.Script
             this.SaveJson(approximator, trainedNetworkFile);
         }
 
-        #endregion NeuralTraining
+#endregion NeuralTraining
 
 
-        #region NeuralModelDistortion
+#region NeuralModelDistortion
         // This region provides tools for creatino of distorted models. These morels are
         // used as replacement for industrial models for shippment with demonstration 
         // code in cases where true models may not be used since they contain confidential
@@ -3429,10 +3443,10 @@ namespace IG.Script
         }
 
 
-        #endregion NeuralModelDistortion
+#endregion NeuralModelDistortion
 
 
-        #region NeuralTesting
+#region NeuralTesting
 
         /// <summary>Test of distances of a specified number of training points with respect to the training point with 
         /// specified index, in the input parameters space as well as in the output parameter space.</summary>
@@ -3548,10 +3562,10 @@ namespace IG.Script
             Console.WriteLine();
         }
 
-        #endregion NeuralTesting
+#endregion NeuralTesting
 
 
-        #region StoredScriptSettings
+#region StoredScriptSettings
 
         /// <summary>In methods of this class you will find all the settings that apply to this script.</summary>
         /// <remarks>Before custom application script is archived, settings should be moved </remarks>
@@ -3568,10 +3582,10 @@ namespace IG.Script
             }
         }
 
-        #endregion StoredScriptSettings
+#endregion StoredScriptSettings
 
 
-        #region Common
+#region Common
 
         public bool saveGraphs = false;
 
@@ -3722,7 +3736,7 @@ namespace IG.Script
 
 
 
-        #endregion
+#endregion
 
     }  // abstract class LoadableScriptShellNeural
 

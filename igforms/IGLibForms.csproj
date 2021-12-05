@@ -7,20 +7,11 @@
     -->
 
     <OutputType>Library</OutputType>
-	  <TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
-	  <UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup>
-
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+	<TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
+	<UseWindowsForms>true</UseWindowsForms>
     <OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
-    <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
-  </PropertyGroup>
-  
-  
+
   <!--  Remark: comment or uncomment this block to switch visibility of project directory 00_ToBeScrapped\AlreadyExcluded
   -->
   <ItemGroup>
@@ -33,11 +24,6 @@
     <ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
     <ProjectReference Include="..\igbase\IGLib.csproj" />
     <ProjectReference Include="..\modules\IGLibCore\src\IGLibCore.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
   <PropertyGroup>

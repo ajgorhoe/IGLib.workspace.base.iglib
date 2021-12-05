@@ -4,14 +4,15 @@
     <!--
     <TargetFrameworks>net5.0;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    -->
+    --> 
 
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net48</TargetFrameworks>
-  </PropertyGroup>
+	<TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
+	<UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup> 
 
 
-  <PropertyGroup>
+  <PropertyGroup> 
     <!-- Attributes previously in AsemblyInfo.cs: -->
     <AssemblyName>IGLibPlot2D</AssemblyName>
     <PackageId>IGLibPlot2D</PackageId>
@@ -51,9 +52,6 @@
     <ProjectReference Include="..\..\..\igbase\IGLib.csproj" />
     <ProjectReference Include="..\..\..\igforms\IGLibForms.csproj" />
     <ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
 

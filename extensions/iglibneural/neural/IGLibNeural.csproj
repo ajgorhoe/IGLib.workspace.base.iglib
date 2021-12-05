@@ -9,7 +9,7 @@
     -->
 
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net48</TargetFrameworks>
+    <TargetFrameworks>net6.0;net48</TargetFrameworks>
   </PropertyGroup>
 
 
@@ -56,21 +56,14 @@
     <ProjectReference Include="..\..\..\igbase\IGLib.csproj" />
     <ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj" />
   </ItemGroup>
+	
+	
   <ItemGroup>
     <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
 
 
-
-
-
 </Project>
 
-
-<!--
-  REMARK:
-  Older version of this project file (before migration to SDK-style)
-  is in the file IGLibNeural_COPY.csproj11 .
--->
 
 

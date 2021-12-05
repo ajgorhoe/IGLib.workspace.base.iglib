@@ -19,9 +19,9 @@ using MatrixMathNetNumerics = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix;
 using IG.Lib;
 using IG.Num;
 
-#if NETFRAMEWORK
-using AsyncResult = System.Runtime.Remoting.Messaging.AsyncResult;
-#endif
+//#if NETFRAMEWORK
+//using AsyncResult = System.Runtime.Remoting.Messaging.AsyncResult;
+//#endif
 
 namespace IG.Lib
 {

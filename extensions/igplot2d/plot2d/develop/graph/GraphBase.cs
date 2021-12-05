@@ -12,7 +12,7 @@ using System.Collections;
 //using ZedGraph;
 
 
-using IG.Lib;
+using IG.Lib; 
 using System.Windows.Forms;
 
 namespace IG.Plot2d

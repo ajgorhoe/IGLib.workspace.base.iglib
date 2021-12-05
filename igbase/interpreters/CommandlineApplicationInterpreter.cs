@@ -2561,13 +2561,15 @@ namespace IG.Lib
                 AsyncWait(i);
         }
 
-#if NETFRAMEWORK
 
         /// <summary>Waits for the specified asynchronous command (specified by command ID) to complete.</summary>
         /// <param name="callId">ID of the asynchronous command execution.</param>
         /// <returns>Results of the command if the command has not completed before, null otherwise.</returns>
         public string AsyncWait(int callId)
         {
+#if !NETFRAMEWORK
+            throw new IG.Lib.FrameworkDependencyException("AsyncWait(...): AsyncResult is not defined.");
+#else
             int Id = -1;
             string commandResult = null;
             lock (Lock) // lock in order to prevent modification of the AsyncEndInvokeInCallback flag in other threads
@@ -2624,25 +2626,18 @@ namespace IG.Lib
                 }
             }
             return commandResult;
-        }
-
-#else
-        /// <summary>Waits for the specified asynchronous command (specified by command ID) to complete.</summary>
-        /// <param name="callId">ID of the asynchronous command execution.</param>
-        /// <returns>Results of the command if the command has not completed before, null otherwise.</returns>
-        /// <remarks>Thows exception when full .NET Framework is not present.</remarks>
-        public string AsyncWait(int callId)
-        {
-            throw new IG.Lib.FrameworkDependencyException("AsyncResult is not defined.");
-        }
 #endif // if NETFRAMEWORK
+        }
 
 
-#if NETFRAMEWORK
-       /// <summary>Callback method for asynchronous command executions.</summary>
+
+        /// <summary>Callback method for asynchronous command executions.</summary>
         /// <param name="ar">Asynchronous results that are passed to the method.</param>
         protected void AsyncRunCallback(IAsyncResult ar)
         {
+#if !NETFRAMEWORK
+            throw new IG.Lib.FrameworkDependencyException("AsyncRunCallback(...): AsyncResult is not defined.");
+#else
             lock (Lock)
             {
                 int Id = -1;
@@ -2680,23 +2675,15 @@ namespace IG.Lib
                 {
                 }
             }
-        }
-#else
-
-        /// <summary>Callback method for asynchronous command executions.</summary>
-        /// <param name="ar">Asynchronous results that are passed to the method.</param>
-        protected void AsyncRunCallback(IAsyncResult ar)
-        {
-            throw new IG.Lib.FrameworkDependencyException("AsyncResult is not defined.");
-        }
 #endif
+        }
 
 
 
-        #endregion AsynchronousExecution
+            #endregion AsynchronousExecution
 
 
-        List<CommandAdapterSingleThreaded> _stAdapters = new List<CommandAdapterSingleThreaded>();
+            List<CommandAdapterSingleThreaded> _stAdapters = new List<CommandAdapterSingleThreaded>();
 
         /// <summary>Adds command with the specified name.</summary>
         /// <param name="commandName">Name of the commant.</param>
