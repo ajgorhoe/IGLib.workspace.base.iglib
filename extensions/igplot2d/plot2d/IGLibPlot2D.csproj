@@ -1,58 +1,60 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <!--
+	<PropertyGroup>
+		<!--
     <TargetFrameworks>net5.0;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    --> 
+    -->
 
-    <OutputType>Library</OutputType>
-	<TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
-	<UseWindowsForms>true</UseWindowsForms>
-  </PropertyGroup> 
+		<OutputType>Library</OutputType>
+		<TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
 
 
-  <PropertyGroup> 
-    <!-- Attributes previously in AsemblyInfo.cs: -->
-    <AssemblyName>IGLibPlot2D</AssemblyName>
-    <PackageId>IGLibPlot2D</PackageId>
-    <Version>1.9.1</Version>
-    <AssemblyVersion>1.9.1</AssemblyVersion>
-    <FileVersion>1.9.1</FileVersion>
-    <RootNamespace>IG.Lib</RootNamespace>
-    <Authors>Igor Grešovnik et al.</Authors>
-    <Company>Igor Grešovnik</Company>
-    <Product>Investigative Generic Library - IGLibPlot2D</Product>
-    <NeutralLanguage>en</NeutralLanguage>
-    <Description>IGLibPlot2D library - extension of basic IGLib library that contains 2D plotting tools.</Description>
-    <Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
-    <PackageLicenseUrl></PackageLicenseUrl>
-    <PackageProjectUrl></PackageProjectUrl>
-    <PackageIconUrl></PackageIconUrl>
-    <RepositoryUrl></RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
-    <PackageTags>Tags</PackageTags>
-    <PackageReleaseNotes>Release</PackageReleaseNotes>
+	<PropertyGroup>
+		<!-- Attributes previously in AsemblyInfo.cs: -->
+		<AssemblyName>IGLibPlot2D</AssemblyName>
+		<PackageId>IGLibPlot2D</PackageId>
+		<Version>1.9.1</Version>
+		<AssemblyVersion>1.9.1</AssemblyVersion>
+		<FileVersion>1.9.1</FileVersion>
+		<RootNamespace>IG.Lib</RootNamespace>
+		<Authors>Igor Grešovnik et al.</Authors>
+		<Company>Igor Grešovnik</Company>
+		<Product>Investigative Generic Library - IGLibPlot2D</Product>
+		<NeutralLanguage>en</NeutralLanguage>
+		<Description>IGLibPlot2D library - extension of basic IGLib library that contains 2D plotting tools.</Description>
+		<Copyright>Copyright © Igor Grešovnik (2008 - present).</Copyright>
+		<PackageLicenseUrl></PackageLicenseUrl>
+		<PackageProjectUrl></PackageProjectUrl>
+		<PackageIconUrl></PackageIconUrl>
+		<RepositoryUrl></RepositoryUrl>
+		<RepositoryType>Git</RepositoryType>
+		<PackageTags>Tags</PackageTags>
+		<PackageReleaseNotes>Release</PackageReleaseNotes>
 
-    <PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
-    <PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
+		<PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
+		<PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
 
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
-    <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj" />
-    <ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph\ZedGraph.csproj" />
-    <ProjectReference Include="..\..\..\igbase\IGLib.csproj" />
-    <ProjectReference Include="..\..\..\igforms\IGLibForms.csproj" />
-    <ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj" />
-  </ItemGroup>
+	<!--
+    -->
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+		<OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
+		<OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj" />
+		<ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph\ZedGraph.csproj" />
+		<ProjectReference Include="..\..\..\igbase\IGLib.csproj" />
+		<ProjectReference Include="..\..\..\igforms\IGLibForms.csproj" />
+		<ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj" />
+	</ItemGroup>
 
 
 </Project>
