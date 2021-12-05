@@ -8,6 +8,7 @@
 
 		<OutputType>Library</OutputType>
 		<TargetFrameworks>net6.0;net48;netstandard2.0</TargetFrameworks>
+		<OutputPath>../../output/bin</OutputPath>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -38,9 +39,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-		<OutputPath>../../output/bin</OutputPath>
 		<!--
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     Remark: Without setting AppendRuntimeIdentifierToOutputPath to false, net5.0 would e.g. set bin\Debug\net5.0-windows
     as output path. To prevent this, set:
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>

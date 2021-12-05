@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
 	<TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
 	<UseWindowsForms>true</UseWindowsForms>
-    <OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
+    <OutputPath>..\..\output\bin</OutputPath>
   </PropertyGroup>
 
   <!--  Remark: comment or uncomment this block to switch visibility of project directory 00_ToBeScrapped\AlreadyExcluded

@@ -5,10 +5,10 @@
 		<TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		-->
-		
+
 		<OutputType>Library</OutputType>
 		<TargetFrameworks>net6.0;net48</TargetFrameworks>
-		<OutputPath>..\..\output</OutputPath>
+		<OutputPath>..\..\..\..\output\bin</OutputPath>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -38,15 +38,6 @@
 
 	</PropertyGroup>
 
-	<!--
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
-		<OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
-		<OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
-	</PropertyGroup>
-	-->
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj" />
@@ -58,7 +49,7 @@
 		<ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj" />
 		<ProjectReference Include="..\neural\IGLibNeural.csproj" />
 	</ItemGroup>
-	
+
 	<!--
 	<ItemGroup>
 		<Reference Include="System.Data.DataSetExtensions" />

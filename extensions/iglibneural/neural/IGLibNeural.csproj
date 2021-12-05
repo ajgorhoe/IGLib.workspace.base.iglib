@@ -10,6 +10,7 @@
 
 		<OutputType>Library</OutputType>
 		<TargetFrameworks>net6.0;net48</TargetFrameworks>
+		<OutputPath>..\..\..\..\output\bin</OutputPath>
 	</PropertyGroup>
 
 
@@ -37,9 +38,9 @@
 
 		<PackageLicenseExpression>IGLib Binary Redistributable Licence</PackageLicenseExpression>
 		<PackageLicenseUrl>http://www2.arnes.si/%7Eljc3m2/igor/software/IGLibShellApp/License_IGShel.html</PackageLicenseUrl>
-
 	</PropertyGroup>
 
+	<!--
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48|AnyCPU'">
 		<DefineConstants>DEBUG;TRACE</DefineConstants>
 		<OutputPath>..\..\output\bin\AnyCPU\Debug\</OutputPath>
@@ -47,6 +48,8 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
 		<OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
 	</PropertyGroup>
+	-->
+	
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Genetic\AForge.Genetic.csproj" />
