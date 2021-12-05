@@ -64,9 +64,14 @@ namespace IG.Lib
         /// <summary>Creates a new color that corresponds to the specified known (system) color enumerated by the 
         /// <see cref="System.Drawing.KnownColor"/> enumerator, such as <see cref="KnownColor.Menu"/> or <see cref="KnownColor.WindowFrame"/>.</summary>
         /// <param name="knownColor">Color name.</param>
+#if false
+        // REMARK: This was enclosed in "#if false" because KnownColor and Color.FromKnownColor
+        // are not availale in .NET Standard 2.0.
+
         public color(System.Drawing.KnownColor knownColor)
             : this(System.Drawing.Color.FromKnownColor(knownColor))
         { }
+#endif
 
         /// <summary>Creates a new color that corresponds to the specified
         /// color.</summary>
@@ -86,9 +91,9 @@ namespace IG.Lib
         { }
 
 
-        #endregion Constructors
+#endregion Constructors
 
-        #region Data
+#region Data
 
         private double _R, _G, _B, _opacity;
 
@@ -114,9 +119,9 @@ namespace IG.Lib
         public double Opacity
         { get { return _opacity; } set { _opacity = value; } }
 
-        #endregion Data
+#endregion Data
 
-        #region ColorConversions
+#region ColorConversions
 
         /// <summary>Gets or sets the red RGB component as integer in the range 0 to 255.
         /// Getter clips the returned value if it would exceed the range.
@@ -244,9 +249,9 @@ namespace IG.Lib
             }
         }
 
-        #endregion ColorConversions
+#endregion ColorConversions
 
-        #region Conversions
+#region Conversions
 
         public double ConvertComponent(int component)
         {
@@ -291,6 +296,10 @@ namespace IG.Lib
             return new color(col);
         }
 
+#if false
+        // REMARK: This was enclosed in "#if false" because KnownColor and Color.FromKnownColor
+        // are not availale in .NET Standard 2.0.
+
         /// <summary>Converts the <see cref="System.Drawing.KnownColor"/> enumerator to 
         /// extended representation <see cref="Color"/>.</summary>
         /// <param name="knownColorEnum">Value that is converted.</param>
@@ -300,10 +309,11 @@ namespace IG.Lib
             System.Drawing.Color col = System.Drawing.Color.FromKnownColor(knownColorEnum);
             return new color(knownColorEnum);
         }
+#endif
 
-        #endregion Conversions
+#endregion Conversions
 
-        #region Static
+#region Static
 
         /// <summary>Returns average of the specified colors.
         /// <para>The calculated color components are clipped to their prescribed range.</para></summary>
@@ -461,7 +471,7 @@ namespace IG.Lib
         }
 
 
-        #region ColorScales
+#region ColorScales
 
 
         /// <summary>Returns a color corresponding to the specified value (from the specified range) where color 
@@ -722,9 +732,9 @@ namespace IG.Lib
         }
 
 
-        #endregion ColorScales
+#endregion ColorScales
 
-        #endregion Static
+#endregion Static
 
     }
 

@@ -203,15 +203,19 @@ namespace IG.Num
                     {
                         if (_lockFileMutex == null)
                         {
+                            bool createdNew;
+#if NETFRAMEWORK
                             SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
                             MutexSecurity mutexsecurity = new MutexSecurity();
                             mutexsecurity.AddAccessRule(new MutexAccessRule(sid, MutexRights.FullControl, AccessControlType.Allow));
                             mutexsecurity.AddAccessRule(new MutexAccessRule(sid, MutexRights.ChangePermissions, AccessControlType.Deny));
                             mutexsecurity.AddAccessRule(new MutexAccessRule(sid, MutexRights.Delete, AccessControlType.Deny));
-                            bool createdNew;
                             // _lockFileMutex = new Mutex(false, LockFileMutexName);
                             _lockFileMutex = new Mutex(false, LockFileMutexName,
                                 out createdNew, mutexsecurity);
+#else
+                            _lockFileMutex = new Mutex(false, LockFileMutexName, out createdNew);
+#endif
                         }
                     }
                 }
@@ -610,10 +614,10 @@ namespace IG.Num
             }
         }
 
-        #endregion OperationData
+#endregion OperationData
 
 
-        #region SerializationSupport
+#region SerializationSupport
 
         private ISerializer _serializerJson;
 
@@ -662,10 +666,10 @@ namespace IG.Num
             }
         }
 
-        #endregion SerializationSupport
+#endregion SerializationSupport
 
 
-        #region Messages
+#region Messages
 
         /// <summary>Gets a flag telling whether analysis input data is ready.</summary>
         public virtual bool IsAnInputReady()
@@ -979,10 +983,10 @@ namespace IG.Num
             }
         }
 
-        #endregion Messages
+#endregion Messages
 
 
-        #region OperationBasic
+#region OperationBasic
 
 
         /// <summary>Stores analysis input data to the specified file in the standard format
@@ -1111,10 +1115,10 @@ namespace IG.Num
             throw new NotImplementedException("Reading analysis output in standard XML format is not yet implemented.");
         }
 
-        #endregion OperationBasic
+#endregion OperationBasic
 
 
-        #region OperationClient
+#region OperationClient
 
 
         /// <summary>Client writes analysis input data for calculation of analysis results.
@@ -1209,10 +1213,10 @@ namespace IG.Num
         }
 
 
-        #endregion OperationClient
+#endregion OperationClient
 
 
-        #region OperationServer
+#region OperationServer
 
         private IAnalysis _analysis;
 
@@ -1263,7 +1267,7 @@ namespace IG.Num
         }
 
 
-        #endregion OperationServer
+#endregion OperationServer
 
 
     }

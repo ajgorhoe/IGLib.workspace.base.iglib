@@ -14,6 +14,28 @@ namespace IG.Lib
 {
 
 
+    public static class ColorTranslator
+    {
+
+        /// <summary>Provides partial replacement for the class <see cref="System.Drawing.ColorConverter"/>, which is not available
+        /// in .NET Standard 2.0.</summary>
+        /// <param name="htmlColorString"></param>
+        /// <returns></returns>
+        /// <remarks>See this link (last answer): 
+        /// https://stackoverflow.com/questions/12155811/how-to-convert-hexadecimal-ffffff-to-system-drawing-color </remarks>
+        public static Color FromHtml(string htmlColorString)
+        {
+            Color c = Color.FromArgb(int.Parse(htmlColorString.Replace("#", ""),
+                         System.Globalization.NumberStyles.AllowHexSpecifier));
+            return c;
+        }
+
+    }
+
+#if NETSTANDARD2_0_OR_GREATER
+
+#endif
+
     /// <summary><para>Color scale.</para>
     /// Mapping from scalar values to colors, defining continuous or discrete color scales.</summary>
     /// <remarks>This class was initially used in GUI building for fadeouts, but has now broader applicaton
@@ -23,7 +45,7 @@ namespace IG.Lib
     public interface IColorScale
     {
 
-        #region ValuesTransformation
+#region ValuesTransformation
 
         /// <summary>Transforms the specified value from reference domain (interval [0,1]) to actual domain.</summary>
         /// <param name="referenceValue">Value in the reference domain.</param>
@@ -35,10 +57,10 @@ namespace IG.Lib
         /// <returns>Value in the reference domain corresponding to the specified value in the actual domain.</returns>
         double ToReference(double actualValue);
 
-        #endregion ValuesTransformation
+#endregion ValuesTransformation
 
 
-        #region MainOperations
+#region MainOperations
 
         /// <summary>Gets the flag indicating whether the color scale is discrete (with a finite 
         /// number of possible colors, as opposed to continuous).</summary>
@@ -59,10 +81,10 @@ namespace IG.Lib
         /// color is returned.</param>
         color GetReferenceColor(double referenceValue);
         
-        #endregion MainOperations
+#endregion MainOperations
 
 
-        #region ContinuousColors
+#region ContinuousColors
 
         /// <summary>Returns the CONTINUOUS color from the current color scale that corresponds to the specified
         /// value in the REFERENCE domain (interval [0, 1]).
@@ -76,10 +98,10 @@ namespace IG.Lib
         /// <param name="value">Value  (in the actual domain) for which the corresponding color is returned.</param>
         color GetContinuousColor(double value);
 
-        #endregion ContinuousColors
+#endregion ContinuousColors
 
 
-        #region DiscreteColors
+#region DiscreteColors
 
 
         /// <summary>Number of cells in discrete color scale. 
@@ -138,7 +160,7 @@ namespace IG.Lib
         /// corresponding color from the discrete color scale is returned.</param>
         color GetDiscreteColor(double value);
 
-        #endregion DiscreteColors
+#endregion DiscreteColors
 
     } // interface IColorScale 
 
@@ -173,7 +195,7 @@ namespace IG.Lib
     public class ColorScale : ColorScaleBase, IColorScale
     {
 
-        #region Construction
+#region Construction
 
         /// <summary>Constructor. Creates a continuous scale.
         /// <para>Discrete scale has 10 cells.</para></summary>
@@ -218,10 +240,10 @@ namespace IG.Lib
             SetDefinitionColors(definitionColors);
         }
 
-        #endregion Construction 
+#endregion Construction 
 
 
-        #region DefinitionColors
+#region DefinitionColors
 
         /// <summary>Table of definition colors.</summary>
         color[] _definitionColors;
@@ -243,9 +265,9 @@ namespace IG.Lib
             UpdateAuxiliaryData();
         }
 
-        #endregion DefinitionColors
+#endregion DefinitionColors
 
-        #region ValuesTransformation
+#region ValuesTransformation
 
         private double _minValue, _maxvalue;
 
@@ -293,7 +315,7 @@ namespace IG.Lib
             return (actualValue-_minValue)/(_intervalLength);
         }
 
-        #endregion ValuesTransformation
+#endregion ValuesTransformation
 
 
         /// <summary>Updates precalculated auxiliary data that are used for faster calculations.</summary>
@@ -302,7 +324,7 @@ namespace IG.Lib
             _intervalLength = _maxvalue - _minValue;
         }
 
-        #region ContinuousColors
+#region ContinuousColors
 
         /// <summary>Returns the CONTINUOUS color from the current color scale that corresponds to the specified
         /// value in the REFERENCE domain (interval [0, 1]).
@@ -340,9 +362,9 @@ namespace IG.Lib
         }
 
 
-        #endregion ContinuousColors
+#endregion ContinuousColors
 
-        #region DiscreteColors
+#region DiscreteColors
 
 
         /// <summary>Returns the reference value (in the interval [0, 1])
@@ -387,7 +409,7 @@ namespace IG.Lib
             }
         }
 
-        #endregion DiscreteColors
+#endregion DiscreteColors
 
 
     } // class ColorScale
@@ -406,7 +428,7 @@ namespace IG.Lib
     public abstract class ColorScaleBase: IColorScale
     {
 
-        #region ValuesTransformation 
+#region ValuesTransformation 
 
         /// <summary>Transforms the specified value from reference domain (interval [0,1]) to actual domain.</summary>
         /// <param name="referenceValue">Value in the reference domain.</param>
@@ -418,10 +440,10 @@ namespace IG.Lib
         /// <returns>Value in the reference domain corresponding to the specified value in the actual domain.</returns>
         public abstract double ToReference(double actualValue);
 
-        #endregion ValuesTransformation 
+#endregion ValuesTransformation 
 
 
-        #region MainOperations
+#region MainOperations
 
         private bool _isDiscrete = false;
 
@@ -460,10 +482,10 @@ namespace IG.Lib
                 return GetContinuousReferenceColor(referenceValue);
         }
 
-        #endregion MainOperations
+#endregion MainOperations
 
 
-        #region ContinuousColors
+#region ContinuousColors
 
         /// <summary>Returns the CONTINUOUS color from the current color scale that corresponds to the specified
         /// value in the REFERENCE domain (interval [0, 1]).
@@ -480,10 +502,10 @@ namespace IG.Lib
             return GetContinuousReferenceColor(ToReference(value));
         }
 
-        #endregion ContinuousColors
+#endregion ContinuousColors
 
 
-        #region DiscreteColors
+#region DiscreteColors
 
         protected int _numCells = 0;
 
@@ -566,9 +588,9 @@ namespace IG.Lib
             return GetDiscreteReferenceColor(ToReference(value));
         }
 
-        #endregion DiscreteColors
+#endregion DiscreteColors
 
-        #region Static
+#region Static
 
 
         /// <summary>Creates and returns a continuous color scale that runs through the specified colors.
@@ -599,7 +621,7 @@ namespace IG.Lib
             return new ColorScale(minValue, maxValue, numCells, scaleColors);
         }
 
-        #region FixedScales
+#region FixedScales
 
 
         /// <summary>Creates and returns a continuous color scale that runs from blue through 
@@ -711,7 +733,7 @@ namespace IG.Lib
         }
 
 
-        #region ForColorBlind
+#region ForColorBlind
 
         /* Links:
          * http://en.wikipedia.org/wiki/Protanopia#Dichromacy
@@ -736,13 +758,13 @@ namespace IG.Lib
         public static ColorScale CreateColorBlind(double minValue, double maxValue)
         {
             // Main color marks in the scale (numbers in comments represent hue in degrees):
-            color col1 = System.Drawing.ColorTranslator.FromHtml("#E69F00");  // Orange, 41°
-            color col2 = System.Drawing.ColorTranslator.FromHtml("#56B4E9");  // Sky blue, 202°
-            color col3 = System.Drawing.ColorTranslator.FromHtml("#2B9F78");  // Bluish green, 160°
-            color col4 = System.Drawing.ColorTranslator.FromHtml("#F0E442");  // Yellow, 56°
-            color col5 = System.Drawing.ColorTranslator.FromHtml("#0072B2");  // Blue, 202°
-            color col6 = System.Drawing.ColorTranslator.FromHtml("#D55E00");  // Vermillon, 27°
-            color col7 = System.Drawing.ColorTranslator.FromHtml("#CC79A7");  // Reddish purple, 336°
+            color col1 = ColorTranslator.FromHtml("#E69F00");  // Orange, 41°
+            color col2 = ColorTranslator.FromHtml("#56B4E9");  // Sky blue, 202°
+            color col3 = ColorTranslator.FromHtml("#2B9F78");  // Bluish green, 160°
+            color col4 = ColorTranslator.FromHtml("#F0E442");  // Yellow, 56°
+            color col5 = ColorTranslator.FromHtml("#0072B2");  // Blue, 202°
+            color col6 = ColorTranslator.FromHtml("#D55E00");  // Vermillon, 27°
+            color col7 = ColorTranslator.FromHtml("#CC79A7");  // Reddish purple, 336°
          return new ColorScale(minValue, maxValue,
                 col1, col2, col3, col4, col5, col6, col7);
         }
@@ -760,13 +782,13 @@ namespace IG.Lib
         public static ColorScale CreateColorBlind(double minValue, double maxValue, int numCells)
         {
             // Main color marks in the scale (numbers in comments represent hue in degrees):
-            color col1 = System.Drawing.ColorTranslator.FromHtml("#E69F00");  // Orange, 41°
-            color col2 = System.Drawing.ColorTranslator.FromHtml("#56B4E9");  // Sky blue, 202°
-            color col3 = System.Drawing.ColorTranslator.FromHtml("#2B9F78");  // Bluish green, 160°
-            color col4 = System.Drawing.ColorTranslator.FromHtml("#F0E442");  // Yellow, 56°
-            color col5 = System.Drawing.ColorTranslator.FromHtml("#0072B2");  // Blue, 202°
-            color col6 = System.Drawing.ColorTranslator.FromHtml("#D55E00");  // Vermillon, 27°
-            color col7 = System.Drawing.ColorTranslator.FromHtml("#CC79A7");  // Reddish purple, 336°
+            color col1 = ColorTranslator.FromHtml("#E69F00");  // Orange, 41°
+            color col2 = ColorTranslator.FromHtml("#56B4E9");  // Sky blue, 202°
+            color col3 = ColorTranslator.FromHtml("#2B9F78");  // Bluish green, 160°
+            color col4 = ColorTranslator.FromHtml("#F0E442");  // Yellow, 56°
+            color col5 = ColorTranslator.FromHtml("#0072B2");  // Blue, 202°
+            color col6 = ColorTranslator.FromHtml("#D55E00");  // Vermillon, 27°
+            color col7 = ColorTranslator.FromHtml("#CC79A7");  // Reddish purple, 336°
             return new ColorScale(minValue, maxValue, numCells,
                 col1, col2, col3, col4, col5, col6, col7);
         }
@@ -882,7 +904,7 @@ namespace IG.Lib
         }
 
 
-        #endregion ForColorBlind
+#endregion ForColorBlind
 
 
 
@@ -992,10 +1014,10 @@ namespace IG.Lib
                 System.Drawing.Color.Blue, System.Drawing.Color.Green, System.Drawing.Color.Red);
         }
 
-        #endregion FixedScales
+#endregion FixedScales
 
 
-        #endregion Static
+#endregion Static
 
 
     }  // abstract class ColorScaleBase

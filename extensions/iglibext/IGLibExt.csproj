@@ -7,7 +7,8 @@
     -->
 
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net48</TargetFrameworks>
+    <TargetFrameworks>net5.0-windows;net48</TargetFrameworks>
+	<UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
 
@@ -45,6 +46,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48|AnyCPU'">
     <OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Resources.Extensions" Version="6.0.0" />
+  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj" />

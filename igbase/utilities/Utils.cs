@@ -92,15 +92,19 @@ namespace IG.Lib
                     {
                         if (_mutexGlobal == null)
                         {
+                            bool createdNew = false;
+#if NETFRAMEWORK
                             SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
                             MutexSecurity mutexsecurity = new MutexSecurity();
                             mutexsecurity.AddAccessRule(new MutexAccessRule(sid, MutexRights.FullControl, AccessControlType.Allow));
                             mutexsecurity.AddAccessRule(new MutexAccessRule(sid, MutexRights.ChangePermissions, AccessControlType.Deny));
                             mutexsecurity.AddAccessRule(new MutexAccessRule(sid, MutexRights.Delete, AccessControlType.Deny));
-                            bool createdNew;
                             //_mutexGlobal = new Mutex(false, MutexGlobalName);
                             _mutexGlobal = new Mutex(false, MutexGlobalName,
                                 out createdNew, mutexsecurity);
+#else
+                            _mutexGlobal = new Mutex(false, MutexGlobalName, out createdNew);
+#endif
                         }
                     }
                 }
@@ -1117,8 +1121,10 @@ namespace IG.Lib
         #region ByteArrays.ConversionAndSize
 
         /// <summary>Returns size of a value of some specific value type, in bytes.</summary> 
-        /// <remarks>See also: http://stackoverflow.com/questions/16519200/size-of-struct-with-generic-type-fields </remarks>
+        /// <remarks><para>Obsolete because <see cref="SizeOf(Type)"/> will not work when .NET Standard is targeted.</para>
+        /// See also: http://stackoverflow.com/questions/16519200/size-of-struct-with-generic-type-fields </remarks>
         /// <param name="val">Value whose size is returned.</param>
+        [Obsolete("Not available in .NET Standard 2.0, should not be used.")]
         public static int SizeOf<T>(T? val) where T : struct
         {
             if (val == null) throw new ArgumentNullException("obj");
@@ -1126,8 +1132,10 @@ namespace IG.Lib
         }
 
         /// <summary>Returns size of a value of some specific value type, in bytes.</summary> 
-        /// <remarks>See also: http://stackoverflow.com/questions/16519200/size-of-struct-with-generic-type-fields </remarks>
+        /// <remarks><para>Obsolete because <see cref="SizeOf(Type)"/> will not work when .NET Standard is targeted.</para>
+        /// See also: http://stackoverflow.com/questions/16519200/size-of-struct-with-generic-type-fields </remarks>
         /// <param name="val">Value whose size is returned.</param>
+        [Obsolete("Not available in .NET Standard 2.0, should not be used.")]
         public static int SizeOf<T>(T val)
         {
             if (val == null) throw new ArgumentNullException("obj");
@@ -1138,10 +1146,15 @@ namespace IG.Lib
         _cache = new ConcurrentDictionary<Type, int>();
 
         /// <summary>Returns size of a value of some specific value type, in bytes.</summary> 
-        /// <remarks>See also: http://stackoverflow.com/questions/16519200/size-of-struct-with-generic-type-fields </remarks>
+        /// <remarks><para>Obsolete because this method will not work will not work when .NET Standard is targeted.</para>
+        /// See also: http://stackoverflow.com/questions/16519200/size-of-struct-with-generic-type-fields </remarks>
         /// <param name="t">Type of the value whose size is to be returned.</param>
+        [Obsolete("Not available in .NET Standard 2.0, should not be used.")]
         public static int SizeOf(Type t)
         {
+#if NETSTANDARD11
+            throw new IG.Lib.FrameworkDependencyException("Types DynamicMethod and ILGenerator are not available in .NET Standard 2.0.");
+#else
             if (t == null) throw new ArgumentNullException("t");
 
             return _cache.GetOrAdd(t, t2 =>
@@ -1154,6 +1167,7 @@ namespace IG.Lib
                 var func = (Func<int>)dm.CreateDelegate(typeof(Func<int>));
                 return func();
             });
+#endif
         }
 
         /// <summary>Returns size of a value of type bool, in bytes.</summary> <param name="val">Value whose size is returned.</param>
@@ -2391,11 +2405,11 @@ namespace IG.Lib
         }
 
 
-        #endregion ByteArrays.ConversionAndSize
+#endregion ByteArrays.ConversionAndSize
 
 
 
-        #region HexadecimalStrings
+#region HexadecimalStrings
 
         /// <summary>Returns a byte array that is represented by a hexadecimal string.</summary>
         /// <param name="hex"></param>
@@ -2526,11 +2540,11 @@ namespace IG.Lib
             //return hexString1 == hexString2;
         }
 
-        #endregion HexadecimalStrings
+#endregion HexadecimalStrings
 
 
 
-        #region CollectionToString
+#region CollectionToString
 
         /// <summary>Returns a string representing the specified collection of objects.
         /// Each object is printeed by its ToString() method.
@@ -2659,10 +2673,10 @@ namespace IG.Lib
         }
 
 
-        #endregion CollectionToString
+#endregion CollectionToString
 
 
-        #region ToString
+#region ToString
 
         // Globalization:
 
@@ -2760,10 +2774,10 @@ namespace IG.Lib
         }
 
 
-        #endregion ToString
+#endregion ToString
 
 
-        #region StringParse
+#region StringParse
 
 
 
@@ -2992,10 +3006,10 @@ namespace IG.Lib
         }
 
 
-        #endregion StringParse
+#endregion StringParse
 
 
-        #region XML
+#region XML
 
 
         /// <summary>Returns a reformatted XML string, eventually in a more human readable form.</summary>
@@ -3040,10 +3054,10 @@ namespace IG.Lib
             return sb.ToString();
         }
 
-        #endregion XML
+#endregion XML
 
 
-        #region Examples
+#region Examples
 
         public static void ExampleList()
         {
@@ -3084,10 +3098,10 @@ namespace IG.Lib
 
         }
 
-        #endregion Examples
+#endregion Examples
 
 
-        #region IGLib
+#region IGLib
 
         public const string IGLibUrl = "http://www2.arnes.si/~ljc3m2/igor/iglib/";
 
@@ -3095,7 +3109,7 @@ namespace IG.Lib
 
         public const string IGLibAuthor = "Igor Grešovnik";
 
-        #endregion IGLib
+#endregion IGLib
 
     }  // class Utils
 

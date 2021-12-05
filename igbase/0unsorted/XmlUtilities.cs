@@ -1037,6 +1037,11 @@ namespace IG.Lib
 
         #region Initialization
 
+
+#if false
+        // REMARK: This was enclosed in "#if false" because KnownColor and Color.FromKnownColor
+        // are not availale in .NET Standard 2.0.
+
         public virtual void SetDocument(XmlDataDocument doc)
         {
             ++R.Depth;
@@ -1057,6 +1062,8 @@ namespace IG.Lib
                 --R.Depth;
             }
         }
+#endif
+
 
         public virtual void Load(string filename)
         {

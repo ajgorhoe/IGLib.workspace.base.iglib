@@ -12,7 +12,7 @@ namespace IG.Lib
     /// <summary>Exception that should be thrown by IGLib libraries and applications when the reason for an error is dependency on 
     /// missing (not implemeted) APIs from the .NET full frameworrk while the code is build against .NET Core, .NET 5 or later, or
     /// some other framework that also des not support those APIS.</summary>
-    public class FrameworkDependencyException: InvalidOperationException
+    public class FrameworkDependencyException: NotImplementedException
     {
 
         /// <summary>Initializes a new instance of the <see cref="FrameworkDependencyException"/> class with the speecified error message.</summary>
