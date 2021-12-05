@@ -9,6 +9,12 @@ using System.Threading;
 using System.Collections;
 using System.IO;
 
+#if NETFRAMEWORK
+using MenuItem = System.Windows.Forms.MenuItem;
+#else
+using MenuItem = System.Windows.Forms.ToolStripMenuItem;
+#endif
+
 namespace IG.Forms
 {
     public partial class XmlTreeViewControl : UserControl

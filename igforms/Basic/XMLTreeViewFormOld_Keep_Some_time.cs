@@ -11,6 +11,11 @@ using System.Text;
 using System.IO;
 using System.Xml;
 
+#if NETFRAMEWORK
+using MenuItem = System.Windows.Forms.MenuItem;
+#else
+using MenuItem = System.Windows.Forms.ToolStripMenuItem;
+#endif
 
 //
 // Read an XML Document and display the file as a Tree.
@@ -22,6 +27,9 @@ using System.Xml;
 namespace IG.Forms
 {
 
+// #if NETFRAMEWORK
+
+
     /// <summary>
     /// Summary description for XMLTreeView.
     /// </summary>
@@ -30,7 +38,7 @@ namespace IG.Forms
     public class XMLTreeViewFormOld_Keep_Some_time : System.Windows.Forms.Form
     {
 
-        #region DEFINITIONS
+    #region DEFINITIONS
 
         protected class NodeData
         // Class used for storing node data in TreeView tags.
@@ -185,7 +193,7 @@ namespace IG.Forms
         private ToolStripStatusLabel StatusStatus;
         private ToolStripMenuItem ContextMenu_ExpandAll;
 
-        #endregion DEFINITIONS
+    #endregion DEFINITIONS
 
 
 
@@ -202,7 +210,7 @@ namespace IG.Forms
 
 
 
-        #region ERROR_REPORTING
+    #region ERROR_REPORTING
 
         private void ReportError0(string str)
         // Launches an error report, string is the error message.
@@ -230,10 +238,10 @@ namespace IG.Forms
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private IContainer components;
 
-        #endregion  ERROR_REPORTING
+    #endregion  ERROR_REPORTING
 
 
-        #region CONTROLS_DEFINITIONS
+    #region CONTROLS_DEFINITIONS
 
         Bitmap img_fileopen, img_exit, img_collapse, img_expand, img_about;
         private System.Windows.Forms.TreeView treeViewXML;
@@ -299,7 +307,7 @@ namespace IG.Forms
         private SplitContainer splitContainer1;
         delegate void MyDelegate();
 
-        #endregion    // CONTROLS_DEFINITIONS
+    #endregion    // CONTROLS_DEFINITIONS
 
 
         public XMLTreeViewFormOld_Keep_Some_time()
@@ -324,7 +332,7 @@ namespace IG.Forms
 
 
 
-        #region Windows Form Designer generated code
+    #region Windows Form Designer generated code
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -1236,7 +1244,7 @@ namespace IG.Forms
 
         }
 
-        #endregion  // Windows Form Designer generated code
+    #endregion  // Windows Form Designer generated code
 
 
 
@@ -1258,7 +1266,7 @@ namespace IG.Forms
 
 
 
-        #region INITIALIZATION
+    #region INITIALIZATION
 
         System.ComponentModel.ComponentResourceManager resources = null;
 
@@ -1315,10 +1323,10 @@ namespace IG.Forms
 
         }
 
-        #endregion   // INITIALIZATION
+    #endregion   // INITIALIZATION
 
 
-        #region DOCUMENT_LOADING
+    #region DOCUMENT_LOADING
 
         /*
         Notification System:
@@ -1917,11 +1925,11 @@ namespace IG.Forms
         }    // ParseFileToTreeView 
 
 
-        #endregion DOCUMENT_LOADING
+    #endregion DOCUMENT_LOADING
 
 
 
-        #region NODE_UTILITIES
+    #region NODE_UTILITIES
 
         bool isAttributeContainter(TreeNode node)
         // Returns true if the node is an artificial node that groups element attributes.
@@ -2208,10 +2216,10 @@ namespace IG.Forms
 
 
 
-        #endregion  //  NODE_UTILITIES
+    #endregion  //  NODE_UTILITIES
 
 
-        #region NODE_EDIT
+    #region NODE_EDIT
 
         // ALL Edit actions that change the loaded XML document must be placed here.
 
@@ -2287,7 +2295,7 @@ namespace IG.Forms
         }
 
 
-        #endregion   // NODE_EDIT
+    #endregion   // NODE_EDIT
 
 
 
@@ -2698,7 +2706,7 @@ namespace IG.Forms
         }
 
 
-        #region MENU_MAIN
+    #region MENU_MAIN
 
         private void MenuFile_Open_Click(object sender, EventArgs e)
         {
@@ -2868,12 +2876,12 @@ namespace IG.Forms
             ShowAboutBox();
         }
 
-        #endregion     // MENU_MAIN
+    #endregion     // MENU_MAIN
 
 
 
 
-        #region MENU_CONTEXT_NODE
+    #region MENU_CONTEXT_NODE
 
         private void ContextMenu_CopyFullPath_Click(object sender, EventArgs e)
         {
@@ -3317,7 +3325,7 @@ namespace IG.Forms
         }
 
 
-        #endregion   // MENU_CONTEXT_NODE
+    #endregion   // MENU_CONTEXT_NODE
 
         private void treeViewXML_NodeMouseHover(object sender, TreeNodeMouseHoverEventArgs e)
         {
@@ -3420,11 +3428,6 @@ namespace IG.Forms
     }
 
 
-
-
-
-
-
-
+// #endif
 
 }

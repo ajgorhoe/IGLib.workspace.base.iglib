@@ -7,7 +7,7 @@
     -->
 
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net5.0-windows;net48</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
 	<UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
