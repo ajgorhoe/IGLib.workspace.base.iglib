@@ -60,11 +60,6 @@
     <ProjectReference Include="..\igplot3d\plot3d\IGLibPlot3D.csproj" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-
 </Project>
 
 
