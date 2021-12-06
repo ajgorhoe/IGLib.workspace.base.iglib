@@ -16,14 +16,4 @@
 	</PropertyGroup>
 	-->
 
-	<ItemGroup>
-		<!--
-		Prevent git update in IGLibScripts repository from making this project rebuild:
-		-->
-		<Compile Remove="bootstrappingscripts\IGLibScripts\**" />
-		<EmbeddedResource Remove="bootstrappingscripts\IGLibScripts\**" />
-		<None Remove="bootstrappingscripts\IGLibScripts\**" />
-	</ItemGroup>
-	
-
 </Project>

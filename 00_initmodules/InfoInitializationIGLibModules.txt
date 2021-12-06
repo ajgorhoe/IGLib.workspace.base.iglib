@@ -1,44 +1,15 @@
 ﻿
-Initialization of the following modules have been triggered:
+This directory contains scripts and projects that are used to trigger updating
+of git repositories for various submodules and external modules.
+
+Projects whose buildinng is used to trigger updates must be contained in 
+their own subdirectories, such that their buiilding by IDEs, MSBuild or other
+make systems cannot interfere with changes in other parts.
+
+Initialization of the following modules is triggered by building the project
+  InitIGLibModules:
+  IGLibScripts
   IGLibCore
   IGLibEventAggregator
-
-
-
-
-
-
-========== Stored scripts:
-
-========== Prebuild:
-
-echo .
-echo IGLib modules INITIALIZATION:
-echo Calling module updating script...
-echo .
-call "$(ProjectDir)scripts\UpdateIGLibModuleRepos.bat"
-echo .
-echo ... module update scripts completed.
-echo .
-
-
-
-
-
-========== Postbuild:
-
-exit /b
-
-echo.
-echo Post-build step, project $(ProjectName):
-rem echo Executing: del /F /Q "$(TargetDir)$(TargetName).*"
-rem del /F /Q "$(TargetDir)$(TargetName).*"
-cd
-echo.
-echo TargetDir: "$(TargetDir)"
-echo ProjectDir: "$(ProjectDir)"
-echo.
-
-
 
 
