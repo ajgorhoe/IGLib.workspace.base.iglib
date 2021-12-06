@@ -22,6 +22,9 @@ echo.
 echo    Updating external libraries container...
 call "%~dp0\scripts\UpdateIGLibExternal.bat"
 
+echo    Updating external Jint ...
+call "%~dp0\..\..\iglibexternal\IGLibExternal\UpdateJint.bat" %*
+
 echo    Updating external MatnNetNumerics ...
 call "%~dp0\..\..\iglibexternal\IGLibExternal\UpdateMathNetNumerics.bat" %*
 
