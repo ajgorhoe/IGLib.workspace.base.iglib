@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
@@ -9,5 +9,21 @@
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 	  <Exec Command="call $(ProjectDir)UpdateIGLibModuleRepos.bat" />
 	</Target>
+	
+	<!--
+	<PropertyGroup>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	</PropertyGroup>
+	-->
+
+	<ItemGroup>
+		<!--
+		Prevent git update in IGLibScripts repository from making this project rebuild:
+		-->
+		<Compile Remove="bootstrappingscripts\IGLibScripts\**" />
+		<EmbeddedResource Remove="bootstrappingscripts\IGLibScripts\**" />
+		<None Remove="bootstrappingscripts\IGLibScripts\**" />
+	</ItemGroup>
+	
 
 </Project>
