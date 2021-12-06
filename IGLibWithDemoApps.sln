@@ -144,7 +144,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApplicationsIGLibExtended",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGLibSpecial", "IGLibSpecial", "{D7B8D3BD-5A57-4626-802D-A5186D5AAF1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InitIGLibModules", "..\iglib\00_initmoodules\InitIGLibModules.csproj", "{F542E941-80BC-4ACB-B114-7742B2C2868F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InitIGLibModules", "..\iglib\00_initmodules\InitIGLibModules\InitIGLibModules.csproj", "{F542E941-80BC-4ACB-B114-7742B2C2868F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00_initializations", "00_initializations", "{4C3600F5-CDA9-4B5A-9063-434651DBF992}"
 EndProject
