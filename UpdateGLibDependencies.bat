@@ -9,8 +9,8 @@ rem via build.
 echo.
 echo Restoring / updating internal and external dependencies of IGLib...
 echo Executing:
-echo   call "%~dp0\00_initmodules\InitIGLibModules\scripts\UpdateIGLibModuleRepos.bat"
-call "%~dp0\00_initmoodules\InitIGLibModules\scripts\UpdateIGLibModuleRepos.bat"
+echo   call "%~dp0\00_initmodules\UpdateIGLibModuleRepos.bat"
+call "%~dp0\00_initmodules\UpdateIGLibModuleRepos.bat"
 echo.
 echo  ... IGLib dependencies were updated.
 echo.
