@@ -2,15 +2,9 @@
 # This is standard git ignore file to be included in the bootstrapping 
 # directory for IGLibScripts.
 
+/IGLibScripts
+
 /IGLibScripts/.git
 /IGLibScripts/.git1
 /IGLibScripts/.git*
 
-# Remark on failover mechanism: 
-# The line below may be commented, in case that the scripts from
-# IGLibScripts should also be contained in the containing repository for more
-# robustness (e.g. when IGLibScripts repository might not be available, 
-# scripts can still work in this way, reverting to the stored copy that is
-# committed in the repository containing this file)
-
-/IGLibScripts

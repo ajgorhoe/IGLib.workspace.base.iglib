@@ -1,91 +1,113 @@
 
 @echo off
 
-:: Prepares environment for execution of repository updating scripts.
+:: Prepares environment for execution of repository updating scripts
+:: and other scripts from the IGLibScripts repository.
+::
+:: Parameters:
+::   %1: Optional. 0 - update of IGLibScripts repository is NOT forced
+::       (not performed if the directory exists and is a valid Git repo)
+::       1 or other nonzero number: update is forced.  
 
 echo.
 echo BootStrapScripting.bat:
 echo   bootstrapping essential scripts...
 echo.
-echo Obtaining bootstrapping script repository settins...
-
-rem Check conditions for needing to bootstrap / skip bootstrapping...
-rem Bootstrapping is performed conservatively: if bootstrappng script
-rem locations are already defined (via environment pre-agreed variables) 
-rem and scripts actually exist at these locations then bootstrapping
-rem is skipped. This saves time when bootstrappiing is called in a script 
-rem that was called by another script that already performed bootstrapping.
-rem Call BootstrapUpdate to override this and clone/update the IGLibScripts
-rem repository unconditionally.
-if not defined IGLibScripts goto ContinueBootStrapScripting
-if not exist "%IGLibScripts%" goto ContinueBootStrapScripting
-if not defined SetScriptReferences goto ContinueBootStrapScripting
-if not exist "%SetScriptReferences%" goto ContinueBootStrapScripting
-rem no need to continue:
-echo.
-echo Scripting is already bootsttrapped, skipping the remainder 
-echo   off BootStrapScripting.
-echo.
-goto AfterScriptReferencesUpdate
-:ContinueBootStrapScripting
-
-:: Define initially script locations for bootstrapping:
-set BootstrapSettings=%~dp0\SettingsIGLibScriptsBootstrap.bat
-set UpdateRepo=%~dp0\UpdateRepo.bat
-set SetVar=%~dp0\SetVar.bat
-set PrintRepoSettings=%~dp0\PrintRepoSettings.bat
-
-REM if 1 NEQ 0 (
-  REM echo.
-  REM echo Initial script paths:
-  REM echo BootstrapSettings: "%BootstrapSettings%"
-  REM echo UpdateRepo: "%UpdateRepo%"
-  REM echo SetVar: "%SetVar%"
-  REM echo PrintRepoSettings: "%PrintRepoSettings%"
-REM )
-
-:: Obtain for IGLibScripting repository for bootstrapping:
-:: call "%~dp0\SettingsIGLibScriptsBootstrap.bat"
-call "%BootstrapSettings%"
-
-:: Derived variable - already defined in settings::
-set ModuleGitSubdir=%ModuleDir%\.git\refs
-
-REM :: Print settings for bootstrapping IGLib repo:
-REM call "%PrintRepoSettings%"
-
-set BootstrapRepoUpdated=0
-if exist "%ModuleGitSubdir%" goto :SkipUpdate
-  :: The IGLibScripts for bootstrapping not yet properly cloned, 
-  :: perform repo update (cloning):
-  call "%UpdateRepo%" "%BootstrapSettings%"
-  set BootstrapRepoUpdated=1
-:SkipUpdate
 
 
-if not exist "%ModuleGitSubdir%" goto Fallback
-  rem Update script locations to point intto IGLibScripts
-  rem by calling SetScriptReferences.bat in IGLibScripts:
-  call "%ModuleDir%\SetScriptReferences.bat"
-  rem call "%PrintScriptReferences%"
-  goto AfterScriptReferencesUpdate
 
-:Fallback
-if not exist "%~dp0\fallback\FallbackBootStrapScripting.bat" goto ErrorScriptRepo
+rem Set script paths from fallback directory:
+call "%~dp0\fallback\SetScriptReferences.bat"
 
-rem Call the falback bootstrapping script:
-call "%~dp0\fallback\FallbackBootStrapScripting.bat"
-goto AfterScriptReferencesUpdate
+rem Reset the error level (by running an always successfull command):
+ver > nul
 
-:ErrorScriptRepo
-  echo.
-  echo ERROR in BOOTSTRAPPING scripts:
-  echo   IGLibScripts module could not be cloned.
-  echo   Fallback to bootstrapping scripts; may not work properly.
-  echo.
+setlocal
+  
+  set ModuleDirRelative=IGLibScripts
+  set CheckoutBranch=master
+  set RepositoryAddress=https://github.com/ajgorhoe/IGLib.modules.IGLibScripts.git
+  set RepositoryAddressSecondary=https://ajgorhoe@bitbucket.org/ajgorhoe/iglib.modules.iglibscripts.git
+  set RepositoryAddressLocal=d:\backup_sync\bk_code\git\ig\misc\iglib_modules\IGLibScripts
+  set Remote=origin
+  set RemoteSecondary=originSecondary
+  set RemoteLocal=local
+  rem
+  set ModuleDir=%~dp0\%ModuleDirRelative%
+  set ModuleGitSubdir=%ModuleDir%\.git\refs
+  
+  echo #### After IGLib settings under setlocal 
+  
+  
+  set ForceUpdate=0
+  if "%1" NEQ "" (
+    if "%1" NEQ "0" (
+	  set ForceUpdate=1
+	)
+  )
+  if not exist "%ModuleGitSubdir%" (
+    rem There is no IGLibScripts module repo at expected location, 
+	rem try to clone the repo:
+    git clone "%RepositoryAddress%" "%ModuleDir%"
+	
+	echo #### After FIRST direct clone
+	
+	if not exist "%ModuleGitSubdir%" (
+	  rem We still don't have the proper IGLibScript repo, try alternative
+	  rem location:
+	  git clone "%RepositoryAddressSecondary%" "%ModuleDir%"
+	  
+	  echo #### After SECOND direct clone
+	  
+	)
+	if exist "%ModuleDir%" (
+	  call "%ModuleDir%\SetScriptReferences.bat"
+	)
+	rem After pure clone, try to call the update script (which will now
+	rem skip cloning) - to switch to the right branch.
+	call "%UpdateRepo%"
+	
+	echo #### After UpdateRepo - end of Repo not exists
+	
+  ) else (
+    rem We already have IGLibScripts module's repo at expected location.
+	rem If specified, we update the repo according to parameters:
+    if "%ForceUpdate%" NEQ "0" (
+	  
+	  echo #### ForceUpdate: beginning
+	  
+	  call "%ModuleDir%\SetScriptReferences.bat"
+	  
+	  echo #### ForceUpdate, between SetScriptReferences and UpdateRepo
+	  
+	  call "%UpdateRepo%"
+	  
+	  echo #### ForceUpdate: end
+	  
+	)
+  )
+  
+  if "%PrintDebugInfo%" EQU "1" (
+    call %PrintRepoSettings%
+  )
 
-:AfterScriptReferencesUpdate
+endlocal
 
+echo #### After endlocal
+
+
+rem If IGLibScripts directory exists, make sure that script paths are 
+rem updated to point to that directory: 
+if exist "%~dp0\IGLibScripts" (
+  call "%~dp0\IGLibScripts\SetScriptReferences.bat"
+  
+  echo #### After final SetScriptReferences
+  
+)
+
+if "%PrintDebugInfo%" EQU "1" (
+  call %PrintScriptReferences%
+)
 
 
 :finalize
