@@ -9,6 +9,8 @@
 
 set IGLibScripts=%~dp0
 set UpdateRepo=%~dp0UpdateRepo.bat
+set RemoveRepo=%~dp0RemoveRepo.bat
+set CleanRepo=%~dp0CleanRepo.bat
 set SetVar=%~dp0SetVar.bat
 set PrintRepoSettings=%~dp0PrintRepoSettings.bat
 

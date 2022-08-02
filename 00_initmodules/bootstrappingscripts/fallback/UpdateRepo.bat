@@ -92,7 +92,7 @@ if "%~1" EQU "" goto AfterCommandCall
 
 
 :: Print values of parameters relevant for repo updates/clone:
-call  %~dp0\PrintRepoSettings.bat
+:: call  %~dp0\PrintRepoSettings.bat
 
 
 :: Basic checks if something is forgotten
