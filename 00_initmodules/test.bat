@@ -13,7 +13,6 @@ ver > nul
 rem Call bootstrapping script to define basic directories and strings:
 call "%~dp0\bootstrappingscripts\BootStrapScripting.bat"
 
-goto endScript
 
 
 echo.
@@ -31,6 +30,8 @@ echo.
 echo   ... updating IGLib modules completed.
 
 
+
+
 echo.
 echo Updating external modules...
 echo.
@@ -42,11 +43,14 @@ echo    Updating module ZedGraph ...
 call "%UpdateRepo%" "%~dp0\scripts\SettingsExternalZedGraph.bat"
 
 
+
 rem Lines below are new. When solutions are changed, remove the 
 rem corresponding lines above for local updates!
 
 echo    Updating external dependencies in iglibexternal container...
 call "%~dp0\UpdateIGLibExternalDependencies.bat"
+
+goto endScript
 
 REM echo    Updating external libraries container...
 REM call "%~dp0\scripts\UpdateIGLibExternal.bat"
