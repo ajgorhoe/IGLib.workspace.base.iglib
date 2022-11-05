@@ -3,6 +3,7 @@
 
 rem Updates all IGLib modules.
 
+rem This is a copy of UpdateIGLibModuleRepos.bat
 rem DELETE THIS SCRIPT when not needed any more!
 
 setlocal
