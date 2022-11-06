@@ -67,6 +67,12 @@
 		</Reference>
 	</ItemGroup>
 
+
+	<!--
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net48'|'$(TargetFramework)' == 'net6.0' ">
+	</ItemGroup>
+	-->
+
 	<ItemGroup>
 		<Content Remove="00_net48\**" />
 		<Compile Remove="00_net48\**" />
