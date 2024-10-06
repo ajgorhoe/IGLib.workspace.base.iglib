@@ -1,7 +1,6 @@
 # IGLib Container Repository
 
-This repository contains basic portions of the Investigative Generic Library (IGLib) and some related software (libraries and applications). Most of the IGLib is .NET software written in C#. Some of it still depends on the .NET Framework because of the dependencies, but the intention is to port most of the .NET libraries to latest versions of .NET (e.g. .NET 5).
-
+This repository contains basic portions of the Investigative Generic Library (IGLib) and some related software (libraries and applications). Most of the IGLib is .NET software written in C#. Some of it still depends on the .NET Framework because of the dependencies, but the intention is to port most of the .NET libraries to latest versions of .NET (e.g. .NET 8).
 
 The original repository for this container is located at
 
