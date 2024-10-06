@@ -80,16 +80,12 @@ or check [code documentation](http://www2.arnes.si/%7Eljc3m2/igor/software/coded
 
   The following external libraries are used:  
 
-* [Math.Net Numerics](http://numerics.mathdotnet.com/), an excellent scientific library written entirely in C#, development lead by Christoph Rüegg. Created by [merging](http://christoph.ruegg.name/blog/2009/8/3/dnanalytics-iridium-mathnet-numerics.html) two predecessor libraries, the [Math.Net Iridium](http://www.mathdotnet.com/Iridium.aspx) and the [dnAnalytics](http://dnanalytics.codeplex.com/).  
-    
-* [Math.Net](http://www.mathdotnet.com/), a scientific library written entirely in C#. Iridium and Neodym libraries were used from this project before Iridium merged with dnAnalytics into Math.Net Numerics. Now the latter library is used.  
-    
-* [ZedGraph](http://zedgraph.org/), a flexible charting library for .NET.  
-    
+* [Math.Net Numerics](http://numerics.mathdotnet.com/), an excellent scientific library written entirely in C#, development lead by Christoph Rüegg. Created by [merging](http://christoph.ruegg.name/blog/2009/8/3/dnanalytics-iridium-mathnet-numerics.html) two predecessor libraries, the [Math.Net Iridium](http://www.mathdotnet.com/Iridium.aspx) and the [dnAnalytics](http://dnanalytics.codeplex.com/).
+* [Math.Net](http://www.mathdotnet.com/), a scientific library written entirely in C#. Iridium and Neodym libraries were used from this project before Iridium merged with dnAnalytics into Math.Net Numerics. Now the latter library is used.
+* [ZedGraph](http://zedgraph.org/), a flexible charting library for .NET.
 * [NPlot](http://netcontrols.org/nplot/wiki/index.php?n=Main.HomePage), an easy to use 2D plotting library.
 * [Activiz](http://www.kitware.com/products/activiz.html), C# wrappers for the VTK 3D graphics library.
-* [Aforge.Net](http://www.aforgenet.com/aforge/framework/), a framework library for development of neural network-based application.  
-    
+* [Aforge.Net](http://www.aforgenet.com/aforge/framework/), a framework library for development of neural network-based application.
 * [Accord.Net](http://code.google.com/p/accord/), an extension of the Aforge.Net framework.
 * [ParticleSwarm](http://www.codeproject.com/Articles/42258/Particle-swarm-optimization-for-function-optimizat) project of Guinther M. Foidl, an implementation of a particle swarm minimization algorithm.
 * [ALGLIB](http://www.alglib.net/), a numerical analysis and data processing library. Small portions of an old version are used that were licensed under a more permissive license (now the library is under the GPL).
