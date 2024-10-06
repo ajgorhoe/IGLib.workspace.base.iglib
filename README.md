@@ -53,32 +53,29 @@ Please refer to the licenses contained in specific repositories for conditions o
 
 Solution files are included in this repository for convenience, especially for quick view of the project structure without needing to clone the other relevant repositories at the prescribed relative paths. For development, one should use solution files contained in *../igsolutions/*.
 
-
-
-
 # Additional Information (from the previous HTML Readme)
 
-  IGLib.NET (Investigative Generic Library) is a set of utility libraries that are particularly suited for development of technical applications (see also the [web page](http://www2.arnes.si/%7Eljc3m2/igor/iglib/) and [code documentation](http://www2.arnes.si/%7Eljc3m2/igor/software/codedoc/generated/iglib/html/classes.html)).
+**IGLib.NET** (the Investigative Generic Library) is a set of utility libraries that are particularly suited for development of technical applications (see also the [web page](http://www2.arnes.si/%7Eljc3m2/igor/iglib/) and [code documentation](http://www2.arnes.si/%7Eljc3m2/igor/software/codedoc/generated/iglib/html/classes.html)).
 
   The system has been designed and developed by [Igor Grešovnik](http://www2.arnes.si/%7Eljc3m2/igor/index.html), who set up its foundations in 2006 and is leading its development. In longer term, the library is intended (at least in part) for distribution as free open source under a BSD-like license. However, the library will not be open for public immediately because the author wants to achieve a certain level of maturity first and stabilize library development within a smaller group of dedicated developers. Before this happens, groups and individuals can join development or usage of the library by individual agreement with the principal author. Up to now, a small number of companies have been using the library for developing applications. The author is open for collaboration but would like to retain a good control over development for some time. He believes that such position will be beneficial for future users and developers.  
 
-    Since 2011, the library has been used by the _[Laboratory for Multiphase Processes](http://www.ung.si/en/research/multiphase-processes/)_ of the _[University of Nova Gorica](http://www.ung.si/en/)_, and by the _[Laboratory for Advanced Materials Systems](http://www.cobik.si/laboratoriji/laboratorij-za-sisteme-z-naprednimi-materiali?lang=eng)_ of the _[Centre of Excellence for Biosensors, Instrumentation and Process Control](http://www.cobik.si/index?lang=eng)_, where it is used as base library for development of applications in the field of  neural networks and optimization. These groups use the code under a customized license agreement that allows free use of the binaries in order to create derived products.
+    Since 2011, the library has been used by the *Laboratory for Multiphase Processes* of the *[University of Nova Gorica](http://www.ung.si/en/)*, and by the *[Laboratory for Advanced Materials Systems](http://www.cobik.si/laboratoriji/laboratorij-za-sisteme-z-naprednimi-materiali?lang=eng)* of the *[Centre of Excellence for Biosensors, Instrumentation and Process Control](http://www.cobik.si/index?lang=eng)*, where it is used as base library for development of applications in the field of  neural networks and optimization. These groups use the code under a customized license agreement that allows free use of the binaries in order to create derived products.
 
-  IGLib contains some basic utilities like those for parsing strings, generic I/O utilities, a couple of utilities for building GUI, a numerical library, 2D and 3D graphics modules, a parallel computing module, application framework featuring a layered interpreter system, and other components. It aims at providing a well designed base library for developnent of complex numerical and other technical applications. Parts of IGLib have also been used in other areas such as a system for managing a histological laboratory or large scale invoicing support system.
+  IGLib contains some basic utilities like those for parsing strings, generic I/O utilities, a couple of utilities for building GUI, a numerical library, 2D and 3D graphics modules, a parallel computing module, application framework featuring a layered interpreter system, and other components. It aims at providing a well designed base library for development of complex numerical and other technical applications. Parts of IGLib have also been used in other areas such as a system for managing a histological laboratory or large scale invoicing support system.
 
   Historically, the initial motivation for development of the library arose from the needs to have a good base library for development of complex optimization software, and development was first concentrated around re-implementation of parts of [IOptLib](http://www2.arnes.si/%7Eljc3m2/igor/ioptlib/). However, the library was planned in a broader sense since the very beginning of its existence. For more information, check the library home page at
 
-  [http://www2.arnes.si/~ljc3m2/igor/iglib/](http://www2.arnes.si/%7Eljc3m2/igor/iglib/),  
+> [http://www2.arnes.si/~ljc3m2/igor/iglib/](http://www2.arnes.si/%7Eljc3m2/igor/iglib/),  
 
 or check [code documentation](http://www2.arnes.si/%7Eljc3m2/igor/software/codedoc/generated/iglib/index.html) at  
 
-  [http://www2.arnes.si/~ljc3m2/igor/software/codedoc/generated/iglib/html/index.html](http://www2.arnes.si/%7Eljc3m2/igor/software/codedoc/generated/iglib/html/index.html).
+> [http://www2.arnes.si/~ljc3m2/igor/software/codedoc/generated/iglib/html/index.html](http://www2.arnes.si/%7Eljc3m2/igor/software/codedoc/generated/iglib/html/index.html).
 
 ## External Software Libraries
 
   This library depends on a number of external free open source libraries. Authors of the code are grateful to all developers that invested their work to develop these libraries and who made them open and accessible to the public.
 
-  The following external libraries are used:  
+The following external libraries are used:  
 
 * [Math.Net Numerics](http://numerics.mathdotnet.com/), an excellent scientific library written entirely in C#, development lead by Christoph Rüegg. Created by [merging](http://christoph.ruegg.name/blog/2009/8/3/dnanalytics-iridium-mathnet-numerics.html) two predecessor libraries, the [Math.Net Iridium](http://www.mathdotnet.com/Iridium.aspx) and the [dnAnalytics](http://dnanalytics.codeplex.com/).
 * [Math.Net](http://www.mathdotnet.com/), a scientific library written entirely in C#. Iridium and Neodym libraries were used from this project before Iridium merged with dnAnalytics into Math.Net Numerics. Now the latter library is used.
@@ -94,7 +91,17 @@ or check [code documentation](http://www2.arnes.si/%7Eljc3m2/igor/software/coded
 
   Beside libraries, there are other external works used by IGLib:
 
-* [Silk Icons](http://www.famfamfam.com/lab/icons/silk/), a free icon library. 
+* [Silk Icons](http://www.famfamfam.com/lab/icons/silk/), a free icon library.
 * Some sounds from the [FreeSound](https://freesound.org/) library.  
   
 Please visit the web pages of these great libraries (just follow the links above) and consider whether you can support their development in some way. Check also the license agreements for these referenced libraries for precise conditions for using the libraries.
+
+## IGLib Authors Index  
+
+Below is the list of authors' synonyms used in the code:  
+
+* Igor - [Igor Grešovnik](http://www2.arnes.si/%7Eljc3m2/igor/index.html), Črneče 147, 2370 Dravograd, Slovenia (gresovnik (at) gmail (dot) com)
+* Tako78 - Tadej Kodelja, Slovenia (tadej (dot) kodelja (at) gmail (dot) com)
+* Marko - Marko Petek, Slovenia (ketepokram (at) gmail (dot) com)
+* Tomaz - Tomaž Tekavec  
+* Ferdo - Ferdinand Grešovnik
