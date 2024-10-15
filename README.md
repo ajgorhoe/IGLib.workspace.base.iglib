@@ -73,7 +73,7 @@ or check [code documentation](http://www2.arnes.si/%7Eljc3m2/igor/software/coded
 
 ## Repository Structure
 
-> **Important Remark**: the source of information in this section is [this wiki section](https://github.com/ajgorhoe/wiki.IGLib/blob/main/web/IGLibWebPages.md#iglib-legacy-repositories-on-github) (private access). Please only copy updates in the direction source => this section.*
+> **Important Remark**: the source of information in this section is [this wiki section](https://github.com/ajgorhoe/wiki.IGLib/blob/main/web/IGLibWebPages.md#iglib-legacy-repositories-on-github) (private access). This section will **probably not be updated often**, but if necessary, please *only copy updates in the direction source => this section*.
 
 IGLib Framework projects need to be positioned in particular relative positions with respect to each other in order to build (this also applies to their external dependencies). The usual practice is to clone the IGLib repositories via the **[IGLib Container Repository](https://github.com/ajgorhoe/iglibcontainer)**.
 
@@ -99,7 +99,7 @@ Below is the list of IGLib Framework-related repositories.
 * Auxiliary IGLib repositories:
   * **[../codedoc](https://github.com/ajgorhoe/IGLib.workspace.doc.codedoc)** (full name: *IGLib.workspace.doc.codedoc*, location in the container repository (not consistent with name): *workspace.codedoc/*) - contains scripts for **automatic generation of code documentation** for IGLib libraries, applications, and tests
     * **[../codedoc_resources](https://github.com/ajgorhoe/IGLib.workspace.codedoc_resources)** (full name: *IGLib.workspace.codedoc_resources*) - contains additional resources (such as binaries) for the *codedoc* repository mentioned above this entry
-  * **[../codedoc_new](https://gitlab.com/ajgorhoe/iglib.workspace.codedoc_develop.git)** (full name: *IGLib.workspace.codedoc_new*, location in the container repository (not consistent with name): *workspace.codedoc_new/*) - contains **new developments** for scripts for **automatic generation of code documentation** for IGLib libraries, applications, and tests <span style = "color:red">(**ToDo + To verify**: where it is already used? What are differences with the *codedoc* repo?)</span>
+  * **[../codedoc_new](https://gitlab.com/ajgorhoe/iglib.workspace.codedoc_develop.git)** (full name: *IGLib.workspace.codedoc_new*, location in the container repository (not consistent with name): *workspace.codedoc_new/*) - contains **new developments** for scripts for **automatic generation of code documentation** for IGLib libraries, applications, and tests
   * **[data](https://github.com/ajgorhoe/IGLib.workspace.base.data)** (full name: *IGLib.workspace.base.data*) - contains some data for projects based on IGLib, e.g. some **neural network models**.
 * Other repositories:
   * **[../applications](https://github.com/ajgorhoe/IGLib.workspace.applications)** (full name: *IGLib.workspace.applications*): contains binaries of some demo applications for IGLib
