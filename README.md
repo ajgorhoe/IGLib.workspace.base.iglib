@@ -1,35 +1,38 @@
 
-# IGLib Container Repository
+# IGLib Framework
 
-This repository contains basic portions of the Investigative Generic Library (IGLib) and some related software (libraries and applications). Most of the IGLib is .NET software written in C#. Some of it still depends on the .NET Framework because of the dependencies, but the intention is to port most of the .NET libraries to latest versions of .NET (e.g. .NET 8).
+This repository contains basic portions of the Investigative Generic Library (IGLib) and some related software (libraries and applications). Most of the IGLib is .NET software written in C#. Some of it still depends on the .NET Framework because of the dependencies, but the intention is to port most of the .NET libraries to latest long-term support versions of .NET (e.g. .NET 8).
 
 The original repository for this container is located at
 
 > *https://github.com/ajgorhoe/IGLib.workspace.base.iglib.git*
 
-## How to use this repository on MS Windows
+## How to Use this Repository on MS Windows
 
 Majority of IGLib software is cross/platform. However, there are some additional tools available for the Windows OS that makes it easier to work with code.
 
-The best way to work with IGLib code is to use the IGLib container repository, which contains a number of Windows batch scripts that take care of properly cloning and updating the workspace directory structures from the several repositories.
+The best way to work with IGLib code is to use the **[IGLib Container repository](https://github.com/ajgorhoe/iglibcontainer)**, which contains a number of Windows batch scripts that take care of properly cloning and updating the workspace directory structure from the several [constituent repositories](#repository-structure). IGLib container repository can be cloned from the following address:
 
-IGLib container repository can be cloned from this address:
+> *https://github.com/ajgorhoe/iglibcontainer.git
 
-> *htps://github.com/ajgorhoe/iglibcontainer.git*
+After cloning this repository on a local Windows machine, just run one of the batch scripts in order to clone or update other repositories necessary to view, build and run the code.
 
-After cloning this repository on a local Windows machine, just run one of the batch scripts in order to check out and update other repositories necessary to view, build and run the code.
+In the root directory of the cloned IGLib Container repository, run the following script:
 
-In the root directory of the cloned repository, run the following script:
+> *Prepare_IglLib.bat*
 
-> *PrepareIglLib.bat*
+This will clone the necessary repositories to work with IGLib at the correct locations. The script attempts to clone many repositories that are private, and you should just skip them if you don't have the access to these repositories. Alternatively, you can run individual update scripts from the cloned container repository. You can start by running the following scripts:
 
-After the script finishes, you will find basic IGLib libraries in:
+> *workspace/base/UpdateModule_iglib.bat*
+> *workspace/base/UpdateModule_igsolutions.bat*
 
-> *workspace/base/iglib*
+After the script finishes, you will find basic IGLib libraries in the following directory:
 
-In order to build the code, you can then open one of the Visual Studio solution files found in:
+> *workspace/base/iglib/*
 
-> *workspace/base/igsolutions*
+In order to build the code, you can then open one of the Visual Studio solution files contained in the directory:
+
+> *workspace/base/igsolutions/*
 
 Authors of the software use Visual Studio to build the code by using the mentioned solution files. For building on other platforms, we use Visual Studio Code or command-line tools from .NET SDKs. People also recommend JetBrain's Rider. We have used MonoDevelop for cross-platform development in the past, but the project is not actively developed any more and the software features may gradually become outdated.
 
@@ -41,15 +44,12 @@ I have used MonoDevelop to build the code on Linux, but it seems now that MonoDe
 
 ## Other
 
-
 Please refer to the licenses contained in specific repositories for conditions of use. Also note that software depends on a number of external libraries with their own licenses.
 
+Solution files contained in this repository:
 
-### 3.1 Solution files in this repository
-
-*IGLib.sln* can be used to build base IGLib libraries. However, this solution file may be outdated.
-
-*ShellDevAll.sln* is a solution file that contains a broader range of projects, including extended libraries not included in this repository, additional external libraries, and a number of IGLib-based applications. This solution is usually more up-to-date than the *IGLib.sln*, but it contains projects to which you may not have access. Many projects in this solution are outside the current repository, and can be cloned easily by using the container repository as mentioned above. However, a number of repositories that contain projects included in this solution are not publicly available. Just ignore the projects that cannot be loaded.
+* *IGLib.sln* can be used to build base IGLib libraries. However, this solution file may be outdated.
+* *ShellDevAll.sln* is a solution file that contains a broader range of projects, including extended libraries not included in this repository, additional external libraries, and a number of IGLib-based applications. This solution is usually more up-to-date than the *IGLib.sln*, but it contains projects to which you may not have access. Many projects in this solution are outside the current repository, and can be cloned easily by using the container repository as mentioned above. However, a number of repositories that contain projects included in this solution are not publicly available. Just ignore the projects that cannot be loaded.
 
 Solution files are included in this repository for convenience, especially for quick view of the project structure without needing to clone the other relevant repositories at the prescribed relative paths. For development, one should use solution files contained in *../igsolutions/*.
 
