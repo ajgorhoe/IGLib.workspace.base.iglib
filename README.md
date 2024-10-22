@@ -25,6 +25,8 @@ This will clone the necessary repositories to work with IGLib at the correct loc
 
 > *workspace/base/UpdateModule_iglib.bat*
 > *workspace/base/UpdateModule_igsolutions.bat*
+> *workspace/base/UpdateModule_iglibexternal.bat*
+> *workspace/base/iglibexternal/IGLibExternal/UpdateIGLibAll.bat*
 
 After the script finishes, you will find basic IGLib libraries in the following directory:
 

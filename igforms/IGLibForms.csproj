@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <!--
-    <TargetFrameworks>net5.0;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     -->
 
     <OutputType>Library</OutputType>
-	<TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
+	<TargetFrameworks>net6.0;net48</TargetFrameworks>
 	<UseWindowsForms>true</UseWindowsForms>
     <OutputPath>..\..\output\bin</OutputPath>
   </PropertyGroup>
