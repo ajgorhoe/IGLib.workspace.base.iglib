@@ -137,12 +137,3 @@ The following external libraries are used:
   
 Please visit the web pages of these great libraries (just follow the links above) and consider whether you can support their development in some way. Check also the license agreements for these referenced libraries for precise conditions for using the libraries.
 
-## IGLib Authors Index  
-
-Below is the list of authors' synonyms used in the code:  
-
-* Igor - [Igor Grešovnik](http://www2.arnes.si/%7Eljc3m2/igor/index.html), Črneče 147, 2370 Dravograd, Slovenia (gresovnik (at) gmail (dot) com)
-* Tako78 - Tadej Kodelja, Slovenia (tadej (dot) kodelja (at) gmail (dot) com)
-* Marko - Marko Petek, Slovenia (ketepokram (at) gmail (dot) com)
-* Tomaz - Tomaž Tekavec  
-* Ferdo - Ferdinand Grešovnik
