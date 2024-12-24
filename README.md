@@ -137,3 +137,95 @@ The following external libraries are used:
   
 Please visit the web pages of these great libraries (just follow the links above) and consider whether you can support their development in some way. Check also the license agreements for these referenced libraries for precise conditions for using the libraries.
 
+## Related Links
+
+### Software Pages
+
+[IGLib](https://ajgorhoe.github.io/IGLibFramework/iglib/)\-[related](https://ajgorhoe.github.io/IGLibFramework/):
+
+-   [Site map](https://ajgorhoe.github.io/IGLibFramework/): IGLib and related software  
+    
+-   [**IGLib**, the Investigative Generic Library](https://ajgorhoe.github.io/IGLibFramework/iglib/)
+    -   [IGLib code documentation](https://ajgorhoe.github.io/IGLibFramework/software/codedoc/generated/iglib/): [index](https://ajgorhoe.github.io/IGLibFramework/software/codedoc/generated/iglib/html/), [class list](https://ajgorhoe.github.io/IGLibFramework/software/codedoc/generated/iglib/html/annotated.html), [class hierarchy](https://ajgorhoe.github.io/IGLibFramework/software/codedoc/generated/iglib/html/hierarchy.html) ([graphical](https://ajgorhoe.github.io/IGLibFramework/software/codedoc/generated/iglib/html/inherits.html)), [namespace list](https://ajgorhoe.github.io/IGLibFramework/software/codedoc/generated/iglib/html/namespaces.html), [file list](https://ajgorhoe.github.io/IGLibFramework/software/codedoc/generated/iglib/html/files.html)  
+    -   [Extended code documentation](https://ajgorhoe.github.io/IGLibFrameworkCodedoc/generated/16_04_igliball_1.7.2/): [class list](https://ajgorhoe.github.io/IGLibFrameworkCodedoc/generated/16_04_igliball_1.7.2/html/annotated.html), [class hierarchy](https://ajgorhoe.github.io/IGLibFrameworkCodedoc/generated/16_04_igliball_1.7.2/html/hierarchy.html) ([graphical](https://ajgorhoe.github.io/IGLibFrameworkCodedoc/generated/16_04_igliball_1.7.2/html/inherits.html)), [namespace list](https://ajgorhoe.github.io/IGLibFrameworkCodedoc/generated/16_04_igliball_1.7.2/html/namespaces.html), [file list](https://ajgorhoe.github.io/IGLibFrameworkCodedoc/generated/16_04_igliball_1.7.2/html/files.html) 
+    -   [documentation archive](https://www2.arnes.si/~fgreso/archive/software/codedoc/generated/archive.html)  
+-   [Related software](https://ajgorhoe.github.io/IGLibFramework/software/) :
+    -   [**NeurApp** - approximation with artificial neural networks](https://ajgorhoe.github.io/IGLibFramework/software/NeurApp/) (for education & exploration purposes)  
+        
+    -   **[AnnApp](https://ajgorhoe.github.io/IGLibFramework/software/AnnApp/)** \- a software for training and using industrial neural network models
+    -   [IGShell](https://ajgorhoe.github.io/IGLibFramework/software/IGLibShellApp/) - a shell application based on IGLib. Includes a Visual Studio / Mono project and two [hosted applications](https://ajgorhoe.github.io/IGLibFramework/software/IGLibShellApp/HashForm.html) :
+        -   [HashForm](https://ajgorhoe.github.io/IGLibFramework/software/IGLibShellApp/HashForm.html#hashform) - a GUI-based user friendly application for file verification; Performs calculation and verification of various kinds of file or text hash values.
+        -   [HashShell](https://ajgorhoe.github.io/IGLibFramework/software/IGLibShellApp/HashForm.html#hashshell) - a command-line application for file verification and cryptographic operations
+    -   [IOptLib](https://ajgorhoe.github.io/IGLibFramework/ioptlib/) - a library for solving engineering optimization problems  
+        
+
+_[Optimization Shell Inverse](https://ajgorhoe.github.io/Inverse/sitemap.html)_ : (a legacy C/C++ software for solving inverse and optimization problems in engineering)  
+
+-   [_Inverse_ site map](https://ajgorhoe.github.io/Inverse/sitemap.html)    
+    
+-   _[Inverse](https://ajgorhoe.github.io/Inverse/)_ - index
+-   Documentation:   
+    
+
+-   [Quick Introduction to Inverse (PDF)](https://ajgorhoe.github.io/Inverse/doc/other/invquick2.pdf) ; [HTML version](https://ajgorhoe.github.io/Inverse/doc/other/quick/)  
+    
+-   [Inverse Manuals](https://ajgorhoe.github.io/Inverse/doc/man/)
+-   [Thesis on Inverse](https://ajgorhoe.github.io/Inverse/doc/phd/)
+
+Other:
+
+-   [Sendigence](https://ajgorhoe.github.io/IGLibFramework/sendigence/) 
+-   [IGS](https://ajgorhoe.github.io/IGLibFramework/c3m/igs/igs.html) (graphical system)
+
+### Documents and Other Pages
+
+**[Documents](https://ajgorhoe.github.io/IGLibFramework/doc/)** (reports, manuals, courses, articles, etc.)  
+
+-   [Documents from COBIK](https://ajgorhoe.github.io/IGLibFramework/cobik/)  
+    
+-   [Ph. D. thesis](https://ajgorhoe.github.io/IGLibFramework/doc/theses/phd/) on use of optimization, inverse methods, numerical simulation and the related software in various engineering fields  
+    
+-   [Bibliography (Igor G.)](https://ajgorhoe.github.io/IGLibFramework/0docigor/bib/bibliography_gresovnik_cobiss.htm)  
+    
+
+### Repositories
+
+-   [Repositories base](https://www.github.com/ajgorhoe)   
+    
+-   [IGLib base repository](https://github.com/ajgorhoe/IGLib.workspace.base.iglib) (see also the [Repository Structure](https://github.com/ajgorhoe/IGLib.workspace.base.iglib#repository-structure) section in readme)  
+    
+-   IGLib.NET modules:
+
+-   [IGLibScripts](https://github.com/ajgorhoe/IGLib.modules.IGLibScripts) repository - contains a variety of script to assist software development  
+    
+
+-   [Site map (GitHub pages)](https://ajgorhoe.github.io/)   
+    
+
+-   [IGLib Framework site map](https://ajgorhoe.github.io/IGLibFramework/) on GitHub  
+    
+-   [Inverse site map](https://ajgorhoe.github.io/Inverse/) on GitHub  
+    
+
+#### Other Pages on GitHub
+
+-   [IGLib](https://ajgorhoe.github.io/IGLibFramework/iglib/)    
+    
+-   [NeurApp](https://ajgorhoe.github.io/IGLibFramework/software/NeurApp/)    
+    
+-   [AnnApp](https://ajgorhoe.github.io/IGLibFramework/software/AnnApp/)    
+    
+-   [IGShell](https://ajgorhoe.github.io/IGLibFramework/software/IGLibShellApp/)    
+    
+-   [HashForm](https://ajgorhoe.github.io/IGLibFramework/software/IGLibShellApp/HashForm.html#hashform)   and [HashShell](https://ajgorhoe.github.io/IGLibFramework/software/IGLibShellApp/HashForm.html#hashshell)    
+    
+-   [IOptLib](https://ajgorhoe.github.io/IGLibFramework/ioptlib/)    
+    
+-   [Inverse](https://ajgorhoe.github.io/Inverse/)   
+    
+
+### Other
+
+[Tests: Canonical Redirects and the Corresponding Notes](https://www2.arnes.si/~ljc3m2/test/AutoRedirect/)
+
+
