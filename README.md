@@ -1,11 +1,8 @@
 
 # IGLib Framework
 
-<img src="https://ajgorhoe.github.io/icons/IGLibIcon_transparent.svg" alt="[IGLib]" style="float: right; max-width: 30%; min-width: 64px; width: 96px; margin-left: 10px;"></img>
 
-This repository contains basic portions of the ***Investigative Generic Library** (**IGLib**)* and some related software (libraries and applications). Most of the IGLib is .NET software written in C#. Some of it still depends on the .NET Framework because of the dependencies, but the intention is to port most of the .NET libraries to latest long-term support versions of .NET (e.g. .NET 8).
-
-
+This repository contains basic portions of the ***Investigative Generic Library** (**IGLib**)* and some related software (libraries and applications). Most of the IGLib is .NET software written in C#. Some of it still depends on the .NET Framework because of the dependencies, but the intention is to port most of the .NET libraries to latest long-term support versions of .NET (e.g. .NET 8). <img src="https://ajgorhoe.github.io/icons/IGLibIcon_transparent.svg" alt="[IGLib]" style="float: right; max-width: 30%; min-width: 64px; width: 96px; margin-left: 10px;"></img>
 
 The original repository for this container is located at
 
