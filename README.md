@@ -1,16 +1,25 @@
 
 # IGLib Framework
 
+<p style="float: right; max-width: 30%; margin-left: 8pt;">
+<img src="https://ajgorhoe.github.io/icons/IGLibIcon_transparent.svg" alt="[IGLib]" style="float: right; max-width: 30%; min-width: 64px; width: 96px; margin-left: 8pt;"></img>
+</p>
 
-This repository contains basic portions of the ***Investigative Generic Library** (**IGLib**)* and some related software (libraries and applications). Most of the IGLib is .NET software written in C#. Some of it still depends on the .NET Framework because of the dependencies, but the intention is to port most of the .NET libraries to latest long-term support versions of .NET (e.g. .NET 8). <img src="https://ajgorhoe.github.io/icons/IGLibIcon_transparent.svg" alt="[IGLib]" style="float: right; max-width: 30%; min-width: 64px; width: 96px; margin-left: 10px;"></img>
+This repository contains basic portions of the ***Investigative Generic Library** (**IGLib**)* and some related software (libraries and applications). Most of the IGLib is .NET software written in C#. Some of it still depends on the .NET Framework because of the dependencies, but the intention is to port most of the .NET libraries to latest long-term support versions of .NET (e.g. .NET 8).
 
-The original repository for this container is located at
+
+<p style="float: right; max-width: 30%; margin-left: 8px;">
+XXXZZZ
+</p>
+
+
+The original repository for this library is located at
 
 > *https://github.com/ajgorhoe/IGLib.workspace.base.iglib.git*
 
 ## How to Use this Repository on MS Windows
 
-Majority of IGLib software is cross/platform. However, there are some additional tools available for the Windows OS that makes it easier to work with code.
+Majority of IGLib software is cross/platform. However, there are some additional tools available for the Windows OS that makes it easier to work with code. <img src="https://ajgorhoe.github.io/icons/IGLibIcon_transparent.svg" alt="[IGLib]" style="float: right; max-width: 30%; min-width: 64px; width: 96px; margin-left: 10px;"></img> 
 
 The best way to work with IGLib code is to use the **[IGLib Container repository](https://github.com/ajgorhoe/iglibcontainer)**, which contains a number of Windows batch scripts that take care of properly cloning and updating the workspace directory structure from the several [constituent repositories](#repository-structure). IGLib container repository can be cloned from the following address:
 
