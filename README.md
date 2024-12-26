@@ -1,9 +1,9 @@
 
 # IGLib Framework
 
-<p style="float: right;">
-<img src="./IGLibIcon_256x256.png" alt="[IGLib]" style=" max-width: 30%; width: 96px; margin-left: 8pt;"></img>
-</p>
+<span style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;">
+<img src="./IGLibIcon_256x256.png" alt="[IGLib]"></img>
+</span>
 
 This repository contains basic portions of the ***Investigative Generic Library** (**IGLib**)* and some related software (libraries and applications). Most of the IGLib is .NET software written in C#. Some of it still depends on the .NET Framework because of the dependencies, but the intention is to port most of the .NET libraries to latest long-term support versions of .NET (e.g. .NET 8).
 
