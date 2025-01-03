@@ -16,7 +16,7 @@ Majority of IGLib software is cross/platform. However, there are some additional
 
 The best way to work with IGLib code is to use the **[IGLib Container repository](https://github.com/ajgorhoe/iglibcontainer)**, which contains a number of Windows batch scripts that take care of properly cloning and updating the workspace directory structure from the several [constituent repositories](#repository-structure). IGLib container repository can be cloned from the following address:
 
-> *https://github.com/ajgorhoe/iglibcontainer.git
+> https://github.com/ajgorhoe/iglibcontainer.git
 
 After cloning this repository on a local Windows machine, just run one of the batch scripts in order to clone or update other repositories necessary to view, build and run the code.
 
