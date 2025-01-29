@@ -5,13 +5,24 @@ using System.IO.Compression;
 using System.Xml;
 using System.Text;
 using System;
+#if NETFRAMEWORK
 using System.Web.Script.Serialization;
-
+#else
+using System.Text.Json;
+#endif
 
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
 using IG.Num;
+
+/*
+$$$$
+REMARK: Corrections had to be maded in this file in order to compile the IGLib project
+for .NET 6 and higher.
+See conditional compilation directives in the code with "if NETFRAMEWORK".
+Additional corrections were made in the project file (PackageReference Include="System.Text.Json")...
+*/
 
 namespace IG.Lib
 {
@@ -572,8 +583,10 @@ namespace IG.Lib
             { get { return _flag; } set { _flag = value; } }
 
             private double[][] _numbers = new double[2][] { new double[3] {1.1, 1.2, 1.3}, null /* new double[3] {2.1, 2.2, 2.3} */ };
-            
+
+#if NETFRAMEWORK
             [ScriptIgnore]  // for JSON serialize to ignore this, since it does not support rectangular arrays
+#endif
             public double[][] Numbers
             {
                 get { return _numbers; }
@@ -743,7 +756,9 @@ namespace IG.Lib
 
             private SerializationTestArrayMember[][] _testJaggedArray2d;
 
+#if NETFRAMEWORK
             [ScriptIgnore]  // for JSON serialize to ignore this, since it does not support rectangular arrays
+#endif
             private SerializationTestArrayMember[,] _rectangularArray2d;
 
             public virtual SerializationTestArrayMember SingleElement
@@ -947,7 +962,7 @@ namespace IG.Lib
         }  // SerializationTestClass
 
 
-        #endregion TestClasses
+#endregion TestClasses
 
 
 

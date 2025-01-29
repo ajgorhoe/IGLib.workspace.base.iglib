@@ -8,7 +8,7 @@
 		-->
 
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>net48</TargetFrameworks>
+		<TargetFrameworks>net6.0;net48</TargetFrameworks>
 		<OutputPath>../../output/bin</OutputPath>
 	</PropertyGroup>
 
@@ -92,6 +92,17 @@
 	  <PackageReference Include="System.CodeDom" Version="6.0.0" />
 	</ItemGroup>
 
+	<ItemGroup Condition=" '$(TargetFramework)' != 'net48' ">
+		<!--
+		If we do not target the legacy .NET Framework, we need to add the following package reference
+		in order to compensate for the lack of System.Web.Script.Serialization namespace in .NET Core.
+		The following sources were also corrected:
+		* In /igbase/data/serialization/json/JsonSerialization/:
+		* JsonExtensions.cs
+		* SerializerBase.cs
+		-->
+		<PackageReference Include="System.Text.Json" Version="8.0.0" />
+	</ItemGroup>
 
 
 	<!--
