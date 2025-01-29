@@ -7,7 +7,7 @@
     -->
 
     <OutputType>Library</OutputType>
-	<TargetFrameworks>net6.0;net48</TargetFrameworks>
+	<TargetFrameworks>net6.0-windows;net48</TargetFrameworks>
 	<UseWindowsForms>true</UseWindowsForms>
     <OutputPath>..\..\output\bin</OutputPath>
   </PropertyGroup>
