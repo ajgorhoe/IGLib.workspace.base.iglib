@@ -17,8 +17,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
 using System.Collections;
 using System.Globalization;
@@ -5511,6 +5509,46 @@ namespace IG.Lib
 
         #region SerializationBinary.TypeSafe
 
+        /* IMPORTANT - BINARY SERIALIZATION
+        BinaryFormatter class and the associated IFormatter were made obsolete in more recent frameworks
+        due to potential security issues, and are not suported since NET 8.
+        In legacy IGLib, to enable some legacy software, the project references a NuiGet package that still
+        provides the functionality.
+        The package is referenced when the target framework is .NET 8 or later. Beside this, compiler warnings
+        are issuer in the code that uses these technologies, and informative messages are written to console
+        for a limited number of times. These warnigs can be swotched on or off via the
+        LanchConsoleWarningsOnBinarFormatterUse property. */
+
+        /// <summary>Specifies whether informational messages are written to console when the BinaryFormatter
+        /// is used.</summary>
+        public static bool DoLaunchConsoleWarningsOnBinarFormatterUse { get; set; } = true;
+
+        public static int MaxLaunchedBinayFormattingConsoleWarnings { get; set; } = 0;
+
+        private static int NumLaunchedBinaryFormattingConsoleWarinings { get; set; } = 0;
+
+        private static void LaunchBinaryFormattingConsoleWarining()
+        {
+            try
+            {
+
+                if (DoLaunchConsoleWarningsOnBinarFormatterUse &&
+                    NumLaunchedBinaryFormattingConsoleWarinings < MaxLaunchedBinayFormattingConsoleWarnings)
+                {
+#if NET8_0_OR_GREATER
+                    Console.WriteLine("\n\nNOTICE: Using BinaryFormatter from System.Runtime.Serialization.Formatters package.\n");
+#else
+                    Console.WriteLine("\n\nNOTICE: Using built-in BinaryFormatter.\n");
+#endif
+                }
+            }
+            finally {
+                ++ NumLaunchedBinaryFormattingConsoleWarinings;
+            }
+        }
+
+
+
         /// <summary>Save the specified serialized object in binary form to the specified file.</summary>
         /// <param name="objectToSave">Object to be saved.</param>
         /// <param name="fileName">File name to save the object into.</param>
@@ -5530,6 +5568,7 @@ namespace IG.Lib
         /// <remarks><para>The object is saved using .NET serialization (binary formatter is used).</para></remarks>
         public static void SaveBinary<ObjectType>(ObjectType objectToSave, Stream stream)
         {
+            LaunchBinaryFormattingConsoleWarining();
             IFormatter formatter = new BinaryFormatter();
             formatter.Serialize(stream, objectToSave);
         }
@@ -5552,6 +5591,7 @@ namespace IG.Lib
         /// <remarks><para>Neural network is loaded from file using .NET serialization (binary formater is used).</para></remarks>
         public static ObjectType LoadBinary<ObjectType>(Stream stream)
         {
+            LaunchBinaryFormattingConsoleWarining();
             IFormatter formatter = new BinaryFormatter();
             ObjectType network = (ObjectType)formatter.Deserialize(stream);
             return network;
