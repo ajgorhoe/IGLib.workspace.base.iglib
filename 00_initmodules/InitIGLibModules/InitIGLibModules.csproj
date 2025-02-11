@@ -7,7 +7,8 @@
 	</PropertyGroup>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="call $(ProjectDir)/../UpdateIGLibModuleRepos.bat" />
+	  <Exec Command="call $(ProjectDir)/../UpdateIGLibModuleRepos.bat"
+		 ContinueOnError="true" />
 	</Target>
 	
 	<!--
