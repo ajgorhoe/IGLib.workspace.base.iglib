@@ -21,6 +21,8 @@ using System.Reflection;
 using System.Collections;
 using System.Globalization;
 using System.Resources;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 
 
