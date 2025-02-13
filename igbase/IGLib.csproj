@@ -61,6 +61,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\00_initmodules\InitIGLibModules\InitIGLibModules.csproj" />
 		<ProjectReference Include="..\external\jint\Jint\Jint.csproj" />
 		<ProjectReference Include="..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
 		<ProjectReference Include="..\modules\IGLibCore\src\IGLibCore.csproj" />
