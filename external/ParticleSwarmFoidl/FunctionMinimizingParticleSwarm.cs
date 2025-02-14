@@ -2,10 +2,12 @@
 using gfoidl.ComputationalIntelligence.Particles;
 using ParticleSwarmDemo.FunctionMinimizing.Function;
 
+using gfoidl.ComputationalIntelligence.Particles;
+
 namespace ParticleSwarmDemo.FunctionMinimizing
 {
-	public sealed class FunctionMinimizingParticleSwarm : ParticleSwarm
-	{
+	public sealed class FunctionMinimizingParticleSwarm : gfoidl.ComputationalIntelligence.Particles.ParticleSwarm
+    {
 		public FunctionMinimizingParticleSwarm(
 			FunctionBase function,
 			int swarmSize)
