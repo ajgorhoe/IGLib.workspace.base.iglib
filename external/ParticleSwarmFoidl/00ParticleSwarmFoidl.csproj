@@ -1,31 +1,40 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net48;</TargetFrameworks>
+		<!--
+		<TargetFrameworks>net8.0-windows;net48;netstandard2.0</TargetFrameworks>
+		-->
+		<TargetFrameworks>net8.0-windows</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>ParticleSwarm.FunctionMinimizing</RootNamespace>
 		<AssemblyName>ParticleSwarmDemo.FunctionMinimizing</AssemblyName>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<UseWindowsForms>true</UseWindowsForms>
+		<!--
+		-->
 		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
 		<DefineConstants>TRACE;DEBUG;ISCLASSLIBRARY999</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+		<!--
 		<OutputPath>bin\x86\Debug\</OutputPath>
+		-->
 		<DefineConstants>TRACE;DEBUG;ISCLASSLIBRARY999</DefineConstants>
 		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+		<!--
 		<OutputPath>bin\x86\Release\</OutputPath>
+		-->
 		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 	<ItemGroup>
+		<!--
 		<Reference Include="gfoidl.Parallelization, Version=1.1.4.1, Culture=neutral, PublicKeyToken=fdbaf62800e5ec9b, processorArchitecture=MSIL">
 			<SpecificVersion>False</SpecificVersion>
 			<HintPath>..\..\..\gfoidl.Parallelization\bin\Release\gfoidl.Parallelization.dll</HintPath>
 		</Reference>
-		
 		
 		<Reference Update="System.Core">
 			<RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -33,15 +42,24 @@
 		<Reference Update="System.Xml.Linq">
 			<RequiredTargetFramework>4.0</RequiredTargetFramework>
 		</Reference>
+		-->
 	</ItemGroup>
-	<ItemGroup>
-		<Content Include="0readme_modified_particle_swarm.txt" />
-	</ItemGroup>
+	<!--
 	<ItemGroup>
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
 	</ItemGroup>
+	-->
 
 	<ItemGroup>
+		<Content Include="0readme_modified_particle_swarm.txt" />
+	</ItemGroup>
+	
+	
+	
+	<ItemGroup>
+		<!--
+		<Compile Remove="Backup\**\*" />
+		-->
 		<Compile Remove="Backup\Form1.cs" />
 		<Compile Remove="Backup\Form1.Designer.cs" />
 		<Compile Remove="Backup\FunctionMinimizingParticle.cs" />
