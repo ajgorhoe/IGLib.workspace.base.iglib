@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!--
+		<TargetFrameworks>net8.0-windows;net48</TargetFrameworks>
+		<TargetFramework>net48</TargetFramework>
+		-->
+		<TargetFrameworks>net8.0-windows;net48</TargetFrameworks>
+		<OutputType>WinExe</OutputType>
+		<UseWindowsForms>true</UseWindowsForms>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
+		<ImplicitUsings>disable</ImplicitUsings>
+	</PropertyGroup>
+	
+	<ItemGroup>
+	  <None Include="..\..\0readme_ParticleSwarmFoidlNew.md" Link="0readme_ParticleSwarmFoidlNew.md" />
+	</ItemGroup>
+	<!--
+		<Nullable>enable</Nullable>
+	-->
+	
+</Project>

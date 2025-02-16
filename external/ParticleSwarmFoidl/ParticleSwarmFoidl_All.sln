@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "00ParticleSwarmFoidl", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "00ParticleSwarmFoidlNew", "src\ParticleSwarmFoidlNew\00ParticleSwarmFoidlNew.csproj", "{11FB09F1-0851-4255-85E3-4B512B0DD455}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "00ParticleSwarmFoidlModified", "src\ParticleSwarmFoidlModified\00ParticleSwarmFoidlModified.csproj", "{999C6872-7B8D-4FCD-8115-91F54D5F9770}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{11FB09F1-0851-4255-85E3-4B512B0DD455}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11FB09F1-0851-4255-85E3-4B512B0DD455}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11FB09F1-0851-4255-85E3-4B512B0DD455}.Release|Any CPU.Build.0 = Release|Any CPU
+		{999C6872-7B8D-4FCD-8115-91F54D5F9770}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{999C6872-7B8D-4FCD-8115-91F54D5F9770}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{999C6872-7B8D-4FCD-8115-91F54D5F9770}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{999C6872-7B8D-4FCD-8115-91F54D5F9770}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
