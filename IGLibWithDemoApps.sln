@@ -3,35 +3,33 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibForms", "..\iglib\igforms\IGLibForms.csproj", "{50235FC8-A69D-47AE-A557-6518B35CC7C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibForms", "igforms\IGLibForms.csproj", "{50235FC8-A69D-47AE-A557-6518B35CC7C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibPlot2D", "..\iglib\extensions\igplot2d\plot2d\IGLibPlot2D.csproj", "{C9A09DBC-B304-42DF-9CEE-6BA0E856ABC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibPlot2D", "extensions\igplot2d\plot2d\IGLibPlot2D.csproj", "{C9A09DBC-B304-42DF-9CEE-6BA0E856ABC2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibPlot3D", "..\iglib\extensions\igplot3d\plot3d\IGLibPlot3D.csproj", "{8BBF5C58-2562-4E9B-ACB8-3F3A3B031F62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibPlot3D", "extensions\igplot3d\plot3d\IGLibPlot3D.csproj", "{8BBF5C58-2562-4E9B-ACB8-3F3A3B031F62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibExt", "..\iglib\extensions\iglibext\IGLibExt.csproj", "{4E4B240A-6994-4747-BB6C-0CC0D2578D04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibExt", "extensions\iglibext\IGLibExt.csproj", "{4E4B240A-6994-4747-BB6C-0CC0D2578D04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLib", "..\iglib\igbase\IGLib.csproj", "{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLib", "igbase\IGLib.csproj", "{0AB31A6E-E0DE-4F4E-8D0E-7AD60AE65E26}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevelopCobik", "DevelopCobik", "{0F29E35C-9CD1-475D-904C-3ABC506BEB0A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalLibraries", "ExternalLibraries", "{56DDCD18-254B-4F95-AD36-AB87D817FFBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberConverter", "..\iglib\external\NumberConverter\NumberConverter.csproj", "{AA13248E-EF53-4222-98E5-9D2678E8E65C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberConverter", "external\NumberConverter\NumberConverter.csproj", "{AA13248E-EF53-4222-98E5-9D2678E8E65C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Core", "..\iglib\externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj", "{631AC093-430F-45F4-BA0C-AF0F0405918A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Core", "externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj", "{631AC093-430F-45F4-BA0C-AF0F0405918A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Genetic", "..\iglib\externalextended\ann\aforge.net\Sources\Genetic\AForge.Genetic.csproj", "{2EFAA327-1789-4438-B9F5-E83ACAE12DB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Genetic", "externalextended\ann\aforge.net\Sources\Genetic\AForge.Genetic.csproj", "{2EFAA327-1789-4438-B9F5-E83ACAE12DB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Math", "..\iglib\externalextended\ann\aforge.net\Sources\Math\AForge.Math.csproj", "{C0FAF524-72E4-46F7-8C1B-A6B74DEC5EBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Math", "externalextended\ann\aforge.net\Sources\Math\AForge.Math.csproj", "{C0FAF524-72E4-46F7-8C1B-A6B74DEC5EBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Neuro", "..\iglib\externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj", "{02B5E453-2085-4E41-86D9-C8E8A03FB1B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Neuro", "externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj", "{02B5E453-2085-4E41-86D9-C8E8A03FB1B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Controls", "..\iglib\externalextended\ann\aforge.net\Sources\Controls\AForge.Controls.csproj", "{4CCA6844-9102-4A3B-8148-EA3D359B2586}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Controls", "externalextended\ann\aforge.net\Sources\Controls\AForge.Controls.csproj", "{4CCA6844-9102-4A3B-8148-EA3D359B2586}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Video", "..\iglib\externalextended\ann\aforge.net\Sources\Video\AForge.Video.csproj", "{809725DC-6502-4732-A51C-DEB7FEA12975}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "00ParticleSwarmFoidl", "..\iglib\external\ParticleSwarmFoidl\00ParticleSwarmFoidl.csproj", "{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForge.Video", "externalextended\ann\aforge.net\Sources\Video\AForge.Video.csproj", "{809725DC-6502-4732-A51C-DEB7FEA12975}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForgeSh.Core", "..\shelldev\lib_ann\aforge.net\Sources\Core\AForgeSh.Core.csproj", "{FDCD16A3-CA7F-4E48-8657-AA920DA6349B}"
 EndProject
@@ -47,9 +45,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AforgeSh.Imaging", "..\shel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AForgeSh.Video", "..\shelldev\lib_ann\aforge.net\Sources\Video\AForgeSh.Video.csproj", "{C796B903-984D-4736-AFBA-ADFE727441C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint", "..\iglib\external\jint\Jint\Jint.csproj", "{678738DA-F723-4920-B9E5-CAD667104BDA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint", "external\jint\Jint\Jint.csproj", "{678738DA-F723-4920-B9E5-CAD667104BDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint.Repl", "..\iglib\external\jint\Jint.Repl\Jint.Repl.csproj", "{A69FD3C5-F2B0-4055-A518-F4173EBA5E4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jint.Repl", "external\jint\Jint.Repl\Jint.Repl.csproj", "{A69FD3C5-F2B0-4055-A518-F4173EBA5E4D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalLibrariesExtended", "ExternalLibrariesExtended", "{7D3278C7-CFDD-4084-B514-7F2DA2A142EC}"
 EndProject
@@ -87,7 +85,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestUtil_MSTest", "..\unitt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestNumeric_MSTest", "..\unittests\MSTests\TestNumeric\TestNumeric_MSTest.csproj", "{CDE73133-EFF6-4AC6-8907-A6DD495CA981}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibNeural", "..\iglib\extensions\iglibneural\neural\IGLibNeural.csproj", "{FBF3C5F7-A0CA-46A1-8973-7689FFFAAEBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibNeural", "extensions\iglibneural\neural\IGLibNeural.csproj", "{FBF3C5F7-A0CA-46A1-8973-7689FFFAAEBA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGShell", "IGShell", "{3A8FFE30-7319-4256-8A79-F34F41A03575}"
 EndProject
@@ -111,20 +109,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HashFormBin", "..\iglibapp\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HashShellBin", "..\iglibapp\igshell\Applications\HashShellBin.csproj", "{62F61D8F-A38F-449C-8D15-52169CAF162E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Numerics", "..\iglib\external\mathnet-numerics\src\Numerics\Numerics.csproj", "{F5FE0255-4C94-4689-87B3-964FCD8571F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Numerics", "external\mathnet-numerics\src\Numerics\Numerics.csproj", "{F5FE0255-4C94-4689-87B3-964FCD8571F6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibNeuralExt", "..\iglib\extensions\iglibneural\neural_ext\IGLibNeuralExt.csproj", "{DA348BA9-F182-4730-B238-6220D9917A60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibNeuralExt", "extensions\iglibneural\neural_ext\IGLibNeuralExt.csproj", "{DA348BA9-F182-4730-B238-6220D9917A60}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZedGraph", "..\iglib\external\ZedGraph\source\ZedGraph\ZedGraph.csproj", "{638A6DAA-EDAD-43E8-906E-99EB91C45B13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZedGraph", "external\ZedGraph\source\ZedGraph\ZedGraph.csproj", "{638A6DAA-EDAD-43E8-906E-99EB91C45B13}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZedGraph.WinForms", "..\iglib\external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj", "{8F81AE7F-B848-4A6A-8453-A45F8D37ADB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZedGraph.WinForms", "external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj", "{8F81AE7F-B848-4A6A-8453-A45F8D37ADB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibCore", "..\iglib\modules\IGLibCore\src\IGLibCore.csproj", "{AAA3E637-50AE-4F42-9771-A34975DBB3F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibCore", "modules\IGLibCore\src\IGLibCore.csproj", "{AAA3E637-50AE-4F42-9771-A34975DBB3F0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{F542E941-80BC-4ACB-B114-7742B2C2868F} = {F542E941-80BC-4ACB-B114-7742B2C2868F}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventAggregator", "..\iglib\modules\IGLibEventAggregator\EventAggregator\EventAggregator.csproj", "{BCD247B4-4A29-4174-9884-C2444A534A5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventAggregator", "modules\IGLibEventAggregator\EventAggregator\EventAggregator.csproj", "{BCD247B4-4A29-4174-9884-C2444A534A5B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGLib", "IGLib", "{D68D3525-832F-4282-BC21-2A685D7C4AB7}"
 EndProject
@@ -134,9 +132,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "older", "older", "{6C1C7205
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ModuleTests", "ModuleTests", "{B426D451-125E-48C5-BB1B-B6CB33A4104A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventAggregatorTests", "..\iglib\modules\IGLibEventAggregator\EventAggregatorTests\EventAggregatorTests.csproj", "{FCD0C54B-0DC1-4AD1-A7F4-E7A7C5C19B41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventAggregatorTests", "modules\IGLibEventAggregator\EventAggregatorTests\EventAggregatorTests.csproj", "{FCD0C54B-0DC1-4AD1-A7F4-E7A7C5C19B41}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibCoreTests", "..\iglib\modules\IGLibCore\tests\IGLibCoreTests\IGLibCoreTests.csproj", "{EE6F21DB-5381-49A1-BFA4-C679DD33ECA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibCoreTests", "modules\IGLibCore\tests\IGLibCoreTests\IGLibCoreTests.csproj", "{EE6F21DB-5381-49A1-BFA4-C679DD33ECA8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApplicationsIGLib", "ApplicationsIGLib", "{F8D7C772-C867-4C88-B305-0E888096CEA8}"
 EndProject
@@ -144,13 +142,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApplicationsIGLibExtended",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGLibSpecial", "IGLibSpecial", "{D7B8D3BD-5A57-4626-802D-A5186D5AAF1F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InitIGLibModules", "..\iglib\00_initmodules\InitIGLibModules\InitIGLibModules.csproj", "{F542E941-80BC-4ACB-B114-7742B2C2868F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InitIGLibModules", "00_initmodules\InitIGLibModules\InitIGLibModules.csproj", "{F542E941-80BC-4ACB-B114-7742B2C2868F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00_initializations", "00_initializations", "{4C3600F5-CDA9-4B5A-9063-434651DBF992}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibScripts", "..\iglib\modules\IGLibScripts\project\IGLibScripts.csproj", "{33A7FD14-F166-441A-A008-89266D74C76E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibScripts", "modules\IGLibScripts\project\IGLibScripts.csproj", "{33A7FD14-F166-441A-A008-89266D74C76E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IGLibNeuralExtFormsSpecial", "..\shelldev\lib\extended\LibNeuralExtForms\IGLibNeuralExtFormsSpecial.csproj", "{8B4BF239-FD23-4991-A63A-A8963ABEB301}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "00ParticleSwarmFoidl", "external\ParticleSwarmFoidl\src\ParticleSwarmFoidl\00ParticleSwarmFoidl.csproj", "{9B99072B-C566-4AED-96CD-371F8B76E425}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "00ParticleSwarmFoidlNew", "external\ParticleSwarmFoidl\src\ParticleSwarmFoidlNew\00ParticleSwarmFoidlNew.csproj", "{0490B443-B8C7-4678-9DF8-AC9FA5A53328}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -471,31 +473,6 @@ Global
 		{809725DC-6502-4732-A51C-DEB7FEA12975}.Release-Signed|Mixed Platforms.Build.0 = Release|Any CPU
 		{809725DC-6502-4732-A51C-DEB7FEA12975}.Release-Signed|x64.ActiveCfg = Release|Any CPU
 		{809725DC-6502-4732-A51C-DEB7FEA12975}.Release-Signed|x86.ActiveCfg = Release|x86
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.ajgor|Any CPU.ActiveCfg = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.ajgor|Any CPU.Build.0 = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.ajgor|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.ajgor|Mixed Platforms.Build.0 = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.ajgor|x64.ActiveCfg = Debug|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.ajgor|x86.ActiveCfg = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Debug|x86.ActiveCfg = Debug|x86
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Debug|x86.Build.0 = Debug|x86
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release|x64.ActiveCfg = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release|x86.ActiveCfg = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release-Signed|Any CPU.ActiveCfg = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release-Signed|Any CPU.Build.0 = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release-Signed|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release-Signed|Mixed Platforms.Build.0 = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release-Signed|x64.ActiveCfg = Release|Any CPU
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5}.Release-Signed|x86.ActiveCfg = Release|x86
 		{FDCD16A3-CA7F-4E48-8657-AA920DA6349B}.ajgor|Any CPU.ActiveCfg = Release|Any CPU
 		{FDCD16A3-CA7F-4E48-8657-AA920DA6349B}.ajgor|Any CPU.Build.0 = Release|Any CPU
 		{FDCD16A3-CA7F-4E48-8657-AA920DA6349B}.ajgor|Mixed Platforms.ActiveCfg = Release|Any CPU
@@ -1653,6 +1630,70 @@ Global
 		{8B4BF239-FD23-4991-A63A-A8963ABEB301}.Release-Signed|x64.Build.0 = Release|Any CPU
 		{8B4BF239-FD23-4991-A63A-A8963ABEB301}.Release-Signed|x86.ActiveCfg = Release|Any CPU
 		{8B4BF239-FD23-4991-A63A-A8963ABEB301}.Release-Signed|x86.Build.0 = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.ajgor|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.ajgor|Any CPU.Build.0 = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.ajgor|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.ajgor|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.ajgor|x64.ActiveCfg = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.ajgor|x64.Build.0 = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.ajgor|x86.ActiveCfg = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.ajgor|x86.Build.0 = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Debug|x64.Build.0 = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Debug|x86.Build.0 = Debug|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release|x64.ActiveCfg = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release|x64.Build.0 = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release|x86.ActiveCfg = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release|x86.Build.0 = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release-Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release-Signed|Any CPU.Build.0 = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release-Signed|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release-Signed|Mixed Platforms.Build.0 = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release-Signed|x64.ActiveCfg = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release-Signed|x64.Build.0 = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release-Signed|x86.ActiveCfg = Release|Any CPU
+		{9B99072B-C566-4AED-96CD-371F8B76E425}.Release-Signed|x86.Build.0 = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.ajgor|Any CPU.ActiveCfg = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.ajgor|Any CPU.Build.0 = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.ajgor|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.ajgor|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.ajgor|x64.ActiveCfg = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.ajgor|x64.Build.0 = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.ajgor|x86.ActiveCfg = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.ajgor|x86.Build.0 = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Debug|x64.Build.0 = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Debug|x86.Build.0 = Debug|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release|x64.ActiveCfg = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release|x64.Build.0 = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release|x86.ActiveCfg = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release|x86.Build.0 = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release-Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release-Signed|Any CPU.Build.0 = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release-Signed|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release-Signed|Mixed Platforms.Build.0 = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release-Signed|x64.ActiveCfg = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release-Signed|x64.Build.0 = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release-Signed|x86.ActiveCfg = Release|Any CPU
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328}.Release-Signed|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1670,7 +1711,6 @@ Global
 		{02B5E453-2085-4E41-86D9-C8E8A03FB1B9} = {56DDCD18-254B-4F95-AD36-AB87D817FFBE}
 		{4CCA6844-9102-4A3B-8148-EA3D359B2586} = {56DDCD18-254B-4F95-AD36-AB87D817FFBE}
 		{809725DC-6502-4732-A51C-DEB7FEA12975} = {56DDCD18-254B-4F95-AD36-AB87D817FFBE}
-		{E0B3D4F2-CA72-495B-8CE3-845AE49B5CD5} = {56DDCD18-254B-4F95-AD36-AB87D817FFBE}
 		{FDCD16A3-CA7F-4E48-8657-AA920DA6349B} = {56DDCD18-254B-4F95-AD36-AB87D817FFBE}
 		{27A1653B-F450-4F19-88A1-457527AE05F0} = {56DDCD18-254B-4F95-AD36-AB87D817FFBE}
 		{6C5A0DA4-C532-46C4-8E80-9C05B1D8C22A} = {56DDCD18-254B-4F95-AD36-AB87D817FFBE}
@@ -1718,6 +1758,8 @@ Global
 		{4C3600F5-CDA9-4B5A-9063-434651DBF992} = {D68D3525-832F-4282-BC21-2A685D7C4AB7}
 		{33A7FD14-F166-441A-A008-89266D74C76E} = {103FD0F9-B3B8-4F09-8856-F04A0EBA52DD}
 		{8B4BF239-FD23-4991-A63A-A8963ABEB301} = {D7B8D3BD-5A57-4626-802D-A5186D5AAF1F}
+		{9B99072B-C566-4AED-96CD-371F8B76E425} = {56DDCD18-254B-4F95-AD36-AB87D817FFBE}
+		{0490B443-B8C7-4678-9DF8-AC9FA5A53328} = {56DDCD18-254B-4F95-AD36-AB87D817FFBE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69EF0C0F-3AA4-4C30-B227-B7B92EDED87B}
