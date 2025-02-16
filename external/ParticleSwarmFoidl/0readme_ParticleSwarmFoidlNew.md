@@ -28,4 +28,4 @@ Upgrading to SDK-style project went smoothly. However, just adding the .NET 8 bu
 
 ## Modified and Improved Project
 
-The **[00ParticleSwarmFoidlModified.csproj](./src/ParticleSwarmFoidlModified/00ParticleSwarmFoidlModified.csproj)** project started as a copy of [00ParticleSwarmFoidlNew.csproj](./src/ParticleSwarmFoidlNew/00ParticleSwarmFoidlNew.csproj), intended to be modified and improved.
+The **[00ParticleSwarmFoidlModified.csproj](./src/ParticleSwarmFoidlModified/00ParticleSwarmFoidlModified.csproj)** project started as a copy of [00ParticleSwarmFoidlNew.csproj](./src/ParticleSwarmFoidlNew/00ParticleSwarmFoidlNew.csproj), intended to be modified and improved. This is the place for **all future modifications**.
