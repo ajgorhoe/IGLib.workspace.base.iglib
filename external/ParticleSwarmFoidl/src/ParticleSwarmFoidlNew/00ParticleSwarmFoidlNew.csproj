@@ -4,7 +4,7 @@
 		<!--
 		<TargetFrameworks>net8.0-windows;net48</TargetFrameworks>
 		-->
-		<TargetFrameworks>net8.0-windows</TargetFrameworks>
+		<TargetFrameworks>net8.0-windows;net48</TargetFrameworks>
 		<OutputType>WinExe</OutputType>
 		<UseWindowsForms>true</UseWindowsForms>
 		

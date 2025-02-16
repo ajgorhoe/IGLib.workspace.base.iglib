@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "00ParticleSwarmFoidl", "src\ParticleSwarmFoidl\00ParticleSwarmFoidl.csproj", "{51547A2E-AEF8-47D6-9E50-A6879A98FB61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParticleSwarmFoidlNew", "src\ParticleSwarmFoidlNew\ParticleSwarmFoidlNew.csproj", "{11FB09F1-0851-4255-85E3-4B512B0DD455}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "00ParticleSwarmFoidlNew", "src\ParticleSwarmFoidlNew\00ParticleSwarmFoidlNew.csproj", "{11FB09F1-0851-4255-85E3-4B512B0DD455}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
