@@ -14,5 +14,12 @@ The **[src/Backup_ParticleSwarmFoidl_Original/](./src/Backup_ParticleSwarmFoidl_
 
 Directory **[src/ParticleSwarmFoidl/](./src/ParticleSwarmFoidl/)** contains the old project **[00ParticleSwarmFoidl.csproj](./src/ParticleSwarmFoidl/00ParticleSwarmFoidl.csproj)** with code that was a slightly corrected original project, just in the way that project begun to work (the original project code downloaded long time ago from CodeProject did not work).
 
+## Upgrading from .NET 4.8 to .NET 8
+
+Upgrading to SDK-style project went smoothly. However, just adding the .NET 8 build target do the existing .NET Framework 4.8 target did not work straight away. As said, the approach taken was to create an empty .NET 8 project and to add source files from the old project to the new project, hoping that I can make this work. Of course, in the template-based new project, the **Main()** method was **renamed** because we cannot have two entry methods. Also, all **files form the newly created template project** (except the project file) were moved to a separate directory ([FilesFromProjectCreation/](./src/ParticleSwarmFoidlNew/FilesFromProjectCreation/)) such that they are clearly separated form the files that came from the old particle swarm project.
+
+
+
+
 ## Links
 

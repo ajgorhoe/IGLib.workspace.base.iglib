@@ -238,15 +238,23 @@ namespace ParticleSwarmDemo.FunctionMinimizing
 			for (int j = 0; j < width; j++)
 				for (int i = 0; i < height; i++)
 				{
-					bmp.SetPixel(
-						i, j,
-						Color.FromArgb(
-							(int)data[j][i],
-							(int)data[j][i],
-							(int)data[j][i]));
+					try
+					{
+						bmp.SetPixel(
+							i, j,
+							Color.FromArgb(
+								(int)data[j][i],
+								(int)data[j][i],
+								(int)data[j][i]));
+					}
+					catch (Exception ex)
+					{
+						// Ignore exceptions here.
+						Console.WriteLine($"Error in bmp.SetPixel (i={i}, j={j}): {ex.GetType().Name}: {ex.Message}");
+					}
 				}
 
-			pictureBox1.Image = bmp;
+                    pictureBox1.Image = bmp;
 		}
 		//---------------------------------------------------------------------
 		private void Scale(double[][] data, double start, double end)
