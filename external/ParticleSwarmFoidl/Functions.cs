@@ -54,6 +54,15 @@ namespace ParticleSwarmDemo.FunctionMinimizing.Function
 		}
 	}
 	//-------------------------------------------------------------------------
+	public class RosenbockFunction2D : FunctionBase
+	{
+		public override double Function(double x, double y)
+		{
+			double a = 1, b = 100;
+			return (a-x)*(a-x) + b * (y - x * x) * (y - x * x);
+		}
+	}
+	//-------------------------------------------------------------------------
 	public class SincFunction : FunctionBase
 	{
 		public override double Function(double x, double y)

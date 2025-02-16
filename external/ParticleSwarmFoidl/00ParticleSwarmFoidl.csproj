@@ -3,7 +3,7 @@
 		<!--
 		<TargetFrameworks>net8.0-windows;net48;netstandard2.0</TargetFrameworks>
 		-->
-		<TargetFrameworks>net8.0-windows</TargetFrameworks>
+		<TargetFrameworks>net48</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>ParticleSwarm.FunctionMinimizing</RootNamespace>
 		<AssemblyName>ParticleSwarmDemo.FunctionMinimizing</AssemblyName>
@@ -60,6 +60,7 @@
 		<!--
 		<Compile Remove="Backup\**\*" />
 		-->
+		<!--
 		<Compile Remove="Backup\Form1.cs" />
 		<Compile Remove="Backup\Form1.Designer.cs" />
 		<Compile Remove="Backup\FunctionMinimizingParticle.cs" />
@@ -73,5 +74,6 @@
 		<Compile Remove="Backup\Properties\Settings.Designer.cs" />
 		<EmbeddedResource Remove="Backup\Form1.resx" />
 		<EmbeddedResource Remove="Backup\Properties\Resources.resx" />
+		-->
 	</ItemGroup>
 </Project>
