@@ -29,21 +29,6 @@
 		-->
 		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
-	<ItemGroup>
-		<!--
-		<Reference Include="gfoidl.Parallelization, Version=1.1.4.1, Culture=neutral, PublicKeyToken=fdbaf62800e5ec9b, processorArchitecture=MSIL">
-			<SpecificVersion>False</SpecificVersion>
-			<HintPath>..\..\..\gfoidl.Parallelization\bin\Release\gfoidl.Parallelization.dll</HintPath>
-		</Reference>
-		
-		<Reference Update="System.Core">
-			<RequiredTargetFramework>4.0</RequiredTargetFramework>
-		</Reference>
-		<Reference Update="System.Xml.Linq">
-			<RequiredTargetFramework>4.0</RequiredTargetFramework>
-		</Reference>
-		-->
-	</ItemGroup>
 	<!--
 	<ItemGroup>
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
@@ -52,6 +37,10 @@
 
 	<ItemGroup>
 		<Content Include="0readme_modified_particle_swarm.txt" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\0readme_ParticleSwarmFoidlNew.md" Link="0readme_ParticleSwarmFoidlNew.md" />
 	</ItemGroup>
 	
 
