@@ -54,26 +54,5 @@
 		<Content Include="0readme_modified_particle_swarm.txt" />
 	</ItemGroup>
 	
-	
-	
-	<ItemGroup>
-		<!--
-		<Compile Remove="Backup\**\*" />
-		-->
-		<!--
-		<Compile Remove="Backup\Form1.cs" />
-		<Compile Remove="Backup\Form1.Designer.cs" />
-		<Compile Remove="Backup\FunctionMinimizingParticle.cs" />
-		<Compile Remove="Backup\FunctionMinimizingParticleSwarm.cs" />
-		<Compile Remove="Backup\Functions.cs" />
-		<Compile Remove="Backup\Particles\Particle.cs" />
-		<Compile Remove="Backup\Particles\ParticleSwarm.cs" />
-		<Compile Remove="Backup\Program.cs" />
-		<Compile Remove="Backup\Properties\AssemblyInfo.cs" />
-		<Compile Remove="Backup\Properties\Resources.Designer.cs" />
-		<Compile Remove="Backup\Properties\Settings.Designer.cs" />
-		<EmbeddedResource Remove="Backup\Form1.resx" />
-		<EmbeddedResource Remove="Backup\Properties\Resources.resx" />
-		-->
-	</ItemGroup>
+
 </Project>
