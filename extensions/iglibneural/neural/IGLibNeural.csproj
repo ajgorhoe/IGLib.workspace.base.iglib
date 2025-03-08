@@ -49,15 +49,36 @@
 		<OutputPath>..\..\output\bin\AnyCPU\Release\</OutputPath>
 	</PropertyGroup>
 	-->
+
+	<!--
+	AForge.NET:
+	IGLib legacy libraries reference an old version of AForge.NET from times before it was put
+	to Git. In the iglibexternal repository, there is a fork of tha AForge.NET repository cloned
+	from GitHub. Therefore, references will not be changed to iglibexternal/ . Attempt to change
+	the referenced versions would invalidate the stored ANN models because storage is based on
+	JSON and binary serialization / deserialization.
 	
-	<ItemGroup>
+	Old locations for AForge.NET:
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Genetic\AForge.Genetic.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Math\AForge.Math.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj" />
-		<ProjectReference Include="..\..\..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
+	
+	New locations for AForge.NET:
+		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\aforge.net\Sources\Core\AForge.Core.csproj" />
+		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\aforge.net\Sources\Genetic\AForge.Genetic.csproj" />
+		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\aforge.net\Sources\Math\AForge.Math.csproj" />
+		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\aforge.ne\Sources\Neuro\AForge.Neuro.csproj" />
+	-->
+	
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\IGLibCore\src\IGLib.Core\IGLib.Core.csproj" />
+		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\mathnet-numerics\src\Numerics\Numerics.csproj" />
+		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj" />
+		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Genetic\AForge.Genetic.csproj" />
+		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Math\AForge.Math.csproj" />
+		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj" />
 		<ProjectReference Include="..\..\..\igbase\IGLib.csproj" />
-		<ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj" />
 	</ItemGroup>
 
 

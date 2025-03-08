@@ -52,11 +52,11 @@
 	
 	
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj" />
-		<ProjectReference Include="..\..\..\external\ZedGraph\source\ZedGraph\ZedGraph.csproj" />
+		<ProjectReference Include="..\..\..\..\IGLibCore\src\IGLib.Core\IGLib.Core.csproj" />
+		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj" />
+		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\ZedGraph\source\ZedGraph\ZedGraph.csproj" />
 		<ProjectReference Include="..\..\..\igbase\IGLib.csproj" />
 		<ProjectReference Include="..\..\..\igforms\IGLibForms.csproj" />
-		<ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj" />
 	</ItemGroup>
 
 
