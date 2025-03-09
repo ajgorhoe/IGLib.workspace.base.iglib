@@ -5549,6 +5549,8 @@ namespace IG.Lib
             }
         }
 
+        // Disable the warning / error due to use of IFormatter and BinaryFormatter:
+#pragma warning disable SYSLIB0011
 
 
         /// <summary>Save the specified serialized object in binary form to the specified file.</summary>
@@ -5598,6 +5600,9 @@ namespace IG.Lib
             ObjectType network = (ObjectType)formatter.Deserialize(stream);
             return network;
         }
+
+        // Re-enable the warning / error due to use of IFormatter and BinaryFormatter:
+#pragma warning restore SYSLIB0011
 
         #endregion SerializationBinary.TypeSafe
 
