@@ -152,6 +152,62 @@ namespace AForge.Neuro
             }
         }
 
+
+
+
+        #region BinaryFormatterIssues
+
+        #region AddedCode
+
+        /* IMPORTANT - BINARY SERIALIZATION
+        BinaryFormatter class and the associated IFormatter were made obsolete in more recent frameworks
+        due to potential security issues, and are not suported since NET 8.
+        In legacy IGLib, to enable some legacy software, the project references a NuiGet package that still
+        provides the functionality.
+        The package is referenced when the target framework is .NET 8 or later. Beside this, compiler warnings
+        are issuer in the code that uses these technologies, and informative messages are written to console
+        for a limited number of times. These warnigs can be swotched on or off via the
+        LanchConsoleWarningsOnBinarFormatterUse property. */
+
+        /// <summary>Specifies whether informational messages are written to console when the BinaryFormatter
+        /// is used.</summary>
+        public static bool DoLaunchConsoleWarningsOnBinarFormatterUse { get; set; } = true;
+
+        public static int MaxLaunchedBinayFormattingConsoleWarnings { get; set; } = 0;
+
+        private static int NumLaunchedBinaryFormattingConsoleWarinings { get; set; } = 0;
+
+        private static void LaunchBinaryFormattingConsoleWarining()
+        {
+            try
+            {
+
+                if (DoLaunchConsoleWarningsOnBinarFormatterUse &&
+                    NumLaunchedBinaryFormattingConsoleWarinings < MaxLaunchedBinayFormattingConsoleWarnings)
+                {
+#if NET8_0_OR_GREATER
+                    Console.WriteLine("\n\nNOTICE: Using BinaryFormatter from System.Runtime.Serialization.Formatters package.\n");
+#else
+                    Console.WriteLine("\n\nNOTICE: Using built-in BinaryFormatter.\n");
+#endif
+                }
+            }
+            finally
+            {
+                ++NumLaunchedBinaryFormattingConsoleWarinings;
+            }
+        }
+
+        // Disable the warning / error due to use of IFormatter and BinaryFormatter:
+#pragma warning disable SYSLIB0011
+
+        #endregion AddedCode
+
+
+
+
+
+
         /// <summary>
         /// Save network to specified file.
         /// </summary>
@@ -171,6 +227,7 @@ namespace AForge.Neuro
         /// <remarks><para>The neural network is saved using .NET serialization (binary formatter is used).</para></remarks>
         public void Save( Stream stream )
         {
+            LaunchBinaryFormattingConsoleWarining();  // $$
             IFormatter formatter = new BinaryFormatter( );
             formatter.Serialize( stream, this );
         }
@@ -199,9 +256,19 @@ namespace AForge.Neuro
         /// 
         public static Network Load( Stream stream )
         {
+            LaunchBinaryFormattingConsoleWarining();  // $$
             IFormatter formatter = new BinaryFormatter( );
             Network network = (Network) formatter.Deserialize( stream );
             return network;
         }
+
+
+
+        // Re-enable the warning / error due to use of IFormatter and BinaryFormatter:
+#pragma warning restore SYSLIB0011
+
+        #endregion BinaryFormatterIssues
+
+
     }
 }
