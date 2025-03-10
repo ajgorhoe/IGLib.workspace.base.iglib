@@ -6,7 +6,7 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<TargetFrameworks>net8.0-windows;net48</TargetFrameworks>
 		-->
-		<TargetFrameworks>net48</TargetFrameworks>
+		<TargetFrameworks>net8.0-windows;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
 		<UseWindowsForms>true</UseWindowsForms>
 		<OutputPath>..\..\..\..\output\bin</OutputPath>
