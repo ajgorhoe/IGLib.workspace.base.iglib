@@ -1,11 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<OutputType>Library</OutputType>
 		<RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
 	</PropertyGroup>
-
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<!--
 		This project runs the script that clones or updates all the dependency repositories.
@@ -16,5 +14,4 @@
 		<Exec Command="pwsh -ExecutionPolicy Bypass -NoProfile -File &quot;$(ProjectDir)/../UpdateRepoGroup_IGLibDpendencies.ps1&quot;" 
 			  ContinueOnError="true" />
 	</Target>
-
 </Project>
