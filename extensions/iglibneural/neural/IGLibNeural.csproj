@@ -7,9 +7,8 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<TargetFramework>net40</TargetFramework>
 		-->
-
+		<TargetFrameworks>net8.0;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>net6.0;net48</TargetFrameworks>
 		<OutputPath>..\..\..\..\output\bin</OutputPath>
 	</PropertyGroup>
 
@@ -64,7 +63,7 @@
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Math\AForge.Math.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj" />
 	
-	New locations for AForge.NET:
+	New locations for AForge.NET (NOT used in IGLib):
 		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\aforge.net\Sources\Core\AForge.Core.csproj" />
 		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\aforge.net\Sources\Genetic\AForge.Genetic.csproj" />
 		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\aforge.net\Sources\Math\AForge.Math.csproj" />

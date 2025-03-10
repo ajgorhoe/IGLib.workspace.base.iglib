@@ -5,9 +5,8 @@
 		<TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		-->
-
+		<TargetFrameworks>net8.0;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
-		<TargetFrameworks>net6.0;net48</TargetFrameworks>
 		<OutputPath>..\..\..\..\output\bin</OutputPath>
 	</PropertyGroup>
 
@@ -40,13 +39,13 @@
 
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\IGLibCore\src\IGLib.Core\IGLib.Core.csproj" />
+		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\mathnet-numerics\src\Numerics\Numerics.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Genetic\AForge.Genetic.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Math\AForge.Math.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Neuro\AForge.Neuro.csproj" />
-		<ProjectReference Include="..\..\..\external\mathnet-numerics\src\Numerics\Numerics.csproj" />
 		<ProjectReference Include="..\..\..\igbase\IGLib.csproj" />
-		<ProjectReference Include="..\..\..\modules\IGLibCore\src\IGLibCore.csproj" />
 		<ProjectReference Include="..\neural\IGLibNeural.csproj" />
 	</ItemGroup>
 
