@@ -110,13 +110,13 @@
 		* JsonExtensions.cs
 		* SerializerBase.cs
 		-->
-		<PackageReference Include="System.Text.Json" Version="8.0.0" />
+		<PackageReference Include="System.Text.Json" Version="9.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0'">
 		<!-- Since .NET 8.0 or higher, the BinaryFormatter (and IFormatter) is not available, 
 		and we need to add the package below due to UtilSystem.cs: -->
-		<PackageReference Include="System.Runtime.Serialization.Formatters" Version="7.0.0" />
+		<PackageReference Include="System.Runtime.Serialization.Formatters" Version="9.0.0" />
 	</ItemGroup>
 
 

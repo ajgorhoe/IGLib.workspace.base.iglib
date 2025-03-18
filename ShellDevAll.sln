@@ -369,7 +369,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IGlibScripts", "IGlibScript
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Core", "..\IGLibCore\src\IGLib.Core\IGLib.Core.csproj", "{18EAE9A0-2FE2-48C5-8905-B38238C27075}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Core.Tests", "..\IGLibCore\test\IGLib.Core.Tests\IGLib.Core.Tests.csproj", "{63C4868F-43EE-4B94-9287-AACD84841E4A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Core.Tests", "..\IGLibCore\tests\IGLib.Core.Tests\IGLib.Core.Tests.csproj", "{63C4868F-43EE-4B94-9287-AACD84841E4A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventAggregator", "..\IGLibEventAggregator\EventAggregator\EventAggregator.csproj", "{63E7F285-559E-412A-8AA3-0FB4A7BE84E7}"
 EndProject
@@ -377,13 +377,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventAggregatorTests", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Scripting", "..\IGLibScripting\src\IGLib.Scripting\IGLib.Scripting.csproj", "{BD48271C-6ACA-4F68-84E5-7A3CF57A504A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Scripting.Tests", "..\IGLibScripting\test\IGLib.Scripting.Tests\IGLib.Scripting.Tests.csproj", "{54013C0A-CCCA-4F0D-9AC0-80C739AEC879}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Scripting.Tests", "..\IGLibScripting\tests\IGLib.Scripting.Tests\IGLib.Scripting.Tests.csproj", "{54013C0A-CCCA-4F0D-9AC0-80C739AEC879}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.ScriptingCs", "..\IGLibScriptingCs\src\IGLib.ScriptingCs\IGLib.ScriptingCs.csproj", "{3E8F2AF2-1ED6-4A0B-8D5E-0AC54471EF45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.ScriptingCs.Tests", "..\IGLibScriptingCs\test\IGLib.ScriptingCs.Tests\IGLib.ScriptingCs.Tests.csproj", "{A0143CE7-01DB-4351-957D-37250581A367}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.ScriptingCs.Tests", "..\IGLibScriptingCs\tests\IGLib.ScriptingCs.Tests\IGLib.ScriptingCs.Tests.csproj", "{A0143CE7-01DB-4351-957D-37250581A367}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Sandbox.Test", "..\IGLibSandbox\test\IGLib.Sandbox.Test\IGLib.Sandbox.Test.csproj", "{694DAA14-D925-46DA-9779-6DCB6DE2C753}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Sandbox.Test", "..\IGLibSandbox\tests\IGLib.Sandbox.Test\IGLib.Sandbox.Test.csproj", "{694DAA14-D925-46DA-9779-6DCB6DE2C753}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.Sandbox", "..\IGLibSandbox\src\IGLib.Sandbox\IGLib.Sandbox.csproj", "{5B87A739-5E1A-4476-9E91-35FBA63C495E}"
 EndProject
@@ -446,6 +446,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLibTestDev", "..\igtest\IGLibTestDev\IGLibTestDev.csproj", "{700B33C6-46FB-C75F-81AA-A0F9E52FA81E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SeldomUsed", "SeldomUsed", "{B9C9558F-DCEF-47F7-935E-1BAE737BDAAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IGLib.TestBase", "..\IGLibCore\tests\IGLib.TestBase\IGLib.TestBase.csproj", "{381BCB6E-F5CF-777C-1AED-4DA261403F4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -4417,6 +4419,38 @@ Global
 		{700B33C6-46FB-C75F-81AA-A0F9E52FA81E}.Release-Signed|x64.Build.0 = Release|Any CPU
 		{700B33C6-46FB-C75F-81AA-A0F9E52FA81E}.Release-Signed|x86.ActiveCfg = Release|Any CPU
 		{700B33C6-46FB-C75F-81AA-A0F9E52FA81E}.Release-Signed|x86.Build.0 = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.ajgor|Any CPU.ActiveCfg = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.ajgor|Any CPU.Build.0 = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.ajgor|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.ajgor|Mixed Platforms.Build.0 = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.ajgor|x64.ActiveCfg = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.ajgor|x64.Build.0 = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.ajgor|x86.ActiveCfg = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.ajgor|x86.Build.0 = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Debug|x64.Build.0 = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Debug|x86.Build.0 = Debug|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release|x64.ActiveCfg = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release|x64.Build.0 = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release|x86.ActiveCfg = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release|x86.Build.0 = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release-Signed|Any CPU.ActiveCfg = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release-Signed|Any CPU.Build.0 = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release-Signed|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release-Signed|Mixed Platforms.Build.0 = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release-Signed|x64.ActiveCfg = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release-Signed|x64.Build.0 = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release-Signed|x86.ActiveCfg = Release|Any CPU
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F}.Release-Signed|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -4591,6 +4625,7 @@ Global
 		{47297DBA-0CB5-41A8-8132-9D0905BAF6C5} = {4FAF8FC0-3F94-4A32-B746-8C518E28309A}
 		{700B33C6-46FB-C75F-81AA-A0F9E52FA81E} = {47297DBA-0CB5-41A8-8132-9D0905BAF6C5}
 		{B9C9558F-DCEF-47F7-935E-1BAE737BDAAF} = {AACA8B30-5584-4875-9A4A-C7220B87FC85}
+		{381BCB6E-F5CF-777C-1AED-4DA261403F4F} = {C4E5409C-8D8B-416D-8C96-E907B8231FA2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69EF0C0F-3AA4-4C30-B227-B7B92EDED87B}
