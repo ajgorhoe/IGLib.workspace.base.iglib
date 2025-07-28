@@ -33,8 +33,11 @@ $global:CurrentRepo_Directory = "../../IGLibScripts/"
 $global:CurrentRepo_Ref = "main"
 $global:CurrentRepo_Address = "https://github.com/ajgorhoe/IGLib.modules.IGLibScripts.git"
 $global:CurrentRepo_Remote = "origin"
-$global:CurrentRepo_AddressSecondary = "https://ajgorhoe@bitbucket.org/ajgorhoe/iglib.modules.iglibscripts.git"
-$global:CurrentRepo_RemoteSecondary = "remoteBitBucket"
+$global:CurrentRepo_AddressSecondary =  $null
+# Suspended BickBucket mirror (quota exceeded):
+# "https://ajgorhoe@bitbucket.org/ajgorhoe/iglib.modules.iglibscripts.git"
+$global:CurrentRepo_RemoteSecondary = $null
+# "remoteBitBucket"
 $global:CurrentRepo_AddressTertiary = "d:/backup_sync/bk_code/git/ig/misc/iglib_modules/IGLibScripts"
 $global:CurrentRepo_RemoteTertiary = "local"
 $global:CurrentRepo_ThrowOnErrors = $false
