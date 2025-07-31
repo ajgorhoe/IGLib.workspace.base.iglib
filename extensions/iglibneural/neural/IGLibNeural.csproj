@@ -3,13 +3,15 @@
 	<PropertyGroup>
 		<!--
 		<TargetFramework>net5.0</TargetFramework>
-		<TargetFrameworks>net5.0;net48;net461;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0;net48;net461;netstandard2.0</TargetFrameworks>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<TargetFramework>net40</TargetFramework>
 		-->
-		<TargetFrameworks>net8.0;net48</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
+		<!--
 		<OutputPath>..\..\..\..\output\bin</OutputPath>
+		-->
 	</PropertyGroup>
 
 

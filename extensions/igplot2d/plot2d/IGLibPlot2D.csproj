@@ -4,12 +4,15 @@
 		<!--
 		<TargetFrameworks>net5.0;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-		<TargetFrameworks>net8.0-windows;net48</TargetFrameworks>
+		<TargetFrameworks>net9.0-windows;net8.0-windows;net48</TargetFrameworks>
+		ToDo: add & troubleshoot: net9.0-windows;
 		-->
 		<TargetFrameworks>net8.0-windows;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
 		<UseWindowsForms>true</UseWindowsForms>
+		<!--
 		<OutputPath>..\..\..\..\output\bin</OutputPath>
+		-->
 	</PropertyGroup>
 
 
