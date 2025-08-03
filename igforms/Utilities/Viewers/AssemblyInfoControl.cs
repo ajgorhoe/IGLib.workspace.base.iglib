@@ -63,6 +63,7 @@ namespace IG.Forms
         private bool _multipleAssembliesAllowed = false;
 
         /// <summary>Whether mulltiple assemblies are allowed.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool MultipleAssembliesAllowed
         {
             get { return _multipleAssembliesAllowed; }

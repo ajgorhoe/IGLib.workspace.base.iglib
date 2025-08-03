@@ -63,6 +63,7 @@ namespace IG.Forms
         protected string _directoryPath;
 
         /// <summary>Directory where files are currently selected.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string InitialDirectoryPath
         {
             get
@@ -82,6 +83,7 @@ namespace IG.Forms
         private bool _allowEnvironmentVariables = true;
 
         /// <summary>If true then environment variables can be used in paths.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool AllowEnvironmentVariables
         {
             get { return _allowEnvironmentVariables; }
@@ -100,6 +102,7 @@ namespace IG.Forms
         /// <summary>If true then existent files are allowed to be selected. 
         /// <para>It might be impossible to insert such a path through the file dialog (launched by the "Browse" button), but one
         /// can insert it in the text box.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool AllowExistentFiles
         {
             get { return _allowExistentFiles; }
@@ -123,6 +126,7 @@ namespace IG.Forms
         /// <summary>If true then non-existend files are allowed to be selected. 
         /// <para>It might be impossible to insert such a path through the file dialog (launched by the "Browse" button), but one
         /// can insert it in the text box.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool AllowNonexistentFiles
         {
             get { return _allowNonexistentFiles; }
@@ -155,6 +159,7 @@ namespace IG.Forms
         /// <para>This property is mutually exclusive with <see cref="UseAbsolutePaths"/> (only one can be true,
         /// but both can be false).</para>
         /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool UseRelativePaths
         {
             get { return _useRelativePaths; }
@@ -175,6 +180,7 @@ namespace IG.Forms
         /// <para>This property is mutually exclusive with <see cref="UseRelativePaths"/> (only one can be true,
         /// but both can be false).</para>
         /// </summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool UseAbsolutePaths
         {
             get { return _useAbsolutePaths; }
@@ -191,6 +197,7 @@ namespace IG.Forms
 
         private string _filter = null;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Filter
         {
             get { return _filter; }
@@ -211,6 +218,7 @@ namespace IG.Forms
         /// expansion (dependent on <see cref="AllowEnvironmentVariables"/> properties) and in appropriate form
         /// (relative or absolute path, according to <see cref="UseRelativePaths"/> and <see cref="UseAbsolutePaths"/> properties).</para>
         /// <para>Original path ca be retrieved by the <see cref="OriginalFilePath"/> property.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string FilePath
         {
             get
@@ -281,6 +289,7 @@ namespace IG.Forms
         /// <summary>Gets the original file path representation (as set by user), without any post processing
         /// (like environment variables expansion or conversion to relative or absolute path).
         /// <para>Setter just calls the setter of the <see cref="FilePath"/> property.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string OriginalFilePath
         {
             get { return _filePath; }
@@ -357,18 +366,22 @@ namespace IG.Forms
 
 
         /// <summary>Background color of selection's text in case of error.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual Color ErrorBackground
         { get { return _errorBackground; } set { _errorBackground = value; } }
 
         /// <summary>Foreground color of button in case of error.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual Color ErrorForeground
         { get { return _errorForeground; } set { _errorForeground = value; } }
 
         /// <summary>Background color of selection's text in case of NO error.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual Color NormalBackground
         { get { return _normalBackground; } set { _normalBackground = value; } }
 
         /// <summary>Foreground color of button in case of NO error.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual Color NormalForeground
         { get { return _normalforeground; } set { _normalforeground = value; } }
 
@@ -449,6 +462,7 @@ namespace IG.Forms
         /// exception (therefore, the user should verify by getter if setting actually worked).</para>
         /// <para>Setter can be used to disable browsing (e.g. for security, or when used as embedded control
         /// and browsing would be disturbing).</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsBrowsable
         {
             get { return _isBrowsable; }
@@ -468,6 +482,7 @@ namespace IG.Forms
         /// <summary>Whether the selector provides drag & drop capability.
         /// <para>Setter can be used to disable drag & drop (e.g. for security, or when used with an embedded control
         /// and drag & drop would be disturbing).</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsDragAndDrop
         {
             get { return _isDragAndDrop; }

@@ -28,6 +28,7 @@ namespace IG.Forms
 
 
         /// <summary>Messag box title.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Title
         {
             get { return MainControl.Title; }
@@ -38,12 +39,14 @@ namespace IG.Forms
         }
 
         /// <summary>Message box message text (display below title).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Message
         {
             get { return MainControl.Message; }
             set { MainControl.Message = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public new string Text
         {
             get { return MainControl.Text; }
@@ -53,6 +56,7 @@ namespace IG.Forms
         /// <summary>Gets or sets the window title.
         /// <para>This property is added because the <see cref="Text"/> property, which should be ingerited, is overridden and 
         /// has a different meaning in this form.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string WindowTitle
         {
             get { return base.Text; }
@@ -69,6 +73,7 @@ namespace IG.Forms
         /// <summary>If true then text is treated as password, i.e. for all charactes of the text the same system character is shown.
         /// <para>Both setter and getter update the text box' properties accordingly, so calling any of these ensures that
         /// the mode (password - hidden text / non-password - visible text) is reflecte correctly in behavior.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextPassword
         {
             get { return MainControl.IsTextPassword; }
@@ -76,6 +81,7 @@ namespace IG.Forms
         }
 
         /// <summary>Whether text box (located below the message) is visible.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextVisible
         {
             get { return MainControl.IsTextVisible; }
@@ -84,6 +90,7 @@ namespace IG.Forms
 
         /// <summary>If true then <see cref="TextValue"/> property becoming non-null and non-empty string will 
         /// automatically cause the text control containing that text become visible.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextCausesVisible
         {
             get { return MainControl.IsTextCausesVisible; }
@@ -91,6 +98,7 @@ namespace IG.Forms
         }
 
         /// <summary>Whether text shown in the text box (located below the message) can be edited.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextEditable
         {
             get { return MainControl.IsTextEditable; }
@@ -98,6 +106,7 @@ namespace IG.Forms
         }
 
         /// <summary>Whether text shown in the text box (located below the message) can be set programatically.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextSettable
         {
             get { return MainControl.IsTextSettable; }
@@ -106,6 +115,7 @@ namespace IG.Forms
 
         /// <summary>Whether setting text programmatically throws an <see cref="InvalidOperationException"/> in the case
         /// that this is not allowed (i.e., when the <see cref="IsTextSettable"/> property is false).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextSetThrows
         {
             get { return MainControl.IsTextSetThrows; }
@@ -113,6 +123,7 @@ namespace IG.Forms
         }
 
         /// <summary>Whether the text box (shown below the message) is multline.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextMultiLine
         {
             get { return MainControl.IsTextMultiLine; }
@@ -120,6 +131,7 @@ namespace IG.Forms
         }
 
         /// <summary>Whether the text box (shown below the message) is multline.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextChangedEventOnValidationOnly
         {
             get { return MainControl.IsTextChangedEventOnValidationOnly; }
@@ -127,6 +139,7 @@ namespace IG.Forms
         }
 
         /// <summary>Gets or sets the text box width.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int TextBoxWidth
         {
             get { return MainControl.TextBoxWidth; }
@@ -134,6 +147,7 @@ namespace IG.Forms
         }
 
         /// <summary>Gets or sets the text box height.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int TextBoxHeight
         {
             get { return MainControl.TextBoxHeight; }
@@ -157,6 +171,7 @@ namespace IG.Forms
         /// with the text, added to the appropriate panel control, and made visible. This makes possible that special behavior
         /// of these such special buttons is defined in advance (e.g. in this class' definitioon) and that this special behavior
         /// will not be affected by subsequent removals or additions of these buttons.</para></remarks>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string[] Buttons
         {
             get { return MainControl.Buttons; }

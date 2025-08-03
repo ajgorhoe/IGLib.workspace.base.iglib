@@ -338,6 +338,7 @@ namespace IG.Forms
         private bool _isSwSoundSecondTick = true;
 
         /// <summary>Whether a tick sound is switched on (launched every second when the stopwatch is running).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsSwSoundSecondTick
         {
             get { return _isSwSoundSecondTick; }
@@ -354,6 +355,7 @@ namespace IG.Forms
         private bool _isSwSoundMinuteBell = true;
 
         /// <summary>Whether a minutes bell sound is switched on (launched every minute when the stopwatch is running).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsSwSoundMinuteBell
         {
             get { return _isSwSoundMinuteBell; }
@@ -369,6 +371,7 @@ namespace IG.Forms
         private bool _isSwSoundHourBell = true;
 
         /// <summary>Whether a hour bell sound is switched on (launched every hour when the stopwatch is running).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsSwSoundHourBell
         {
             get { return _isSwSoundHourBell; }
@@ -385,6 +388,7 @@ namespace IG.Forms
 
         /// <summary>Whether the stopwatch's button sound is switched on (launched every 
         /// time a stopwatch button with some effect is pressed, or the same effect is achieved programatically).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsSwSoundButtons
         {
             get { return _isSwSoundButtonPressed; }
@@ -404,6 +408,7 @@ namespace IG.Forms
 
         /// <summary>Whether the countdown's tick sound is switched on (a sound launched every second when 
         /// the countdown is running).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsCdSoundSecondTick
         {
             get { return _isCdSoundSecondTick; }
@@ -420,6 +425,7 @@ namespace IG.Forms
 
         /// <summary>Whether the countdown's minute bell sound is switched on (a sound launched every minute when 
         /// the countdown is running).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsCdSoundMinuteBell
         {
             get { return _isCdSoundMinuteBell; }
@@ -436,6 +442,7 @@ namespace IG.Forms
 
         /// <summary>Whether the countdown's hpur bell sound is switched on (a sound launched every hour when 
         /// the countdown is running).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsCdSoundHourBell
         {
             get { return _isCdSoundHourBell; }
@@ -456,6 +463,7 @@ namespace IG.Forms
 
         /// <summary>Whether the countdown's tick sound is switched on (a sound launched every second when 
         /// the countdown is running).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsClockSoundSecondTick
         {
             get { return _isClockSoundSecondTick; }
@@ -472,6 +480,7 @@ namespace IG.Forms
 
         /// <summary>Whether the countdown's minute bell sound is switched on (a sound launched every minute when 
         /// the countdown is running).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsClockSoundMinuteBell
         {
             get { return _isClockSoundMinuteBell; }
@@ -488,6 +497,7 @@ namespace IG.Forms
 
         /// <summary>Whether the countdown's hpur bell sound is switched on (a sound launched every hour when 
         /// the countdown is running).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsClockSoundHourBell
         {
             get { return _isClockSoundHourBell; }
@@ -541,6 +551,7 @@ namespace IG.Forms
         private bool _isSilent = true;
 
         /// <summary>Flag specifying whether the complete timer is in a silent mode.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsSilent
         {
             get { return _isSilent; }
@@ -616,6 +627,7 @@ namespace IG.Forms
         protected bool _isStopwatchShown = true;
 
         /// <summary>Specifies whether the stopwatch is shown or not.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsStopwatchShown
         {
             get { return _isStopwatchShown; }
@@ -669,6 +681,7 @@ namespace IG.Forms
         protected bool _isStopwatchMain = false;
 
         /// <summary>Specifies whether the stopwatch is the main gadget of the three.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsStopwatchMain
         {
             get { return _isStopwatchMain; }
@@ -776,6 +789,7 @@ namespace IG.Forms
         private double _millisecondsSizeRatio = 0.5;
 
         /// <summary>Ratio between the size of millisecond digits and other digits on the stopwatch.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double MilliSecondsSizeRatio
         {
             get { return _millisecondsSizeRatio; }
@@ -795,6 +809,7 @@ namespace IG.Forms
         private double _minDispayFontSizeInPoints = 2.0;
 
         /// <summary>Minimal size of display font, in points.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double MinDispayFontSizeInPoints
         { get { return _minDispayFontSizeInPoints; }
             protected set { _minDispayFontSizeInPoints = value; } }
@@ -807,6 +822,7 @@ namespace IG.Forms
         private bool _swShowMilliSeconds = true;
 
         /// <summary>Whether milliseconds shoulld be shown.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool SwShowMilliSeconds
         {
             get { return _swShowMilliSeconds; }
@@ -830,6 +846,7 @@ namespace IG.Forms
         /// <summary>Whether hours shoulld be shown when they are zero.</summary>
         private bool _swShowHoursWhenZero = true;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool SwShowHoursWhenZero
         {
             get { return _swShowHoursWhenZero; }
@@ -862,15 +879,19 @@ namespace IG.Forms
 
 
         /// <summary>Background color for main timer title.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ColorBgTitleMain { get { return _colorBgTitleMain; } set { _colorBgTitleMain = value; } }
 
         /// <summary>Foreground color for main timer title.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ColorFgTitleMain { get { return _colorFgTitleMain; } set { _colorFgTitleMain = value; } }
 
         /// <summary>Background color for timer title - not main.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ColorBgTitle { get { return _colorBgTitle; } set { _colorBgTitle = value; } }
 
         /// <summary>Foreground color for main timer title.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ColorFgTitle { get { return _colorFgTitle; } set { _colorFgTitle = value; } }
 
 
@@ -878,12 +899,14 @@ namespace IG.Forms
 
         private Color _colorBgWarning = Color.Red;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ColorBgWarning { get { return Color.Red; }
           set { _colorBgWarning = value; } }
 
 
         private Color _colorBgOk = Color.Green;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ColorBgOk {
             get { return _colorBgOk; }
         set { _colorBgOk = value; } }
@@ -896,12 +919,14 @@ namespace IG.Forms
         private Color _displayBg = Color.PaleGoldenrod;
 
         /// <summary>Display background color.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color DisplayBg
         { get { return _displayBg; } protected set { _displayBg = value; } }
 
         private Color _displayFg = Color.SeaGreen;
 
         /// <summary>Display foreground color.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color DisplayFg
         { get { return _displayFg; } protected set { _displayFg = value; } }
 
@@ -910,6 +935,7 @@ namespace IG.Forms
         private string _swStartText = "Start";
 
         /// <summary>Text that is written on the stopwatch start button.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string SwStartText {
             get { return _swStartText; }
             set { _swStartText = value; }
@@ -917,6 +943,7 @@ namespace IG.Forms
 
         private string _swStopText = "Pause";
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string SwStopText {
             get { return _swStopText; }
             set { _swStopText = value; }
@@ -924,6 +951,7 @@ namespace IG.Forms
 
         private string _swResetText = "Reset";
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string SwResetText { get { return _swResetText; }
             protected set { _swResetText = value; }
         }
@@ -931,8 +959,9 @@ namespace IG.Forms
 
 
         private Color _swStartColor = Color.Green;
-        
+
         /// <summary>Background color for stopwatch start button.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color SwStartColor
         {
             get { return _swStartColor; }
@@ -944,6 +973,7 @@ namespace IG.Forms
         private Color _swStopColor = Color.LightSalmon;
 
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color SwStopColor { get { return _swStopColor; }
             protected set { _swStopColor = value; } }
 
@@ -952,33 +982,38 @@ namespace IG.Forms
 
 
         /// <summary>Background color for stopwatch reset button.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color SwResetColor { get { return _swStopColor; }
             protected set { _swResetColor = value; } }
 
 
         private Color _controlsFgClosed = Color.Black;
-        
+
 
 
         /// <summary>Foreground color for controls opener when controls are closed.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ControlsFgClosed { get { return _controlsFgClosed; }
             protected set { _controlsFgClosed = value; } }
 
         private Color _controlsFgOpen = Color.Blue;
 
         /// <summary>Foreground color for controls opener when controls are opened.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ControlsFgOpen { get { return _controlsFgOpen; }
             protected set { _controlsFgOpen = value; } }
 
         private string _controlsClosedText = "▼";
 
         /// <summary>Tect for controls opener when controls are closed.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string ControlsClosedText { get { return _controlsClosedText; }
             protected set { _controlsClosedText = value; } }
 
         private string _ontrolsOpenText = "▲";
 
         /// <summary>Tect for controls opener when controls are opened.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string ControlsOpenText { get { return _ontrolsOpenText; }
             protected set { _ontrolsOpenText = value; } }
 
@@ -986,6 +1021,7 @@ namespace IG.Forms
         private bool _swControlsOpen = false;
 
         /// <summary>Wheether controls are opened or not.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsSwControlsOpened
         {
             get { return _swControlsOpen; }
@@ -1635,6 +1671,7 @@ namespace IG.Forms
         protected bool _isCountdownShown = true;
 
         /// <summary>Specifies whether the countdown timer is shown or not.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsCountdownShown
         {
             get { return _isCountdownShown; }
@@ -1689,6 +1726,7 @@ namespace IG.Forms
         protected bool _isCountdownhMain = false;
 
         /// <summary>Specifies whether the countdown timer is the main gadget of the three.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsCountdownMain
         {
             get { return _isCountdownhMain; }
@@ -1896,6 +1934,7 @@ namespace IG.Forms
         private bool _cdShowMilliSeconds = true;
 
         /// <summary>Whether milliseconds shoulld be shown on countdown.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool CdShowMilliSeconds
         {
             get { return _cdShowMilliSeconds; }
@@ -1919,6 +1958,7 @@ namespace IG.Forms
         /// <summary>Whether hours shoulld be shown on countdown when they are zero.</summary>
         private bool _cdShowHoursWhenZero = true;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool CdShowHoursWhenZero
         {
             get { return _cdShowHoursWhenZero; }
@@ -1944,6 +1984,7 @@ namespace IG.Forms
 
         /// <summary>Whether the countdown's button sound is switched on (a sound launched every time a countdown 
         /// button with some effectt is pressed, or the same effect is achieved programatically).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsCdSoundButtons
         {
             get { return _isCdSoundButtonPressed; }
@@ -1960,6 +2001,7 @@ namespace IG.Forms
 
         /// <summary>Whether a countdown's alarm sound is switched on (launched when the countdown is finished,
         /// i.e. the countdown reachhes zero).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsCdSoundAlarm
         {
             get { return _isCdSoundAlarm; }
@@ -1978,6 +2020,7 @@ namespace IG.Forms
         private string _cdStartText = "Start";
 
         /// <summary>Text that is written on the stopwatch start button.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string CdStartText
         {
             get { return _cdStartText; }
@@ -1986,6 +2029,7 @@ namespace IG.Forms
 
         private string _cdStopText = "Pause";
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string CdStopText
         {
             get { return _cdStopText; }
@@ -1994,6 +2038,7 @@ namespace IG.Forms
 
         private string _cdResetText = "Reset";
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string CdResetText
         {
             get { return _cdResetText; }
@@ -2003,6 +2048,7 @@ namespace IG.Forms
         private Color _cdStartColor = Color.Green;
 
         /// <summary>Background color for stopwatch start button.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color CdStartColor
         {
             get { return _cdStartColor; }
@@ -2013,6 +2059,7 @@ namespace IG.Forms
         /// <summary>Background color for stopwatch stop button.</summary>
         private Color _cdStopColor = Color.LightSalmon;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color CdStopColor
         {
             get { return _cdStopColor; }
@@ -2022,6 +2069,7 @@ namespace IG.Forms
         /// <summary>Background color for countdown reset button.</summary>
         private Color _cdResetColor = Color.LightSalmon;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color CdResetColor
         {
             get { return _cdResetColor; }
@@ -2117,6 +2165,7 @@ namespace IG.Forms
         private bool _cdControlsOpen = false;
 
         /// <summary>Wheether controls are opened or not.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsCdControlsOpened
         {
             get { return _cdControlsOpen; }
@@ -2416,6 +2465,7 @@ namespace IG.Forms
         protected bool _isClockRunnng = true;
 
         /// <summary>Whether the clock is currently running or not.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsClockRunning
         { get { return _isClockRunnng; }
             protected set {
@@ -2438,6 +2488,7 @@ namespace IG.Forms
         protected bool _isClockShown = true;
 
         /// <summary>Specifies whether the clock is shown or not.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsClockShown
         {
             get { return _isClockShown; }
@@ -2483,6 +2534,7 @@ namespace IG.Forms
         protected bool _isClockMain = false;
 
         /// <summary>Specifies whether the clock is the main gadget of the three.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsClockMain
         {
             get { return _isClockMain; }

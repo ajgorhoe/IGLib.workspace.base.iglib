@@ -111,12 +111,14 @@ namespace IG.Forms
         private int vShowTime = defaultShowtime;
         private double vFadingTimePortion = defaultFadingTimePortion;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int ShowTime
         {
             set { if (value < 500) value = 500; vShowTime = value; }
             get { return vShowTime; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double FadingTimePortion
         {
             set { if (value < 0) value = 0; if (value > 1) value = 1; vFadingTimePortion = value; }

@@ -50,6 +50,7 @@ namespace IG.Forms
 
         Font _selectedFont = new Font("Times New Roman", 10);
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Font SelectedFont
         {
             get { return _selectedFont; }
@@ -73,6 +74,7 @@ namespace IG.Forms
 
         public string _initialFontLabelText = "< Click to select font! >";
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string InitialFontLabelText
         {
             get { return _initialFontLabelText; }

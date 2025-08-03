@@ -30,6 +30,7 @@ namespace IG.Forms
 
 
         /// <summary>Text displayed in the title label of the control.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Title
         {
             get { return lblTitle11.Text; }
@@ -38,6 +39,7 @@ namespace IG.Forms
 
         protected Alignment _alignment = new Alignment();
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Alignment Alignment
         {
             get {

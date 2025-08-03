@@ -32,11 +32,12 @@ namespace IG.Forms
 
 
         private bool _showDummyContents = true;
-         
+
 
         /// <summary>Whether the dummy contents of the contaier that holds the viewed control is shown.
         /// <para>Showing dummy contents (usually just a button) can serve to verify that layout of the form is 
         /// rendered correctly.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool ShowDummyContents
         {
             get { return _showDummyContents; }
@@ -56,6 +57,7 @@ namespace IG.Forms
 
 
         /// <summary>Gets or sets the control that is displayed by the current control.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Control DisplayedControl
         {
             get { return _displayedControl; }

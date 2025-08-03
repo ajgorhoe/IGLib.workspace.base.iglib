@@ -250,6 +250,7 @@ namespace IG.Forms
 
 
         /// <summary>Flag indicating whether the indicator is off.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsOff
         {
             get { return _isOff; }
@@ -277,6 +278,7 @@ namespace IG.Forms
         }
 
         /// <summary>Flag indicating whether the indicator state is OK.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsOk
         {
             get { return _isOk; }
@@ -305,6 +307,7 @@ namespace IG.Forms
         }
 
         /// <summary>Flag indicating whether the indicator state is Busy.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -333,6 +336,7 @@ namespace IG.Forms
         }
 
         /// <summary>Flag indicating whether the indicator state is Busy.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsError
         {
             get { return _isError; }
@@ -364,11 +368,14 @@ namespace IG.Forms
 
         private int _numRemainingBlinks = 0;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumRemainingBlinks
         { get { return _numRemainingBlinks; } protected set { _numRemainingBlinks = value; } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         protected int _numRemainingSpecialBlinks = 0;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumRemainingSpecialBlinks
         {
             get { return _numRemainingSpecialBlinks; }
@@ -377,6 +384,7 @@ namespace IG.Forms
 
         protected Color _specialBlinkColor = Color.Yellow;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color SpecialBlinkColor
         { get { return _specialBlinkColor;  } protected set { _specialBlinkColor = value; } }
 
@@ -408,6 +416,7 @@ namespace IG.Forms
 
         /// <summary>Gets or sets the flag indicating whetherr the indicator light is continuously blinking
         /// in its active color.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsBlinking
         {
             get { return _isBlinking; }
@@ -497,6 +506,7 @@ namespace IG.Forms
 
         private int _blinkIntervalMilliseconds = DefaultBlinkIntervalMilliSeconds;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int BlinkIntervalMilliSeconds
         { get { return _blinkIntervalMilliseconds; } set { _blinkIntervalMilliseconds = value; } }
 
@@ -512,10 +522,12 @@ namespace IG.Forms
 
         /// <summary>Gets or sets a flag indicating whether exception is thrown when an invalid switch
         /// is attempted (i.e. one that is not available).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool ThrowOnInvalidSwitch
         { get { return _throwOnInvalidSwitch; } set { _throwOnInvalidSwitch = value; } }
 
         /// <summary>Gets or sets a flag indicating whether the indicator light has an Off state.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool HasOff { get { return _hasOff; }
             set {
                 _hasOff = value;
@@ -524,6 +536,7 @@ namespace IG.Forms
             } }
 
         /// <summary>Gets or sets a flag indicating whether the indicator light has an OK state.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool HasOk { get { return _hasOk; }
             set {
                 _hasOk = value;
@@ -532,6 +545,7 @@ namespace IG.Forms
             } }
 
         /// <summary>Gets or sets a flag indicating whether the indicator light has a Busy state.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool HasBusy { get { return _hasBusy; }
             set {
                 _hasBusy = value;
@@ -540,6 +554,7 @@ namespace IG.Forms
             } }
 
         /// <summary>Gets or sets a flag indicating whether the indicator light has an Error state.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool HasError { get { return _hasError; }
             set {
                 _hasError = value;
@@ -558,6 +573,7 @@ namespace IG.Forms
 
         /// <summary>Directional arrangemnt of the contained light (a pannel) and label within 
         /// the containing outer flow layout panel.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public FlowDirection FlowDirection
         {
             get { return _direction; }
@@ -571,6 +587,7 @@ namespace IG.Forms
         private string _labelText = null;
 
         /// <summary>Text on the label besid the light (can be null).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string LabelText
         { get { return _labelText; }
             set
@@ -586,6 +603,7 @@ namespace IG.Forms
 
         private Font _labelFont = null;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Font LabelFont
         {
             get { return _labelFont; }
@@ -608,6 +626,7 @@ namespace IG.Forms
         private Color _colorLightError = DefaultColorError;
 
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ColorLabel
         { get { return _colorLabel; }
             set {
@@ -615,15 +634,19 @@ namespace IG.Forms
                 lblText.ForeColor = value;
             } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ColorOff
         { get { return _colorLightOff; } protected set { _colorLightOff = value; } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ColorOk
         { get { return _colorLightOk; } protected set { _colorLightOk = value; } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ColorError
         { get { return _colorLightError; } protected set { _colorLightError = value; } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ColorBusy
         { get { return _colorLightBusy; } protected set { _colorLightBusy = value; } }
 
@@ -641,6 +664,7 @@ namespace IG.Forms
         private int _paddingLabel = DefaultPaddingLabel;
 
         /// <summary>Whether there is a border around control (more precisely, around its outer panel).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool BorderOut
         { get { return _borderOut; } set {
                 _borderOut = value;
@@ -652,6 +676,7 @@ namespace IG.Forms
         }
 
         /// <summary>Whether label has a border.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool BorderLabel
         { get { return _borderLabel; } set {
                 _borderLabel = value;
@@ -662,6 +687,7 @@ namespace IG.Forms
             } }
 
         /// <summary>Margin of teh outer panel.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int MarginOut
         { get { return _marginOut; }
             set {
@@ -670,6 +696,7 @@ namespace IG.Forms
             } }
 
         /// <summary>Padding of the outer panel.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int PaddingOut
         { get { return _paddingOut; }
             set {
@@ -678,6 +705,7 @@ namespace IG.Forms
             } }
 
         /// <summary>Margin of the label.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int MarginLabel
         { get { return _marginLabel; } set {
                 _marginLabel = value;
@@ -685,6 +713,7 @@ namespace IG.Forms
             } }
 
         /// <summary>Padding of the label.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int PaddingLabel
         { get { return _paddingLabel; }
             set { _paddingLabel = value;

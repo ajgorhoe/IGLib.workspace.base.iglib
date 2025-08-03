@@ -206,6 +206,7 @@ namespace IG.Forms
         protected string _directoryPath;
 
         /// <summary>Directory where files are currently selected.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string DirectoryPath
         {
             get {
@@ -219,6 +220,7 @@ namespace IG.Forms
         protected string _filePath;
 
         /// <summary>Path to the file whose hash values are calculated.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string FilePath
         {
             get

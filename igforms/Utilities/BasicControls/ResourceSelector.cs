@@ -46,6 +46,7 @@ namespace IG.Forms
 
         /// <summary>Whether resources can be seleted from assembly files. Delegated to assembly selector
         /// (property <see cref="AssemblySelector.SelectFromFiles"/>).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool SelectFromAssemblyFiles
         {
             get { return assemblySelector1.SelectFromFiles; }
@@ -53,6 +54,7 @@ namespace IG.Forms
         }
 
         /// <summary>Whether resources can be seleted from loaded assemblies. Delegated to assembly selector.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool SelectFromLoadedAssemblies
         {
             get { return assemblySelector1.SelectFromLoadedAssemblies; }
@@ -60,6 +62,7 @@ namespace IG.Forms
         }
 
         /// <summary>Whether resources can be seleted from referenced assemblies. Delegated to assembly selector.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool SelectFromReferencedAssemblies
         {
             get { return assemblySelector1.SelectFromReferencedAssemblies; }
@@ -116,6 +119,7 @@ namespace IG.Forms
         /// <para>If true then resouces can be selected from all assemblies that are eligible for selection in the 
         /// assembly sleector (type <see cref="AssemblySelector"/>)</para>.
         /// <para>If false then resouces can be selected only from the (single) selected assembly.</para>.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool MultipleAssembliesAllowed
         {
             get { return _multipleAssembliesAllowed; }
@@ -134,6 +138,7 @@ namespace IG.Forms
         private bool _selectFromEmbeddedResources = true;
 
         /// <summary>Indicates whether embedded resources (compoiled as files) are included in listing.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool SelectFromEmbeddedResources
         {
             get { return _selectFromEmbeddedResources; }
@@ -159,6 +164,7 @@ namespace IG.Forms
         /// in assemblies) are listed as embedded resources.
         /// <para>If false then only resources included in these files can be selected (provided that the 
         /// <see cref="SelectFromResxResources"/> propery is true) as resources, but not their containig files themselves.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IncludeResourceFiles
         {
             get { return _includeResourceFiles; }
@@ -177,6 +183,7 @@ namespace IG.Forms
         private bool _selectFromResxResources = true;
 
         /// <summary>Indicates whether resources that are bundled in resource files are included in listing.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool SelectFromResxResources
         {
             get { return _selectFromResxResources; }

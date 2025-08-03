@@ -64,6 +64,7 @@ namespace IG.Forms
 
 
         /// <summary>Selected assembly.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Assembly SelectedAssembly
         {
             get { return _asembly; }
@@ -95,6 +96,7 @@ namespace IG.Forms
 
         /// <summary>Indicates whether assemblies can also be loaded from the file system. If false then assemblies
         /// can only be selected from the lists of loaded and / or referenced assemblies.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool SelectFromFiles
         {
             get { return _selectFromFiles; }
@@ -120,6 +122,7 @@ namespace IG.Forms
         private bool _selectFromLoadedAssemblies;
 
         /// <summary>Indicates whether assemblies can also be selected from the list of loaded assemblies.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool SelectFromLoadedAssemblies
         {
             get { return _selectFromLoadedAssemblies; }
@@ -144,6 +147,7 @@ namespace IG.Forms
         private bool _selectFromReferencedAssemblies;
 
         /// <summary>Indicates whether assemblies can also be selected from the list of referenced assemblies.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool SelectFromReferencedAssemblies
         {
             get { return _selectFromReferencedAssemblies; }

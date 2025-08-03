@@ -110,6 +110,7 @@ namespace IG.Forms
 
 
         private bool haschanged = false;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool HasChanged
         {
 
@@ -121,6 +122,7 @@ namespace IG.Forms
 
         private bool docloaded = false;
         // Indicaion that a document is loaded and ready for user manipulation.
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool DocumentLoaded { 
             get { return docloaded; }
             internal set 
@@ -154,11 +156,14 @@ namespace IG.Forms
         private bool expattr = true,
             attsubnode = true;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool ExpAttr
         {
             set { expattr = value; }
             get { return expattr; }
         }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool AttrSubnode
         {
             set { attsubnode = value; }

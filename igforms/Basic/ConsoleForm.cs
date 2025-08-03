@@ -41,6 +41,7 @@ namespace IG.Forms
         public bool WriteInput = true; /// If true then Input messages are repeated in the output console.
 
         private bool bgthread = true;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsBackground
         // $A Igor Jul08; 
         {
@@ -67,14 +68,16 @@ namespace IG.Forms
             ILblActiveFg=Color.Blue,
             ILblErrorBg=Color.Red,
             ILblErrorFg=Color.Blue;
-        
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color OutBackColor /// Output console background color.
         // $A Igor Jul08; 
         {
             set { OBg = value; UpdateSettings(); }
             get { return OBg; }    
         }
-        
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color OutForeColor /// Output console foreground color.
         // $A Igor Jul08; 
         {
@@ -82,6 +85,7 @@ namespace IG.Forms
             get { return OFg; }    
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color OutSelectionColor /// Output console foreground color.
         // $A Igor Jul08; 
         {
@@ -104,6 +108,7 @@ namespace IG.Forms
         private Styles OStyle = Styles.Normal;  // Contains the current value of the output style.
 
         /// <summary>Defines the output style of the console.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Styles Style
         // $A Igor Jul08; 
         {
@@ -176,17 +181,19 @@ namespace IG.Forms
         }
 
 
-        
 
 
 
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color InBackColor /// Input console background color.
         // $A Igor Jul08; 
         {
             set { IBg = value; UpdateSettings(); }
             get { return IBg; }    
         }
-        
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color InForeColor /// Input console foreground color.
         // $A Igor Jul08; 
         {

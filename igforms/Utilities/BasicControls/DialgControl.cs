@@ -78,6 +78,7 @@ namespace IG.Forms
 
         /// <summary>Message box' title, displayet on the top.
         /// <para>If null lor empty string then the corresponding controls are not displayed.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Title
         {
             get { return _title; }
@@ -93,6 +94,7 @@ namespace IG.Forms
 
         /// <summary>Message box' message, display under the title.
         /// <para>If null lor empty string then the corresponding controls are not displayed.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Message
         {
             get { return _message; }
@@ -131,6 +133,7 @@ namespace IG.Forms
 
         /// <summary>Value of the possibly editable text of the message box.
         /// <para>Setter should only be used by external callers; internally SetText() should be used.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public new string Text
         {
             get {
@@ -156,6 +159,7 @@ namespace IG.Forms
 
         /// <summary>Proxy for accessing the base class' Text property, since this property is
         /// redefined in the current class and is given another meaning.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string ControlText
         {
             get { return base.Text; }
@@ -168,6 +172,7 @@ namespace IG.Forms
         /// <summary>If true then text is treated as password, i.e. for all charactes of the text the same system character is shown.
         /// <para>Both setter and getter update the text box' properties accordingly, so calling any of these ensures that
         /// the mode (password - hidden text / non-password - visible text) is reflecte correctly in behavior.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextPassword
         {
             get
@@ -202,6 +207,7 @@ namespace IG.Forms
 
         /// <summary>Specifies whether text box (displaying contents of the <see cref="Text"/> property) 
         /// is visible or not.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextVisible
         {
             get { return _isTextVisible; }
@@ -220,6 +226,7 @@ namespace IG.Forms
         /// <summary>If true then <see cref="TextValue"/> property becoming non-null and non-empty string will 
         /// automatically cause the text control containing that text become visible.
         /// <para>Default should be false isn most cases (e.g. when used in a window or when embedded).</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextCausesVisible
         {
             get { return _textCausesVisible; }
@@ -238,9 +245,10 @@ namespace IG.Forms
         }
 
 
-        private bool _isTextEditable = true; 
+        private bool _isTextEditable = true;
 
         /// <summary>Specifies whether text can be edited or not.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextEditable
         {
             get { return _isTextEditable; }
@@ -264,6 +272,7 @@ namespace IG.Forms
         private bool _isTextSettable = true;
 
         /// <summary>Specifies whether text can be set programatically or not.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextSettable
         {
             get { return _isTextSettable; }
@@ -279,6 +288,7 @@ namespace IG.Forms
 
         /// <summary>Whether setting text programmatically throws an <see cref="InvalidOperationException"/> in the case
         /// that this is not allowed (i.e., when the <see cref="IsTextSettable"/> property is false).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextSetThrows
         {
             get { return _isTextSetThrows; }
@@ -288,6 +298,7 @@ namespace IG.Forms
         private bool _isTextMultiLine = true;
 
         /// <summary>Specifies whether text box is multiline.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextMultiLine
         {
             get { return _isTextMultiLine; }
@@ -301,6 +312,7 @@ namespace IG.Forms
         }
 
         /// <summary>Gets or sets the text box width.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int TextBoxWidth
         {
             get { return txtText.Width; }
@@ -314,6 +326,7 @@ namespace IG.Forms
         }
 
         /// <summary>Gets or sets the text box height.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int TextBoxHeight
         {
             get { return txtText.Height; }
@@ -339,6 +352,7 @@ namespace IG.Forms
         /// with the text, added to the appropriate panel control, and made visible. This makes possible that special behavior
         /// of these such special buttons is defined in advance (e.g. in this class' definitioon) and that this special behavior
         /// will not be affected by subsequent removals or additions of these buttons.</para></remarks>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string[] Buttons
         {
             get { return ButtonsList.ToArray(); }
@@ -433,6 +447,7 @@ namespace IG.Forms
         /// <summary>If true then the <see cref="TextChanged"/> event is fired only when the text obtained from the text box is validated.
         /// If true then the event fires every time the Text Box control's where text can be edited is fired.</summary>
         /// <remarks>The </remarks>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTextChangedEventOnValidationOnly
         {
             get { return _isTextChangedOnVaalidationOnly; }
@@ -445,6 +460,7 @@ namespace IG.Forms
         /// has not been fired on the current compound control.</summary>
         /// <remarks>This situation appears when <see cref="IsTextChangedEventOnValidationOnly"/> is true, and not each change in 
         /// the text box' textt fire the control's <see cref="TextChanged"/> event.</remarks>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool HasTextChangesUnnoticed
         {
             get { return _isTextChangedUnnoticed; }
@@ -561,6 +577,7 @@ namespace IG.Forms
 
         /// <summary>Text of the last button pressed on the current form. This can be used by creator of the dialog
         /// in order to be informes about which button was pressed by the user.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string ButtonResult
         {
             get { return _buttonResult; }
@@ -645,6 +662,7 @@ namespace IG.Forms
 
         /// <summary>Zoom factor, factor by which controls are enlarged or shrinked when zoomed in or out.
         /// <para>Setter takes care that the value is greater than 1. If i</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double ZoomFactor
         {
             get { return _zoomFactor; }

@@ -36,6 +36,7 @@ namespace IG.Forms
 
         protected bool _isImagePreviewActive = false;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsImagePreviewActive
         {
             get { return _isImagePreviewActive; }
@@ -52,6 +53,7 @@ namespace IG.Forms
 
         protected bool _isSoundPreviewActive = false;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsSoundPreviewActive
         {
             get { return _isSoundPreviewActive; }
@@ -309,6 +311,7 @@ namespace IG.Forms
         /// is set.
         /// <para>If set to true and the viewer does not at all have such capability, this should NOT throw
         /// an exception (thus, user should check success by verifying if flag changed).</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsShownImmediately
         {
             get { return _isShownImmediately; }

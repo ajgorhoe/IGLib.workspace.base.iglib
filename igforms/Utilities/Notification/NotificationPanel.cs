@@ -150,6 +150,7 @@ namespace IG.Forms
         /// <para>Title is included in parameters because it can be set automatically when not specified.</para>
         /// <para>If null title is provided in constructor or <see cref="SetParameters(NotificationParameters)"/> then title is set automatically.</para>
         /// <para>If empty string is provided then it is considered that there is no title.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual string Title { get { return Parameters.Title; } 
             set
             {
@@ -171,6 +172,7 @@ namespace IG.Forms
 
         /// <summary>Notification type (such as info, warning, errror...),  see <see cref="ReportType"/>.
         /// <para>This nfluences how some parameters are set when not provided, such as <see cref="BackgroundColor"/> or <see cref="Title"/>.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual ReportType Type { get { return Parameters.Type; } 
             set
             {
@@ -193,6 +195,7 @@ namespace IG.Forms
 
 
         /// <summary>Time span, in seconds, for which notification is displayed.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual double ShowTime
         {
             get { return Parameters.ShowTime; }
@@ -213,6 +216,7 @@ namespace IG.Forms
 
 
         /// <summary>Portion of the end of <see cref="ShowTime"/> during which notification fades out.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual double FadingPortion
         {
             get { return Parameters.FadingPortion; }
@@ -232,6 +236,7 @@ namespace IG.Forms
         }
 
         /// <summary>Interval of events fired by timer. This is e.g. the interval betwen changes in background color during fading..</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual double TimerInterval { get { return Parameters.TimerInterval; }  
             set
             {
@@ -251,6 +256,7 @@ namespace IG.Forms
 
 
         /// <summary>Backhround color of notification.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual Color BackgroundColor { get { return Parameters.BackgroundColor; } 
             set
             {
@@ -273,6 +279,7 @@ namespace IG.Forms
 
 
         /// <summary>Final background color of notification after fading out at the end of its display time.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual Color FadeColor { get { return Parameters.FadeColor; } 
             set
             {
@@ -291,6 +298,7 @@ namespace IG.Forms
         }
 
         /// <summary>Color of notification's title.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual Color TitleColor { get { return Parameters.TitleColor; }
             set {
                 if (this.InvokeRequired)
@@ -311,6 +319,7 @@ namespace IG.Forms
         //Color _messageColor = NotificationParameters.DefaultMessageColor;
 
         /// <summary>Color of notification's message.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual Color MessageColor { get { return Parameters.MessageColor; } set { Parameters.MessageColor = value; } }
 
 
@@ -319,43 +328,57 @@ namespace IG.Forms
         // by setting these properties explicitly); these properties are tightly bound to corresponding properties on Parameters:
 
         /// <summary>Notification background color corresponding to notification type <see cref="ReportType.Info"/>. Used when color is not specified.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public color InfoColor { get { return Parameters.InfoColor; } set { Parameters.InfoColor = value; } }
 
         /// <summary>Notification background color corresponding to notification type <see cref="ReportType.Info"/>. Used when color is not specified.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color WarningColor { get { return Parameters.WarningColor; } set { Parameters.WarningColor = value; } }
 
         /// <summary>Notification background color corresponding to notification type <see cref="ReportType.Error"/>. Used when color is not specified.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color ErrorColor { get { return Parameters.ErrorColor; } set { Parameters.ErrorColor = value; } }
 
         /// <summary>Notification background color corresponding to undefined and other notification types. Used when color is not specified.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Color OtherBackgroundColor { get { return Parameters.OtherBackgroundColor; } set { Parameters.OtherBackgroundColor = value; } }
 
 
         /// <summary>Notification title corresponding to notification type <see cref="ReportType.Info"/>. Used when color is not specified.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string InfoTitle { get { return Parameters.InfoTitle; } set { Parameters.InfoTitle = value; } }
 
         /// <summary>Notification title corresponding to notification type <see cref="ReportType.Warning"/>. Used when color is not specified.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string WarningTitle { get { return Parameters.WarningTitle; } set { Parameters.WarningTitle = value; } }
 
         /// <summary>Notification title corresponding to notification type <see cref="ReportType.Error"/>. Used when color is not specified.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string ErrorTitle { get { return Parameters.ErrorTitle; } set { Parameters.ErrorTitle = value; } }
 
         /// <summary>Notification title corresponding to undefined and other notification types. Used when color is not specified.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string OtherTitle { get { return Parameters.OtherTitle; } set { Parameters.OtherTitle = value; } }
 
 
         // Dependent properties:
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int ShowTmeMilliseconds { get { return (int)(ShowTime * 1000); } set { ShowTime = (int)(value / 1000); } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int TimerIntervalMilliseconds { get { return (int)(TimerInterval * 1000); } set { TimerInterval = (int)(value / 1000); } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double FadingTime { get { return FadingPortion * ShowTime; } set { FadingPortion = value / ShowTime; } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int FadingTimeMilliseconds { get { return (int)(FadingTime * 1000); } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double NonFadingTime { get { return ShowTime - FadingTime; } set { FadingTime = ShowTime - value; } }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NonFadingTimeMilliseconds { get { return (int)(NonFadingTime * 1000); } }
 
 
@@ -363,6 +386,7 @@ namespace IG.Forms
 
         string _message = "<< Message. >>";
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Message
         {
             get { return _message; }

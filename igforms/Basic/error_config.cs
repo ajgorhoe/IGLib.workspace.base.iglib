@@ -106,6 +106,7 @@ namespace IG.Forms
         private CheckBox chkThrowException;
 
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsBackground
         // $A Igor Jul08; 
         {

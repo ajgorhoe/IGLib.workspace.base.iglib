@@ -1,9 +1,9 @@
-﻿using System;
+﻿using IG.Lib;
+using System;
+using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
 using System.IO;
-
-using IG.Lib;
+using System.Windows.Forms;
 
 namespace IG.Forms
 {
@@ -88,6 +88,7 @@ namespace IG.Forms
         protected string _homeUrl = DefaultHomeUrl;
 
         /// <summary>Home page Url.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string HomeUrl
         {
             get
@@ -109,6 +110,7 @@ namespace IG.Forms
         protected string _searchUrl = DefaultSearchUrl;
 
         /// <summary>Home page Url.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string SearchUrl
         {
             get
@@ -132,6 +134,7 @@ namespace IG.Forms
         /// <summary>File to be opened in the file open dialog box.
         /// <para>Used for setting initial directory for the dialog box. Each time this property is
         /// reset to the last file path picked from the dialog box.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string FileToOpen
         {
             get

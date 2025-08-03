@@ -359,6 +359,7 @@ namespace IG.Forms
         private bool _isTopMostWindow = true;
 
         /// <summary>Whether or not the launched fading message is a topmost window.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTopMostWindow
         {
             get { return _isTopMostWindow; }
@@ -399,6 +400,7 @@ namespace IG.Forms
 
         /// <summary>Whether the message should be launched at the position of the mouse cursor.
         /// <para>If set when the message is displayed, the form moves to the position of mouse cursor.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool LaunchedAtMouseCursor
         {
             get { return _launchesAtMouseCursor; }
@@ -467,8 +469,9 @@ namespace IG.Forms
         // Properties:
         private int _showTime = defaultShowtime;
         private double _fadingTimePortion = defaultFadingTimePortion;
-        
+
         /// <summary>Total time, in milliseconds, for which the message is displayed.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int ShowTime
         {
             set { if (value < 500) value = 500; _showTime = value; }
@@ -477,6 +480,7 @@ namespace IG.Forms
 
         /// <summary>Portion of display time in which the message background color fades at the end of 
         /// its display time.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double FadingTimePortion
         {
             set { if (value < 0) value = 0; if (value > 1) value = 1; _fadingTimePortion = value; }
@@ -571,6 +575,7 @@ namespace IG.Forms
         private bool _wasLaunched = false;
 
         /// <summary>Specifies whether the current fading message has already been launched.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool WasLaunched
         {
             get { return _wasLaunched; }
@@ -580,6 +585,7 @@ namespace IG.Forms
         private bool _launchedInParallelThread = false;
 
         /// <summary>Specifies whether the current fading message has been launched in a parallel thread.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool LaunchedInParallelThread
         {
             get { return _launchedInParallelThread; }
@@ -748,6 +754,7 @@ namespace IG.Forms
         private DateTime _startTime;
 
         /// <summary>Time when the fading message was launched.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public DateTime StartTime
         { get { return _startTime; } protected set { _startTime = value; } }
 
@@ -761,11 +768,13 @@ namespace IG.Forms
             } }
 
         /// <summary>Gets or sets the total time span for which the message is to be displayed.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public TimeSpan ShowTimeSpan { get { return new TimeSpan(0, 0, 0, 0, ShowTime); }
-             set { ShowTime = (int)(1000 * value.TotalSeconds); } } 
+             set { ShowTime = (int)(1000 * value.TotalSeconds); } }
 
         /// <summary>Gets the remaining time span for which the message will be displayed.
         /// <para>Can be negative.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public TimeSpan RemainingTimeSpan { get { return ShowTimeSpan - ElapsedTimeSpan; }
             protected set { ShowTimeSpan = ShowTimeSpan + (value - RemainingTimeSpan); }
         }

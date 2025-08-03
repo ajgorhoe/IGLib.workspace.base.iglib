@@ -47,6 +47,7 @@ namespace IG.Forms
         protected string _homePageShort;
 
         /// <summary>Short version of the application's home page.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual string HomePageShort
         {
             get

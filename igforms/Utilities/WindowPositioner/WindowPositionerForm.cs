@@ -83,8 +83,9 @@ namespace IG.Forms
             get { return this.windowPositionerControl1; } 
         }
 
-        
+
         /// <summary>Window positioner.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public WindowPositioner Positioner
         {
             get
@@ -93,6 +94,7 @@ namespace IG.Forms
         }
 
         /// <summary>Window to be positioned.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Form Window
         {
             get { return PositionerControl.Window;  }
@@ -103,6 +105,7 @@ namespace IG.Forms
         protected Form _masterWindow;
 
         /// <summary>Master window relative to which position is set.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Form MasterWindow
         {
             get { return PositionerControl.MasterWindow; }

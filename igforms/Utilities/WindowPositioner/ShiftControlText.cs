@@ -47,6 +47,7 @@ namespace IG.Forms
         #endregion Events
 
         /// <summary>Title text that is written on the outer group box.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Title
         {
             get { return pnlOuter.Text; }
@@ -56,6 +57,7 @@ namespace IG.Forms
         protected vec2 _shift = new vec2(0.0, 0.0);
 
         /// <summary>Gets or sets the resulting shift stored in 2D vector structure of type <see cref="vec2"/></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public vec2 Shift
         {
             get
@@ -79,6 +81,7 @@ namespace IG.Forms
         protected double _initialValueX;
 
         /// <summary>Initial value of the first component of <see cref="Shift"/>.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double InitialValueX
         {
             get
@@ -98,6 +101,7 @@ namespace IG.Forms
         protected double _initialValueY;
 
         /// <summary>Initial value of the second component of <see cref="Shift"/>.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double InitialValueY
         {
             get
@@ -118,6 +122,7 @@ namespace IG.Forms
         protected double _minValue;
 
         /// <summary>Minimal value of components of <see cref="Shift"/>.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double MinimumValue
         {
             get
@@ -139,6 +144,7 @@ namespace IG.Forms
         protected double _maxValue;
 
         /// <summary>Maximal value of components of <see cref="Shift"/>.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double MaximumValue
         {
             get
@@ -161,6 +167,7 @@ namespace IG.Forms
         protected double _increment;
 
         /// <summary>Increment for text controls for components of <see cref="Shift"/>.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double Increment
         {
             get

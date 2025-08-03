@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Igor Grešovnik (2008 - present), IGLib license; http://www2.arnes.si/~ljc3m2/igor/iglib/
 
-using System.Windows.Forms;
-
 using IG.Lib;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace IG.Forms
 {
@@ -21,6 +21,7 @@ namespace IG.Forms
 
         private string _title = null;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Title
         {
             get { return _title; }

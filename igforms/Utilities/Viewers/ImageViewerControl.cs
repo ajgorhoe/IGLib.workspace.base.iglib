@@ -45,6 +45,7 @@ namespace IG.Forms
 
         /// <summary>Enumeraton of type <see cref="PictureBoxSizeMode"/> that specifies how the image is sized and positioned
         /// witin the <see cref="PictureBox"/> control.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public PictureBoxSizeMode SizeMode
         {
             get { return _sizeMode; }
@@ -98,6 +99,7 @@ namespace IG.Forms
 
         /// <summary>Gets or sets path to the file or URL of the file that is currently being viewed.
         /// <para>Whether it is actually shown depends on the <see cref="IsShownImmediately"/> flag).</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string ViewedFile
         {  get { return _viewedFile; }
             set {
@@ -140,6 +142,7 @@ namespace IG.Forms
 
         /// <summary>Gets or sets the stream containing the file that is currently being viewed.
         /// <para>Whether it is actually shown depends on the <see cref="IsShownImmediately"/> flag).</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Stream ViewedStream
         { get { return _stream; }
             set
@@ -171,6 +174,7 @@ namespace IG.Forms
         /// is set.
         /// <para>If set to true and the viewer does not at all have such capability, this should NOT throw
         /// an exception (thus, user should check success by verifying if flag changed).</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsShownImmediately
         {
             get { return _isShownImmediately; }
@@ -232,6 +236,7 @@ namespace IG.Forms
         protected bool _canViewFiles = true;
 
         /// <summary>Whether the current viewer can view files from the file system.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool CanViewFiles
         {  get  {  return _canViewFiles;  }
         set { _canViewFiles = value; } }
@@ -240,6 +245,7 @@ namespace IG.Forms
         protected bool _canViewUrls = true;
 
         /// <summary>Whether the current viewer can view web resources (files on the internet).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool CanViewUrls
         {
             get { return _canViewUrls; }
@@ -249,6 +255,7 @@ namespace IG.Forms
         /// <summary>Whether the current viewer can read streams.</summary>
         protected bool _canViewStreams = true;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool CanViewStreams
         {
             get { return _canViewStreams; }
@@ -331,6 +338,7 @@ namespace IG.Forms
         /// <para>Setting should have immediate effect and make controls visible / invisible.</para></summary>
         /// <remarks>This is important because viewers must be able to be used embedded in other controls, where 
         /// all behavior is handled by those controls and viewer just provides the viewing area.</remarks>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsControlsVisible
         { get { return _isControlsVisible; }
             set
@@ -367,6 +375,7 @@ namespace IG.Forms
         /// <para>Setter can be used to disable drag & drop (e.g. for security, or when used as embedded control
         /// and drag & drop would be disturbing). If the viewer does not at all have drag & drop capability, setting
         /// this flag to true should NOT throw an exception (thus, user should check if it was successful).</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsBrowsable
         {
             get { return _isBrowsable; }
@@ -393,6 +402,7 @@ namespace IG.Forms
         /// <para>Setter can be used to disable drag & drop (e.g. for security, or when used as embedded control
         /// and drag & drop would be disturbing). If the viewer does not at all have drag & drop capability, setting
         /// this flag to true should NOT throw an exception (thus, user should check if it was successful).</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsDragAndDrop
         {
             get { return _isDragAndDrop; }
