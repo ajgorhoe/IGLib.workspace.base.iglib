@@ -93,6 +93,7 @@ namespace IG.Forms
 
         /// <summary>Cotroller that holds the definition data of the scalar function entered by the current control, and also
         /// holds mechanism for compiling and loading scalar function from these definitions.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public ScalarFunctionScriptController FunctionController
         {
             get
@@ -126,6 +127,7 @@ namespace IG.Forms
 
 
         /// <summary>Scalar function loader that is responsible for creation of scalar function objects from data.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public ScalarFunctionLoader FunctionLoader
         {
             get
@@ -168,6 +170,7 @@ namespace IG.Forms
         /// <summary>The parent vector function script control. When this control is embedded within the vector function script control,
         /// this property should be set such that communication back to parent is enabled (in particular, communication about unsaved
         /// changes).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public VectorFunctionScriptControl VectorFunctionControl
         {
             get { return _parentVectorFunctionControl; }
@@ -197,6 +200,7 @@ namespace IG.Forms
         private bool _hasUnsavedChanges = false;
 
         /// <summary>Whether the current function definition has unsaved changes.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool HasUnsavedChanges
         {
             get { return _hasUnsavedChanges; }
@@ -286,6 +290,7 @@ namespace IG.Forms
 
         /// <summary>Whether function loader is in consistent state.
         /// <para>This method shoulld be elaborated or dropped.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsLoaderConsistent
         {
             get { return _isLoaderConsistent; }
@@ -294,6 +299,7 @@ namespace IG.Forms
 
 
         /// <summary>Name of the function.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string FunctionName
         {
             get { return FunctionController.Name; }
@@ -310,6 +316,7 @@ namespace IG.Forms
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string FunctionDescription
         {
             get { return FunctionController.Description; }
@@ -329,6 +336,7 @@ namespace IG.Forms
 
 
         /// <summary>Gets or sets function dimension.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int Dimension
         {
             get { return FunctionController.Dimension; }
@@ -350,6 +358,7 @@ namespace IG.Forms
         // protected string[] _parameterNames;
 
         /// <summary>Names of function parameters.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string[] ParameterNames
         {
             get { return FunctionController.ParameterNames; }
@@ -369,6 +378,7 @@ namespace IG.Forms
 
 
         /// <summary>String that defines function value.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string ValueDefinition
         {
             get { return FunctionController.ValueDefinitonString; }
@@ -390,6 +400,7 @@ namespace IG.Forms
 
         Color _bgUndefined = Color.LightGray;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsGradientDefined
         {
             get { return _isGradientDefined; }
@@ -414,6 +425,7 @@ namespace IG.Forms
 
 
         /// <summary>String that defines function gradients.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string[] GradientDefinitions
         {
             get { return FunctionController.GradientDefinitionStrings; }

@@ -60,6 +60,7 @@ namespace IG.Forms
 
 
         /// <summary>Data about input and output quantities of the manipulated functions or response.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public InputOutputDataDefiniton NeuralDataDefinition
         {
             get
@@ -96,6 +97,7 @@ namespace IG.Forms
 
         private IScalarFunction _scalarFunction;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public IScalarFunction ScalarFunction
         {
             set
@@ -114,6 +116,7 @@ namespace IG.Forms
 
         private IVectorFunction _function;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public IVectorFunction Function
         {
             get { return _function; }
@@ -333,8 +336,9 @@ namespace IG.Forms
 
 
         protected int _selectedParameterId1 = 0;
-        
+
         /// <summary>Sequential number of the selected first parameter as specified by the user.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int SelectedParameterId1
         {
             get {
@@ -366,6 +370,7 @@ namespace IG.Forms
         protected int _selectedParameterId2 = 0;
 
         /// <summary>Sequential number of the selected second parameter as specified by the user.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int SelectedParameterId2
         {
             get
@@ -406,6 +411,7 @@ namespace IG.Forms
 
         protected int _selectedOutputId = 0;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int SelectedOutputId
         {
             get { 
@@ -424,6 +430,7 @@ namespace IG.Forms
         protected int _numPoints1 = 80;
 
         /// <summary>Number of plotting points in the 1st direction.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumPlotPoints1
         {
             get { return _numPoints1; }
@@ -449,6 +456,7 @@ namespace IG.Forms
         protected int _numPoints2 = 80;
 
         /// <summary>Number of plotting points in the 2nd direction.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumPlotPoints2
         {
             get { return _numPoints2; }
@@ -627,6 +635,7 @@ namespace IG.Forms
         bool _plotImmediately = false;
 
         /// <summary>If true then graph is pletted immediately when any parameter changes that affects it appearance.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool PlotImmediately
         {
             get { return _plotImmediately; }
@@ -648,6 +657,7 @@ namespace IG.Forms
 
         private bool _plotImmediately2dAlso = false;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool PlotImmediately2dAlso
         {
             get { return _plotImmediately2dAlso; }
@@ -657,6 +667,7 @@ namespace IG.Forms
 
         private bool _plotImmediatelyOnNumPointsValueChanged = true;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool PlotImmediatelyOnNumPointsValueChanged
         {
             get { return _plotImmediatelyOnNumPointsValueChanged; }

@@ -110,6 +110,7 @@ namespace IG.Forms
 
         /// <summary>This property contains initial definitions of scalar functions (i.e.their values defined in terms of 
         /// parameters). If defined then these definitions are asigned in initialization.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual string[] InitialScalarFunctionDefinitionStrings
         {
             get {
@@ -155,6 +156,7 @@ namespace IG.Forms
         private bool _hasUnsavedChanges = false;
 
         /// <summary>Whether the current function definition has unsaved changes.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool HasUnsavedChanges
         {
             get { return _hasUnsavedChanges; }
@@ -171,6 +173,7 @@ namespace IG.Forms
         }
 
         /// <summary>Indicates whether child control (of type <see cref="ScalarFunctionScriptControl"/>) has unsaved changes.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool HasChildUnsavedChanges
         {
             get { return scalarFunctionScriptControl1.HasUnsavedChanges; }
@@ -337,6 +340,7 @@ namespace IG.Forms
 
         /// <summary>Whether function loader is in consistent state.
         /// <para>This method shoulld be elaborated or dropped.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsLoaderConsistent
         {
             get { return _isLoaderConsistent; }
@@ -345,6 +349,7 @@ namespace IG.Forms
 
 
         /// <summary>Name of the function.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string FunctionName
         {
             get { return FunctionController.Name; }
@@ -361,6 +366,7 @@ namespace IG.Forms
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string FunctionDescription
         {
             get { return FunctionController.Description; }
@@ -380,6 +386,7 @@ namespace IG.Forms
 
 
         /// <summary>Gets or sets number of parameters of the represented vector function.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumParameters
         {
             get { return FunctionController.NumParameters; }
@@ -402,6 +409,7 @@ namespace IG.Forms
 
         /// <summary>Gets or sets number of values of the represented vector function (i.e., dimension of 
         /// its codomain).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumValues
         {
             get { return FunctionController.NumValues; }
@@ -424,6 +432,7 @@ namespace IG.Forms
 
 
         /// <summary>Names of function parameters.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string[] ParameterNames
         {
             get { return FunctionController.ParameterNames; }
@@ -439,9 +448,10 @@ namespace IG.Forms
                 }
             }
         }
-        
+
 
         /// <summary>Names of scalar function components that define individual values of the represented vector function.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string[] FunctionNames
         {
             get { return FunctionController.FunctionNames; }

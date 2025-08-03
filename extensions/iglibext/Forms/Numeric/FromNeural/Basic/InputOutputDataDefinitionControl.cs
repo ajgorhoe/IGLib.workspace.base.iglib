@@ -44,6 +44,7 @@ namespace IG.Forms
 
 
         /// <summary>Data about input and output quantities of the manipulated functions or response.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual InputOutputDataDefiniton DataDefinition
         {
             get
@@ -80,6 +81,7 @@ namespace IG.Forms
         protected int _inputLength;
 
         /// <summary>Number of input parameters or data elements.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual int InputLength
         {
             get { return _inputLength; }
@@ -106,6 +108,7 @@ namespace IG.Forms
         protected int _outputLength;
 
         /// <summary>Number of input parameters or data elements.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual int OutputLength
         {
             get { return _outputLength; }
@@ -133,6 +136,7 @@ namespace IG.Forms
         protected string _name;
 
         /// <summary>Name of the data defined by <see cref="DataDefinition"/></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual string DataName
         {
             get { return _name; }
@@ -151,6 +155,7 @@ namespace IG.Forms
         protected string _description;
 
         /// <summary>Description of the data defined by <see cref="DataDefinition"/></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual string DataDescription
         {
             get { return _description; }
@@ -172,6 +177,7 @@ namespace IG.Forms
         private string _title = "Input and Output Data Definition";
 
         /// <summary>Title that is shown on the top of control, in the <see cref="lblMainTitle"/> label.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string Title
         {
             get { return _title; }
@@ -194,6 +200,7 @@ namespace IG.Forms
         private bool _hasUnsavedChanges = false;
 
         /// <summary>Whether the current function definition has unsaved changes.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool HasUnsavedChanges
         {
             get { return _hasUnsavedChanges; }
@@ -223,6 +230,7 @@ namespace IG.Forms
         private bool _isDimentionChangeAllowed = true;
 
         /// <summary>Indicates whetherr user can change dimensions (number of input/output data elements).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsDimentionChangeAllowed
         {
             get { return _isDimentionChangeAllowed; }
@@ -241,6 +249,7 @@ namespace IG.Forms
         private bool _useLegalVariableNames = true;
 
         /// <summary>Specifies whether legal variable names (according to rules in programming languages such as C++, C# or Java) should be enforced for naming input and utput elements.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool UseLegalVariableNames
         {
             get { return _useLegalVariableNames; }

@@ -43,6 +43,7 @@ namespace IG.Forms
 
 
         /// <summary>Scalar function that is evaluated by the current control.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public IVectorFunction VectorFunction
         {
             get { return scalarFunctionEvaluatorControl1.VectorFunction; }
@@ -51,6 +52,7 @@ namespace IG.Forms
 
 
         /// <summary>Scalar function that is evaluated by the current control.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public IScalarFunction ScalarFunction
         {
             get { return scalarFunctionEvaluatorControl1.ScalarFunction; }
@@ -58,6 +60,7 @@ namespace IG.Forms
         }
 
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string[] ParameterNames
         {
             get { return scalarFunctionEvaluatorControl1.ParameterNames; }
@@ -65,7 +68,8 @@ namespace IG.Forms
             { scalarFunctionEvaluatorControl1.ParameterNames = value; }
         }
 
-        
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double[] ParameterValues
         {
             get { return scalarFunctionEvaluatorControl1.ParameterValues; }
@@ -73,6 +77,7 @@ namespace IG.Forms
         }
 
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumParameters
         {
             get

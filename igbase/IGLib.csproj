@@ -3,12 +3,10 @@
 	<PropertyGroup>
 		<!--
 		Previous targets:
-		<TargetFrameworks>net5.0;net5.0;net48;net461;netstandard2.0;netstandard 2.1</TargetFrameworks>
 		To Do - future targets (Move everything containing IFormatter and BinaryFormatter to IGLibExt or something else):
-		<TargetFrameworks>net8.0</TargetFrameworks>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		Current targets:
-		<TargetFrameworks>net6.0;net48;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0;net48;netstandard2.0</TargetFrameworks>
 		-->
 		<TargetFrameworks>net9.0;net8.0;net48;netstandard2.0</TargetFrameworks>
 		<OutputType>Library</OutputType>

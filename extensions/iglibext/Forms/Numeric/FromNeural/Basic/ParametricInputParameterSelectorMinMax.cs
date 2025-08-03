@@ -38,6 +38,7 @@ namespace IG.Forms
 
 
         /// <summary>Data about input and output quantities of the manipulated functions or response.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public InputOutputDataDefiniton DataDefinition
         {
             get
@@ -160,6 +161,7 @@ namespace IG.Forms
         /// <summary>String that appears in the label above parameter selector (title of parameter selection).
         /// <para>This can be used to change the title in the case there are more than one input parameters selected,
         /// or a customized title is desired.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string TitleParameterSelection
         {
             get { return lblSelectParameter.Text; }
@@ -176,6 +178,7 @@ namespace IG.Forms
         int _numInputParameters = 2;
 
         /// <summary>Gets number of input parameters.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumInputParameters
         {
             get
@@ -204,6 +207,7 @@ namespace IG.Forms
         int _numOutputValues = 2;
 
         /// <summary>Gets number of output values.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumOutputValues
         {
             get
@@ -232,12 +236,14 @@ namespace IG.Forms
         protected double[] _maxValues;
 
         /// <summary>Minimal values of input parameters, obtained from <see cref="DataDefinition"/>.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double[] MinValues
         {
             get { return _minValues; }
             protected set { _minValues = value; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double[] MaxValues
         {
             get { return _maxValues; }
@@ -246,8 +252,9 @@ namespace IG.Forms
 
         protected int _selectedParameterId = 0;
 
-        
+
         /// <summary>Sequential number of the selected parameter as specified by the user (usually through GUI).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int SelectedParameterId
         {
             get { return _selectedParameterId; }

@@ -51,6 +51,7 @@ namespace IG.Forms
         private InputOutputDataDefiniton _dataDefinition;
 
         /// <summary>Data about input and output quantities of the manipulated functions or response.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public InputOutputDataDefiniton DataDefinition
         {
             get {
@@ -75,6 +76,7 @@ namespace IG.Forms
 
         /// <summary>Number of the corresponding elements in the data definition.
         /// <para>If <see cref="IsInputData"/> then this refers to the number of input elements, otherwise to the number o output elements.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumElements
         {
             get
@@ -107,6 +109,7 @@ namespace IG.Forms
         protected int _inputLength;
 
         /// <summary>Number of input parameters or data elements.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual int InputLength
         {
             get { return _inputLength; }
@@ -190,6 +193,7 @@ namespace IG.Forms
         protected int _outputLength;
 
         /// <summary>Number of output parameters or data elements.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual int OutputLength
         {  
             get { return _outputLength; }
@@ -274,6 +278,7 @@ namespace IG.Forms
         private string _titleInputData = "Input Data";
 
         /// <summary>Control's title (displayed as group box text) in case of input data editing.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string TitleInputData
         {
             get { return _titleInputData; }
@@ -283,6 +288,7 @@ namespace IG.Forms
         private string _titleOutputData = "Output Data";
 
         /// <summary>Control's title (displayed as group box text) in case of output data editing.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string TitleOutputData
         {
             get { return _titleOutputData; }
@@ -326,6 +332,7 @@ namespace IG.Forms
         private bool _hasUnsavedChanges = false;
 
         /// <summary>Whether the current function definition has unsaved changes.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool HasUnsavedChanges
         {
             get { return _hasUnsavedChanges; }
@@ -352,6 +359,7 @@ namespace IG.Forms
         private bool _isDimentionChangeAllowed = true;
 
         /// <summary>Indicates whether user can change dimensions (number of input/output data elements).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsDimentionChangeAllowed
         {
             get { return _isDimentionChangeAllowed; }
@@ -368,6 +376,7 @@ namespace IG.Forms
         private bool _useLegalVariableNames = true;
 
         /// <summary>Specifies whether legal variable names (according to rules in programming languages such as C++, C# or Java) should be enforced for naming input and utput elements.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool UseLegalVariableNames
         {
             get { return _useLegalVariableNames; }
@@ -378,6 +387,7 @@ namespace IG.Forms
 
         /// <summary>Indicates whether this form is used to edit input (when true) or output (when false) data elements.
         /// <para>Setting the property will change behavior.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsInputData
         {
             get { return _isInputData; }

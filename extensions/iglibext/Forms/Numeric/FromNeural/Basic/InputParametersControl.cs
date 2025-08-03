@@ -44,6 +44,7 @@ namespace IG.Forms
 
 
         /// <summary>Data about input and output quantities of the manipulated functions or response.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public InputOutputDataDefiniton DataDefinition
         {
             get {
@@ -205,6 +206,7 @@ namespace IG.Forms
 
 
         /// <summary>Vector of current values of input parameters as defined by the DadaGridView.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public IVector Values
         {
             get {

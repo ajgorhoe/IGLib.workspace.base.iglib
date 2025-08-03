@@ -35,6 +35,7 @@ namespace IG.Forms
 
 
         /// <summary>Data about input and output quantities of the manipulated functions or response.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public InputOutputDataDefiniton DataDefinition
         {
             get
@@ -108,6 +109,7 @@ namespace IG.Forms
         int _numInputParameters = 2;
 
         /// <summary>Gets number of input parameters.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumInputParameters
         {
             get
@@ -133,6 +135,7 @@ namespace IG.Forms
         int _numOutputValues = 2;
 
         /// <summary>Gets number of output values.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumOutputValues
         {
             get
@@ -162,6 +165,7 @@ namespace IG.Forms
         protected int _selectedOutputId = 0;
 
         /// <summary>Sequential number of the selected parameter as specified by the user.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int SelectedOutputId
         {
             get { return _selectedOutputId; }

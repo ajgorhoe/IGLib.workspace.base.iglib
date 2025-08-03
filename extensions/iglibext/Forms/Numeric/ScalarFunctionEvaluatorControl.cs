@@ -47,6 +47,7 @@ namespace IG.Forms
         private IScalarFunction _scalarFunction;
 
         /// <summary>Scalar function that is evaluated by the current control.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public IScalarFunction ScalarFunction
         {
             get { return _scalarFunction; }
@@ -75,6 +76,7 @@ namespace IG.Forms
         IVectorFunction _vectorFunction;
 
         /// <summary>Vector function whose values are calculated.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public IVectorFunction VectorFunction
         {
             get { return _vectorFunction; }
@@ -96,6 +98,7 @@ namespace IG.Forms
         private bool _visibleTreatAsVector = true;
 
         /// <summary>Whether the check box for treating scalar function as a vector will be visible or not.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool VisibleTreatAsVector
         {
             get { return _visibleTreatAsVector; }
@@ -113,6 +116,7 @@ namespace IG.Forms
         private bool _treatAsVectorFunction = false;
 
         /// <summary>If true then scalar function is converted to a vector funciton when set.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool TreatScalarAsVectorFunction
         {
             get { return _treatAsVectorFunction; }
@@ -143,6 +147,7 @@ namespace IG.Forms
         protected string _functionDefinition = null;
 
         /// <summary>Function definition that can be assigned by creator of the window. This will be used when the verification button is pressed.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string FunctionDefinition
         {
             get { return _functionDefinition; }
@@ -152,6 +157,7 @@ namespace IG.Forms
         private string[] _parameterNames;
 
         /// <summary>Names of function parameters, shown in data grid.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public string[] ParameterNames
         {
             get {
@@ -180,6 +186,7 @@ namespace IG.Forms
         private double[] _parameterValues;
 
         /// <summary>Valuse of parameters, shown in data grid.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double[] ParameterValues
         {
             get
@@ -240,6 +247,7 @@ namespace IG.Forms
         }
 
         /// <summary>Gets or sets number of parameters.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int NumParameters
         {
             get
@@ -282,6 +290,7 @@ namespace IG.Forms
         protected int _colNumValue = 2;
 
         /// <summary>Number of DataGrid Column that contains the value.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public int ColNumValue
         {
             get { return _colNumValue; }
@@ -479,6 +488,7 @@ namespace IG.Forms
 
         private bool _immediateCalculation = true;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool ImmediateCalculation
         {
             get { return _immediateCalculation; }
