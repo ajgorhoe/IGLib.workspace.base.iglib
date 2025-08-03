@@ -47,6 +47,7 @@ namespace IG.Gr3d
 
         /// <summary>Specifies whether the button that launches manipulator controls is visible or not.
         /// <para>If true, a small button sows in the bottom-right corner of the VTK plotting area.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsManipulatorControlsButtonVisible
         {
             get {

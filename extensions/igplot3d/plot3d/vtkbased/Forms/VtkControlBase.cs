@@ -97,6 +97,7 @@ namespace IG.Gr3d
         /// of the current type will contain a pre-loaded test actors and it can be seen if the VTK renderer is properly
         /// installed on the control.</para>
         /// <para>Default value is defined by the static property <see cref="DefaultVtkAddTestActors"/></para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool VtkAddTestActors
         {
             get { return _vtkAddTestActors; }
@@ -128,6 +129,7 @@ namespace IG.Gr3d
         /// of the current type will contain a pre-loaded test actors and it can be seen if the VTK renderer is properly
         /// installed on the control.</para>
         /// <para>Default value is defined by the static property <see cref="DefaultVtkAddTestActors"/></para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool VtkAddTestActorsIGLib
         {
             get { return _vtkAddTestActorsIGLib; }
@@ -144,6 +146,7 @@ namespace IG.Gr3d
         public bool _isVtkInitialized = false;
 
         /// <summary>Whether the VTK window is initialized and ready to show graphics and accept commands.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsVtkInitialized
         {
             get { return _isVtkInitialized; }
@@ -165,6 +168,7 @@ namespace IG.Gr3d
         /// <para>Must be greater than 0.</para></summary>
         protected double _rotationStep = 5.0;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double RotationStep
         {
             get { return _rotationStep; }
@@ -180,6 +184,7 @@ namespace IG.Gr3d
         /// <para>Must be greater than 1.</para></summary>
         protected double _zoomStep = 1.2;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double ZoomFactor
         {
             get { return _zoomStep; }
@@ -210,6 +215,7 @@ namespace IG.Gr3d
         /// <summary>Camera direction.
         /// <para>Getter obtains it as difference between the camera focal point and camera position.</para>
         /// <para>Setter sets the camera focal points in such a way that camera direction has the specified value.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public vec3 CameraDirection
         {
             get { return CameraFocalPoint - CameraPosition; }
@@ -222,6 +228,7 @@ namespace IG.Gr3d
         public const double smallNumber = 1.0e-8;
 
         /// <summary>Gets or sets camera direction in spherical coordinates.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public vec3 CameraDirectionSpherical
         {
             get
@@ -371,6 +378,7 @@ namespace IG.Gr3d
         private Kitware.VTK.RenderWindowControl _renderWindowControl1;
 
         /// <summary>Gets the VTK's rendering control that shows the VTK graphics on the form.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Kitware.VTK.RenderWindowControl VtkRenderWindowControl
         {
             get { return _renderWindowControl1; }
@@ -386,6 +394,7 @@ namespace IG.Gr3d
         protected vtkRenderer _vtkRenderer;
 
         /// <summary>Gets the VTK renderer that renders 3D objects on the VTK's control <see cref="VtkRenderWindowControl"/>.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public vtkRenderer VtkRenderer
         {
             get
@@ -424,6 +433,7 @@ namespace IG.Gr3d
         protected vtkCamera _vtkCamera;
 
         /// <summary>Gets the VTK camera that defines the viewing position, direction, zoom, etc.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public vtkCamera VtkCamera
         {
             get 
@@ -470,6 +480,7 @@ namespace IG.Gr3d
 
         /// <summary>VTK render window of hte current control.
         /// <para>Getter may return null if the window is not defined.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public Kitware.VTK.vtkRenderWindow VtkRenderWindow
         {
             get {
@@ -786,6 +797,7 @@ namespace IG.Gr3d
 
         /// <summary>Viewing angle of the camera, in degrees (defines the zoom level).</summary>
         /// <param name="angleStepDegrees">Step, in degrees, by which the camera is rotated.</param>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double CameraViewAngle
         {
             get {
@@ -806,6 +818,7 @@ namespace IG.Gr3d
         }
 
         /// <summary>Roll of the camera (amount of rotation abount viewing direction)</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public double CameraRoll
         {
             get {
@@ -826,6 +839,7 @@ namespace IG.Gr3d
         }
 
         /// <summary>Gets or sets camera position.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public vec3 CameraPosition
         {
             get {
@@ -851,6 +865,7 @@ namespace IG.Gr3d
 
 
         /// <summary>Gets or sets camera focal point.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public vec3 CameraFocalPoint
         {
             get
@@ -876,6 +891,7 @@ namespace IG.Gr3d
 
 
         /// <summary>Gets or sets the camera viewing up position.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public vec3 CameraViewUp
         {
             get
@@ -1105,6 +1121,7 @@ namespace IG.Gr3d
 
         /// <summary>Flag indicating whether the VTK window interactor is in joystick mode (i.e. constant rotation by 
         /// holding the mouse button, as opposed to the trackball mode where rotation is caused by dragging).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsJoystickMode
         {
             get { return _isJoystickMode; }
@@ -1119,6 +1136,7 @@ namespace IG.Gr3d
 
         /// <summary>Flag indicating whether the VTK window interactor is in trackball mode.
         /// <para>Bound to <see cref="IsJoystickMode"/> as its logical complement.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsTrackballMode
         {
             get { return !IsJoystickMode; }
@@ -1132,6 +1150,7 @@ namespace IG.Gr3d
 
         /// <summary>Flag indicating whether the embedded VTK control is in camera mode (i.e. the camera is moved, 
         /// as opposed to the actors mode where rotation and movement are performed on actors).</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsCameraMode
         {
             get { return _isCameraMode; }
@@ -1145,6 +1164,7 @@ namespace IG.Gr3d
 
         /// <summary>Flag indicating whether the embedded VTK control is in actors mode.
         /// <para>Bound to <see cref="IsCameraMode"/> as its logical complement.</para></summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public virtual bool IsActorsMode
         {
             get { return !IsCameraMode; }
@@ -1153,6 +1173,7 @@ namespace IG.Gr3d
 
         private bool _isWireframeMode = false;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsWireframeMode
         {
             get { return _isWireframeMode; }
@@ -1168,6 +1189,7 @@ namespace IG.Gr3d
 
         private bool _isSurfaceMode = false;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsSurfaceMode
         {
             get { return _isSurfaceMode; }

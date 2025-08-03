@@ -48,6 +48,7 @@ namespace IG.Gr3d
 
 
         /// <summary>Specifies whether the button that launchs the 3D manipulation controls is visible.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsManipulateButtonVisible
         {
             get { return btnManipulate.Visible; }
@@ -55,6 +56,7 @@ namespace IG.Gr3d
         }
 
         /// <summary>Specifies whether the button that closes the main form is visible.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsCloseWindoButtonVisible
         {
             get { return btnCloseWin.Visible; }
@@ -64,6 +66,7 @@ namespace IG.Gr3d
         private IVtkFormContainer _vtkContainer;
 
         /// <summary>Gets the control of type <see cref="VtkControlBase"/> through which VTK functionality is controlled.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public IVtkFormContainer VtkContainer
         {
             get { return this._vtkContainer; }
@@ -81,6 +84,7 @@ namespace IG.Gr3d
         private VtkControlBase _vtkControl;
 
         /// <summary>Gets the control of type <see cref="VtkControlBase"/> through which VTK functionality is controlled.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public VtkControlBase VtkControl
         {
             get {

@@ -30,6 +30,7 @@ namespace IG.Gr3d
         private IVtkFormContainer _vtkContainer;
 
         /// <summary>Gets the control of type <see cref="VtkControlBase"/> through which VTK functionality is controlled.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public IVtkFormContainer VtkContainer
         {
             get { return this._vtkContainer; }
@@ -50,6 +51,7 @@ namespace IG.Gr3d
         private VtkControlBase _vtkControl;
 
         /// <summary>Gets the control of type <see cref="VtkControlBase"/> through which VTK functionality is controlled.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public VtkControlBase VtkControl
         {
             get

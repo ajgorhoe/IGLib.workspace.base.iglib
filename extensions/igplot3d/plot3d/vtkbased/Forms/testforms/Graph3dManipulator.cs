@@ -34,6 +34,7 @@ namespace IG.Gr3d
 
 
         /// <summary>Specifies whether the button that closes the main form is visible.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsCloseWindoButtonVisible
         {
             get { return btnClose.Visible; }
@@ -41,6 +42,7 @@ namespace IG.Gr3d
         }
 
         /// <summary>Specifies whether the button that opens the positioner form is visible.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public bool IsPositionerButtonVisible
         {
             get { return btnPositioner.Visible; }
@@ -52,6 +54,7 @@ namespace IG.Gr3d
         private IVtkFormContainer _vtkContainer;
 
         /// <summary>VTK container of type <see cref="IVtkFormContainer"/> through which VTK functionality is controlled.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public IVtkFormContainer VtkContainer
         {
             get { return this._vtkContainer; }
@@ -71,6 +74,7 @@ namespace IG.Gr3d
         private VtkControlBase _vtkControl;
 
         /// <summary>Gets the control of type <see cref="VtkControlBase"/> through which VTK functionality is controlled.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public VtkControlBase VtkControl
         {
             get
@@ -181,6 +185,7 @@ namespace IG.Gr3d
         protected WindowPositioner _positioner;
 
         /// <summary>Window positioner.</summary>
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public WindowPositioner Positioner
         {
             get
