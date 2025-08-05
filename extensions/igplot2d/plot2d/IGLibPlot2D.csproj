@@ -5,7 +5,7 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<TargetFrameworks>net9.0-windows;net8.0-windows;net48;netstandard 2.1(not any more)</TargetFrameworks>
 		-->
-		<TargetFrameworks>net9.0-windows;net8.0-windows;net48</TargetFrameworks>
+		<TargetFrameworks>net10.0-windows;net8.0-windows;net48</TargetFrameworks>
 		<OutputType>Library</OutputType>
 		<UseWindowsForms>true</UseWindowsForms>
 		<!--
