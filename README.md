@@ -49,7 +49,7 @@ I have used MonoDevelop to build the code on Linux, but it seems now that MonoDe
 
 ## Other
 
-Please refer to the licenses contained in specific repositories for conditions of use. Also note that software depends on a number of external libraries with their own licenses.
+Please refer to the licenses contained in specific repositories for conditions of use. Also note that software *depends on a number of [external libraries](#external-software-libraries)* with their own licenses.
 
 Solution files contained in this repository:
 
@@ -204,3 +204,9 @@ Overviews:
 * [HashForm](https://ajgorhoe.github.io/IGLibFramework/software/IGLibShellApp/HashForm.html#hashform)   and [HashShell](https://ajgorhoe.github.io/IGLibFramework/software/IGLibShellApp/HashForm.html#hashshell)
 * [IOptLib](https://ajgorhoe.github.io/IGLibFramework/ioptlib/)
 * [Inverse](https://ajgorhoe.github.io/Inverse/)
+
+## License
+
+© Copyright Igor Grešovnik.
+
+See [LICENSE.md](https://github.com/ajgorhoe/IGLib.workspace.base.iglib/blob/master/LICENSE.md) ([local version](./LICENSE.md)) for license information.
