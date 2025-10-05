@@ -89,7 +89,7 @@ namespace IG.Num
                 {
                     if (IndexFields.ActiveField == null)
                     {
-                        TIndexField field = IndexFields.CreateField(this.Length, IndexFields.DefauletFieldName,
+                        TIndexField @field = IndexFields.CreateField(this.Length, IndexFields.DefauletFieldName,
                             "Automatically generated default index field on the collection on 2D structured mesh.");
                         IndexFields.AddField(field);
                         IndexFields.ActiveFieldName = field.Name;
@@ -242,7 +242,7 @@ namespace IG.Num
                 {
                     if (ScalarFields.ActiveField == null)
                     {
-                        TScalarField field = ScalarFields.CreateField(this.Length, ScalarFields.DefauletFieldName,
+                        TScalarField @field = ScalarFields.CreateField(this.Length, ScalarFields.DefauletFieldName,
                             "Automatically generated default scalar field on the collection on 2D structured mesh.");
                         ScalarFields.AddField(field);
                         ScalarFields.ActiveFieldName = field.Name;
@@ -395,7 +395,7 @@ namespace IG.Num
                 {
                     if (VectorFields.ActiveField == null)
                     {
-                        TVectorField field = VectorFields.CreateField(this.Length, VectorFields.DefauletFieldName,
+                        TVectorField @field = VectorFields.CreateField(this.Length, VectorFields.DefauletFieldName,
                             "Automatically generated default vector field on the collection on 2D structured mesh.");
                         VectorFields.AddField(field);
                         VectorFields.ActiveFieldName = field.Name;
@@ -548,7 +548,7 @@ namespace IG.Num
                 {
                     if (TensorFields.ActiveField == null)
                     {
-                        TTensorField field = TensorFields.CreateField(this.Length, TensorFields.DefauletFieldName,
+                        TTensorField @field = TensorFields.CreateField(this.Length, TensorFields.DefauletFieldName,
                             "Automatically generated default tensor field on the collection on 2D structured mesh.");
                         TensorFields.AddField(field);
                         TensorFields.ActiveFieldName = field.Name;
