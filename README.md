@@ -1,6 +1,6 @@
 
 # IGLib Framework
- 
+
 <img src="./IGLibIcon_256x256.png" alt="[IGLib]" align="right" width="48pt"
   style="float: right; max-width: 30%; width: 48pt; margin-left: 8pt;" />
 
