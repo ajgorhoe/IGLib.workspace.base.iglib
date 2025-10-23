@@ -56,6 +56,7 @@
 		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\ZedGraph\source\ZedGraph\ZedGraph.csproj" />
 		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\ZedGraph\source\ZedGraph.WinForms\ZedGraph.WinForms.csproj" />
 		<ProjectReference Include="..\..\..\..\IGLibCore\src\IGLib.Core\IGLib.Core.csproj" />
+		<ProjectReference Include="..\..\..\00_initmodules\InitIGLibModules\InitIGLibModules.csproj" />
 		<ProjectReference Include="..\..\..\igbase\IGLib.csproj" />
 		<ProjectReference Include="..\..\..\igforms\IGLibForms.csproj" />
 	</ItemGroup>
