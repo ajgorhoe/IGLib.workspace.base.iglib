@@ -10,7 +10,7 @@ $scriptFilename = [System.IO.Path]::GetFileName($scriptPath)
 Write-Host "Script directory: $scriptDir"
 
 Write-Host "`nUpdating iglibexternal WITH contained dependencies:"
-& $(Join-Path $scriptDir "UpdateRepo_iglibexternaWithIGLibDependenciesBasic.ps1.ps1")
+& $(Join-Path $scriptDir "UpdateRepo_iglibexternaWithIGLibDependenciesBasic.ps1")
 
 Write-Host "`nUpdating IGLibCore:"
 & $(Join-Path $scriptDir "UpdateRepo_IGLibCore.ps1")
