@@ -8,7 +8,7 @@ on:
   pull_request:
     branches:
       - master
-      -main
+      - main
   workflow_dispatch: # Allows manual triggering
   
 env:
