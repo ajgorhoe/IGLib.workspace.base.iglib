@@ -73,6 +73,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\..\IGLibCore\src\IGLib.Core\IGLib.Core.csproj" />
 		<ProjectReference Include="..\..\..\..\iglibexternal\IGLibExternal\mathnet-numerics\src\Numerics\Numerics.csproj" />
+		<ProjectReference Include="..\..\..\00_initmodules\InitIGLibModules\InitIGLibModules.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Core\AForge.Core.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Genetic\AForge.Genetic.csproj" />
 		<ProjectReference Include="..\..\..\externalextended\ann\aforge.net\Sources\Math\AForge.Math.csproj" />

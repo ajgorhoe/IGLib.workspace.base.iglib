@@ -11,7 +11,9 @@
 		to be built, the script is not run. You can force re-running the scritp simply by rebuilding the
 		project in Visual Studio, via command-line, or by any other means.
 		-->
-		<Exec Command="pwsh -ExecutionPolicy Bypass -NoProfile -File &quot;$(ProjectDir)/../UpdateRepoGroup_IGLibDpendencies.ps1&quot;" 
-			  ContinueOnError="true" />
+		<Exec Command="pwsh -ExecutionPolicy Bypass -NoProfile -File &quot;$(ProjectDir)/../UpdateRepoGroup_IGLibDpendencies.ps1&quot;" ContinueOnError="true" />
 	</Target>
+	<ItemGroup>
+	  <ProjectReference Include="..\InitIGLibModulesBasic\InitIGLibModulesBasic.csproj" />
+	</ItemGroup>
 </Project>

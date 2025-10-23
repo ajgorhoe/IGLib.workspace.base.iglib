@@ -1,0 +1,205 @@
+name: Build and Test MainRepo1
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch: # Allows manual triggering
+  
+env:
+  # Main repository directory:
+  # Placeholder: ${{ env.REPO_DIR }}
+  REPO_DIR: iglib
+  # Main source project directory:
+  # Placeholder: ${{ env.SOURCE_DIR }}
+  SOURCE_DIR: iglib/igbase/
+  # Solution to be built:
+  # Placeholder: ${{ env.SOLUTION }}
+  SOLUTION: iglib/IGLibBase.sln
+  # Whether failed tests are ignored (should normally be false):
+  # Placeholder: ${{ env.IGNORE_TEST_ERRORS }}
+  IGNORE_TEST_ERRORS: false
+
+jobs:
+
+  build-and-test:
+    runs-on: windows-latest  # use Windows for .NET Framework support
+    # runs-on: ubuntu-latest # runs on GitHub-hosted Ubuntu
+    strategy:
+      matrix:
+        dotnet-version: [ '10.0' ]
+
+    steps:
+      
+      # CHECKOUT Main Repository
+      - name: Clone Main Repository
+        uses: actions/checkout@v4
+        with:
+          repository: ajgorhoe/IGLib.workspace.base.${{ env.REPO_DIR }}
+          path: ${{ env.REPO_DIR }}
+          ref: master
+          # Important: set fetch-depth 0 to avoid shallow clones (needed
+          #   for GitVersion):
+          fetch-depth: 0
+          # Temporary token created automatically for the main repo (owner of the workflow) 
+          token: ${{ secrets.GITHUB_TOKEN  }}
+
+      # CONFIGURE GIT to use access token for owned repos
+      - name: CONFIGURE GIT credentials for private repos
+        shell: pwsh
+        run: |
+          # # Option 1 - via configuration file
+          # # Because Git may have different idea of the location of home 
+          # # directory (and of config. file .git-credentials) than PowerShell,
+          # # we explicitly define where the location of config. is.
+          # if ($IsWindows) {
+          #   $credPath = "$env:USERPROFILE\.git-credentials"
+          # } else {
+          #   $credPath = "$HOME/.git-credentials"
+          # }
+          # git config --global credential.helper "store --file=$credPath"
+          # " https://x-access-token:${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}@github.com" | Out-File -FilePath $credPath -Encoding ascii
+          # git config --global credential.useHttpPath true
+          # # Option 2 - Inject credentials directly into Git’s configuration for the current session:
+          git config --global url."https://x-access-token:${{ secrets.PAT_ACTIONS_IGLIB_READONLY }}@github.com/".insteadOf "https://github.com/"
+
+      # CLONE DEPENDENCY repositories:
+      - name: CLONE DEPENDENCY repos
+        shell: pwsh
+        continue-on-error: false
+        # Important: set --depth 0 to avoid shallow clones (needed
+        #   for GitVersion)
+        # TODO: Update scripts should later be moved from 00_initmodules/ to scripts/
+        run: |
+          echo "Cloning dependencies via repo's own script (UpdateRepoGroup_IGLibDpendenciesBasic.ps1)`n`n..."
+          ./${{ env.REPO_DIR }}/00_initmodules/UpdateRepoGroup_IGLibDpendenciesBasic.ps1
+
+      - name: CHECK DIRECTORY STRUCTURE
+        shell: pwsh
+        continue-on-error: true
+        run: |
+          Write-Host "`nChecking directory structure...`n"
+          Write-Host "Current directory: $(Get-Location)`n"
+          Write-Host "Directory Contents ('./', depth 2):`n"
+          ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path "./" -MaxDepth 2 -IncludeHidden
+
+      - name: CHECK DIRECTORY STRUCTURE, 3 levels
+        shell: pwsh
+        continue-on-error: true
+        run: |
+          Write-Host "`nChecking directory structure...`n"
+          Write-Host "Current directory: $(Get-Location)`n"
+          Write-Host "Directory Contents ('./', depth 3):`n"
+          ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path "./" -MaxDepth 3 -IncludeHidden
+
+      - name: CHECK DIRECTORY STRUCTURE, SELECTED DETAILS
+        shell: pwsh
+        continue-on-error: true
+        run: |
+          Write-Host "`n`nChecking directory structure - details...`n"
+          Write-Host "`n`n`nCurrent directory: $(Get-Location)`n"
+          Write-Host "`nListing './`${{ env.REPO_DIR }}', depth 2 (main repo dir in some detail):`n"
+          ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path "./${{ env.REPO_DIR }}" -MaxDepth 2 -IncludeHidden
+          # Write-Host "`n`n`nCurrent directory: $(Get-Location)`n"
+          # Write-Host "`nListing './`${{ env.SOURCE_DIR }}', depth 3 (main project in more detail):`n"
+          # ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path "./${{ env.SOURCE_DIR }}" -MaxDepth 3 -IncludeHidden
+          # Write-Host "`n`nCurrent directory: $(Get-Location)`n"
+          # Write-Host "`nListing './_external', depth 2 (external dependencies in some detail):`n"
+          # ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path "./_external" -MaxDepth 2 -IncludeHidden
+
+      - name: SET UP .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      
+      # INSTALL global DOTNET TOOLS
+      - name: INSTALL global DOTNET TOOLS (GitVersion)
+        run: |
+          dotnet tool install --global GitVersion.Tool
+
+      - name: Setup MSBuild for .NET Framework
+        uses: microsoft/setup-msbuild@v1  # Needed for .NET Framework builds
+
+      # RUN PRE-BUILD SCRIPT (PowerShell)
+      - name: Run Pre-Build PowerShell Script
+        run: pwsh -File ${{ env.REPO_DIR }}/scripts/PrintEnv.ps1
+
+      # Verify .NET SDK version and global tools to insure everything we need is installed:
+      - name: VERIFY .NET SDK and global tools
+        shell: pwsh
+        run: |
+          Write-Host "Checking .NET SDK version..."
+          dotnet --version
+          Write-Host "Listing global dotnet tools..."
+          dotnet tool list --global
+
+      # Verify that GitVersion works properly & printing the calculated version of the current commit:
+      # Remark: malfunctioning of GitVersion (likely due to misconfiguration) is often a cause for
+      # subsequent build to fail.
+      - name: CHECK GitVersion
+        shell: pwsh
+        run: |
+          Write-Host "Verifying GitVersion and printing version of the current commit..."
+          cd ${{ env.REPO_DIR }}
+          Write-Host "Directory for getting the version:`n  $($(Get-Location).Path)"
+          Write-Host "Running: 'dotnet gitversion /showvariable FullSemVer'"
+          Write-Host "Repository VERSION returned by GitVersion:"
+          dotnet gitversion /showvariable FullSemVer
+      
+      # RESTORE DEPENDENCIES
+      - name: Restore NuGet packages
+        shell: pwsh
+        run: |
+          Write-Host "Restoring NuGet packages for ${{ env.SOLUTION }} ... `n"
+          dotnet restore ${{ env.SOLUTION }}
+
+      # BUILD Main Project & Test Project in Release Mode
+      - name: Build Solution
+        shell: pwsh
+        run: |
+          Write-Host "Building solution: ${{ env.SOLUTION }} ... `n"
+          dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore
+
+      # RUN TESTS & COLLECT RESULTS
+      - name: Run Tests
+        id: teststep
+        # shell: pwsh
+        # Remark: we use the solution instead of projects.
+        shell: pwsh
+        continue-on-error: true # ToDo: set to false later!
+        run: |
+          Write-Host "Running tests for ${{ env.SOLUTION }} ... `n"
+          dotnet test ${{ env.SOLUTION }} --configuration Release --logger trx --results-directory TestResults
+          # ${{ env.IGNORE_TEST_ERRORS }}
+
+      - name: Upload test results
+        if: always()   # runs even if previous step failed
+        uses: actions/upload-artifact@v4
+        with:
+          # Name of the uploaded artifact (arbitrary):
+          name: TestResults
+          # Path (relative to the workspace) of the file(s) or folder(s) to 
+          # upload as artifact:
+          path: ./TestResults
+
+      # Report tests failure
+      - name: Report tests failure
+        if: steps.teststep.outcome == 'failure'
+        run: echo "⚠️ Some tests failed, but the pipeline will continue."
+
+      # UPLOAD BUILD OUTPUT (DLLs, EXEs, etc.)
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: BuildArtifacts
+          path: ${{ env.SOURCE_DIR }}/bin/Release/
+
+      # RUN a TEST SCRIPT (PowerShell)
+      - name: Run Post-Build PowerShell Script
+        run: pwsh -File ${{ env.REPO_DIR }}/scripts/PrintEnv.ps1
+
