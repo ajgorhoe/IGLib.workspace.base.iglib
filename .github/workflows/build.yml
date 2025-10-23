@@ -81,6 +81,7 @@ jobs:
 
       - name: CHECK DIRECTORY STRUCTURE
         shell: pwsh
+        continue-on-error: true
         run: |
           Write-Host "`nChecking directory structure...`n"
           Write-Host "Current directory: $(Get-Location)`n"
@@ -89,6 +90,7 @@ jobs:
 
       - name: CHECK DIRECTORY STRUCTURE, 3 levels
         shell: pwsh
+        continue-on-error: true
         run: |
           Write-Host "`nChecking directory structure...`n"
           Write-Host "Current directory: $(Get-Location)`n"
