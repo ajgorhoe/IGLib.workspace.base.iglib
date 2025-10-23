@@ -3,10 +3,12 @@ name: Build and Test MainRepo1
 on:
   push:
     branches:
+      - master
       - main
   pull_request:
     branches:
-      - main
+      - master
+      -main
   workflow_dispatch: # Allows manual triggering
   
 env:
