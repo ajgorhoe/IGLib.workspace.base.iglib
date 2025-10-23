@@ -106,11 +106,11 @@ jobs:
           Write-Host "`nListing './`${{ env.REPO_DIR }}', depth 2 (main repo dir in some detail):`n"
           ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path "./${{ env.REPO_DIR }}" -MaxDepth 2 -IncludeHidden
           # Write-Host "`n`n`nCurrent directory: $(Get-Location)`n"
-          # Write-Host "`nListing './`${{ env.SOURCE_DIR }}', depth 3 (main project in more detail):`n"
-          # ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path "./${{ env.SOURCE_DIR }}" -MaxDepth 3 -IncludeHidden
+          # Write-Host "`nListing './`${{ env.SOURCE_DIR }}', depth 2 (main project in more detail):`n"
+          # ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path "./${{ env.SOURCE_DIR }}" -MaxDepth 2 -IncludeHidden
           # Write-Host "`n`nCurrent directory: $(Get-Location)`n"
-          # Write-Host "`nListing './_external', depth 2 (external dependencies in some detail):`n"
-          # ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path "./_external" -MaxDepth 2 -IncludeHidden
+          # Write-Host "`nListing './iglibexternal/IGLibExternal', depth 2 (external dependencies in some detail):`n"
+          # ${{ env.REPO_DIR }}/scripts/ShowDirectoryTree.ps1 -Path "./iglibexternal/IGLibExternal" -MaxDepth 2 -IncludeHidden
 
       - name: SET UP .NET SDK
         uses: actions/setup-dotnet@v4
