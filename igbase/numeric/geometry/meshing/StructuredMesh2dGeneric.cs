@@ -96,9 +96,9 @@ namespace IG.Num
                     {
                         TIndexField @field = IndexFields.CreateField(Dim1, Dim2, IndexFields.DefauletFieldName,
                             "Automatically generated default index field on the collection on 2D structured mesh.");
-                        IndexFields.AddField(field);
-                        IndexFields.ActiveFieldName = field.Name;
-                        ActiveIndexField = field;
+                        IndexFields.AddField(@field);
+                        IndexFields.ActiveFieldName = @field.Name;
+                        ActiveIndexField = @field;
                     }
                     if (_activeIndexField == null)
                         throw new InvalidOperationException("Can not create and set active index field on the structured 2D mesh.");
@@ -250,9 +250,9 @@ namespace IG.Num
                     {
                         TScalarField @field = ScalarFields.CreateField(Dim1, Dim2, ScalarFields.DefauletFieldName,
                             "Automatically generated default scalar field on the collection on 2D structured mesh.");
-                        ScalarFields.AddField(field);
-                        ScalarFields.ActiveFieldName = field.Name;
-                        ActiveScalarField = field;
+                        ScalarFields.AddField(@field);
+                        ScalarFields.ActiveFieldName = @field.Name;
+                        ActiveScalarField = @field;
                     }
                     if (_activeScalarField == null)
                         throw new InvalidOperationException("Can not create and set active scalar field on the structured 2D mesh.");
@@ -405,9 +405,9 @@ namespace IG.Num
                     {
                         TVectorField @field = VectorFields.CreateField(Dim1, Dim2, VectorFields.DefauletFieldName,
                             "Automatically generated default vector field on the collection on 2D structured mesh.");
-                        VectorFields.AddField(field);
-                        VectorFields.ActiveFieldName = field.Name;
-                        ActiveVectorField = field;
+                        VectorFields.AddField(@field);
+                        VectorFields.ActiveFieldName = @field.Name;
+                        ActiveVectorField = @field;
                     }
                     if (_activeVectorField == null)
                         throw new InvalidOperationException("Can not create and set active vector field on the structured 2D mesh.");
@@ -560,9 +560,9 @@ namespace IG.Num
                     {
                         TTensorField @field = TensorFields.CreateField(Dim1, Dim2, TensorFields.DefauletFieldName,
                             "Automatically generated default tensor field on the collection on 2D structured mesh.");
-                        TensorFields.AddField(field);
-                        TensorFields.ActiveFieldName = field.Name;
-                        ActiveTensorField = field;
+                        TensorFields.AddField(@field);
+                        TensorFields.ActiveFieldName = @field.Name;
+                        ActiveTensorField = @field;
                     }
                     if (_activeTensorField == null)
                         throw new InvalidOperationException("Can not create and set active tensor field on the structured 2D mesh.");
