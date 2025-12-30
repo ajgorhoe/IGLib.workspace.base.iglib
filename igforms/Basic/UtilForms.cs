@@ -589,7 +589,6 @@ namespace IG.Forms
         }
 
 
-
         /// <summary>Recursively sets background color for the specified control and all its children.</summary>
         /// <param name="win">Control for which the background color is set.</param>
         /// <param name="col">Background color to be set.</param>
