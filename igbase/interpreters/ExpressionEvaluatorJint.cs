@@ -145,8 +145,8 @@ namespace IG.Lib
         {
             Console.WriteLine(Environment.NewLine + Environment.NewLine + "Executed by Jint..." + Environment.NewLine);
 
-            JsValue val = JsEngine.Execute(code) // execute a statement
-                .GetCompletionValue(); // get the latest statement completion value
+            JsValue val = JsEngine.Evaluate(code);  // execute a statement  // changed Execute => Evaluate
+            //    .GetCompletionValue(); // get the latest statement completion value
 
             return val.ToObject(); // converts the value to .NET
         }
@@ -158,8 +158,8 @@ namespace IG.Lib
         /// <returns></returns>
         public override string EvalToString(string code)
         {
-            JsValue val = JsEngine.Execute(code) // execute a statement
-                .GetCompletionValue(); // get the latest statement completion value
+            JsValue val = JsEngine.Evaluate(code);  // execute a statement   // Changed Execute => Evaluate
+            //     .GetCompletionValue(); // get the latest statement completion value
             string ret = val.ToString();
             return ret;
         }
