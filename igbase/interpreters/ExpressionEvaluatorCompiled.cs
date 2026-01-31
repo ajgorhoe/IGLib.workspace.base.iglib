@@ -213,7 +213,7 @@ namespace IG.Lib
 
         /// <summary>Evaluates JavaScript code and returns result as object.</summary>
         /// <param name="code">JavaScript code to be evaluated.</param>
-        /// <returns>Object that is result of evaluaton of code.</returns>
+        /// <returns>Object that is result of evaluatin of code.</returns>
         public virtual object EvalToObject(string code)
         {
             return _evaluatorType.InvokeMember(
